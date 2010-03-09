@@ -52,11 +52,11 @@ module Literals
 
   module Literals0
     def literal
-      elements[1]
+      elements[0]
     end
 
     def eol
-      elements[2]
+      elements[1]
     end
   end
 
@@ -93,20 +93,11 @@ module Literals
         s4, i4 = [], index
         loop do
           i5, s5 = index, []
-          r7 = _nt_space
-          if r7
-            r6 = r7
-          else
-            r6 = instantiate_node(SyntaxNode,input, index...index)
-          end
+          r6 = _nt_literal
           s5 << r6
           if r6
-            r8 = _nt_literal
-            s5 << r8
-            if r8
-              r9 = _nt_eol
-              s5 << r9
-            end
+            r7 = _nt_eol
+            s5 << r7
           end
           if s5.last
             r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
@@ -135,14 +126,9 @@ module Literals
     if r1
       r0 = r1
     else
-      r11 = _nt_eol
-      if r11
-        r10 = r11
-      else
-        r10 = instantiate_node(SyntaxNode,input, index...index)
-      end
-      if r10
-        r0 = r10
+      r8 = _nt_eol
+      if r8
+        r0 = r8
       else
         @index = i0
         r0 = nil
@@ -425,12 +411,7 @@ module Literals
 
     s0, i0 = [], index
     loop do
-      if has_terminal?('\G[\\r\\n]', true, index)
-        r1 = true
-        @index += 1
-      else
-        r1 = nil
-      end
+      r1 = _nt_line_end
       if r1
         s0 << r1
       else
@@ -445,6 +426,161 @@ module Literals
     end
 
     node_cache[:eol][start_index] = r0
+
+    r0
+  end
+
+  module LineEnd0
+    def crlf
+      elements[0]
+    end
+
+  end
+
+  module LineEnd1
+  end
+
+  module LineEnd2
+    def crlf
+      elements[2]
+    end
+
+  end
+
+  def _nt_line_end
+    start_index = index
+    if node_cache[:line_end].has_key?(index)
+      cached = node_cache[:line_end][index]
+      if cached
+        cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+        @index = cached.interval.end
+      end
+      return cached
+    end
+
+    i0 = index
+    i1, s1 = index, []
+    r2 = _nt_crlf
+    s1 << r2
+    if r2
+      r4 = _nt_space
+      if r4
+        r3 = r4
+      else
+        r3 = instantiate_node(SyntaxNode,input, index...index)
+      end
+      s1 << r3
+    end
+    if s1.last
+      r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+      r1.extend(LineEnd0)
+    else
+      @index = i1
+      r1 = nil
+    end
+    if r1
+      r0 = r1
+    else
+      i5, s5 = index, []
+      if has_terminal?('//', false, index)
+        r6 = instantiate_node(SyntaxNode,input, index...(index + 2))
+        @index += 2
+      else
+        terminal_parse_failure('//')
+        r6 = nil
+      end
+      s5 << r6
+      if r6
+        s7, i7 = [], index
+        loop do
+          i8, s8 = index, []
+          i9 = index
+          r10 = _nt_crlf
+          if r10
+            r9 = nil
+          else
+            @index = i9
+            r9 = instantiate_node(SyntaxNode,input, index...index)
+          end
+          s8 << r9
+          if r9
+            if index < input_length
+              r11 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure("any character")
+              r11 = nil
+            end
+            s8 << r11
+          end
+          if s8.last
+            r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
+            r8.extend(LineEnd1)
+          else
+            @index = i8
+            r8 = nil
+          end
+          if r8
+            s7 << r8
+          else
+            break
+          end
+        end
+        r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
+        s5 << r7
+        if r7
+          r12 = _nt_crlf
+          s5 << r12
+          if r12
+            r14 = _nt_space
+            if r14
+              r13 = r14
+            else
+              r13 = instantiate_node(SyntaxNode,input, index...index)
+            end
+            s5 << r13
+          end
+        end
+      end
+      if s5.last
+        r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
+        r5.extend(LineEnd2)
+      else
+        @index = i5
+        r5 = nil
+      end
+      if r5
+        r0 = r5
+      else
+        @index = i0
+        r0 = nil
+      end
+    end
+
+    node_cache[:line_end][start_index] = r0
+
+    r0
+  end
+
+  def _nt_crlf
+    start_index = index
+    if node_cache[:crlf].has_key?(index)
+      cached = node_cache[:crlf][index]
+      if cached
+        cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+        @index = cached.interval.end
+      end
+      return cached
+    end
+
+    if has_terminal?('\G[\\r\\n]', true, index)
+      r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
+      @index += 1
+    else
+      r0 = nil
+    end
+
+    node_cache[:crlf][start_index] = r0
 
     r0
   end

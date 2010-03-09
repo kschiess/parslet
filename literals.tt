@@ -4,8 +4,8 @@ grammar Literals
   end
   
   rule literals
-    literal eol (space? literal eol)* / 
-    eol?
+    literal eol (literal eol)* /
+    eol
   end
   
   rule literal
@@ -31,6 +31,15 @@ grammar Literals
   end
   
   rule eol
-    [\r\n]+ 
+    line_end+
+  end
+  
+  rule line_end
+    crlf space? /
+    '//' (!crlf .)* crlf space?
+  end
+  
+  rule crlf
+    [\r\n]
   end
 end
