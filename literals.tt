@@ -1,0 +1,36 @@
+grammar Literals
+  rule document
+    space? literals
+  end
+  
+  rule literals
+    literal eol (space? literal eol)* / 
+    eol?
+  end
+  
+  rule literal
+    (
+      string_literal /
+      int_literal 
+    ) space?
+  end
+  
+  rule string_literal
+    '"' (
+      "\\" . /
+      !["] .
+    )* '"'
+  end
+  
+  rule int_literal
+    [0-9]+
+  end
+  
+  rule space
+    [ \t]+
+  end
+  
+  rule eol
+    [\r\n]+ 
+  end
+end

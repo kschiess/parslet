@@ -1,0 +1,6 @@
+12
+"THis is a string"
+"This is another string"
+"This string is escaped \"embedded quoted stuff \" "
+12 // an integer literal and a comment
+
