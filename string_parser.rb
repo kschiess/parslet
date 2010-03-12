@@ -1,4 +1,6 @@
 
+require 'parslet'
+
 class LiteralsParser
   include Parslet
   
@@ -7,20 +9,28 @@ class LiteralsParser
   end
   
   def literals
-    (literal > eol).repeat
+    (literal >> eol).repeat
   end
   
   def literal
-    integer > space.maybe
+    integer >> space.maybe
   end
   
   def integer
     match('[0-9]').repeat(1)
   end
   
+  def eol
+    line_end.repeat(1)
+  end
+  
+  def line_end
+    crlf >> space.maybe /
+    str('//') >> 
+  end
+  
   def parse(str)
-    io = StringIO.new(str)
-    p [space.repeat(0), literals].map { |p| p.apply(io) }
+    (space.repeat >> literals).apply(str)
   end
 end
 

@@ -1,6 +1,10 @@
 require 'parslet'
 
 describe Parslet do
+  def not_parse
+    raise_error(Parslet::Matchers::ParseFailed)
+  end
+  
   include Parslet
   describe "match('[abc]')" do
     attr_reader :parslet
@@ -99,5 +103,49 @@ describe Parslet do
         parslet.apply('baz')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end   
+  end
+  describe "str('foo').prsnt? (positive lookahead)" do
+    attr_reader :parslet
+    before(:each) do
+      @parslet = str('foo').prsnt?
+    end
+    
+    context "when fed 'foo'" do
+      it "should parse" do
+        parslet.apply('foo')
+      end
+      it "should not change input position" do
+        io = StringIO.new('foo')
+        parslet.apply(io)
+        io.pos.should == 0
+      end
+    end
+    context "when fed 'bar'" do
+      it "should not parse" do
+        lambda { parslet.apply('bar') }.should not_parse
+      end
+    end
+  end
+  describe "str('foo').absnt? (negative lookahead)" do
+    attr_reader :parslet
+    before(:each) do
+      @parslet = str('foo').absnt?
+    end
+    
+    context "when fed 'bar'" do
+      it "should parse" do
+        parslet.apply('bar')
+      end
+      it "should not change input position" do
+        io = StringIO.new('bar')
+        parslet.apply(io)
+        io.pos.should == 0
+      end
+    end
+    context "when fed 'foo'" do
+      it "should not parse" do
+        lambda { parslet.apply('foo') }.should not_parse
+      end
+    end
   end
 end

@@ -29,8 +29,53 @@ module Parslet
       def /(parslet)
         Alternative.new(self, parslet)
       end
+      def absnt?
+        Lookahead.new(self, false)
+      end
+      def prsnt?
+        Lookahead.new(self, true)
+      end
     end
     
+    class Lookahead < Base
+      attr_reader :positive
+      attr_reader :bound_parslet
+      
+      def initialize(bound_parslet, positive=true)
+        # Model positive and negative lookahead by testing this flag.
+        @positive = positive
+        @bound_parslet = bound_parslet
+      end
+      
+      def try(io)
+        pos = io.pos
+        begin
+          bound_parslet.apply(io)
+        rescue ParseFailed 
+          return fail()
+        ensure 
+          io.pos = pos
+        end
+        return success()
+      end
+      
+      def fail
+        if positive
+          raise(ParseFailed, "Was looking for #{bound_parslet.inspect}.")
+        else
+          # TODO: Squash this down to nothing? Return value handling here...
+          return nil
+        end
+      end
+      def success
+        if positive
+          return nil  # see above, TODO
+        else
+          raise(ParseFailed, "Was looking for the absence of #{bound_parslet.inspect}.")
+        end
+      end
+    end
+
     class Alternative < Base
       attr_reader :alternatives
       def initialize(*alternatives)
