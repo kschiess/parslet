@@ -23,6 +23,48 @@ module Parslet
       def maybe
         Repetition.new(self, 0, 1)
       end
+      def >>(parslet)
+        Sequence.new(self, parslet)
+      end
+      def /(parslet)
+        Alternative.new(self, parslet)
+      end
+    end
+    
+    class Alternative < Base
+      attr_reader :alternatives
+      def initialize(*alternatives)
+        @alternatives = alternatives
+      end
+      
+      def /(parslet)
+        @alternatives << parslet
+      end
+      
+      def try(io)
+        alternatives.each { |a|
+          begin
+            return a.apply(io)
+          rescue ParseFailed => ex
+          end
+        }
+        raise(ParseFailed, "Expected one of #{alternatives.inspect}.")
+      end
+    end
+    
+    class Sequence < Base
+      attr_reader :parslets
+      def initialize(*parslets)
+        @parslets = parslets
+      end
+      
+      def >>(parslet)
+        @parslets << parslet
+      end
+      
+      def try(io)
+        parslets.map { |p| p.apply(io) }
+      end
     end
     
     class Repetition < Base

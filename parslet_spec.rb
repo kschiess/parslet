@@ -67,4 +67,37 @@ describe Parslet do
       io.pos.should == 0
     end
   end
+  describe "str('foo') >> str('bar')" do
+    attr_reader :parslet
+    before(:each) do
+      @parslet = str('foo') >> str('bar')
+    end
+    
+    it "should parse 'foobar'" do
+      parslet.apply('foobar')
+    end
+    it "should not parse 'foobaz'" do
+      lambda {
+        parslet.apply('foobaz')
+      }.should raise_error(Parslet::Matchers::ParseFailed)
+    end
+  end
+  describe "str('foo') / str('bar')" do
+    attr_reader :parslet
+    before(:each) do
+      @parslet = str('foo') / str('bar')
+    end
+    
+    it "should accept 'foo'" do
+      parslet.apply('foo')
+    end
+    it "should accept 'bar'" do
+      parslet.apply('bar')
+    end
+    it "should not accept 'baz'" do
+      lambda {
+        parslet.apply('baz')
+      }.should raise_error(Parslet::Matchers::ParseFailed)
+    end   
+  end
 end
