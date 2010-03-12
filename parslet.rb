@@ -169,9 +169,11 @@ module Parslet
   def match(obj)
     Matchers::Re.new(obj)
   end
-  
   def str(str)
     Matchers::Str.new(str)
+  end
+  def any
+    Matchers::Re.new('.')
   end
 end
 

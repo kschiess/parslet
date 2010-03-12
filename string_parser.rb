@@ -26,7 +26,11 @@ class LiteralsParser
   
   def line_end
     crlf >> space.maybe /
-    str('//') >> 
+    str('//') >> (crlf.absnt? >> any).repeat >> crlf >> space.maybe
+  end
+  
+  def crlf
+    match('[\r\n]')
   end
   
   def parse(str)

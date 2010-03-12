@@ -148,4 +148,19 @@ describe Parslet do
       end
     end
   end
+  describe "any" do
+    attr_reader :parslet
+    before(:each) do
+      @parslet = any
+    end
+    
+    it "should match" do
+      parslet.apply('.')
+    end 
+    it "should consume one char" do
+      io = StringIO.new('foo')
+      parslet.apply(io)
+      io.pos.should == 1
+    end 
+  end
 end
