@@ -22,9 +22,11 @@ describe Parslet do
         parslet.apply('d')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end 
-    it "should return the matched char" do
-      parslet.apply('a').should == 'a'
-    end 
+    describe "<- #apply" do
+      it "should return the matched char" do
+        parslet.apply('a').should == 'a'
+      end 
+    end
   end
   describe "match(['[a]').repeat(3)" do
     attr_reader :parslet
@@ -58,9 +60,11 @@ describe Parslet do
         parslet.apply('bar')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end
-    it "should return the matched string" do
-      parslet.apply('foo').should == 'foo'
-    end 
+    describe "<- #apply" do
+      it "should return the matched string" do
+        parslet.apply('foo').should == 'foo'
+      end 
+    end
   end
   describe "str('foo').maybe" do
     attr_reader :parslet
@@ -94,6 +98,11 @@ describe Parslet do
     it "should return self for chaining" do
       (parslet >> str('baz')).should == parslet
     end 
+    describe "<- #apply" do
+      it "should return strings" do
+        parslet.apply('foobar').should == %w(foo bar)
+      end 
+    end
   end
   describe "str('foo') / str('bar')" do
     attr_reader :parslet
@@ -115,6 +124,12 @@ describe Parslet do
     it "should return self for chaining" do
       (parslet / str('baz')).should == parslet
     end 
+    describe "<- #apply" do
+      it "should return the chosen alternative" do
+        parslet.apply('foo').should == 'foo'
+        parslet.apply('bar').should == 'bar'
+      end 
+    end
   end
   describe "str('foo').prsnt? (positive lookahead)" do
     attr_reader :parslet
