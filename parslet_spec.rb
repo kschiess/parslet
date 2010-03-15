@@ -85,6 +85,9 @@ describe Parslet do
         parslet.apply('foobaz')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end
+    it "should return self for chaining" do
+      (parslet >> str('baz')).should == parslet
+    end 
   end
   describe "str('foo') / str('bar')" do
     attr_reader :parslet
@@ -103,6 +106,9 @@ describe Parslet do
         parslet.apply('baz')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end   
+    it "should return self for chaining" do
+      (parslet / str('baz')).should == parslet
+    end 
   end
   describe "str('foo').prsnt? (positive lookahead)" do
     attr_reader :parslet

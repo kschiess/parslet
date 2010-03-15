@@ -84,6 +84,7 @@ module Parslet
       
       def /(parslet)
         @alternatives << parslet
+        self
       end
       
       def try(io)
@@ -105,6 +106,7 @@ module Parslet
       
       def >>(parslet)
         @parslets << parslet
+        self
       end
       
       def try(io)
