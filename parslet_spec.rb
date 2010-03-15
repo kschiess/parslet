@@ -28,11 +28,6 @@ describe Parslet do
         parslet.parse('d')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end 
-    describe "<- #parse" do
-      it "should return the matched char" do
-        parslet.parse('a').should == 'a'
-      end 
-    end
   end
   describe "match(['[a]').repeat(3)" do
     attr_reader :parslet
@@ -51,11 +46,6 @@ describe Parslet do
     it "should succeed on many 'a'" do
       parslet.parse('a'*100)
     end 
-    describe "<- #parse" do
-      it "should return matched things as array" do
-        parslet.parse('aaaa').should == %w(a a a a)
-      end 
-    end
   end
   describe "str('foo')" do
     attr_reader :parslet
@@ -70,11 +60,6 @@ describe Parslet do
       lambda {
         parslet.parse('bar')
       }.should raise_error(Parslet::Matchers::ParseFailed)
-    end
-    describe "<- #parse" do
-      it "should return the matched string" do
-        parslet.parse('foo').should == 'foo'
-      end 
     end
   end
   describe "str('foo').maybe" do
@@ -109,11 +94,6 @@ describe Parslet do
     it "should return self for chaining" do
       (parslet >> str('baz')).should == parslet
     end 
-    describe "<- #parse" do
-      it "should return strings" do
-        parslet.parse('foobar').should == %w(foo bar)
-      end 
-    end
   end
   describe "str('foo') / str('bar')" do
     attr_reader :parslet
@@ -135,12 +115,6 @@ describe Parslet do
     it "should return self for chaining" do
       (parslet / str('baz')).should == parslet
     end 
-    describe "<- #parse" do
-      it "should return the chosen alternative" do
-        parslet.parse('foo').should == 'foo'
-        parslet.parse('bar').should == 'bar'
-      end 
-    end
   end
   describe "str('foo').prsnt? (positive lookahead)" do
     attr_reader :parslet
@@ -206,18 +180,23 @@ describe Parslet do
       io.pos.should == 1
     end 
   end
+
+  describe "<- #as(name)" do
+    context "str('foo').as(:bar)" do
+      it "should return :bar => 'foo'" do
+        str('foo').as(:bar).parse('foo').should == { :bar => 'foo' }
+      end 
+    end
+  end
+
+
   describe "combinations thereof (regression)" do
-    sucess = {
-      [(str('a').repeat >> str('b').repeat), 'aaabbb'] => 
-        [%w(a a a), %w(b b b)]
-    }.each do |(parslet, input), expected_result|
+    sucess =[
+      [(str('a').repeat >> str('b').repeat), 'aaabbb'] 
+    ].each do |(parslet, input)|
       describe "#{parslet.inspect} applied to #{input.inspect}" do
-        attr_reader :result
-        before(:each) do
-          @result = parslet.parse(input)
-        end
-        it "should yield #{expected_result.inspect}" do
-          result.should == expected_result
+        it "should parse successfully" do
+          parslet.parse(input)
         end
       end 
     end

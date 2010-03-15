@@ -22,7 +22,7 @@ module Parslet
         begin
           r = try(io)
           # p [:return_from, self, r]
-          return r
+          return produce_return_value(r)
         rescue ParseFailed => ex
           # p [:failing, self]
           io.pos = old_pos; raise ex
@@ -47,9 +47,21 @@ module Parslet
       def prsnt?
         Lookahead.new(self, true)
       end
+      
+      attr_reader :return_name
+      def as(name)
+        @return_name = name
+        self
+      end
 
+    private
       def error(str, position)
         raise ParseFailed, "#{str} at char #{position}."
+      end
+      def produce_return_value(val)
+        return nil unless return_name
+        
+        { return_name => val }
       end
     end
     
