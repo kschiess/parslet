@@ -45,6 +45,11 @@ describe Parslet do
     it "should succeed on many 'a'" do
       parslet.apply('a'*100)
     end 
+    describe "<- #apply" do
+      it "should return matched things as array" do
+        parslet.apply('aaaa').should == %w(a a a a)
+      end 
+    end
   end
   describe "str('foo')" do
     attr_reader :parslet
@@ -151,6 +156,11 @@ describe Parslet do
       it "should not parse" do
         lambda { parslet.apply('bar') }.should not_parse
       end
+    end
+    describe "<- #apply" do
+      it "should return nil" do
+        parslet.apply('foo').should == nil
+      end 
     end
   end
   describe "str('foo').absnt? (negative lookahead)" do
