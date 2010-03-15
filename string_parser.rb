@@ -13,7 +13,16 @@ class LiteralsParser
   end
   
   def literal
-    integer >> space.maybe
+    (integer / string) >> space.maybe
+  end
+  
+  def string
+    str('"') >> 
+    (
+      (str('\\') >> any) /
+      (str('"').absnt? >> any)
+    ).repeat >> 
+    str('"')
   end
   
   def integer
