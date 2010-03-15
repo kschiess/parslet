@@ -1,11 +1,11 @@
-
+require 'pp'
 require 'parslet'
 
 class LiteralsParser
   include Parslet
   
   def space
-    (match '[\s]').repeat(1)
+    (match '[ ]').repeat(1)
   end
   
   def literals
@@ -33,9 +33,9 @@ class LiteralsParser
   end
   
   def parse(str)
-    literals.apply(str)
+    literals.parse(str)
   end
 end
 
-p LiteralsParser.new.parse(
+pp LiteralsParser.new.parse(
   File.read('simple.lit'))

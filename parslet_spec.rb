@@ -6,6 +6,12 @@ describe Parslet do
   end
   
   include Parslet
+  extend Parslet
+
+  def gio(str)
+    StringIO.new(str)
+  end
+  
   describe "match('[abc]')" do
     attr_reader :parslet
     before(:each) do
@@ -13,18 +19,18 @@ describe Parslet do
     end
     
     it "should parse {a,b,c}" do
-      parslet.apply('a')
-      parslet.apply('b')
-      parslet.apply('c')
+      parslet.parse('a')
+      parslet.parse('b')
+      parslet.parse('c')
     end 
     it "should not parse d" do
       lambda {
-        parslet.apply('d')
+        parslet.parse('d')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end 
-    describe "<- #apply" do
+    describe "<- #parse" do
       it "should return the matched char" do
-        parslet.apply('a').should == 'a'
+        parslet.parse('a').should == 'a'
       end 
     end
   end
@@ -36,18 +42,18 @@ describe Parslet do
     
     it "should not succeed on only 'aa'" do
       lambda {
-        parslet.apply('aa')
+        parslet.parse('aa')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end 
     it "should succeed on 'aaa'" do
-      parslet.apply('aaa')
+      parslet.parse('aaa')
     end 
     it "should succeed on many 'a'" do
-      parslet.apply('a'*100)
+      parslet.parse('a'*100)
     end 
-    describe "<- #apply" do
+    describe "<- #parse" do
       it "should return matched things as array" do
-        parslet.apply('aaaa').should == %w(a a a a)
+        parslet.parse('aaaa').should == %w(a a a a)
       end 
     end
   end
@@ -58,16 +64,16 @@ describe Parslet do
     end
     
     it "should parse 'foo'" do
-      parslet.apply('foo')
+      parslet.parse('foo')
     end
     it "should not parse 'bar'"  do
       lambda {
-        parslet.apply('bar')
+        parslet.parse('bar')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end
-    describe "<- #apply" do
+    describe "<- #parse" do
       it "should return the matched string" do
-        parslet.apply('foo').should == 'foo'
+        parslet.parse('foo').should == 'foo'
       end 
     end
   end
@@ -78,10 +84,10 @@ describe Parslet do
     end
 
     it "should parse a foo" do
-      parslet.apply('foo')
+      parslet.parse('foo')
     end
     it "should leave pos untouched if there is no foo" do
-      io = StringIO.new('bar')
+      io = gio('bar')
       parslet.apply(io)
       io.pos.should == 0
     end
@@ -93,19 +99,19 @@ describe Parslet do
     end
     
     it "should parse 'foobar'" do
-      parslet.apply('foobar')
+      parslet.parse('foobar')
     end
     it "should not parse 'foobaz'" do
       lambda {
-        parslet.apply('foobaz')
+        parslet.parse('foobaz')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end
     it "should return self for chaining" do
       (parslet >> str('baz')).should == parslet
     end 
-    describe "<- #apply" do
+    describe "<- #parse" do
       it "should return strings" do
-        parslet.apply('foobar').should == %w(foo bar)
+        parslet.parse('foobar').should == %w(foo bar)
       end 
     end
   end
@@ -116,23 +122,23 @@ describe Parslet do
     end
     
     it "should accept 'foo'" do
-      parslet.apply('foo')
+      parslet.parse('foo')
     end
     it "should accept 'bar'" do
-      parslet.apply('bar')
+      parslet.parse('bar')
     end
     it "should not accept 'baz'" do
       lambda {
-        parslet.apply('baz')
+        parslet.parse('baz')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end   
     it "should return self for chaining" do
       (parslet / str('baz')).should == parslet
     end 
-    describe "<- #apply" do
+    describe "<- #parse" do
       it "should return the chosen alternative" do
-        parslet.apply('foo').should == 'foo'
-        parslet.apply('bar').should == 'bar'
+        parslet.parse('foo').should == 'foo'
+        parslet.parse('bar').should == 'bar'
       end 
     end
   end
@@ -144,22 +150,22 @@ describe Parslet do
     
     context "when fed 'foo'" do
       it "should parse" do
-        parslet.apply('foo')
+        parslet.apply(gio('foo'))
       end
       it "should not change input position" do
-        io = StringIO.new('foo')
+        io = gio('foo')
         parslet.apply(io)
         io.pos.should == 0
       end
     end
     context "when fed 'bar'" do
       it "should not parse" do
-        lambda { parslet.apply('bar') }.should not_parse
+        lambda { parslet.parse('bar') }.should not_parse
       end
     end
-    describe "<- #apply" do
+    describe "<- #parse" do
       it "should return nil" do
-        parslet.apply('foo').should == nil
+        parslet.apply(gio 'foo').should == nil
       end 
     end
   end
@@ -171,17 +177,17 @@ describe Parslet do
     
     context "when fed 'bar'" do
       it "should parse" do
-        parslet.apply('bar')
+        parslet.apply(gio 'bar')
       end
       it "should not change input position" do
-        io = StringIO.new('bar')
+        io = gio('bar')
         parslet.apply(io)
         io.pos.should == 0
       end
     end
     context "when fed 'foo'" do
       it "should not parse" do
-        lambda { parslet.apply('foo') }.should not_parse
+        lambda { parslet.parse('foo') }.should not_parse
       end
     end
   end
@@ -192,12 +198,28 @@ describe Parslet do
     end
     
     it "should match" do
-      parslet.apply('.')
+      parslet.parse('.')
     end 
     it "should consume one char" do
-      io = StringIO.new('foo')
+      io = gio('foo')
       parslet.apply(io)
       io.pos.should == 1
     end 
+  end
+  describe "combinations thereof (regression)" do
+    sucess = {
+      [(str('a').repeat >> str('b').repeat), 'aaabbb'] => 
+        [%w(a a a), %w(b b b)]
+    }.each do |(parslet, input), expected_result|
+      describe "#{parslet.inspect} applied to #{input.inspect}" do
+        attr_reader :result
+        before(:each) do
+          @result = parslet.parse(input)
+        end
+        it "should yield #{expected_result.inspect}" do
+          result.should == expected_result
+        end
+      end 
+    end
   end
 end

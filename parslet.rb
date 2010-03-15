@@ -1,20 +1,30 @@
-require 'pp'
-
 module Parslet
   module Matchers
     class ParseFailed < Exception; end
     
     class Base
-      def apply(io)
+      def parse(io)
         if io.respond_to? :to_str
           io = StringIO.new(io)
         end
         
+        result = apply(io)
+        
+        error("Don't know what to do with #{io.read.inspect}", io.pos) unless io.eof?
+        return result
+      end
+      
+      def apply(io)
+        # p [:start, self, io.string[io.pos, 10]]
+        
         old_pos = io.pos
         
         begin
-          return try(io)
+          r = try(io)
+          # p [:return_from, self, r]
+          return r
         rescue ParseFailed => ex
+          # p [:failing, self]
           io.pos = old_pos; raise ex
         end
       end
@@ -36,6 +46,10 @@ module Parslet
       end
       def prsnt?
         Lookahead.new(self, true)
+      end
+
+      def error(str, position)
+        raise ParseFailed, "#{str} at char #{position}."
       end
     end
     
@@ -76,6 +90,14 @@ module Parslet
           raise(ParseFailed, "Was looking for the absence of #{bound_parslet.inspect}.")
         end
       end
+
+      def inspect
+        if positive
+          "&(#{bound_parslet.inspect})"
+        else
+          "!(#{bound_parslet.inspect})"
+        end
+      end
     end
 
     class Alternative < Base
@@ -98,6 +120,10 @@ module Parslet
         }
         raise(ParseFailed, "Expected one of #{alternatives.inspect}.")
       end
+
+      def inspect
+        '(' + alternatives.map { |a| a.inspect }.join(' / ') + ')'
+      end
     end
     
     class Sequence < Base
@@ -113,6 +139,10 @@ module Parslet
       
       def try(io)
         parslets.map { |p| p.apply(io) }
+      end
+      
+      def inspect
+        '('+ parslets.map { |p| p.inspect }.join(' ') + ')'
       end
     end
     
@@ -130,12 +160,17 @@ module Parslet
           begin
             result << parslet.apply(io)
           rescue ParseFailed => ex
+            # p [:repetition, occ, min, max]
             raise ex if occ < min
             raise ex if max && occ > max
             return result
           end
           occ += 1
         end
+      end
+      
+      def inspect
+        '(' + parslet.inspect + "){#{min}, #{max}}"
       end
     end
 
@@ -152,6 +187,10 @@ module Parslet
         raise ParseFailed unless s.match(r)
         return s
       end
+
+      def inspect
+        match.to_s
+      end
     end
     
     class Str < Base
@@ -166,6 +205,10 @@ module Parslet
         raise(ParseFailed, "Premature end of input.") unless s && s.size==str.size
         raise(ParseFailed, "Expected #{str.inspect}, but got #{s.inspect}") unless s==str
         return s
+      end
+      
+      def inspect
+        "'#{str}'"
       end
     end
   end
