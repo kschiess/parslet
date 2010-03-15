@@ -37,5 +37,5 @@ class LiteralsParser
   end
 end
 
-LiteralsParser.new.parse(
+p LiteralsParser.new.parse(
   File.read('simple.lit'))
