@@ -1,3 +1,5 @@
+require 'pp'
+
 module Parslet
   module Matchers
     class ParseFailed < Exception; end
@@ -11,7 +13,7 @@ module Parslet
         old_pos = io.pos
         
         begin
-          try(io)
+          return try(io)
         rescue ParseFailed => ex
           io.pos = old_pos; raise ex
         end

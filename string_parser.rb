@@ -29,11 +29,11 @@ class LiteralsParser
   end
   
   def crlf
-    match('[\r\n]')
+    match('[\r\n]').repeat(1)
   end
   
   def parse(str)
-    (space.repeat >> literals).apply(str)
+    literals.apply(str)
   end
 end
 
