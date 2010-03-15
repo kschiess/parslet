@@ -10,12 +10,12 @@ module Parslet
         
         result = apply(io)
         
-        error("Don't know what to do with #{io.read.inspect}", io.pos) unless io.eof?
+        error(io.pos, "Don't know what to do with #{io.read.inspect}") unless io.eof?
         return result
       end
       
       def apply(io)
-        # p [:start, self, io.string[io.pos, 10]]
+        p [:start, self, io.string[io.pos, 10]]
         
         old_pos = io.pos
         
@@ -55,7 +55,7 @@ module Parslet
       end
 
     private
-      def error(str, position)
+      def error(position, str)
         raise ParseFailed, "#{str} at char #{position}."
       end
       def produce_return_value(val)

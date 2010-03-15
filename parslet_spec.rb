@@ -187,6 +187,16 @@ describe Parslet do
         str('foo').as(:bar).parse('foo').should == { :bar => 'foo' }
       end 
     end
+    context "match('[abc]').as(:name)" do
+      it "should return :name => 'b'" do
+        match('[abc]').as(:name).parse('b').should == { :name => 'b' }
+      end 
+    end
+    context "match('[abc]').repeat.as(:name)" do
+      it "should return collated result ('abc')" do
+        match('[abc]').as(:name).parse('abc').should == { :name => 'abc' }
+      end
+    end
   end
 
 
