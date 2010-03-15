@@ -194,8 +194,36 @@ describe Parslet do
     end
     context "match('[abc]').repeat.as(:name)" do
       it "should return collated result ('abc')" do
-        match('[abc]').as(:name).parse('abc').should == { :name => 'abc' }
+        match('[abc]').repeat.as(:name).
+          parse('abc').should == { :name => 'abc' }
       end
+    end
+    context "(str('a').as(:a) >> str('b').as(:b)).as(:c)" do
+      it "should return a hash of hashes" do
+        (str('a').as(:a) >> str('b').as(:b)).as(:c).
+          parse('ab').should == {
+            :c => {
+              :a => 'a', 
+              :b => 'b'
+            }
+          }
+      end 
+    end
+    context "(str('a').as(:a) >> str('ignore') >> str('b').as(:b))" do
+      it "should correctly flatten (leaving out 'ignore')" do
+        (str('a').as(:a) >> str('ignore') >> str('b').as(:b)).
+          parse('aignoreb').should == {
+            :a => 'a', 
+            :b => 'b'
+          }
+      end
+    end
+    
+    context "(str('a') >> str('ignore') >> str('b')) (no .as(...))" do
+      it "should just flatten the result" do
+        (str('a') >> str('ignore') >> str('b')).
+          parse('aignoreb').should == 'aignoreb'
+      end 
     end
   end
 

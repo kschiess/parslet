@@ -15,7 +15,7 @@ module Parslet
       end
       
       def apply(io)
-        p [:start, self, io.string[io.pos, 10]]
+        # p [:start, self, io.string[io.pos, 10]]
         
         old_pos = io.pos
         
@@ -59,9 +59,30 @@ module Parslet
         raise ParseFailed, "#{str} at char #{position}."
       end
       def produce_return_value(val)
-        return nil unless return_name
+        return flatten(val) unless return_name
         
-        { return_name => val }
+        { return_name => flatten(val) }
+      end
+      def flatten(value)
+        if value.respond_to?(:inject)
+          value.inject('') { |r, e| 
+            if r.instance_of?(Hash)
+              if e.instance_of?(Hash)
+                r.merge(e)
+              else
+                r
+              end
+            else
+              if e.instance_of?(String)
+                r << e
+              else
+                e
+              end 
+            end
+          }
+        else
+          value
+        end
       end
     end
     
