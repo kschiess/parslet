@@ -225,8 +225,21 @@ describe Parslet do
           parse('aignoreb').should == 'aignoreb'
       end 
     end
+    context "str('a').as(:a) >> str('b').as(:a)" do
+      attr_reader :parslet
+      before(:each) do
+        @parslet = str('a').as(:a) >> str('b').as(:a)
+      end
+      
+      it "should issue a warning that a key is being overwritten in merge" do
+        flexmock(parslet).
+          should_receive(:warn).once
+      end
+      it "should return :a => 'b'" do
+        parslet.parse('ab').should == { :a => 'b' }
+      end  
+    end
   end
-
 
   describe "combinations thereof (regression)" do
     sucess =[
