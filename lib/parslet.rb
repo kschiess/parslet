@@ -56,7 +56,9 @@ module Parslet
         return value unless value.instance_of? Array
         
         # Merges arrays:
-        value.inject('') { |r, e| 
+        value.
+          map { |e| flatten(e) }.     # first flatten each element
+          inject('') { |r, e|         # and then merge flat elements
           case [r, e].map { |o| o.class }
             when [Hash, Hash]
               warn_about_duplicate_keys(r, e)
@@ -79,7 +81,7 @@ module Parslet
       def warn_about_duplicate_keys(h1, h2)
         d = h1.keys & h2.keys
         unless d.empty?
-          warn "Duplicate subtrees while merging result of #{self.inspect}, only the values"+
+          warn "Duplicate subtrees while merging result of \n  #{self.inspect}\nonly the values"+
                " of the latter will be kept. (keys: #{d.inspect})"
         end
       end
@@ -102,7 +104,7 @@ module Parslet
       end
       
     private
-      def produce_return_value(val)        
+      def produce_return_value(val)  
         { name => flatten(val) }
       end
     end

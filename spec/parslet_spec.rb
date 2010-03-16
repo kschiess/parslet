@@ -266,6 +266,7 @@ describe Parslet do
       [ [{:a => :b}, {:a=>:d}], {:a => :d} ], 
       [ [{:a=>:b}, [["\n", nil]]], {:a=>:b} ], 
       [ [nil, " "], ' ' ], 
+      [ [[nil, " "]], ' ' ], 
     ].each do |input, output|
       it "should #{input.inspect} to #{output.inspect}" do
         call(input).should == output
