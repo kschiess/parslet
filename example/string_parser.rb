@@ -1,4 +1,6 @@
 require 'pp'
+
+$:.unshift '../lib/'
 require 'parslet'
 
 class LiteralsParser

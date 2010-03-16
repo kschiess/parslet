@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 require 'parslet'
 
 describe Parslet do
