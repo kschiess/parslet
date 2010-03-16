@@ -239,11 +239,17 @@ describe Parslet do
         parslet.parse('ab').should == { :a => 'b' }
       end
       it "should return :a => 'b'" do
+        flexmock(parslet).
+          should_receive(:warn)
+          
         parslet.parse('ab').should == { :a => 'b' }
       end  
     end
-    context "str('a').maybe" do
-      it "should return something in merge, even though it is nil" 
+    context "str('a').absnt?" do
+      it "should return something in merge, even though it is nil" do
+        (str('a').absnt? >> str('b').as(:b)).
+          parse('b').should == {:b => 'b'}
+      end
     end
   end
 
