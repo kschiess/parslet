@@ -47,15 +47,10 @@ module Parslet
       def prsnt?
         Lookahead.new(self, true)
       end
-      
       def as(name)
         Named.new(self, name)
       end
 
-    private    
-      def error(position, str)
-        raise ParseFailed, "#{str} at char #{position}."
-      end
       def flatten(value)
         # Passes through everything that isn't an array of things
         return value unless value.instance_of? Array
@@ -76,6 +71,10 @@ module Parslet
             end
           end
         }
+      end
+    private    
+      def error(position, str)
+        raise ParseFailed, "#{str} at char #{position}."
       end
       def warn_about_duplicate_keys(h1, h2)
         d = h1.keys & h2.keys

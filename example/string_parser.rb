@@ -15,7 +15,7 @@ class LiteralsParser
   end
   
   def literal
-    (integer / string) >> space.maybe
+    (integer / string).as(:literal) >> space.maybe
   end
   
   def string
@@ -23,12 +23,12 @@ class LiteralsParser
     (
       (str('\\') >> any) /
       (str('"').absnt? >> any)
-    ).repeat >> 
+    ).repeat.as(:string) >> 
     str('"')
   end
   
   def integer
-    match('[0-9]').repeat(1)
+    match('[0-9]').repeat(1).as(:integer)
   end
   
   def eol

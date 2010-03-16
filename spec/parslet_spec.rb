@@ -252,6 +252,15 @@ describe Parslet do
       end
     end
   end
+  describe "<- #flatten(val)" do
+    def call(val)
+      str('a').flatten(val)
+    end
+    it "should turn ['a', 'b'] into 'ab'" do
+      call(['a', 'b']).should == 'ab'
+    end 
+    it "should more examples" 
+  end
 
   describe "combinations thereof (regression)" do
     sucess =[
