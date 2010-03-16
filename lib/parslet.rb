@@ -11,7 +11,7 @@ module Parslet
         result = apply(io)
         
         error(io.pos, "Don't know what to do with #{io.read.inspect}") unless io.eof?
-        return result
+        return flatten(result)
       end
       
       def apply(io)
@@ -22,7 +22,7 @@ module Parslet
         begin
           r = try(io)
           # p [:return_from, self, r]
-          return produce_return_value(r)
+          return r
         rescue ParseFailed => ex
           # p [:failing, self]
           io.pos = old_pos; raise ex
@@ -48,41 +48,64 @@ module Parslet
         Lookahead.new(self, true)
       end
       
-      attr_reader :return_name
       def as(name)
-        @return_name = name
-        self
+        Named.new(self, name)
       end
 
-    private
+    private    
       def error(position, str)
         raise ParseFailed, "#{str} at char #{position}."
       end
-      def produce_return_value(val)
-        return flatten(val) unless return_name
-        
-        { return_name => flatten(val) }
-      end
       def flatten(value)
-        if value.respond_to?(:inject)
-          value.inject('') { |r, e| 
-            if r.instance_of?(Hash)
-              if e.instance_of?(Hash)
-                r.merge(e)
-              else
-                r
-              end
+        # Passes through everything that isn't an array of things
+        return value unless value.instance_of? Array
+        
+        # Merges arrays:
+        value.inject('') { |r, e| 
+          case [r, e].map { |o| o.class }
+            when [Hash, Hash]
+              warn_about_duplicate_keys(r, e)
+              r.merge(e)
+            when [String, String]
+              r << e
+          else
+            if r.instance_of? Hash
+              r   # Ignore e, since its not a hash we can merge
             else
-              if e.instance_of?(String)
-                r << e
-              else
-                e
-              end 
+              e   # Whatever e is at this point, we keep it
             end
-          }
-        else
-          value
+          end
+        }
+      end
+      def warn_about_duplicate_keys(h1, h2)
+        d = h1.keys & h2.keys
+        unless d.empty?
+          p self
+          warn "Duplicate subtrees while merging, only the values"+
+               " of the latter will be kept. (keys: #{d.inspect})"
         end
+      end
+    end
+    
+    class Named < Base
+      attr_reader :parslet, :name
+      def initialize(parslet, name)
+        @parslet, @name = parslet, name
+      end
+      
+      def apply(io)
+        value = parslet.apply(io)
+        
+        produce_return_value value
+      end
+      
+      def inspect
+        "#{name}:#{parslet.inspect}"
+      end
+      
+    private
+      def produce_return_value(val)        
+        { name => flatten(val) }
       end
     end
     

@@ -241,6 +241,9 @@ describe Parslet do
         parslet.parse('ab').should == { :a => 'b' }
       end  
     end
+    context "str('a').maybe" do
+      it "should return something in merge, even though it is nil" 
+    end
   end
 
   describe "combinations thereof (regression)" do
