@@ -80,8 +80,7 @@ module Parslet
       def warn_about_duplicate_keys(h1, h2)
         d = h1.keys & h2.keys
         unless d.empty?
-          p self
-          warn "Duplicate subtrees while merging, only the values"+
+          warn "Duplicate subtrees while merging result of #{self.inspect}, only the values"+
                " of the latter will be kept. (keys: #{d.inspect})"
         end
       end

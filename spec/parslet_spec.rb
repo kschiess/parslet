@@ -236,6 +236,7 @@ describe Parslet do
       it "should issue a warning that a key is being overwritten in merge" do
         flexmock(parslet).
           should_receive(:warn).once
+        parslet.parse('ab').should == { :a => 'b' }
       end
       it "should return :a => 'b'" do
         parslet.parse('ab').should == { :a => 'b' }
