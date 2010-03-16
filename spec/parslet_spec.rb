@@ -254,12 +254,21 @@ describe Parslet do
   end
   describe "<- #flatten(val)" do
     def call(val)
-      str('a').flatten(val)
+      dummy = str('a')
+      flexmock(dummy, :warn => nil)
+      dummy.flatten(val)
     end
-    it "should turn ['a', 'b'] into 'ab'" do
-      call(['a', 'b']).should == 'ab'
-    end 
-    it "should more examples" 
+    
+    [
+      [ [{:a => :b, :b => :c}], {:a=>:b, :b=>:c} ], 
+      [ ['a', 'b'], 'ab' ], 
+      [ [{:a => :b}, 'a', {:c=>:d}], {:a => :b, :c=>:d} ], 
+      [ [{:a => :b}, {:a=>:d}], {:a => :d} ], 
+    ].each do |input, output|
+      it "should #{input.inspect} to #{output.inspect}" do
+        call(input).should == output
+      end
+    end
   end
 
   describe "combinations thereof (regression)" do
