@@ -11,7 +11,8 @@ describe RExpMatcher do
       matcher.failure_message = "expected #{exp.inspect} to match #{given.inspect}, but didn't. (block wasn't called or not correctly)"
       
       expectation = flexmock(:block).
-        should_receive(:call).with(bindings).once
+        should_receive(:call).with(*bindings).once.
+        mock
       
       given.match(exp) { |*vals| expectation.call(*vals) }
       

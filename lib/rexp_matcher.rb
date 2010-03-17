@@ -6,7 +6,7 @@ class RExpMatcher
   end
   
   def match(expression, &block)
-    
+    block.call(obj)
   end
   
   def inspect
