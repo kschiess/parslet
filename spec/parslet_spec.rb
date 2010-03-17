@@ -225,7 +225,7 @@ describe Parslet do
     context "(str('a') >> str('ignore') >> str('b')) (no .as(...))" do
       it "should return an empty subtree" do
         (str('a') >> str('ignore') >> str('b')).
-          parse('aignoreb').should == {}
+          parse('aignoreb').should == 'aignoreb'
       end 
     end
     context "str('a').as(:a) >> str('b').as(:a)" do
@@ -268,30 +268,31 @@ describe Parslet do
     
     [
       # In absence of named subtrees: ----------------------------------------
-      # Composite or Repetition
-      [ ['a', 'b'], 'ab' ], 
+      # Sequence or Repetition
+      [ [:sequence, 'a', 'b'], 'ab' ], 
+      [ [:repetition, 'a', 'a'], 'aa' ],
+            
       # Nested inside another node
-      [ [['a', 'b']], 'ab' ],
+      [ [:sequence, [:sequence, 'a', 'b']], 'ab' ],
       # Combined with lookahead (nil)
-      [ [nil, 'a'], 'a' ],
+      [ [:sequence, nil, 'a'], 'a' ],
                   
       # Including named subtrees ---------------------------------------------
       # Atom: A named subtree
       [ {:a=>'a'}, {:a=>'a'} ],
       # Composition of subtrees
-      [ [{:a=>'a'},{:b=>'b'}], {:a=>'a',:b=>'b'} ],
+      [ [:sequence, {:a=>'a'},{:b=>'b'}], {:a=>'a',:b=>'b'} ],
       # Repetition of subtrees is handled elsewhere. (See Repetition)
       
       # Some random samples --------------------------------------------------
-      [ [{:a => :b, :b => :c}], {:a=>:b, :b=>:c} ], 
-      [ ['a', 'b'], 'ab' ], 
-      [ [{:a => :b}, 'a', {:c=>:d}], {:a => :b, :c=>:d} ], 
-      [ [{:a => :b}, {:a=>:d}], {:a => :d} ], 
-      [ [{:a=>:b}, [["\n", nil]]], {:a=>:b} ], 
-      [ [nil, " "], ' ' ], 
-      [ [[nil, " "]], ' ' ], 
+      [ [:sequence, {:a => :b, :b => :c}], {:a=>:b, :b=>:c} ], 
+      [ [:sequence, {:a => :b}, 'a', {:c=>:d}], {:a => :b, :c=>:d} ], 
+      [ [:repetition, {:a => :b}, 'a', {:c=>:d}], [{:a => :b}, {:c=>:d}] ], 
+      [ [:sequence, {:a => :b}, {:a=>:d}], {:a => :d} ], 
+      [ [:sequence, {:a=>:b}, [:sequence, [:sequence, "\n", nil]]], {:a=>:b} ], 
+      [ [:sequence, nil, " "], ' ' ], 
     ].each do |input, output|
-      it "should #{input.inspect} to #{output.inspect}" do
+      it "should transform #{input.inspect} to #{output.inspect}" do
         call(input).should == output
       end
     end

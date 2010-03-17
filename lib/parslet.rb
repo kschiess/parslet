@@ -54,25 +54,37 @@ module Parslet
       def flatten(value)
         # Passes through everything that isn't an array of things
         return value unless value.instance_of? Array
+
+        # Extracts the s-expression tag
+        tag, *tail = value
         
         # Merges arrays:
-        value.
-          map { |e| flatten(e) }.     # first flatten each element
-          inject('') { |r, e|         # and then merge flat elements
-          case [r, e].map { |o| o.class }
-            when [Hash, Hash]
-              warn_about_duplicate_keys(r, e)
-              r.merge(e)
-            when [String, String]
-              r << e
-          else
-            if r.instance_of? Hash
-              r   # Ignore e, since its not a hash we can merge
+        result = tail.
+          map { |e| flatten(e) }            # first flatten each element
+          
+        if tag == :sequence
+          result.inject('') { |r, e|        # and then merge flat elements
+            case [r, e].map { |o| o.class }
+              when [Hash, Hash]
+                warn_about_duplicate_keys(r, e)
+                r.merge(e)
+              when [String, String]
+                r << e
             else
-              e   # Whatever e is at this point, we keep it
+              if r.instance_of? Hash
+                r   # Ignore e, since its not a hash we can merge
+              else
+                e   # Whatever e is at this point, we keep it
+              end
             end
+          }
+        else
+          if result.any? { |e| e.instance_of?(Hash) }
+            result.select { |e| e.instance_of?(Hash) }
+          else
+            result.inject('') { |s,e| s<<e }
           end
-        }
+        end
       end
     private    
       def error(position, str)
@@ -102,7 +114,6 @@ module Parslet
       def inspect
         "#{name}:#{parslet.inspect}"
       end
-      
     private
       def produce_return_value(val)  
         { name => flatten(val) }
@@ -194,7 +205,7 @@ module Parslet
       end
       
       def try(io)
-        parslets.map { |p| p.apply(io) }
+        [:sequence]+parslets.map { |p| p.apply(io) }
       end
       
       def inspect
@@ -211,7 +222,7 @@ module Parslet
       
       def try(io)
         occ = 0
-        result = []
+        result = [:repetition]
         loop do
           begin
             result << parslet.apply(io)
