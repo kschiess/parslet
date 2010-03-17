@@ -214,7 +214,8 @@ describe Parslet do
     context "(str('a').as(:a) >> str('ignore') >> str('b').as(:b))" do
       it "should correctly flatten (leaving out 'ignore')" do
         (str('a').as(:a) >> str('ignore') >> str('b').as(:b)).
-          parse('aignoreb').should == {
+          parse('aignoreb').should == 
+          {
             :a => 'a', 
             :b => 'b'
           }
@@ -222,9 +223,9 @@ describe Parslet do
     end
     
     context "(str('a') >> str('ignore') >> str('b')) (no .as(...))" do
-      it "should just flatten the result" do
+      it "should return an empty subtree" do
         (str('a') >> str('ignore') >> str('b')).
-          parse('aignoreb').should == 'aignoreb'
+          parse('aignoreb').should == {}
       end 
     end
     context "str('a').as(:a) >> str('b').as(:a)" do
@@ -251,6 +252,12 @@ describe Parslet do
           parse('b').should == {:b => 'b'}
       end
     end
+    context "str('a').as(:a).repeat" do
+      it "should return an array of subtrees" do
+        str('a').as(:a).repeat.
+          parse('aa').should == [{:a=>'a'}, {:a=>'a'}]
+      end 
+    end
   end
   describe "<- #flatten(val)" do
     def call(val)
@@ -260,6 +267,22 @@ describe Parslet do
     end
     
     [
+      # In absence of named subtrees: ----------------------------------------
+      # Composite or Repetition
+      [ ['a', 'b'], 'ab' ], 
+      # Nested inside another node
+      [ [['a', 'b']], 'ab' ],
+      # Combined with lookahead (nil)
+      [ [nil, 'a'], 'a' ],
+                  
+      # Including named subtrees ---------------------------------------------
+      # Atom: A named subtree
+      [ {:a=>'a'}, {:a=>'a'} ],
+      # Composition of subtrees
+      [ [{:a=>'a'},{:b=>'b'}], {:a=>'a',:b=>'b'} ],
+      # Repetition of subtrees is handled elsewhere. (See Repetition)
+      
+      # Some random samples --------------------------------------------------
       [ [{:a => :b, :b => :c}], {:a=>:b, :b=>:c} ], 
       [ ['a', 'b'], 'ab' ], 
       [ [{:a => :b}, 'a', {:c=>:d}], {:a => :b, :c=>:d} ], 
