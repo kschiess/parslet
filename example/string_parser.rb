@@ -48,5 +48,28 @@ class LiteralsParser
   end
 end
 
-pp LiteralsParser.new.parse(
+parsetree = LiteralsParser.new.parse(
   File.read('simple.lit'))
+
+pp parsetree
+  
+class Lit < Struct.new(:text)
+  def to_s
+    text.inspect
+  end
+end
+class StringLit < Lit
+end
+class IntLit < Lit
+  def to_s
+    text
+  end
+end
+
+ast = parsetree.
+  match(:literal => {:string => :_x})     { |x| puts "string #{x}" }.
+  replace(:literal => {:integer => :_x})  { |x| IntLit.new(x) }.
+  replace(:literal => {:string => :_x})   { |x| StringLit.new(x) }.
+  replace([Lit])                          { |x| tree(x) }
+  
+pp ast
