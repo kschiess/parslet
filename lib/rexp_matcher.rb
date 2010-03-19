@@ -13,7 +13,7 @@ class RExpMatcher
   end
   
   def element_match(tree, exp, bindings) 
-    p [:elm, tree, exp]
+    # p [:elm, tree, exp]
     case [tree, exp].map { |e| e.class }
       when [Hash,Hash]
         element_match_hash(tree, exp, bindings)

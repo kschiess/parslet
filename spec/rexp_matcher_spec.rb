@@ -55,6 +55,7 @@ describe RExpMatcher do
       it "should match wholly with {:a => {:b => :_x}}"  
       it "should match element wise with 'c'"
       it "should match element wise with :_x" do
+        pending "Implement recursion test for matcher"
         exp.should match_with_bind(:_x, 'c')
       end
       it "should not bind subtrees to variables in {:a => :_x}" do
