@@ -54,7 +54,7 @@ describe RExpMatcher do
       it "should verify constraints over several subtrees" do
         exp.should match_with_bind({
           :sub1 => {:a => :_x}, 
-          :sub1 => {:a => :_x} 
+          :sub2 => {:a => :_x} 
         }, 'a')
       end
       it "should return both bind variables :_x, :_y" do

@@ -1,5 +1,28 @@
 
 class RExpMatcher
+  class Dictionary
+    def initialize
+      @hash = {}
+      @order = []
+    end
+
+    def store(k,v)
+      unless @hash.has_key?(k)
+        @order << k
+      end
+      
+      @hash[k] = v
+    end
+
+    def get(k)
+      @hash[k]
+    end
+
+    def values
+      @hash.values_at(*@order)
+    end
+  end
+  
   attr_reader :obj
   def initialize(obj)
     @obj = obj
@@ -16,7 +39,7 @@ class RExpMatcher
   
   def match(expression, &block)
     recurse_into(obj) do |subtree|
-      bindings = {}
+      bindings = Dictionary.new
       if element_match(subtree, expression, bindings)
         block.call(*bindings.values)
       end
@@ -44,12 +67,12 @@ class RExpMatcher
   end
   
   def element_match_binding(tree, exp, bindings)
-    if bound_value = bindings[exp]
+    if bound_value = bindings.get(exp)
       return bound_value == tree
     end
     
     # New binding: 
-    bindings[exp] = tree
+    bindings.store exp, tree
     
     return true
   end
