@@ -32,5 +32,18 @@ describe RExpMatcher do
     it "should match simple strings" do
       r('aaaa').should match_with_bind(:_x, 'aaaa')
     end 
+    context "simple hash {:a => 'b'}" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r(:a => 'b')
+      end
+
+      it "should match {:a => :_x}, binding 'b' to the first argument" do
+        exp.should match_with_bind({:a => :_x}, 'b')
+      end 
+      it "should match {:a => 'b'} with no binds" do
+        exp.should match_with_bind({:a => 'b'})
+      end 
+    end
   end
 end
