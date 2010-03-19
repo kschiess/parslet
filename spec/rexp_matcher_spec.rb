@@ -33,9 +33,59 @@ describe RExpMatcher do
       r('aaaa').should match_with_bind(:_x, 'aaaa')
     end 
 
-    it "should verify binding match" 
     it "should handle matchin in arrays" 
     
+    context "{:a => 'a', :b => 'b'}" do
+      it "should match both elements :_x, :_y"
+      it "should not match a constrained match (:_x != :_y)"  
+    end
+    context "{:a => 'a', :b => 'a'}" do
+      it "should match constrained pattern" 
+    end
+    context "{:sub1 => {:a => 'a'}, :sub2 => {:a => 'a'}}" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r({
+          :sub1 => {:a => 'a'}, 
+          :sub2 => {:a => 'a'} 
+        })
+      end
+
+      it "should verify constraints over several subtrees" do
+        exp.should match_with_bind({
+          :sub1 => {:a => :_x}, 
+          :sub1 => {:a => :_x} 
+        }, 'a')
+      end
+      it "should return both bind variables :_x, :_y" do
+        exp.should match_with_bind({
+          :sub1 => {:a => :_x}, 
+          :sub2 => {:a => :_y} 
+        }, 'a', 'a')
+      end  
+    end
+    context "{:sub1 => {:a => 'a'}, :sub2 => {:a => 'b'}}" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r({
+          :sub1 => {:a => 'a'}, 
+          :sub2 => {:a => 'b'} 
+        })
+      end
+
+      it "should verify constraints over several subtrees" do
+        exp.should_not match_with_bind({
+          :sub1 => {:a => :_x}, 
+          :sub1 => {:a => :_x} 
+        }, 'a')
+      end
+      it "should return both bind variables :_x, :_y" do
+        exp.should match_with_bind({
+          :sub1 => {:a => :_x}, 
+          :sub2 => {:a => :_y} 
+        }, 'a', 'b')
+      end  
+    end
     context "simple hash {:a => 'b'}" do
       attr_reader :exp
       before(:each) do
