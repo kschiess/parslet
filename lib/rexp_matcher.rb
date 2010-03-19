@@ -21,10 +21,26 @@ class RExpMatcher
       # If elements match exactly, then that is good enough in all cases
       return true if tree == exp
       
+      # If exp is a bind variable: Check if the binding matches
+      if bind_variable?(exp)
+        return element_match_binding(tree, exp, bindings)
+      end
+      
       # Otherwise: No match (we don't know anything about the element
       # combination)
       return false
     end
+  end
+  
+  def element_match_binding(tree, exp, bindings)
+    if bound_value = bindings[exp]
+      return bound_value == tree
+    end
+    
+    # New binding: 
+    bindings[exp] = tree
+    
+    return true
   end
 
   def element_match_hash(tree, exp, bindings)
@@ -51,7 +67,7 @@ class RExpMatcher
   # This is what we use as bind variable in pattern matches. 
   #
   def bind_variable?(obj)
-    raise NotImplementedError
+    obj.instance_of?(Symbol) && obj.to_s.start_with?('_')
   end
   
   def inspect
