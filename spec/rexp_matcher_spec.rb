@@ -32,6 +32,10 @@ describe RExpMatcher do
     it "should match simple strings" do
       r('aaaa').should match_with_bind(:_x, 'aaaa')
     end 
+
+    it "should verify binding match" 
+    it "should handle matchin in arrays" 
+    
     context "simple hash {:a => 'b'}" do
       attr_reader :exp
       before(:each) do
@@ -51,11 +55,16 @@ describe RExpMatcher do
         @exp = r(:a => {:b => 'c'})
       end
       
-      it "should match partially with {:b => :_x}"
-      it "should match wholly with {:a => {:b => :_x}}"  
-      it "should match element wise with 'c'"
+      it "should match partially with {:b => :_x}" do
+        exp.should match_with_bind({:b => :_x}, 'c')
+      end
+      it "should match wholly with {:a => {:b => :_x}}" do
+        exp.should match_with_bind({:a => {:b => :_x}}, 'c')
+      end
+      it "should match element wise with 'c'" do
+        exp.should match_with_bind('c')
+      end
       it "should match element wise with :_x" do
-        pending "Implement recursion test for matcher"
         exp.should match_with_bind(:_x, 'c')
       end
       it "should not bind subtrees to variables in {:a => :_x}" do

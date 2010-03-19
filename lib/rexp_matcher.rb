@@ -5,10 +5,21 @@ class RExpMatcher
     @obj = obj
   end
   
+  def recurse_into(expr, &block)
+    # p [:attempt_match, expr]
+    block.call(expr)
+    
+    if [Array, Hash].include? expr.class
+      expr.each { |y| recurse_into(y.last, &block) }
+    end
+  end
+  
   def match(expression, &block)
-    bindings = {}
-    if element_match(obj, expression, bindings)
-      block.call(*bindings.values)
+    recurse_into(obj) do |subtree|
+      bindings = {}
+      if element_match(subtree, expression, bindings)
+        block.call(*bindings.values)
+      end
     end
   end
   
