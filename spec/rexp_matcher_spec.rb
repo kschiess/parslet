@@ -45,5 +45,21 @@ describe RExpMatcher do
         exp.should match_with_bind({:a => 'b'})
       end 
     end
+    context "a more complex hash {:a => {:b => 'c'}}" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r(:a => {:b => 'c'})
+      end
+      
+      it "should match partially with {:b => :_x}"
+      it "should match wholly with {:a => {:b => :_x}}"  
+      it "should match element wise with 'c'"
+      it "should match element wise with :_x" do
+        exp.should match_with_bind(:_x, 'c')
+      end
+      it "should not bind subtrees to variables in {:a => :_x}" do
+        exp.match(:a => :_x) { |args| raise args.inspect }
+      end
+    end
   end
 end

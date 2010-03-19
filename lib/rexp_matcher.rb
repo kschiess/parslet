@@ -22,10 +22,10 @@ class RExpMatcher
       return true if tree == exp
       
       # If exp is a bind variable: Check if the binding matches
-      if bind_variable?(exp)
+      if bind_variable?(exp) && ! tree.instance_of?(Hash)
         return element_match_binding(tree, exp, bindings)
       end
-      
+                  
       # Otherwise: No match (we don't know anything about the element
       # combination)
       return false
