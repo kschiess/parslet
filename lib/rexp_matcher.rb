@@ -1,28 +1,5 @@
 
 class RExpMatcher
-  class Dictionary
-    def initialize
-      @hash = {}
-      @order = []
-    end
-
-    def store(k,v)
-      unless @hash.has_key?(k)
-        @order << k
-      end
-      
-      @hash[k] = v
-    end
-
-    def get(k)
-      @hash[k]
-    end
-
-    def values
-      @hash.values_at(*@order)
-    end
-  end
-  
   attr_reader :obj
   def initialize(obj)
     @obj = obj
@@ -39,9 +16,9 @@ class RExpMatcher
   
   def match(expression, &block)
     recurse_into(obj) do |subtree|
-      bindings = Dictionary.new
+      bindings = {}
       if element_match(subtree, expression, bindings)
-        block.call(*bindings.values)
+        block.call(bindings)
       end
     end
   end
@@ -67,12 +44,14 @@ class RExpMatcher
   end
   
   def element_match_binding(tree, exp, bindings)
-    if bound_value = bindings.get(exp)
+    var_name = variable_name(exp)
+    # TODO test for the hidden :_ feature.
+    if var_name && bound_value = bindings[var_name]
       return bound_value == tree
     end
     
     # New binding: 
-    bindings.store exp, tree
+    bindings.store var_name, tree
     
     return true
   end
@@ -102,6 +81,16 @@ class RExpMatcher
   #
   def bind_variable?(obj)
     obj.instance_of?(Symbol) && obj.to_s.start_with?('_')
+  end
+  
+  # Called on a bind variable, returns the variable name without the _
+  #
+  def variable_name(bind_var)
+    str = bind_var.to_s
+    
+    if str.size>1
+      str[1..-1].to_sym
+    end
   end
   
   def inspect

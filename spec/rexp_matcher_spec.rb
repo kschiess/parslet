@@ -30,17 +30,37 @@ describe RExpMatcher do
 
   describe "<- #match" do
     it "should match simple strings" do
-      r('aaaa').should match_with_bind(:_x, 'aaaa')
+      r('aaaa').should match_with_bind(:_x, :x => 'aaaa')
     end 
 
     it "should handle matchin in arrays" 
     
     context "{:a => 'a', :b => 'b'}" do
-      it "should match both elements :_x, :_y"
-      it "should not match a constrained match (:_x != :_y)"  
+      attr_reader :exp
+      before(:each) do
+        @exp = r(:a => 'a', :b => 'b')
+      end
+
+      it "should match both elements :_x, :_y" do
+        exp.should match_with_bind(
+          {:a => :_x, :b => :_y}, 
+          :x => 'a', :y => 'b')
+      end
+      it "should not match a constrained match (:_x != :_y)"  do
+        exp.match({:a => :_x, :b => :_x}) { raise }
+      end
     end
     context "{:a => 'a', :b => 'a'}" do
-      it "should match constrained pattern" 
+      attr_reader :exp
+      before(:each) do
+        @exp = r(:a => 'a', :b => 'a')
+      end
+
+      it "should match constrained pattern" do
+        exp.should match_with_bind(
+          {:a => :_x, :b => :_x}, 
+          :x => 'a')
+      end
     end
     context "{:sub1 => {:a => 'a'}, :sub2 => {:a => 'a'}}" do
       attr_reader :exp
