@@ -75,13 +75,13 @@ describe RExpMatcher do
         exp.should match_with_bind({
           :sub1 => {:a => :_x}, 
           :sub2 => {:a => :_x} 
-        }, 'a')
+        }, :x => 'a')
       end
       it "should return both bind variables :_x, :_y" do
         exp.should match_with_bind({
           :sub1 => {:a => :_x}, 
           :sub2 => {:a => :_y} 
-        }, 'a', 'a')
+        }, :x => 'a', :y => 'a')
       end  
     end
     context "{:sub1 => {:a => 'a'}, :sub2 => {:a => 'b'}}" do
@@ -103,7 +103,7 @@ describe RExpMatcher do
         exp.should match_with_bind({
           :sub1 => {:a => :_x}, 
           :sub2 => {:a => :_y} 
-        }, 'a', 'b')
+        }, :x => 'a', :y => 'b')
       end  
     end
     context "simple hash {:a => 'b'}" do
@@ -113,10 +113,10 @@ describe RExpMatcher do
       end
 
       it "should match {:a => :_x}, binding 'b' to the first argument" do
-        exp.should match_with_bind({:a => :_x}, 'b')
+        exp.should match_with_bind({:a => :_x}, :x => 'b')
       end 
       it "should match {:a => 'b'} with no binds" do
-        exp.should match_with_bind({:a => 'b'})
+        exp.should match_with_bind({:a => 'b'}, {})
       end 
     end
     context "a more complex hash {:a => {:b => 'c'}}" do
@@ -126,16 +126,16 @@ describe RExpMatcher do
       end
       
       it "should match partially with {:b => :_x}" do
-        exp.should match_with_bind({:b => :_x}, 'c')
+        exp.should match_with_bind({:b => :_x}, :x => 'c')
       end
       it "should match wholly with {:a => {:b => :_x}}" do
-        exp.should match_with_bind({:a => {:b => :_x}}, 'c')
+        exp.should match_with_bind({:a => {:b => :_x}}, :x => 'c')
       end
       it "should match element wise with 'c'" do
-        exp.should match_with_bind('c')
+        exp.should match_with_bind('c', {})
       end
       it "should match element wise with :_x" do
-        exp.should match_with_bind(:_x, 'c')
+        exp.should match_with_bind(:_x, :x => 'c')
       end
       it "should not bind subtrees to variables in {:a => :_x}" do
         exp.match(:a => :_x) { |args| raise args.inspect }
