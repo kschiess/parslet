@@ -9,9 +9,11 @@ class RExpMatcher
     # p [:attempt_match, expr]
     block.call(expr)
     
-    if [Array, Hash].include? expr.class
-      expr.each { |y| 
-        recurse_into([*y].last, &block) }
+    case expr
+      when Array
+        expr.each { |y| recurse_into(y, &block) }
+      when Hash
+        expr.each { |k,v| recurse_into(v, &block) }
     end
   end
   
@@ -22,6 +24,8 @@ class RExpMatcher
         block.call(bindings)
       end
     end
+    
+    return self # allow chaining
   end
   
   def element_match(tree, exp, bindings) 

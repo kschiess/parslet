@@ -51,8 +51,6 @@ end
 
 parsetree = LiteralsParser.new.parse(
   File.read('simple.lit'))
-
-pp parsetree
   
 class Lit < Struct.new(:text)
   def to_s
@@ -68,7 +66,8 @@ class IntLit < Lit
 end
 
 ast = RExpMatcher.new(parsetree).
-  match(:literal => {:string => :_x})     { |d| puts "string #{d[:x]}" }
+  match(:literal => {:string => :_x})     { |d| puts "string #{d[:x]}" }.
+  match(:literal => {:integer => :_x})    { |d| puts "int #{d[:x]}" }
   # replace(:literal => {:integer => :_x})  { |x| IntLit.new(x) }.
   # replace(:literal => {:string => :_x})   { |x| StringLit.new(x) }.
   # replace([Lit])                          { |x| tree(x) }

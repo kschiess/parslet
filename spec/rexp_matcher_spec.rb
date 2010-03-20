@@ -32,7 +32,68 @@ describe RExpMatcher do
     it "should match simple strings" do
       r('aaaa').should match_with_bind(:_x, :x => 'aaaa')
     end 
+    it "should allow chaining" do
+      r('aaaa').match(:_x) { |d| }.match(:_y) { |d| }
+    end 
 
+    context "simple hash {:a => 'b'}" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r(:a => 'b')
+      end
+
+      it "should match {:a => :_x}, binding 'b' to the first argument" do
+        exp.should match_with_bind({:a => :_x}, :x => 'b')
+      end 
+      it "should match {:a => 'b'} with no binds" do
+        exp.should match_with_bind({:a => 'b'}, {})
+      end 
+    end
+    context "a more complex hash {:a => {:b => 'c'}}" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r(:a => {:b => 'c'})
+      end
+      
+      it "should match partially with {:b => :_x}" do
+        exp.should match_with_bind({:b => :_x}, :x => 'c')
+      end
+      it "should match wholly with {:a => {:b => :_x}}" do
+        exp.should match_with_bind({:a => {:b => :_x}}, :x => 'c')
+      end
+      it "should match element wise with 'c'" do
+        exp.should match_with_bind('c', {})
+      end
+      it "should match element wise with :_x" do
+        exp.should match_with_bind(:_x, :x => 'c')
+      end
+      it "should not bind subtrees to variables in {:a => :_x}" do
+        exp.match(:a => :_x) { |args| raise args.inspect }
+      end
+    end
+    context "an array of 'a', 'b', 'c'" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r(['a', 'b', 'c'])
+      end
+
+      it "should match each element in turn" do
+        verify = flexmock().should_expect do |expect|
+          expect.should_be_strict
+          expect.call('a')
+          expect.call('b')
+          expect.call('c')
+        end.mock
+        
+        exp.match(:_x) { |d| 
+          verify.call(d[:x]) }
+      end 
+      it "should match all elements at once" do
+        exp.should match_with_bind(
+          [:_x, :_y, :_z], 
+          :x => 'a', :y => 'b', :z => 'c')
+      end 
+    end
     context "{:a => 'a', :b => 'b'}" do
       attr_reader :exp
       before(:each) do
@@ -104,62 +165,17 @@ describe RExpMatcher do
         }, :x => 'a', :y => 'b')
       end  
     end
-    context "simple hash {:a => 'b'}" do
-      attr_reader :exp
+    context "[{:a => 'x'}, {:a => 'y'}]" do
+      attr_reader :exp  
       before(:each) do
-        @exp = r(:a => 'b')
-      end
-
-      it "should match {:a => :_x}, binding 'b' to the first argument" do
-        exp.should match_with_bind({:a => :_x}, :x => 'b')
-      end 
-      it "should match {:a => 'b'} with no binds" do
-        exp.should match_with_bind({:a => 'b'}, {})
-      end 
-    end
-    context "a more complex hash {:a => {:b => 'c'}}" do
-      attr_reader :exp
-      before(:each) do
-        @exp = r(:a => {:b => 'c'})
+        @exp = r([{:a => 'x'}, {:a => 'y'}])
       end
       
-      it "should match partially with {:b => :_x}" do
-        exp.should match_with_bind({:b => :_x}, :x => 'c')
-      end
-      it "should match wholly with {:a => {:b => :_x}}" do
-        exp.should match_with_bind({:a => {:b => :_x}}, :x => 'c')
-      end
-      it "should match element wise with 'c'" do
-        exp.should match_with_bind('c', {})
-      end
-      it "should match element wise with :_x" do
-        exp.should match_with_bind(:_x, :x => 'c')
-      end
-      it "should not bind subtrees to variables in {:a => :_x}" do
-        exp.match(:a => :_x) { |args| raise args.inspect }
-      end
-    end
-    context "an array of 'a', 'b', 'c'" do
-      attr_reader :exp
-      before(:each) do
-        @exp = r(['a', 'b', 'c'])
-      end
-
-      it "should match each element in turn" do
-        verify = flexmock().should_expect do |expect|
-          expect.should_be_strict
-          expect.call('a')
-          expect.call('b')
-          expect.call('c')
-        end.mock
+      it "should match :a => :_x repeatedly" do
+        letters = []
+        exp.match(:a => :_x) { |d| letters << d[:x] }
         
-        exp.match(:_x) { |d| 
-          verify.call(d[:x]) }
-      end 
-      it "should match all elements at once" do
-        exp.should match_with_bind(
-          [:_x, :_y, :_z], 
-          :x => 'a', :y => 'b', :z => 'c')
+        letters.should == %w(x y)
       end 
     end
   end
