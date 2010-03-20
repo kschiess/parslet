@@ -71,5 +71,3 @@ ast = RExpMatcher.new(parsetree).
   # replace(:literal => {:integer => :_x})  { |x| IntLit.new(x) }.
   # replace(:literal => {:string => :_x})   { |x| StringLit.new(x) }.
   # replace([Lit])                          { |x| tree(x) }
-  
-pp ast
