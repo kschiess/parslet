@@ -1,6 +1,13 @@
-A small experiment on PEG grammars. 
+# INTRODUCTION
 
-Other projects that work on the same topic are: 
+A small experiment on PEG grammars. PEG means Parsing Expression Grammars [1].
+These are a different kind of grammars that recognize almost the same
+languages as your conventional LR parser, except that they are easier to work
+with, since they haven't been conceived for generation, but for recognition of
+languages. You can read the founding paper of the field by Bryan Ford here
+[2].
+
+Other Ruby projects that work on the same topic are: 
 http://wiki.github.com/luikore/rsec/
 http://github.com/nathansobo/treetop
 
@@ -8,6 +15,36 @@ My goal here is to see how a parser/parser generator should be constructed to
 allow clean AST construction and good error handling. It seems to me that most
 often, parser generators only handle the success-case and forget about
 debugging and error generation.
+
+[1] http://en.wikipedia.org/wiki/Parsing_expression_grammar
+[2] http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf
+
+# SYNOPSIS
+
+  require 'parslet'
+  include Parslet
+
+  # Constructs a parser using a Parser Expression Grammar like DSL: 
+  parser =  str('"') >> 
+            (
+              (str('\\') >> any) /
+              (str('"').absnt? >> any)
+            ).repeat.as(:string) >> 
+            str('"')
+    
+  # Parse the string and capture parts of the interpretation (:string above)        
+  tree = parser.parse(%Q{
+    "This is a \\"String\\" in which you can escape stuff"
+  }.strip)
+
+  tree # => {:string=>"This is a \\\"String\\\" in which you can escape stuff"}
+
+  # Here's how you can grab results from that tree: 
+  require 'rexp_matcher'
+  RExpMatcher.new(tree).
+    match({:string => :_x}) { |d| puts "String contents: #{d[:x]}" }  
+  
+# STATUS 
 
 This is in a usable alpha state, although I've only just begun working on the
 above goals. Maybe I will incorporate this into rooc

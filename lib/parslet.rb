@@ -57,10 +57,10 @@ module Parslet
         # Passes through everything that isn't an array of things
         return value unless value.instance_of? Array
 
-        # Extracts the s-expression tag
+        # Extracts the s-expression tag
         tag, *tail = value
         
-        # Merges arrays:
+        # Merges arrays:
         result = tail.
           map { |e| flatten(e) }            # first flatten each element
           
