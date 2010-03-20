@@ -33,8 +33,6 @@ describe RExpMatcher do
       r('aaaa').should match_with_bind(:_x, :x => 'aaaa')
     end 
 
-    it "should handle matchin in arrays" 
-    
     context "{:a => 'a', :b => 'b'}" do
       attr_reader :exp
       before(:each) do
@@ -140,6 +138,29 @@ describe RExpMatcher do
       it "should not bind subtrees to variables in {:a => :_x}" do
         exp.match(:a => :_x) { |args| raise args.inspect }
       end
+    end
+    context "an array of 'a', 'b', 'c'" do
+      attr_reader :exp
+      before(:each) do
+        @exp = r(['a', 'b', 'c'])
+      end
+
+      it "should match each element in turn" do
+        verify = flexmock().should_expect do |expect|
+          expect.should_be_strict
+          expect.call('a')
+          expect.call('b')
+          expect.call('c')
+        end.mock
+        
+        exp.match(:_x) { |d| 
+          verify.call(d[:x]) }
+      end 
+      it "should match all elements at once" do
+        exp.should match_with_bind(
+          [:_x, :_y, :_z], 
+          :x => 'a', :y => 'b', :z => 'c')
+      end 
     end
   end
 end

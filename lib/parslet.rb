@@ -1,3 +1,5 @@
+require 'stringio'
+
 module Parslet
   module Matchers
     class ParseFailed < Exception; end

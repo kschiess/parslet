@@ -10,7 +10,8 @@ class RExpMatcher
     block.call(expr)
     
     if [Array, Hash].include? expr.class
-      expr.each { |y| recurse_into(y.last, &block) }
+      expr.each { |y| 
+        recurse_into([*y].last, &block) }
     end
   end
   
@@ -28,12 +29,14 @@ class RExpMatcher
     case [tree, exp].map { |e| e.class }
       when [Hash,Hash]
         element_match_hash(tree, exp, bindings)
+      when [Array,Array]
+        element_match_ary(tree, exp, bindings)
     else
       # If elements match exactly, then that is good enough in all cases
       return true if tree == exp
       
       # If exp is a bind variable: Check if the binding matches
-      if bind_variable?(exp) && ! tree.instance_of?(Hash)
+      if bind_variable?(exp) && ! [Hash, Array].include?(tree.class)
         return element_match_binding(tree, exp, bindings)
       end
                   
@@ -54,6 +57,13 @@ class RExpMatcher
     bindings.store var_name, tree
     
     return true
+  end
+  
+  def element_match_ary(sequence, exp, bindings)
+    return false if sequence.size != exp.size
+    
+    return sequence.zip(exp).all? { |elt, subexp|
+      element_match(elt, subexp, bindings) }
   end
 
   def element_match_hash(tree, exp, bindings)
