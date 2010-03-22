@@ -1,4 +1,4 @@
-# INTRODUCTION
+INTRODUCTION
 
 A small experiment on PEG grammars. PEG means Parsing Expression Grammars [1].
 These are a different kind of grammars that recognize almost the same
@@ -19,8 +19,9 @@ debugging and error generation.
 [1] http://en.wikipedia.org/wiki/Parsing_expression_grammar
 [2] http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf
 
-# SYNOPSIS
+SYNOPSIS
 
+  require 'pp'
   require 'parslet'
   include Parslet
 
@@ -42,9 +43,20 @@ debugging and error generation.
   # Here's how you can grab results from that tree: 
   require 'rexp_matcher'
   RExpMatcher.new(tree).
-    match({:string => :_x}) { |d| puts "String contents: #{d[:x]}" }  
+    match({:string => :_x}) { |d| puts "String contents: #{d[:x]}" }
   
-# STATUS 
+  # Here's how to transform that tree into something else
+  require 'tree_transform'
+  class StringLiteral < Struct.new(:text); end
+  transform = TreeTransform.new
+  transform.rule(:string => :_x) { |d| StringLiteral.new(d[:x]) }
+
+  transform.apply(tree) 
+  # => #<struct StringLiteral text="This is a \\\"String\\\" ... escape stuff">
+
+  # Voilà  
+
+STATUS 
 
 This is in a usable alpha state, although I've only just begun working on the
 above goals. Maybe I will incorporate this into rooc
