@@ -1,7 +1,26 @@
 
 require 'rexp_matcher'
 
-# Transforms an expression tree into something else. 
+# Transforms an expression tree into something else. The transformation
+# performs a depth-first, post-order traversal of the expression tree. During
+# that traversal, each time a rule matches a node, the node is replaced by the
+# result of the block associated to the rule. Otherwise the node is accepted
+# as is into the result tree.
+#
+# This is almost what you would generally do with a tree visitor, except that
+# you can match several levels of the tree at once. 
+#
+# As a consequence of this, the resulting tree will contain pieces of the
+# original tree and new pieces. Most likely, you will want to transform the
+# original tree wholly, so this isn't a problem.
+#
+# You will not be able to create a loop, given that 
+#
+# a) The matcher only matches simple nodes (leafs) to variables, not sequences 
+#    or composites.
+#
+# b) Each node will be replaced only once and then left alone. This means that
+#    the results of a replacement will not be acted upon. 
 #
 class TreeTransform
   attr_reader :rules
