@@ -21,6 +21,11 @@ describe TreeTransform do
     end 
   end
   describe "given rules on {:a => :_x} and {:b => :_x}" do
+    before(:each) do
+      transform.rule(:a => :_x) { |d| A.new(d[:x]) }
+      transform.rule(:b => :_x) { |d| B.new(d[:x]) }
+    end
+    
     it "should transform {:a=>{:b=>'c'}} into A(B('c'))" do
       transform.apply({:a=>{:b=>'c'}}).should == A.new(B.new('c'))
     end
