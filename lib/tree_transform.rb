@@ -36,6 +36,8 @@ class TreeTransform
     case obj
       when Hash
         recurse_hash(obj)
+      when Array
+        recurse_array(obj)
     else
       transform_elt(obj)
     end
@@ -60,5 +62,9 @@ class TreeTransform
         new_hsh[k] = apply(v)
         new_hsh
       end)
+  end
+  def recurse_array(ary)
+    transform_elt(
+      ary.map { |elt| apply(elt) })
   end
 end
