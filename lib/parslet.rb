@@ -12,7 +12,7 @@ module Parslet
         
         result = apply(io)
         
-        error(io.pos, "Don't know what to do with #{io.read.inspect}") unless io.eof?
+        error(io, "Don't know what to do with #{io.string[io.pos,100]}") unless io.eof?
         return flatten(result)
       end
       
@@ -89,8 +89,11 @@ module Parslet
         end
       end
     private    
-      def error(position, str)
-        raise ParseFailed, "#{str} at char #{position}."
+      def error(io, str)
+        pre = io.string[0..io.pos]
+        lines = Array(pre.lines)
+        pos   = lines.last.length
+        raise ParseFailed, "#{str} at line #{lines.count} char #{pos}."
       end
       def warn_about_duplicate_keys(h1, h2)
         d = h1.keys & h2.keys
@@ -250,10 +253,10 @@ module Parslet
       end
 
       def try(io)
-        r = Regexp.new(match)
+        r = Regexp.new(match, Regexp::MULTILINE)
         s = io.read(1)
-        raise(ParseFailed, "Premature end of input.") unless s
-        raise ParseFailed unless s.match(r)
+        error(io, "Premature end of input") unless s
+        error(io, "Failed to match #{match}") unless s.match(r)
         return s
       end
 
