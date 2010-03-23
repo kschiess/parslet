@@ -140,26 +140,28 @@ module Parslet
         begin
           bound_parslet.apply(io)
         rescue ParseFailed 
-          return fail()
+          return fail(io)
         ensure 
           io.pos = pos
         end
-        return success()
+        return success(io)
       end
       
-      def fail
+      def fail(io)
         if positive
-          raise(ParseFailed, "Was looking for #{bound_parslet.inspect}.")
+          error(io, "lookahead: #{bound_parslet.inspect} didn't match, but should have")
         else
           # TODO: Squash this down to nothing? Return value handling here...
           return nil
         end
       end
-      def success
+      def success(io)
         if positive
           return nil  # see above, TODO
         else
-          raise(ParseFailed, "Was looking for the absence of #{bound_parslet.inspect}.")
+          error(
+            io, 
+            "negative lookahead: #{bound_parslet.inspect} matched, but shouldn't have")
         end
       end
 
@@ -231,13 +233,19 @@ module Parslet
         loop do
           begin
             result << parslet.apply(io)
+            occ += 1
+
+            # If we're not greedy (max is defined), check if that has been 
+            # reached. 
+            return result if max && occ==max
           rescue ParseFailed => ex
+            # Greedy matcher has produced a failure. Check if occ (which will
+            # contain the number of sucesses) is in {min, max}.
             # p [:repetition, occ, min, max]
             raise ex if occ < min
             raise ex if max && occ > max
             return result
           end
-          occ += 1
         end
       end
       

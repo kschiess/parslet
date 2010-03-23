@@ -167,6 +167,26 @@ describe Parslet do
       end
     end
   end
+  describe "non greedy matcher combined with greedy matcher (possible loop)" do
+    attr_reader :parslet
+    before(:each) do
+      # repeat will always succeed, since it has a minimum of 0. It will not
+      # modify input position in that case. absnt? will, depending on
+      # implementation, match as much as possible and call its inner element
+      # again. This leads to an infinite loop. This example tests for the 
+      # absence of that loop. 
+      @parslet = str('foo').repeat.maybe
+    end
+    
+    it "should not loop infinitly" do
+      begin 
+        timeout 1 do
+          parslet.parse('bar')
+        end
+      rescue Parslet::Matchers::ParseFailed
+      end
+    end 
+  end
   describe "any" do
     attr_reader :parslet
     before(:each) do
