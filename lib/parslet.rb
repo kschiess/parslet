@@ -192,7 +192,7 @@ module Parslet
           rescue ParseFailed => ex
           end
         }
-        raise(ParseFailed, "Expected one of #{alternatives.inspect}.")
+        error(io, "Expected one of #{alternatives.inspect}.")
       end
 
       def inspect
