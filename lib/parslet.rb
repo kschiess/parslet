@@ -21,12 +21,13 @@ module Parslet
         
         old_pos = io.pos
         
+        # p [:try, self, io.string[io.pos, 20]]
         begin
           r = try(io)
           # p [:return_from, self, r]
           return r
         rescue ParseFailed => ex
-          # p [:failing, self]
+          # p [:failing, self, io.string[io.pos, 20]]
           io.pos = old_pos; raise ex
         end
       end
@@ -269,7 +270,7 @@ module Parslet
       end
 
       def inspect
-        match.to_s
+        match.inspect
       end
     end
     
