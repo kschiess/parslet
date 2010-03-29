@@ -341,7 +341,7 @@ module Parslet
       end
 
       def to_s_inner(prec)
-        name
+        name.upcase
       end
     end
   end

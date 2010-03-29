@@ -236,7 +236,7 @@ describe Parslet do
       parslet.parse('bar')
     end 
     it "should inspect as NAME" do
-      parslet.inspect.should == "foo"
+      parslet.inspect.should == "FOO"
     end 
   end
 
@@ -369,7 +369,7 @@ describe Parslet do
     inspection=[
       [str('a'),                              "'a'"                 ], 
       [(str('a') / str('b')).maybe,           "('a' / 'b')?"        ], 
-      [(named('foo') {} / named('bar') {}),   "foo / bar"           ], 
+      [(named('foo') {} / named('bar') {}),   "FOO / BAR"           ], 
       [(str('a') >> str('b')).maybe,          "('a' 'b')?"          ], 
       [str('a').maybe.maybe,                  "'a'??"               ], 
       [(str('a')>>str('b')).maybe.maybe,      "('a' 'b')??"         ], 
