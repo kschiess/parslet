@@ -89,6 +89,8 @@ module Parslet
           end
         end
       end
+
+      def complex?; false; end
     private    
       def error(io, str)
         pre = io.string[0..io.pos]
@@ -194,8 +196,9 @@ module Parslet
         error(io, "Expected one of #{alternatives.inspect}.")
       end
 
+      def complex?; true; end
       def inspect
-        '(' + alternatives.map { |a| a.inspect }.join(' / ') + ')'
+        alternatives.map { |a| a.inspect }.join(' / ')
       end
     end
     
@@ -252,7 +255,11 @@ module Parslet
         minmax = "{#{min}, #{max}}"
         minmax = '?' if min == 0 && max == 1
 
-        parslet.inspect + minmax
+        if parslet.complex?
+          "("+ parslet.inspect + ")" + minmax
+        else
+          parslet.inspect + minmax
+        end
       end
     end
 
