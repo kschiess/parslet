@@ -87,8 +87,8 @@ describe Parslet do
       parslet.apply(io)
       io.pos.should == 0
     end
-    it "should inspect as 'foo'{0, 1}" do
-      parslet.inspect.should == "'foo'{0, 1}"
+    it "should inspect as 'foo'?" do
+      parslet.inspect.should == "'foo'?"
     end 
   end
   describe "str('foo') >> str('bar')" do
@@ -107,6 +107,9 @@ describe Parslet do
     end
     it "should return self for chaining" do
       (parslet >> str('baz')).should == parslet
+    end 
+    it "should inspect as ('foo' 'bar')" do
+      parslet.inspect.should == "('foo' 'bar')"
     end 
   end
   describe "str('foo') / str('bar')" do
@@ -129,6 +132,9 @@ describe Parslet do
     it "should return self for chaining" do
       (parslet / str('baz')).should == parslet
     end 
+    it "should inspect as ('foo' / 'bar')" do
+      parslet.inspect.should == "('foo' / 'bar')"
+    end 
   end
   describe "str('foo').prsnt? (positive lookahead)" do
     attr_reader :parslet
@@ -136,6 +142,9 @@ describe Parslet do
       @parslet = str('foo').prsnt?
     end
     
+    it "should inspect as &'foo'" do
+      parslet.inspect.should == "&'foo'"
+    end 
     context "when fed 'foo'" do
       it "should parse" do
         parslet.apply(gio('foo'))
@@ -163,6 +172,9 @@ describe Parslet do
       @parslet = str('foo').absnt?
     end
     
+    it "should inspect as !'foo'" do
+      parslet.inspect.should == "!'foo'"
+    end 
     context "when fed 'bar'" do
       it "should parse" do
         parslet.apply(gio 'bar')
@@ -222,6 +234,9 @@ describe Parslet do
     
     it "should parse 'bar'" do
       parslet.parse('bar')
+    end 
+    it "should inspect as NAME" do
+      parslet.inspect.should == "foo"
     end 
   end
 
@@ -349,6 +364,17 @@ describe Parslet do
           parslet.parse(input)
         end
       end 
+    end
+
+    inspection=[
+      [str('a'), "'a'"], 
+      [(str('a') / str('b')).maybe, "('a' / 'b')?"]
+    ].each do |(parslet, inspect_output)|
+      context "regression for #{parslet.inspect}" do
+        it "should inspect correctly as #{inspect_output}" do
+          parslet.inspect.should == inspect_output
+        end 
+      end
     end
   end
 end

@@ -167,11 +167,9 @@ module Parslet
       end
 
       def inspect
-        if positive
-          "&(#{bound_parslet.inspect})"
-        else
-          "!(#{bound_parslet.inspect})"
-        end
+        char = positive ? '&' : '!'
+        
+        "#{char}#{bound_parslet.inspect}"
       end
     end
 
@@ -251,11 +249,10 @@ module Parslet
       end
       
       def inspect
-        if [Alternative, Repetition, Sequence].include? parslet.class
-          '(' + parslet.inspect + "){#{min}, #{max}}"
-        else
-          parslet.inspect + "{#{min}, #{max}}"
-        end
+        minmax = "{#{min}, #{max}}"
+        minmax = '?' if min == 0 && max == 1
+
+        parslet.inspect + minmax
       end
     end
 
@@ -312,6 +309,10 @@ module Parslet
       
       def parslet
         @parslet ||= block.call
+      end
+
+      def inspect
+        name
       end
     end
   end
