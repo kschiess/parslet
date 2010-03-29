@@ -30,6 +30,9 @@ describe Parslet do
         parslet.parse('d')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end 
+    it "should print as [abc]" do
+      parslet.inspect.should == "[abc]"
+    end 
   end
   describe "match(['[a]').repeat(3)" do
     attr_reader :parslet
@@ -48,6 +51,9 @@ describe Parslet do
     it "should succeed on many 'a'" do
       parslet.parse('a'*100)
     end 
+    it "should inspect as [a]{3, }" do
+      parslet.inspect.should == "[a]{3, }"
+    end
   end
   describe "str('foo')" do
     attr_reader :parslet
@@ -63,6 +69,9 @@ describe Parslet do
         parslet.parse('bar')
       }.should raise_error(Parslet::Matchers::ParseFailed)
     end
+    it "should inspect as 'foo'" do
+      parslet.inspect.should == "'foo'"
+    end 
   end
   describe "str('foo').maybe" do
     attr_reader :parslet
@@ -78,6 +87,9 @@ describe Parslet do
       parslet.apply(io)
       io.pos.should == 0
     end
+    it "should inspect as 'foo'{0, 1}" do
+      parslet.inspect.should == "'foo'{0, 1}"
+    end 
   end
   describe "str('foo') >> str('bar')" do
     attr_reader :parslet
@@ -200,6 +212,16 @@ describe Parslet do
       io = gio('foo')
       parslet.apply(io)
       io.pos.should == 1
+    end 
+  end
+  describe "named entity entity('foo') { str('bar') }" do
+    attr_reader :parslet
+    before(:each) do
+      @parslet = named('foo') { str('bar') }
+    end
+    
+    it "should parse 'bar'" do
+      parslet.parse('bar')
     end 
   end
 

@@ -251,7 +251,11 @@ module Parslet
       end
       
       def inspect
-        '(' + parslet.inspect + "){#{min}, #{max}}"
+        if [Alternative, Repetition, Sequence].include? parslet.class
+          '(' + parslet.inspect + "){#{min}, #{max}}"
+        else
+          parslet.inspect + "{#{min}, #{max}}"
+        end
       end
     end
 
@@ -270,7 +274,7 @@ module Parslet
       end
 
       def inspect
-        match.inspect
+        match
       end
     end
     
@@ -292,8 +296,29 @@ module Parslet
         "'#{str}'"
       end
     end
+
+    class Entity < Base
+      attr_reader :name, :block
+      def initialize(name, block)
+        super()
+        
+        @name = name
+        @block = block
+      end
+
+      def try(io)
+        parslet.apply(io)
+      end
+      
+      def parslet
+        @parslet ||= block.call
+      end
+    end
   end
-    
+
+  def named(name, &block)
+    Matchers::Entity.new(name, block)
+  end
   def match(obj)
     Matchers::Re.new(obj)
   end
