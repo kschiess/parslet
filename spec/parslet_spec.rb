@@ -109,7 +109,7 @@ describe Parslet do
       (parslet >> str('baz')).should == parslet
     end 
     it "should inspect as ('foo' 'bar')" do
-      parslet.inspect.should == "('foo' 'bar')"
+      parslet.inspect.should == "'foo' 'bar'"
     end 
   end
   describe "str('foo') / str('bar')" do
@@ -372,7 +372,11 @@ describe Parslet do
       [(named('foo') {} / named('bar') {}),   "foo / bar"           ], 
       [(str('a') >> str('b')).maybe,          "('a' 'b')?"          ], 
       [str('a').maybe.maybe,                  "'a'??"               ], 
-      [(str('a')>>str('b')).maybe.maybe,      "('a' 'b')??"         ]
+      [(str('a')>>str('b')).maybe.maybe,      "('a' 'b')??"         ], 
+      [(str('a') >> (str('b') / str('c'))),   "'a' ('b' / 'c')"], 
+      
+      [str('a') >> str('b').repeat,           "'a' 'b'{0, }"        ], 
+      [(str('a')>>str('b')).repeat,           "('a' 'b'){0, }"      ]  
     ].each do |(parslet, inspect_output)|
       context "regression for #{parslet.inspect}" do
         it "should inspect correctly as #{inspect_output}" do

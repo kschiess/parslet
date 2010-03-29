@@ -2,6 +2,16 @@ require 'stringio'
 
 module Parslet
   module Matchers
+    module Precedence
+      prec = 0
+      BASE       = (prec+=1)    # everything else
+      LOOKAHEAD  = (prec+=1)    # &SOMETHING
+      REPETITION = (prec+=1)    # 'a'+, 'a'?
+      SEQUENCE   = (prec+=1)    # 'a' 'b'
+      ALTERNATE  = (prec+=1)    # 'a' / 'b'
+      OUTER      = (prec+=1)    # printing is done here.
+    end
+    
     class ParseFailed < Exception; end
     
     class Base
@@ -90,8 +100,21 @@ module Parslet
         end
       end
 
-      def complex?; false; end
-    private    
+      def self.precedence(prec)
+        define_method(:precedence) { prec }
+      end
+      precedence Precedence::BASE
+      def to_s(outer_prec)
+        if outer_prec < precedence
+          "("+to_s_inner(precedence)+")"
+        else
+          to_s_inner(precedence)
+        end
+      end
+      def inspect
+        to_s(Precedence::OUTER)
+      end
+    private
       def error(io, str)
         pre = io.string[0..io.pos]
         lines = Array(pre.lines)
@@ -119,8 +142,8 @@ module Parslet
         produce_return_value value
       end
       
-      def inspect
-        "#{name}:#{parslet.inspect}"
+      def to_s_inner(prec)
+        "#{name}:#{parslet.to_s(prec)}"
       end
     private
       def produce_return_value(val)  
@@ -168,10 +191,10 @@ module Parslet
         end
       end
 
-      def inspect
+      def to_s_inner(prec)
         char = positive ? '&' : '!'
         
-        "#{char}#{bound_parslet.inspect}"
+        "#{char}#{bound_parslet.to_s(prec)}"
       end
     end
 
@@ -196,9 +219,9 @@ module Parslet
         error(io, "Expected one of #{alternatives.inspect}.")
       end
 
-      def complex?; true; end
-      def inspect
-        alternatives.map { |a| a.inspect }.join(' / ')
+      precedence Precedence::ALTERNATE
+      def to_s_inner(prec)
+        alternatives.map { |a| a.to_s(prec) }.join(' / ')
       end
     end
     
@@ -217,8 +240,9 @@ module Parslet
         [:sequence]+parslets.map { |p| p.apply(io) }
       end
       
-      def inspect
-        '('+ parslets.map { |p| p.inspect }.join(' ') + ')'
+      precedence Precedence::SEQUENCE
+      def to_s_inner(prec)
+        parslets.map { |p| p.to_s(prec) }.join(' ')
       end
     end
     
@@ -251,15 +275,12 @@ module Parslet
         end
       end
       
-      def inspect
+      precedence Precedence::REPETITION
+      def to_s_inner(prec)
         minmax = "{#{min}, #{max}}"
         minmax = '?' if min == 0 && max == 1
 
-        if parslet.complex?
-          "("+ parslet.inspect + ")" + minmax
-        else
-          parslet.inspect + minmax
-        end
+        parslet.to_s(prec) + minmax
       end
     end
 
@@ -277,8 +298,8 @@ module Parslet
         return s
       end
 
-      def inspect
-        match
+      def to_s_inner(prec)
+        match.inspect[1..-2]
       end
     end
     
@@ -296,7 +317,7 @@ module Parslet
         return s
       end
       
-      def inspect
+      def to_s_inner(prec)
         "'#{str}'"
       end
     end
@@ -318,7 +339,7 @@ module Parslet
         @parslet ||= block.call
       end
 
-      def inspect
+      def to_s_inner(prec)
         name
       end
     end
