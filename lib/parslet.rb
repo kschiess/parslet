@@ -191,6 +191,7 @@ module Parslet
         end
       end
 
+      precedence Precedence::LOOKAHEAD
       def to_s_inner(prec)
         char = positive ? '&' : '!'
         
