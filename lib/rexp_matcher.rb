@@ -34,7 +34,7 @@ class RExpMatcher
     recurse_into(obj) do |subtree|
       bindings = {}
       if element_match(subtree, expression, bindings)
-        block.call(bindings)
+        block.call(bindings) if block
       end
     end
     

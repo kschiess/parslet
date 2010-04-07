@@ -195,6 +195,9 @@ describe RExpMatcher do
         exp.match([:_x, :_y, :_z]) { |d| bound=d }
         bound.should == { :x => 'x', :y => 'y', :z => 'z' }
       end
+      it "should match %w(x y z)" do
+        exp.should match_with_bind(%w(x y z), { })
+      end 
       it "should not match [:_x, :_y, :_x]" do
         exp.match([:_x, :_y, :_x]) { |d| raise }
       end
@@ -203,7 +206,7 @@ describe RExpMatcher do
       end
     end
     context "{:a => [1,2,3]}" do
-      it "should match :a => [:_x]" 
+      it "should match :a => " 
     end
   end
 end
