@@ -34,7 +34,7 @@ module Parslet
         # p [:try, self, io.string[io.pos, 20]]
         begin
           r = try(io)
-          # p [:return_from, self, r]
+          # p [:return_from, self, flatten(r)]
           return r
         rescue ParseFailed => ex
           # p [:failing, self, io.string[io.pos, 20]]
