@@ -184,8 +184,26 @@ describe RExpMatcher do
         letters.should == %w{x y}
       end 
     end
+    context "['x', 'y', 'z']" do
+      attr_reader :exp  
+      before(:each) do
+        @exp = r(['x', 'y', 'z'])
+      end
+
+      it "should match [:_x, :_y, :_z]" do
+        bound = nil
+        exp.match([:_x, :_y, :_z]) { |d| bound=d }
+        bound.should == { :x => 'x', :y => 'y', :z => 'z' }
+      end
+      it "should not match [:_x, :_y, :_x]" do
+        exp.match([:_x, :_y, :_x]) { |d| raise }
+      end
+      it "should not match [:_x, :_y]" do
+        exp.match([:_x, :_y, :_x]) { |d| raise }
+      end
+    end
     context "{:a => [1,2,3]}" do
-      it "should match :a => :_x" 
+      it "should match :a => [:_x]" 
     end
   end
 end
