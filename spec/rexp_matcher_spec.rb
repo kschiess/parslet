@@ -206,7 +206,17 @@ describe RExpMatcher do
       end
     end
     context "{:a => [1,2,3]}" do
-      it "should match :a => " 
+      attr_reader :exp  
+      before(:each) do
+        @exp = r(:a => [1,2,3])
+      end
+
+      it "should match :a => [Integer]" do
+        exp.should match_with_bind({:a => [Integer]}, {})
+      end
+      it "should match :a => [Integer, :_x] (binding x to the whole array)" do
+        exp.should match_with_bind({:a => [Integer, :_x]}, {:x => [1,2,3]})
+      end
     end
   end
 end

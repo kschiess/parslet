@@ -49,9 +49,13 @@ class RExpMatcher
     # p [:elm, tree, exp]
     case [tree, exp].map { |e| e.class }
       when [Hash,Hash]
-        element_match_hash(tree, exp, bindings)
+        return element_match_hash(tree, exp, bindings)
       when [Array,Array]
-        element_match_ary(tree, exp, bindings)
+        if array_match?(exp)
+          return element_match_ary_whole(tree, exp, bindings)
+        else
+          return element_match_ary_single(tree, exp, bindings)
+        end
     else
       # If elements match exactly, then that is good enough in all cases
       return true if tree == exp
@@ -69,6 +73,7 @@ class RExpMatcher
   
   def element_match_binding(tree, exp, bindings)
     var_name = variable_name(exp)
+
     # TODO test for the hidden :_ feature.
     if var_name && bound_value = bindings[var_name]
       return bound_value == tree
@@ -80,11 +85,29 @@ class RExpMatcher
     return true
   end
   
-  def element_match_ary(sequence, exp, bindings)
+  def element_match_ary_single(sequence, exp, bindings)
     return false if sequence.size != exp.size
     
     return sequence.zip(exp).all? { |elt, subexp|
       element_match(elt, subexp, bindings) }
+  end
+  
+  def element_match_ary_whole(sequence, ary_match, bindings)
+    # we know that: sequence is an array, ary_match is a tuple of at least
+    # size one
+    klass = ary_match.first
+    
+    # We don't have a match unless _all_ elements of sequence are of class
+    # klass. 
+    return false unless sequence.all? { |el| el.class <= klass }
+    
+    # If there is a second element in ary_match, it is a binding variable. 
+    # Check the binding and update it. 
+    if bind_var=ary_match[1] and bind_variable?(bind_var)
+      return element_match_binding(sequence, bind_var, bindings)
+    end      
+    
+    return true
   end
 
   def element_match_hash(tree, exp, bindings)
@@ -105,6 +128,21 @@ class RExpMatcher
     
     # Match succeeds
     return true
+  end
+  
+  # Returns true if the +exp+ given is a match expression for an array. Array
+  # match expressions look like this: 
+  #
+  #   [String]
+  #   [String, :_x]
+  #
+  # They match arrays of the given class, optionally specifying a variable that
+  # captures the whole array. 
+  #
+  def array_match?(exp)
+    exp.kind_of?(Array) &&
+      !exp.empty? && 
+      exp.first.instance_of?(Class)
   end
   
   # Returns true if the object is a symbol that starts with an underscore.
