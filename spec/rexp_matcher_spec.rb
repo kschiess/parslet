@@ -177,6 +177,15 @@ describe RExpMatcher do
         
         letters.should == %w(x y)
       end 
+      it "should match :_x" do
+        letters = []
+        exp.match(:_x) { |d| letters << d[:x] }
+        
+        letters.should == %w{x y}
+      end 
+    end
+    context "{:a => [1,2,3]}" do
+      it "should match :a => :_x" 
     end
   end
 end
