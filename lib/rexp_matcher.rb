@@ -1,4 +1,17 @@
 
+# Matches trees against expressions. Trees are formed by arrays and hashes
+# for expressing membership and sequence. The leafs of the tree are other
+# classes. 
+#
+# A tree issued by the parslet library might look like this: 
+#
+#   { 
+#     :function_call => {
+#       :name => 'foobar', 
+#       :args => [1, 2, 3]
+#     }
+#   }
+#
 class RExpMatcher
   attr_reader :obj
   def initialize(obj)
@@ -28,6 +41,10 @@ class RExpMatcher
     return self # allow chaining
   end
   
+  # Returns true if the tree element given by +tree+ matches the expression
+  # given by +exp+. This match must respect bindings already made in
+  # +bindings+. 
+  #
   def element_match(tree, exp, bindings) 
     # p [:elm, tree, exp]
     case [tree, exp].map { |e| e.class }
