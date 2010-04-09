@@ -183,6 +183,7 @@ describe RExpMatcher do
         
         letters.should == %w{x y}
       end 
+      it "should not match :_x* (as a whole)" 
     end
     context "['x', 'y', 'z']" do
       attr_reader :exp  
@@ -204,6 +205,7 @@ describe RExpMatcher do
       it "should not match [:_x, :_y]" do
         exp.match([:_x, :_y, :_x]) { |d| raise }
       end
+      it "should match :_x* (as array)" 
     end
     context "{:a => [1,2,3]}" do
       attr_reader :exp  
@@ -211,11 +213,8 @@ describe RExpMatcher do
         @exp = r(:a => [1,2,3])
       end
 
-      it "should match :a => [Integer]" do
-        exp.should match_with_bind({:a => [Integer]}, {})
-      end
-      it "should match :a => [Integer, :_x] (binding x to the whole array)" do
-        exp.should match_with_bind({:a => [Integer, :_x]}, {:x => [1,2,3]})
+      it "should match :a => :_x* (binding x to the whole array)" do
+        exp.should match_with_bind({:a => :_x*}, {:x => [1,2,3]})
       end
     end
   end
