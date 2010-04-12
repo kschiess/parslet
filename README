@@ -41,20 +41,22 @@ SYNOPSIS
   tree # => {:string=>"This is a \\\"String\\\" in which you can escape stuff"}
 
   # Here's how you can grab results from that tree: 
-  require 'rexp_matcher'
-  RExpMatcher.new(tree).
-    match({:string => :_x}) { |d| puts "String contents: #{d[:x]}" }
+  Pattern.new(:string => :_x).each_match(tree) do |dictionary|
+    puts "String contents: #{dictionary[:x]}"
+  end
   
-  # Here's how to transform that tree into something else
-  require 'tree_transform'
+  # Here's how to transform that tree into something else ----------------------
+
+  # Defines the classes of our new Syntax Tree
   class StringLiteral < Struct.new(:text); end
-  transform = TreeTransform.new
+
+  # Defines a set of transformation rules on tree leafes
+  transform = Transform.new
   transform.rule(:string => :_x) { |d| StringLiteral.new(d[:x]) }
 
+  # Transforms the tree
   transform.apply(tree) 
   # => #<struct StringLiteral text="This is a \\\"String\\\" ... escape stuff">
-
-  # Voilà  
 
 STATUS 
 
