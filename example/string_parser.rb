@@ -2,7 +2,6 @@ require 'pp'
 
 $:.unshift '../lib/'
 require 'parslet'
-require 'rexp_matcher'
 
 class LiteralsParser
   include Parslet
@@ -65,9 +64,11 @@ class IntLit < Lit
   end
 end
 
-ast = RExpMatcher.new(parsetree).
-  match(:literal => {:string => :_x})     { |d| puts "string #{d[:x]}" }.
-  match(:literal => {:integer => :_x})    { |d| puts "int #{d[:x]}" }
-  # replace(:literal => {:integer => :_x})  { |x| IntLit.new(x) }.
-  # replace(:literal => {:string => :_x})   { |x| StringLit.new(x) }.
+transform = Parslet::Transform.new
+
+transform.rule(:literal => {:integer => :_x}) { |d| IntLit.new(*d.values) }
+transform.rule(:literal => {:string => :_x}) { |d| StringLit.new(*d.values) }
   # replace([Lit])                          { |x| tree(x) }
+  
+ast = transform.apply(parsetree)
+pp ast
