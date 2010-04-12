@@ -4,7 +4,7 @@ require 'parslet'
 
 describe Parslet do
   def not_parse
-    raise_error(Parslet::Matchers::ParseFailed)
+    raise_error(Parslet::Atoms::ParseFailed)
   end
   
   include Parslet
@@ -28,7 +28,7 @@ describe Parslet do
     it "should not parse d" do
       lambda {
         parslet.parse('d')
-      }.should raise_error(Parslet::Matchers::ParseFailed)
+      }.should raise_error(Parslet::Atoms::ParseFailed)
     end 
     it "should print as [abc]" do
       parslet.inspect.should == "[abc]"
@@ -43,7 +43,7 @@ describe Parslet do
     it "should not succeed on only 'aa'" do
       lambda {
         parslet.parse('aa')
-      }.should raise_error(Parslet::Matchers::ParseFailed)
+      }.should raise_error(Parslet::Atoms::ParseFailed)
     end 
     it "should succeed on 'aaa'" do
       parslet.parse('aaa')
@@ -67,7 +67,7 @@ describe Parslet do
     it "should not parse 'bar'"  do
       lambda {
         parslet.parse('bar')
-      }.should raise_error(Parslet::Matchers::ParseFailed)
+      }.should raise_error(Parslet::Atoms::ParseFailed)
     end
     it "should inspect as 'foo'" do
       parslet.inspect.should == "'foo'"
@@ -103,7 +103,7 @@ describe Parslet do
     it "should not parse 'foobaz'" do
       lambda {
         parslet.parse('foobaz')
-      }.should raise_error(Parslet::Matchers::ParseFailed)
+      }.should raise_error(Parslet::Atoms::ParseFailed)
     end
     it "should return self for chaining" do
       (parslet >> str('baz')).should == parslet
@@ -127,7 +127,7 @@ describe Parslet do
     it "should not accept 'baz'" do
       lambda {
         parslet.parse('baz')
-      }.should raise_error(Parslet::Matchers::ParseFailed)
+      }.should raise_error(Parslet::Atoms::ParseFailed)
     end   
     it "should return self for chaining" do
       (parslet / str('baz')).should == parslet
@@ -207,7 +207,7 @@ describe Parslet do
         timeout 1 do
           parslet.parse('bar')
         end
-      rescue Parslet::Matchers::ParseFailed
+      rescue Parslet::Atoms::ParseFailed
       end
     end 
   end

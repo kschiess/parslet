@@ -12,12 +12,40 @@
 #     }
 #   }
 #
-class RExpMatcher
-  attr_reader :obj
-  def initialize(obj)
-    @obj = obj
+class Parslet::Pattern
+  def initialize(pattern)
+    @pattern = pattern
+  end
+
+  # Searches the given +tree+ for this pattern, yielding the subtrees that
+  # match to the block. 
+  #
+  # Example: 
+  #
+  #   tree = parslet.apply(input)
+  #   pat = Parslet::Pattern.new(:_x)
+  #   pat.each_match(tree) do |subtree|
+  #     # do something with the matching subtree here
+  #   end
+  #
+  def each_match(tree, &block) # :yield: subtree
+    recurse_into(tree) do |subtree|
+      if bindings=match(subtree)
+        block.call(bindings) if block
+      end
+    end
+    
+    return nil
   end
   
+  # Decides if the given subtree matches this pattern. Returns the bindings
+  # made on a successful match or nil if the match fails. 
+  #
+  def match(subtree)
+    bindings = {}
+    return bindings if element_match(subtree, @pattern, bindings)
+  end
+
   def recurse_into(expr, &block)
     # p [:attempt_match, expr]
     block.call(expr)
@@ -29,18 +57,7 @@ class RExpMatcher
         expr.each { |k,v| recurse_into(v, &block) }
     end
   end
-  
-  def match(expression, &block)
-    recurse_into(obj) do |subtree|
-      bindings = {}
-      if element_match(subtree, expression, bindings)
-        block.call(bindings) if block
-      end
-    end
     
-    return self # allow chaining
-  end
-  
   # Returns true if the tree element given by +tree+ matches the expression
   # given by +exp+. This match must respect bindings already made in
   # +bindings+. 
@@ -160,9 +177,5 @@ class RExpMatcher
     if str.size>1
       str[1..-1].to_sym
     end
-  end
-  
-  def inspect
-    'r('+obj.inspect+')'
   end
 end

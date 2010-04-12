@@ -1,4 +1,4 @@
-module Parslet::Matchers
+module Parslet::Atoms
   module Precedence
     prec = 0
     BASE       = (prec+=1)    # everything else
