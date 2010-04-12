@@ -24,3 +24,4 @@ end
 
 require 'parslet/atoms'
 require 'parslet/pattern'
+require 'parslet/transform'

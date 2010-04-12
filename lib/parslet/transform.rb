@@ -1,5 +1,5 @@
 
-require 'rexp_matcher'
+require 'parslet/pattern'
 
 # Transforms an expression tree into something else. The transformation
 # performs a depth-first, post-order traversal of the expression tree. During
@@ -22,14 +22,17 @@ require 'rexp_matcher'
 # b) Each node will be replaced only once and then left alone. This means that
 #    the results of a replacement will not be acted upon. 
 #
-class TreeTransform
+class Parslet::Transform
   def initialize
     @rules = []
   end
   
   attr_reader :rules
   def rule(expression, &block)
-    @rules << [expression, block]
+    @rules << [
+      Parslet::Pattern.new(expression), 
+      block
+    ]
   end
   
   def apply(obj)
@@ -44,10 +47,8 @@ class TreeTransform
   end
   
   def transform_elt(elt)
-    rules.each do |rule, block|
-      bindings = {}
-      matcher = RExpMatcher.new(elt)
-      if matcher.element_match(elt, rule, bindings)
+    rules.each do |pattern, block|
+      if bindings=pattern.match(elt)
         # Produces transformed value
         return block.call(bindings)
       end

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-require 'tree_transform'
+require 'parslet'
 
-describe TreeTransform do
+describe Parslet::Transform do
   attr_reader :transform
   before(:each) do
-    @transform = TreeTransform.new
+    @transform = Parslet::Transform.new
   end
   
   class A < Struct.new(:elt); end
