@@ -20,8 +20,19 @@ module Parslet
     Atoms::Re.new('.')
   end
   module_function :any
+
+  def sequence(symbol)
+    Pattern::SequenceBind.new(symbol)
+  end
+  module_function :sequence
+  
+  def simple(symbol)
+    Pattern::SimpleBind.new(symbol)
+  end
+  module_function :simple
 end
 
 require 'parslet/atoms'
 require 'parslet/pattern'
+require 'parslet/pattern/binding'
 require 'parslet/transform'

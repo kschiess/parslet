@@ -68,17 +68,13 @@ class Parslet::Pattern
       when [Hash,Hash]
         return element_match_hash(tree, exp, bindings)
       when [Array,Array]
-        if array_match?(exp)
-          return element_match_ary_whole(tree, exp, bindings)
-        else
-          return element_match_ary_single(tree, exp, bindings)
-        end
+        return element_match_ary_single(tree, exp, bindings)
     else
       # If elements match exactly, then that is good enough in all cases
       return true if tree == exp
       
       # If exp is a bind variable: Check if the binding matches
-      if bind_variable?(exp) && ! [Hash, Array].include?(tree.class)
+      if exp.respond_to?(:can_bind?) && exp.can_bind?(tree)
         return element_match_binding(tree, exp, bindings)
       end
                   
@@ -89,7 +85,7 @@ class Parslet::Pattern
   end
   
   def element_match_binding(tree, exp, bindings)
-    var_name = variable_name(exp)
+    var_name = exp.variable_name
 
     # TODO test for the hidden :_ feature.
     if var_name && bound_value = bindings[var_name]
@@ -109,24 +105,6 @@ class Parslet::Pattern
       element_match(elt, subexp, bindings) }
   end
   
-  def element_match_ary_whole(sequence, ary_match, bindings)
-    # we know that: sequence is an array, ary_match is a tuple of at least
-    # size one
-    klass = ary_match.first
-    
-    # We don't have a match unless _all_ elements of sequence are of class
-    # klass. 
-    return false unless sequence.all? { |el| el.class <= klass }
-    
-    # If there is a second element in ary_match, it is a binding variable. 
-    # Check the binding and update it. 
-    if bind_var=ary_match[1] and bind_variable?(bind_var)
-      return element_match_binding(sequence, bind_var, bindings)
-    end      
-    
-    return true
-  end
-
   def element_match_hash(tree, exp, bindings)
     # For a hash to match, all keys must correspond and all values must 
     # match element wise.
@@ -146,29 +124,7 @@ class Parslet::Pattern
     # Match succeeds
     return true
   end
-  
-  # Returns true if the +exp+ given is a match expression for an array. Array
-  # match expressions look like this: 
-  #
-  #   [String]
-  #   [String, :_x]
-  #
-  # They match arrays of the given class, optionally specifying a variable that
-  # captures the whole array. 
-  #
-  def array_match?(exp)
-    exp.kind_of?(Array) &&
-      !exp.empty? && 
-      exp.first.instance_of?(Class)
-  end
-  
-  # Returns true if the object is a symbol that starts with an underscore.
-  # This is what we use as bind variable in pattern matches. 
-  #
-  def bind_variable?(obj)
-    obj.instance_of?(Symbol) && obj.to_s.start_with?('_')
-  end
-  
+      
   # Called on a bind variable, returns the variable name without the _
   #
   def variable_name(bind_var)
