@@ -3,6 +3,8 @@ require 'spec_helper'
 require 'parslet'
 
 describe Parslet::Transform do
+  include Parslet
+  
   attr_reader :transform
   before(:each) do
     @transform = Parslet::Transform.new
@@ -13,9 +15,9 @@ describe Parslet::Transform do
   class C < Struct.new(:elt); end
   class Bi < Struct.new(:a, :b); end
   
-  describe "given :_x => A.new(x)" do
+  describe "given simple(:x) => A.new(x)" do
     before(:each) do
-      transform.rule(:_x) { |d| A.new(d[:x]) }
+      transform.rule(simple(:x)) { |d| A.new(d[:x]) }
     end
     
     it "should transform 'a' into A.new('a')" do
@@ -26,10 +28,10 @@ describe Parslet::Transform do
         [A.new('a'), A.new('b')]
     end
   end
-  describe "given rules on {:a => :_x} and {:b => :_x}" do
+  describe "given rules on {:a => simple(:x)} and {:b => :_x}" do
     before(:each) do
-      transform.rule(:a => :_x) { |d| A.new(d[:x]) }
-      transform.rule(:b => :_x) { |d| B.new(d[:x]) }
+      transform.rule(:a => simple(:x)) { |d| A.new(d[:x]) }
+      transform.rule(:b => simple(:x)) { |d| B.new(d[:x]) }
     end
     
     it "should transform {:d=>{:b=>'c'}} into d => B('c')" do
@@ -41,7 +43,7 @@ describe Parslet::Transform do
   end
   describe "pulling out subbranches" do
     before(:each) do
-      transform.rule(:a => {:b => :_x}, :d => {:e => :_y}) { |d|
+      transform.rule(:a => {:b => simple(:x)}, :d => {:e => simple(:y)}) { |d|
         Bi.new(*d.values_at(:x, :y))
       }
     end
