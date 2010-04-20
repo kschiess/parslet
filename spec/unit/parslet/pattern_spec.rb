@@ -188,7 +188,9 @@ describe Parslet::Pattern do
         
         letters.should == %w{x y}
       end 
-      it "should not match simple(:x)* (as a whole)" 
+      it "should not match sequence(:x) (as a whole)" do
+        p(sequence(:x)).each_match(exp) { raise }
+      end
     end
     context "['x', 'y', 'z']" do
       attr_reader :exp  
@@ -210,7 +212,9 @@ describe Parslet::Pattern do
       it "should not match [simple(:x), simple(:y)]" do
         p([simple(:x), simple(:y), simple(:x)]).each_match(exp) { |d| raise }
       end
-      it "should match simple(:x)* (as array)" 
+      it "should match sequence(:x) (as array)" do
+        exp.should match_with_bind(sequence(:x), :x => ['x', 'y', 'z'])
+      end
     end
     context "{:a => [1,2,3]}" do
       attr_reader :exp  
