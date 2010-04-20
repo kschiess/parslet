@@ -2,4 +2,8 @@
 = 0.1.0 / ???
 
   * Initial version. Classes for parsing, matching in the resulting trees
-    and transforming the trees into something more useful.
+    and transforming the trees into something more useful.  
+    
+  * Parses and outputs intermediary trees
+    
+  * Matching of single elements and sequences

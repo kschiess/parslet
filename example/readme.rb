@@ -20,7 +20,7 @@ tree = parser.parse(%Q{
 tree # => {:string=>"This is a \\\"String\\\" in which you can escape stuff"}
 
 # Here's how you can grab results from that tree: 
-Pattern.new(:string => :_x).each_match(tree) do |dictionary|
+Pattern.new(:string => simple(:x)).each_match(tree) do |dictionary|
   puts "String contents: #{dictionary[:x]}"
 end
   
@@ -31,8 +31,9 @@ class StringLiteral < Struct.new(:text); end
 
 # Defines a set of transformation rules on tree leafes
 transform = Transform.new
-transform.rule(:string => :_x) { |d| StringLiteral.new(d[:x]) }
+transform.rule(:string => simple(:x)) { |d| StringLiteral.new(d[:x]) }
 
 # Transforms the tree
 transform.apply(tree) 
+
 # => #<struct StringLiteral text="This is a \\\"String\\\" ... escape stuff">
