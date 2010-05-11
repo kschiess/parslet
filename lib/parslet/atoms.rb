@@ -94,11 +94,22 @@ module Parslet::Atoms
           end
         }
       else
-        if result.any? { |e| e.instance_of?(Hash) }
-          result.select { |e| e.instance_of?(Hash) }
-        else
-          result.inject('') { |s,e| s<<e }
+        if result.any? { |e| e.instance_of?(Array) }
+          # If any arrays are nested in this array, flatten all arrays to this
+          # level. 
+          return result.
+            select { |e| e.instance_of?(Array) }.
+            flatten(1)
         end
+        
+        if result.any? { |e| e.instance_of?(Hash) }
+          # If keyed subtrees are in the array, we'll want to discard all 
+          # strings inbetween. To keep them, name them. 
+          return result.select { |e| e.instance_of?(Hash) }
+        end
+
+        # If there are only strings, concatenate them and return that. 
+        result.inject('') { |s,e| s<<e }
       end
     end
 

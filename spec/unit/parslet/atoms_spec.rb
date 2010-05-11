@@ -331,7 +331,7 @@ describe Parslet do
             
       # Nested inside another node
       [ [:sequence, [:sequence, 'a', 'b']], 'ab' ],
-      # Combined with lookahead (nil)
+      # Combined with lookahead (nil)
       [ [:sequence, nil, 'a'], 'a' ],
                   
       # Including named subtrees ---------------------------------------------
@@ -339,7 +339,14 @@ describe Parslet do
       [ {:a=>'a'}, {:a=>'a'} ],
       # Composition of subtrees
       [ [:sequence, {:a=>'a'},{:b=>'b'}], {:a=>'a',:b=>'b'} ],
-      # Repetition of subtrees is handled elsewhere. (See Repetition)
+      # Mixed subtrees :sequence of :repetition yields []
+      [ [:sequence, [:repetition, {:a => 'a'}], {:a => 'a'} ], [{:a=>'a'}, {:a=>'a'}]],
+      [ [:sequence, {:a => 'a'},[:repetition, {:a => 'a'}] ], [{:a=>'a'}, {:a=>'a'}]],
+      [ [:sequence, [:repetition, {:a => 'a'}],[:repetition, {:a => 'a'}] ], [{:a=>'a'}]],
+      # Repetition
+      [ [:repetition, [:repetition, {:a=>'a'}], [:repetition, {:a=>'a'}]], 
+        [{:a => 'a'}, {:a => 'a'}]],
+      [ [:repetition, {:a=>'a'}, 'a', {:a=>'a'}], [{:a=>'a'}, {:a=>'a'}]],
       
       # Some random samples --------------------------------------------------
       [ [:sequence, {:a => :b, :b => :c}], {:a=>:b, :b=>:c} ], 
