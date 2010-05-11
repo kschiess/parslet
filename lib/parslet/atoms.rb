@@ -75,9 +75,14 @@ module Parslet::Atoms
       if tag == :sequence
         result.inject('') { |r, e|        # and then merge flat elements
           case [r, e].map { |o| o.class }
-            when [Hash, Hash]
+            when [Hash, Hash]             # two keyed subtrees: make one
               warn_about_duplicate_keys(r, e)
               r.merge(e)
+            # a keyed tree and an array (push down)
+            when [Hash, Array]
+              [r] + e
+            when [Array, Hash]   
+              r + [e]
             when [String, String]
               r << e
           else
