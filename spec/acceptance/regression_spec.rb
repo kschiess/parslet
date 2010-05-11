@@ -3,6 +3,12 @@ require File.dirname(__FILE__) + '/../spec_helper'
 require 'parslet'
 
 describe "Regressions from real examples" do
+  # This parser piece produces on the left a subtree that is keyed (a hash)
+  # and on the right a subtree that is a repetition of such subtrees. I've
+  # for now decided that these would merge into the repetition such that the
+  # return value is an array. This avoids maybe loosing keys/values in a 
+  # hash merge. 
+  #
   class ArgumentListParser
     include Parslet
     def argument_list
