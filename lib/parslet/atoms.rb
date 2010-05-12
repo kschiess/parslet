@@ -326,8 +326,8 @@ module Parslet::Atoms
     def try(io)
       old_pos = io.pos
       s = io.read(str.size)
-      raise(ParseFailed, "Premature end of input.") unless s && s.size==str.size
-      raise(ParseFailed, "Expected #{str.inspect}, but got #{s.inspect}") unless s==str
+      error(io, "Premature end of input") unless s && s.size==str.size
+      error(io, "Expected #{str.inspect}, but got #{s.inspect}") unless s==str
       return s
     end
     
