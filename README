@@ -1,11 +1,11 @@
 INTRODUCTION
 
-A small experiment on PEG grammars. PEG means Parsing Expression Grammars [1].
-These are a different kind of grammars that recognize almost the same
-languages as your conventional LR parser, except that they are easier to work
-with, since they haven't been conceived for generation, but for recognition of
-languages. You can read the founding paper of the field by Bryan Ford here
-[2].
+A small library that implements a PEG grammar. PEG means Parsing Expression
+Grammars [1]. These are a different kind of grammars that recognize almost the
+same languages as your conventional LR parser, except that they are easier to
+work with, since they haven't been conceived for generation, but for
+recognition of languages. You can read the founding paper of the field by
+Bryan Ford here [2].
 
 Other Ruby projects that work on the same topic are: 
 http://wiki.github.com/luikore/rsec/
@@ -16,8 +16,31 @@ allow clean AST construction and good error handling. It seems to me that most
 often, parser generators only handle the success-case and forget about
 debugging and error generation.
 
+More specifically, this library is motivated by the project rooc[3], a
+compiler I am writing. I started out using 'treetop' (see the link above), but
+found it unusable. It was lacking in
+
+  * error reporting: Hard to see where a grammar fails. 
+  
+  * stability of generated trees: Intermediary trees were dictated by the 
+    grammar. It was hard to define invariants in that system - what was 
+    convenient when writing the grammar often wasn't in subsequent stages. 
+    
+  * clarity of parser code: The parser code is generated and is very hard
+    to read. Add that to the first point to understand my pain. 
+    
+So parslet tries to be different. It doesn't generate the parser, but instead
+defines it in a DSL which is very close to what you find in [2]. A successful
+parse then generates a parser tree consisting entirely of hashes and arrays
+and strings (read: instable). This parser tree can then be converted to a real
+AST (read: stable) using a pattern matcher that is also part of this library.
+
+Error reporting is still lacking in many parts. I will be working on that part
+as a user of the library while constructing rooc. [3] 
+
 [1] http://en.wikipedia.org/wiki/Parsing_expression_grammar
 [2] http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf
+[3] http://github.com/kschiess/rooc
 
 SYNOPSIS
 
@@ -57,11 +80,14 @@ SYNOPSIS
   transform.apply(tree) 
 
   # => #<struct StringLiteral text="This is a \\\"String\\\" ... escape stuff">
+  
+COMPATIBILITY
+
+This library should work with both ruby 1.8 and ruby 1.9.
 
 STATUS 
 
-This is in a usable alpha state, although I've only just begun working on the
-above goals. Maybe I will incorporate this into rooc
-(http://github.com/kschiess/rooc) one day.
+Preparing for first release (0.1.0). Not many edge cases left to be covered, 
+but error reporting is still lacking. Usable for most compiler projects.
 
 (c) 2010 Kaspar Schiess
