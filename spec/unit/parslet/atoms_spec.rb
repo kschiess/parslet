@@ -347,6 +347,7 @@ describe Parslet do
       [ [:repetition, [:repetition, {:a=>'a'}], [:repetition, {:a=>'a'}]], 
         [{:a => 'a'}, {:a => 'a'}]],
       [ [:repetition, {:a=>'a'}, 'a', {:a=>'a'}], [{:a=>'a'}, {:a=>'a'}]],
+      [ [:repetition, {:a=>'a'}, [:repetition, {:b=>'b'}]], [{:a=>'a'}] ],
       
       # Some random samples --------------------------------------------------
       [ [:sequence, {:a => :b, :b => :c}], {:a=>:b, :b=>:c} ], 
