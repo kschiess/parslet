@@ -19,7 +19,19 @@ module Parslet::Atoms
       
       result = apply(io)
       
-      error(io, "Don't know what to do with #{io.string[io.pos,100]}") unless io.eof?
+      # If we haven't consumed the input, then the pattern doesn't match. Try
+      # to provide a good error message (even asking down below)
+      unless io.eof?
+        # Do we know why we stopped matching input? If yes, that's a good
+        # error to fail with. Otherwise just report that we cannot consume the
+        # input.
+        if cause 
+          raise ParseFailed, cause
+        else
+          error(io, "Don't know what to do with #{io.string[io.pos,100]}") 
+        end
+      end
+      
       return flatten(result)
     end
     
@@ -127,12 +139,27 @@ module Parslet::Atoms
     def inspect
       to_s(Precedence::OUTER)
     end
+
+    # Cause should return the current best approximation of this parslet
+    # of what went wrong with the parse. Not relevant if the parse succeeds, 
+    # but needed for clever error reports. 
+    #
+    def cause
+      @last_cause
+    end
+    def store_last_cause(cause)
+      @last_cause = cause
+    end
   private
     def error(io, str)
       pre = io.string[0..io.pos]
       lines = Array(pre.lines)
       pos   = lines.last.length
-      raise ParseFailed, "#{str} at line #{lines.count} char #{pos}."
+      formatted_cause = "#{str} at line #{lines.count} char #{pos}."
+
+      store_last_cause formatted_cause
+
+      raise ParseFailed, formatted_cause
     end
     def warn_about_duplicate_keys(h1, h2)
       d = h1.keys & h2.keys
@@ -251,7 +278,15 @@ module Parslet::Atoms
     end
     
     def try(io)
-      [:sequence]+parslets.map { |p| p.apply(io) }
+      [:sequence]+parslets.map { |p| 
+        # Save each parslet as potentially offending (raising an error). 
+        @offending_parslet = p
+        p.apply(io) 
+      }
+    end
+    
+    def cause
+      @offending_parslet.cause
     end
     
     precedence Precedence::SEQUENCE
@@ -279,6 +314,8 @@ module Parslet::Atoms
           # reached. 
           return result if max && occ>=max
         rescue ParseFailed => ex
+          store_last_cause ex.message
+
           # Greedy matcher has produced a failure. Check if occ (which will
           # contain the number of sucesses) is in {min, max}.
           # p [:repetition, occ, min, max]

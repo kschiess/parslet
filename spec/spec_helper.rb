@@ -4,5 +4,5 @@ Spec::Runner.configure do |config|
 end
 
 def p(*args)
-  print "<pre>"+args.inspect.gsub(/</, '&lt;')+"</pre>"
+  print "<pre>"+args.map { |a| a.inspect.gsub(/</, '&lt;') }.join("\n") +"</pre>"
 end

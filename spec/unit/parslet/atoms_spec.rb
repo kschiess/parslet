@@ -29,6 +29,7 @@ describe Parslet do
       lambda {
         parslet.parse('d')
       }.should raise_error(Parslet::Atoms::ParseFailed)
+      parslet.cause.should == "Failed to match [abc] at line 1 char 1."
     end 
     it "should print as [abc]" do
       parslet.inspect.should == "[abc]"
@@ -44,6 +45,7 @@ describe Parslet do
       lambda {
         parslet.parse('aa')
       }.should raise_error(Parslet::Atoms::ParseFailed)
+      parslet.cause.should == "Expected at least 3 of [a] at line 1 char 2."
     end 
     it "should succeed on 'aaa'" do
       parslet.parse('aaa')
@@ -68,6 +70,7 @@ describe Parslet do
       lambda {
         parslet.parse('bar')
       }.should raise_error(Parslet::Atoms::ParseFailed)
+      parslet.cause.should == "Expected \"foo\", but got \"bar\" at line 1 char 3."
     end
     it "should inspect as 'foo'" do
       parslet.inspect.should == "'foo'"
@@ -104,6 +107,7 @@ describe Parslet do
       lambda {
         parslet.parse('foobaz')
       }.should raise_error(Parslet::Atoms::ParseFailed)
+      parslet.cause.should == "Expected \"bar\", but got \"baz\" at line 1 char 6."
     end
     it "should return self for chaining" do
       (parslet >> str('baz')).should == parslet
@@ -128,6 +132,7 @@ describe Parslet do
       lambda {
         parslet.parse('baz')
       }.should raise_error(Parslet::Atoms::ParseFailed)
+      parslet.cause.should == "Expected one of ['foo', 'bar']. at line 1 char 1."
     end   
     it "should return self for chaining" do
       (parslet / str('baz')).should == parslet
@@ -239,7 +244,27 @@ describe Parslet do
       parslet.inspect.should == "FOO"
     end 
   end
-
+  describe "eof behaviour" do
+    context "when the pattern just doesn't consume the input" do
+      let (:parslet) { any }
+      it "should fail the parse" do
+        lambda { 
+          parslet.parse('..')
+        }.should not_parse
+        parslet.cause.should == "Don't know what to do with . at line 1 char 2."
+      end 
+    end
+    context "when the pattern doesn't match the input" do
+      let (:parslet) { (str('a')).repeat(1) }
+      it "should fail the parse" do
+        lambda { 
+          parslet.parse('a.')
+        }.should not_parse
+        parslet.cause.should == "Expected \"a\", but got \".\" at line 1 char 2."
+      end 
+    end
+  end
+  
   describe "<- #as(name)" do
     context "str('foo').as(:bar)" do
       it "should return :bar => 'foo'" do
