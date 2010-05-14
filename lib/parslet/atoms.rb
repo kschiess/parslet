@@ -277,13 +277,12 @@ module Parslet::Atoms
 
           # If we're not greedy (max is defined), check if that has been 
           # reached. 
-          return result if max && occ==max
+          return result if max && occ>=max
         rescue ParseFailed => ex
           # Greedy matcher has produced a failure. Check if occ (which will
           # contain the number of sucesses) is in {min, max}.
           # p [:repetition, occ, min, max]
           raise ex if occ < min
-          raise ex if max && occ > max
           return result
         end
       end
