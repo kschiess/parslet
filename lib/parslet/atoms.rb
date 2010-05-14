@@ -282,7 +282,7 @@ module Parslet::Atoms
           # Greedy matcher has produced a failure. Check if occ (which will
           # contain the number of sucesses) is in {min, max}.
           # p [:repetition, occ, min, max]
-          raise ex if occ < min
+          error(io, "Expected at least #{min} of #{parslet.inspect}") if occ < min
           return result
         end
       end
