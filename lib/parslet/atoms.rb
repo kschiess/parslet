@@ -195,6 +195,10 @@ module Parslet::Atoms
     def to_s_inner(prec)
       "#{name}:#{parslet.to_s(prec)}"
     end
+
+    def error_tree
+      parslet.error_tree
+    end
   private
     def produce_return_value(val)  
       { name => flatten(val) }
@@ -274,6 +278,12 @@ module Parslet::Atoms
     def to_s_inner(prec)
       alternatives.map { |a| a.to_s(prec) }.join(' / ')
     end
+
+    def error_tree
+      Parslet::ErrorTree.new(self, *alternatives.
+        reject { |child| child.cause.nil? }.
+        map { |child| child.error_tree })
+    end
   end
   
   class Sequence < Base
@@ -302,6 +312,12 @@ module Parslet::Atoms
     precedence Precedence::SEQUENCE
     def to_s_inner(prec)
       parslets.map { |p| p.to_s(prec) }.join(' ')
+    end
+
+    def error_tree
+      Parslet::ErrorTree.new(self, *parslets.
+        reject { |child| child.cause.nil? }.
+        map { |child| child.error_tree })
     end
   end
   
@@ -341,6 +357,10 @@ module Parslet::Atoms
       minmax = '?' if min == 0 && max == 1
 
       parslet.to_s(prec) + minmax
+    end
+
+    def error_tree
+      Parslet::ErrorTree.new(self, parslet.error_tree)
     end
   end
 
@@ -401,6 +421,10 @@ module Parslet::Atoms
 
     def to_s_inner(prec)
       name.upcase
+    end
+
+    def error_tree
+      parslet.error_tree
     end
   end
 end

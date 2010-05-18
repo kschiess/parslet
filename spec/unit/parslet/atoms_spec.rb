@@ -28,7 +28,7 @@ describe Parslet do
     it "should not parse d" do
       lambda {
         parslet.parse('d')
-      }.should raise_error(Parslet::Atoms::ParseFailed)
+      }.should not_parse
       parslet.cause.should == "Failed to match [abc] at line 1 char 1."
     end 
     it "should print as [abc]" do
@@ -41,12 +41,19 @@ describe Parslet do
       @parslet = match('[a]').repeat(3)
     end
     
-    it "should not succeed on only 'aa'" do
-      lambda {
-        parslet.parse('aa')
-      }.should raise_error(Parslet::Atoms::ParseFailed)
-      parslet.cause.should == "Expected at least 3 of [a] at line 1 char 2."
-    end 
+    context "when failing on input 'aa'" do
+      before(:each) do
+        lambda {
+          parslet.parse('aa')
+        }.should not_parse
+      end
+      it "should have a relevant cause" do
+        parslet.cause.should == "Expected at least 3 of [a] at line 1 char 2."
+      end 
+      it "should have a tree with 2 nodes" do
+        parslet.error_tree.nodes.should == 2
+      end 
+    end
     it "should succeed on 'aaa'" do
       parslet.parse('aaa')
     end 
@@ -69,7 +76,7 @@ describe Parslet do
     it "should not parse 'bar'"  do
       lambda {
         parslet.parse('bar')
-      }.should raise_error(Parslet::Atoms::ParseFailed)
+      }.should not_parse
       parslet.cause.should == "Expected \"foo\", but got \"bar\" at line 1 char 3."
     end
     it "should inspect as 'foo'" do
@@ -100,14 +107,22 @@ describe Parslet do
       @parslet = str('foo') >> str('bar')
     end
     
+    context "when it fails on input 'foobaz'" do
+      before(:each) do
+        lambda {
+          parslet.parse('foobaz')
+        }.should not_parse
+      end
+
+      it "should not parse 'foobaz'" do
+        parslet.cause.should == "Expected \"bar\", but got \"baz\" at line 1 char 6."
+      end
+      it "should have 2 nodes in error tree" do
+        parslet.error_tree.nodes.should == 2
+      end 
+    end
     it "should parse 'foobar'" do
       parslet.parse('foobar')
-    end
-    it "should not parse 'foobaz'" do
-      lambda {
-        parslet.parse('foobaz')
-      }.should raise_error(Parslet::Atoms::ParseFailed)
-      parslet.cause.should == "Expected \"bar\", but got \"baz\" at line 1 char 6."
     end
     it "should return self for chaining" do
       (parslet >> str('baz')).should == parslet
@@ -122,18 +137,27 @@ describe Parslet do
       @parslet = str('foo') / str('bar')
     end
     
+    context "when failing on input 'baz'" do
+      before(:each) do
+        lambda {
+          parslet.parse('baz')
+        }.should not_parse
+      end
+
+      it "should have a sensible cause" do
+        parslet.cause.should == "Expected one of ['foo', 'bar']. at line 1 char 1."
+      end   
+      it "should have an error tree with 3 nodes" do
+        parslet.error_tree.nodes.should == 3
+      end 
+    end
+    
     it "should accept 'foo'" do
       parslet.parse('foo')
     end
     it "should accept 'bar'" do
       parslet.parse('bar')
     end
-    it "should not accept 'baz'" do
-      lambda {
-        parslet.parse('baz')
-      }.should raise_error(Parslet::Atoms::ParseFailed)
-      parslet.cause.should == "Expected one of ['foo', 'bar']. at line 1 char 1."
-    end   
     it "should return self for chaining" do
       (parslet / str('baz')).should == parslet
     end 
@@ -256,12 +280,17 @@ describe Parslet do
     end
     context "when the pattern doesn't match the input" do
       let (:parslet) { (str('a')).repeat(1) }
-      it "should fail the parse" do
+      before(:each) do
         lambda { 
           parslet.parse('a.')
         }.should not_parse
+      end
+
+      it "should have a relevant cause" do
         parslet.cause.should == "Expected \"a\", but got \".\" at line 1 char 2."
-        parslet.error_tree.should have(1).node
+      end 
+      it "should have an error tree" do
+        parslet.error_tree.nodes.should == 2
         parslet.error_tree.to_s.should == "Expected \"a\", but got \".\" at line 1 char 2."
       end 
     end

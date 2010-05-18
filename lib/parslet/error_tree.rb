@@ -8,9 +8,9 @@ class Parslet::ErrorTree
   # All errors that were encountered when parsing part of this +parslet+. 
   attr_reader :children
     
-  def initialize(parslet)
+  def initialize(parslet, *children)
     @parslet = parslet
-    @children = []
+    @children = children.compact
   end
   
   def nodes
