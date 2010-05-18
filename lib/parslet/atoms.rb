@@ -155,10 +155,10 @@ module Parslet::Atoms
     # with #cause. 
     #
     def error_tree
-      Parslet::ErrorTree.new(self)
+      Parslet::ErrorTree.new(self) if cause?
     end
-    def store_last_cause(cause)
-      @last_cause = cause
+    def cause?
+      not @last_cause.nil?
     end
   private
     def error(io, str)
@@ -167,7 +167,7 @@ module Parslet::Atoms
       pos   = lines.last.length
       formatted_cause = "#{str} at line #{lines.count} char #{pos}."
 
-      store_last_cause formatted_cause
+      @last_cause = formatted_cause
 
       raise ParseFailed, formatted_cause
     end
@@ -281,7 +281,6 @@ module Parslet::Atoms
 
     def error_tree
       Parslet::ErrorTree.new(self, *alternatives.
-        reject { |child| child.cause.nil? }.
         map { |child| child.error_tree })
     end
   end
@@ -304,20 +303,21 @@ module Parslet::Atoms
         p.apply(io) 
       }
     end
-    
-    def cause
-      @offending_parslet.cause
-    end
-    
+        
     precedence Precedence::SEQUENCE
     def to_s_inner(prec)
       parslets.map { |p| p.to_s(prec) }.join(' ')
     end
 
+    def cause
+      @offending_parslet.cause if @offending_parslet
+    end
+    def cause?
+      @offending_parslet && @offending_parslet.cause?
+    end
     def error_tree
-      Parslet::ErrorTree.new(self, *parslets.
-        reject { |child| child.cause.nil? }.
-        map { |child| child.error_tree })
+      Parslet::ErrorTree.new(self).tap { |et|
+        et.children << @offending_parslet.error_tree if @offending_parslet }
     end
   end
   
@@ -340,8 +340,6 @@ module Parslet::Atoms
           # reached. 
           return result if max && occ>=max
         rescue ParseFailed => ex
-          store_last_cause ex.message
-
           # Greedy matcher has produced a failure. Check if occ (which will
           # contain the number of sucesses) is in {min, max}.
           # p [:repetition, occ, min, max]
@@ -359,8 +357,16 @@ module Parslet::Atoms
       parslet.to_s(prec) + minmax
     end
 
+    def cause
+      # Either the repetition failed or the parslet inside failed to repeat. 
+      super || parslet.cause
+    end
     def error_tree
-      Parslet::ErrorTree.new(self, parslet.error_tree)
+      if cause?
+        Parslet::ErrorTree.new(self, parslet.error_tree)
+      else
+        parslet.error_tree
+      end
     end
   end
 
@@ -424,7 +430,14 @@ module Parslet::Atoms
     end
 
     def error_tree
-      parslet.error_tree
+      p [:error_tree, self]
+      return nil if @mark
+      begin
+        @mark = true
+        parslet.error_tree
+      ensure 
+        @mark = false
+      end
     end
   end
 end

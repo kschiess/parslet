@@ -43,7 +43,7 @@ private
   end
   def append_prefix(stream, curved)
     curved[0..-2].each do |c|
-      stream.print c ? "   " : "|- "
+      stream.print c ? "   " : "|  "
     end
     stream.print curved.last ? "`- " : "|- "
   end
