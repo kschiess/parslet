@@ -430,7 +430,6 @@ module Parslet::Atoms
     end
 
     def error_tree
-      p [:error_tree, self]
       return nil if @mark
       begin
         @mark = true
