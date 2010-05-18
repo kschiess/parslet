@@ -11,6 +11,9 @@ module Parslet::Atoms
   
   class ParseFailed < Exception; end
   
+  # Base class for all parslets, handles orchestration of calls and implements
+  # a lot of the operator and chaining methods.
+  #
   class Base
     def parse(io)
       if io.respond_to? :to_str
@@ -146,6 +149,13 @@ module Parslet::Atoms
     #
     def cause
       @last_cause
+    end
+    # Error tree returns what went wrong here plus what went wrong inside 
+    # subexpressions as a tree. The error stored for this node will be equal
+    # with #cause. 
+    #
+    def error_tree
+      Parslet::ErrorTree.new(self)
     end
     def store_last_cause(cause)
       @last_cause = cause

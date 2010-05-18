@@ -261,6 +261,8 @@ describe Parslet do
           parslet.parse('a.')
         }.should not_parse
         parslet.cause.should == "Expected \"a\", but got \".\" at line 1 char 2."
+        parslet.error_tree.should have(1).node
+        parslet.error_tree.to_s.should == "Expected \"a\", but got \".\" at line 1 char 2."
       end 
     end
   end

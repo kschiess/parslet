@@ -32,6 +32,7 @@ module Parslet
   module_function :simple
 end
 
+require 'parslet/error_tree'
 require 'parslet/atoms'
 require 'parslet/pattern'
 require 'parslet/pattern/binding'
