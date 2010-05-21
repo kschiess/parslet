@@ -150,6 +150,7 @@ module Parslet::Atoms
     def cause
       @last_cause
     end
+
     # Error tree returns what went wrong here plus what went wrong inside 
     # subexpressions as a tree. The error stored for this node will be equal
     # with #cause. 
@@ -316,8 +317,7 @@ module Parslet::Atoms
       @offending_parslet && @offending_parslet.cause?
     end
     def error_tree
-      Parslet::ErrorTree.new(self).tap { |et|
-        et.children << @offending_parslet.error_tree if @offending_parslet }
+      @offending_parslet.error_tree if @offending_parslet
     end
   end
   
@@ -380,7 +380,7 @@ module Parslet::Atoms
       r = Regexp.new(match, Regexp::MULTILINE)
       s = io.read(1)
       error(io, "Premature end of input") unless s
-      error(io, "Failed to match #{match}") unless s.match(r)
+      error(io, "Failed to match #{match.inspect[1..-2]}") unless s.match(r)
       return s
     end
 

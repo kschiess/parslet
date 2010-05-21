@@ -18,7 +18,7 @@ class Parslet::ErrorTree
   end
   
   def cause
-    parslet.cause
+    parslet.cause || "Unknown error in #{parslet.inspect}"
   end
   alias :to_s :cause
   

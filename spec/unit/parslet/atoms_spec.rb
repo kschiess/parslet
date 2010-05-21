@@ -118,7 +118,7 @@ describe Parslet do
         parslet.cause.should == "Expected \"bar\", but got \"baz\" at line 1 char 6."
       end
       it "should have 2 nodes in error tree" do
-        parslet.error_tree.nodes.should == 2
+        parslet.error_tree.nodes.should == 1
       end 
     end
     it "should parse 'foobar'" do
