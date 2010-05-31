@@ -115,10 +115,10 @@ describe Parslet do
       end
 
       it "should not parse 'foobaz'" do
-        parslet.cause.should == "Expected \"bar\", but got \"baz\" at line 1 char 6."
+        parslet.cause.should == "Failed to match sequence ('foo' 'bar') at line 1 char 4."
       end
       it "should have 2 nodes in error tree" do
-        parslet.error_tree.nodes.should == 1
+        parslet.error_tree.nodes.should == 2
       end 
     end
     it "should parse 'foobar'" do
