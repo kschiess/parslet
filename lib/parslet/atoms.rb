@@ -169,7 +169,7 @@ module Parslet::Atoms
       formatted_cause = "#{str} at line #{lines.count} char #{pos}."
 
       @last_cause = formatted_cause
-
+      
       raise ParseFailed, formatted_cause
     end
     def warn_about_duplicate_keys(h1, h2)
@@ -252,6 +252,10 @@ module Parslet::Atoms
       
       "#{char}#{bound_parslet.to_s(prec)}"
     end
+
+    def error_tree
+      bound_parslet.error_tree
+    end
   end
 
   class Alternative < Base
@@ -286,6 +290,8 @@ module Parslet::Atoms
     end
   end
   
+  # A sequence of parslets, matched from left to right. Denoted by '>>'
+  #
   class Sequence < Base
     attr_reader :parslets
     def initialize(*parslets)
@@ -303,6 +309,8 @@ module Parslet::Atoms
         @offending_parslet = p
         p.apply(io) 
       }
+    rescue ParseFailed
+      error(io, "Failed to match sequence (#{self.inspect})")
     end
         
     precedence Precedence::SEQUENCE
@@ -310,14 +318,9 @@ module Parslet::Atoms
       parslets.map { |p| p.to_s(prec) }.join(' ')
     end
 
-    def cause
-      @offending_parslet.cause if @offending_parslet
-    end
-    def cause?
-      @offending_parslet && @offending_parslet.cause?
-    end
     def error_tree
-      @offending_parslet.error_tree if @offending_parslet
+      Parslet::ErrorTree.new(self).tap { |t|
+        t.children << @offending_parslet.error_tree if @offending_parslet }
     end
   end
   
@@ -430,13 +433,7 @@ module Parslet::Atoms
     end
 
     def error_tree
-      return nil if @mark
-      begin
-        @mark = true
-        parslet.error_tree
-      ensure 
-        @mark = false
-      end
+      parslet.error_tree
     end
   end
 end
