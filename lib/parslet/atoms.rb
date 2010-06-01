@@ -47,6 +47,7 @@ module Parslet::Atoms
       begin
         r = try(io)
         # p [:return_from, self, flatten(r)]
+        @last_cause = nil
         return r
       rescue ParseFailed => ex
         # p [:failing, self, io.string[io.pos, 20]]
@@ -276,6 +277,7 @@ module Parslet::Atoms
         rescue ParseFailed => ex
         end
       }
+      # If we reach this point, all alternatives have failed. 
       error(io, "Expected one of #{alternatives.inspect}.")
     end
 
