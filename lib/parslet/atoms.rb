@@ -166,8 +166,13 @@ module Parslet::Atoms
     def error(io, str)
       pre = io.string[0..io.pos]
       lines = Array(pre.lines)
-      pos   = lines.last.length
-      formatted_cause = "#{str} at line #{lines.count} char #{pos}."
+      
+      if lines.empty?
+        formatted_cause = str
+      else
+        pos   = lines.last.length
+        formatted_cause = "#{str} at line #{lines.count} char #{pos}."
+      end
 
       @last_cause = formatted_cause
       
