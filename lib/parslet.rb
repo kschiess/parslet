@@ -64,11 +64,6 @@ module Parslet
     Pattern::SimpleBind.new(symbol)
   end
   module_function :simple
-
-  # def named(name, &block)
-  #   Atoms::Entity.new(name, block)
-  # end
-  # module_function :named
 end
 
 require 'parslet/error_tree'

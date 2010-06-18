@@ -12,4 +12,28 @@ describe Parslet::Atoms::Entity do
       named.inspect.should == 'NAME'
     end 
   end
+  
+  context "recursive definition parser" do
+    class RecDefParser
+      include Parslet
+      rule :recdef do
+        str('(') >> atom >> str(')')
+      end
+      rule :atom do
+        str('a') / str('b') / recdef
+      end
+    end
+    let(:parser) { RecDefParser.new }
+    
+    it "should parse balanced parens" do
+      parser.recdef.parse("(((a)))")
+    end
+    it "should not throw 'stack level too deep' when printing errors" do
+      begin
+        parser.recdef.parse('(((a))')
+      rescue Parslet::Atoms::ParseFailed
+      end
+      puts parser.recdef.error_tree.ascii_tree
+    end
+  end
 end
