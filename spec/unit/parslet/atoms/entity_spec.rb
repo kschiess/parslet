@@ -33,7 +33,7 @@ describe Parslet::Atoms::Entity do
         parser.recdef.parse('(((a))')
       rescue Parslet::Atoms::ParseFailed
       end
-      puts parser.recdef.error_tree.ascii_tree
+      parser.recdef.error_tree.ascii_tree
     end
   end
 end
