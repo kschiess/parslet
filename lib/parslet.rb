@@ -1,5 +1,4 @@
 require 'stringio'
-require 'metaid'
 
 module Parslet
   def self.included(base)

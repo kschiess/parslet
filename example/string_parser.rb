@@ -6,19 +6,19 @@ require 'parslet'
 class LiteralsParser
   include Parslet
   
-  def space
+  rule :space do
     (match '[ ]').repeat(1)
   end
   
-  def literals
+  rule :literals do
     (literal >> eol).repeat
   end
   
-  def literal
+  rule :literal do
     (integer / string).as(:literal) >> space.maybe
   end
   
-  def string
+  rule :string do
     str('"') >> 
     (
       (str('\\') >> any) /
@@ -27,19 +27,19 @@ class LiteralsParser
     str('"')
   end
   
-  def integer
+  rule :integer do
     match('[0-9]').repeat(1).as(:integer)
   end
   
-  def eol
+  rule :eol do
     line_end.repeat(1)
   end
   
-  def line_end
+  rule :line_end do
     crlf >> space.maybe
   end
   
-  def crlf
+  rule :crlf do
     match('[\r\n]').repeat(1)
   end
   
