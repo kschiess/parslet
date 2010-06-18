@@ -11,34 +11,29 @@ describe "Regressions from real examples" do
   #
   class ArgumentListParser
     include Parslet
-    def argument_list
+
+    rule :argument_list do
       expression.as(:argument) >> 
         (comma >> expression.as(:argument)).repeat
     end
-    def expression
-      named('expression') {
-        (
-          string
-        )
-      }
+    rule :expression do
+      string
     end
-    def string
-      named('string') {
-        str('"') >> 
-        (
-          (str('\\') >> any) /
-          (str('"').absnt? >> any)
-        ).repeat.as(:string) >>
-        str('"') >> space?
-      }
+    rule :string do
+      str('"') >> 
+      (
+        (str('\\') >> any) /
+        (str('"').absnt? >> any)
+      ).repeat.as(:string) >>
+      str('"') >> space?
     end
-    def comma
+    rule :comma do
       str(',') >> space?
     end
-    def space?
-      named('whitespace') { space.maybe }
+    rule :space? do
+      space.maybe
     end
-    def space
+    rule :space do
       match("[ \t]").repeat(1)
     end
     
@@ -47,6 +42,10 @@ describe "Regressions from real examples" do
     end
   end
   context ArgumentListParser do
+    let(:instance) { ArgumentListParser.new }
+    it "should have method expression" do
+      instance.should respond_to(:expression)
+    end 
     it 'should parse "arg1", "arg2"' do
       result = ArgumentListParser.new.parse('"arg1", "arg2"')
       

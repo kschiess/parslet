@@ -1,10 +1,43 @@
 require 'stringio'
+require 'metaid'
 
 module Parslet
-  def named(name, &block)
-    Atoms::Entity.new(name, block)
+  def self.included(base)
+    base.extend(ClassMethods)
   end
-  module_function :named
+  
+  module ClassMethods
+    # Parser structure ---------------------------------------------------------
+  
+    # Define an entity for the parser. This generates a method of the same name
+    # that can be used as part of other patterns. Those methods can be freely
+    # mixed in your parser class with real ruby methods.
+    #
+    # Example: 
+    #
+    #   class MyParser
+    #     include Parslet
+    #
+    #     rule :bar { str('bar') }
+    #     rule :twobar do
+    #       bar >> bar
+    #     end
+    #
+    #     def parse(str)
+    #       twobar.parse(str)
+    #     end
+    #   end
+    #
+    def rule(name, &definition)
+      define_method(name) do
+        @rules ||= {}     # <name, rule> memoization
+        @rules[name] or
+          (@rules[name] = Atoms::Entity.new(name, self, definition))
+      end
+    end
+  end
+  
+  # Text matching ------------------------------------------------------------
   
   def match(obj)
     Atoms::Re.new(obj)
@@ -21,6 +54,8 @@ module Parslet
   end
   module_function :any
 
+  # Tree matching ------------------------------------------------------------
+  
   def sequence(symbol)
     Pattern::SequenceBind.new(symbol)
   end
@@ -30,6 +65,11 @@ module Parslet
     Pattern::SimpleBind.new(symbol)
   end
   module_function :simple
+
+  # def named(name, &block)
+  #   Atoms::Entity.new(name, block)
+  # end
+  # module_function :named
 end
 
 require 'parslet/error_tree'

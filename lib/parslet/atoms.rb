@@ -418,12 +418,24 @@ module Parslet::Atoms
     end
   end
 
+  # This wraps pieces of parslet definition and gives them a name. The wrapped
+  # piece is lazily evaluated and cached. This has two purposes: 
+  #     
+  # a) Avoid infinite recursion during evaluation of the definition
+  #
+  # b) Be able to print things by their name, not by their sometimes
+  #    complicated content.
+  #
+  # You don't normally use this directly, instead you should generated it by
+  # using the structuring method Parslet#rule.
+  #
   class Entity < Base
-    attr_reader :name, :block
-    def initialize(name, block)
+    attr_reader :name, :context, :block
+    def initialize(name, context, block)
       super()
       
       @name = name
+      @context = context
       @block = block
     end
 
@@ -432,11 +444,11 @@ module Parslet::Atoms
     end
     
     def parslet
-      @parslet ||= block.call
+      @parslet ||= context.instance_eval(&block)
     end
 
     def to_s_inner(prec)
-      name.upcase
+      name.to_s.upcase
     end
 
     def error_tree

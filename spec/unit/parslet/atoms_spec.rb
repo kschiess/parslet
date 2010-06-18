@@ -255,19 +255,6 @@ describe Parslet do
       io.pos.should == 1
     end 
   end
-  describe "named entity entity('foo') { str('bar') }" do
-    attr_reader :parslet
-    before(:each) do
-      @parslet = named('foo') { str('bar') }
-    end
-    
-    it "should parse 'bar'" do
-      parslet.parse('bar')
-    end 
-    it "should inspect as NAME" do
-      parslet.inspect.should == "FOO"
-    end 
-  end
   describe "eof behaviour" do
     context "when the pattern just doesn't consume the input" do
       let (:parslet) { any }
@@ -433,7 +420,6 @@ describe Parslet do
     inspection=[
       [str('a'),                              "'a'"                 ], 
       [(str('a') / str('b')).maybe,           "('a' / 'b')?"        ], 
-      [(named('foo') {} / named('bar') {}),   "FOO / BAR"           ], 
       [(str('a') >> str('b')).maybe,          "('a' 'b')?"          ], 
       [str('a').maybe.maybe,                  "'a'??"               ], 
       [(str('a')>>str('b')).maybe.maybe,      "('a' 'b')??"         ], 
