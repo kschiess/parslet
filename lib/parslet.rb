@@ -1,5 +1,90 @@
 require 'stringio'
 
+# A simple parser generator library. Typical usage would look like this: 
+#
+#   require 'parslet'
+#     
+#   class MyParser
+#     include Parslet
+#     
+#     rule(:a) { str('a').repeat }
+#     
+#     def parse(str)
+#       a.parse(str)
+#     end
+#   end
+#     
+#   pp MyParser.new.parse('aaaa')   # => 'aaaa'
+#   pp MyParser.new.parse('bbbb')   # => Parslet::Atoms::ParseFailed: 
+#                                   #    Don't know what to do with bbbb at line 1 char 1.
+#
+# The simple DSL allows you to define grammars in PEG-style. This kind of
+# grammar construction does away with the ambiguities that usually comes with
+# parsers; instead, it allows you to construct grammars that are easier to
+# debug, since less magic is involved. 
+#
+# = Language Atoms
+#
+# PEG-style grammars build on a very small number of atoms, or parslets as
+# I'll call them. In fact, only three types of parslets exist. Here's how to
+# match a string: 
+#
+#   str('a string')
+#
+# This matches the string 'a string' literally and nothing else. If your input
+# doesn't contain the string, it will fail. Here's how to match a character
+# set: 
+#
+#   match('[abc]')
+#
+# This matches 'a', 'b' or 'c'. The string matched will always have a length
+# of 1; to match longer strings, please see the title below. The last parslet
+# of the three is 'any':
+#
+#   any
+#
+# 'any' functions like the dot in regular expressions - it matches any single
+# character. 
+#
+# = Combination and Repetition
+#
+# Parslets only get useful when combined to grammars. To combine one parslet
+# with the other, you have 4 kinds of methods available: repeat and maybe, 
+# >> (sequence), / (alternation), absnt? and prsnt?.
+#
+#   str('a').repeat     # any number of 'a's, including 0
+#   str('a').maybe      # maybe there'll be an 'a', maybe not   
+#
+# Parslets can be joined using >>. This means: Match the left parslet, then 
+# match the right parslet. 
+#
+#   str('a') >> str('b')  # would match 'ab'
+#
+# Keep in mind that all combination and repetition operators themselves return
+# a parslet. You can combine the result again: 
+#
+#   ( str('a') >> str('b') ) >> str('c')    # would match 'abc'
+# 
+# The slash ('/') indicates alternatives: 
+#
+#   str('a') / str('b')   # would match 'a' OR 'b'
+#
+# It was chosen over the 'or' operator because of its precedence and because
+# the authors of the original paper used it. 
+# 
+# More documentation on these methods can be found in Parslets::Atoms::Base.
+#
+# = Output transformation
+# 
+# Naming parslets
+# Construction of lambda blocks
+#
+# = Further documentation
+#
+# Please see the examples subdirectory of the distribution for more examples. 
+# There is also 'rooc', a small compiler experiment written by the author of
+# parslet that demonstrates how to use parslet in a bigger project. 
+#    
 module Parslet
   def self.included(base)
     base.extend(ClassMethods)
@@ -74,11 +159,21 @@ module Parslet
   #   # This would match a body element that contains several declarations.
   #   { :body => sequence(:declarations) }
   #
+  # The above example would match :body => ['a', 'b'], but not :body => 'a'. 
+  #
   def sequence(symbol)
     Pattern::SequenceBind.new(symbol)
   end
   module_function :sequence
   
+  # Returns a placeholder for a tree transformation that will only match 
+  # simple elements. This matches everything that #sequence doesn't match.
+  #
+  # Example: 
+  #
+  #   # Matches a single header. 
+  #   { :header => simple(:header) }
+  #
   def simple(symbol)
     Pattern::SimpleBind.new(symbol)
   end
