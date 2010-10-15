@@ -3,17 +3,17 @@ require 'stringio'
 # A simple parser generator library. Typical usage would look like this: 
 #
 #   require 'parslet'
-#     
+#       
 #   class MyParser
 #     include Parslet
-#     
+#       
 #     rule(:a) { str('a').repeat }
-#     
+#       
 #     def parse(str)
 #       a.parse(str)
 #     end
 #   end
-#     
+#       
 #   pp MyParser.new.parse('aaaa')   # => 'aaaa'
 #   pp MyParser.new.parse('bbbb')   # => Parslet::Atoms::ParseFailed: 
 #                                   #    Don't know what to do with bbbb at line 1 char 1.
@@ -49,13 +49,13 @@ require 'stringio'
 # = Combination and Repetition
 #
 # Parslets only get useful when combined to grammars. To combine one parslet
-# with the other, you have 4 kinds of methods available: repeat and maybe, 
-# >> (sequence), / (alternation), absnt? and prsnt?.
+# with the other, you have 4 kinds of methods available: repeat and maybe, >>
+# (sequence), / (alternation), absnt? and prsnt?.
 #
 #   str('a').repeat     # any number of 'a's, including 0
 #   str('a').maybe      # maybe there'll be an 'a', maybe not   
 #
-# Parslets can be joined using >>. This means: Match the left parslet, then 
+# Parslets can be joined using >>. This means: Match the left parslet, then
 # match the right parslet. 
 #
 #   str('a') >> str('b')  # would match 'ab'
@@ -64,27 +64,38 @@ require 'stringio'
 # a parslet. You can combine the result again: 
 #
 #   ( str('a') >> str('b') ) >> str('c')    # would match 'abc'
-# 
+#   
 # The slash ('/') indicates alternatives: 
 #
 #   str('a') / str('b')   # would match 'a' OR 'b'
 #
-# It was chosen over the 'or' operator because of its precedence and because
-# the authors of the original paper used it. 
-# 
+# The left side of an alternative is matched first; if it matches, the right
+# side is never looked at. 
+#
+# The absnt? and prsnt? qualifiers allow looking at input without consuming
+# it: 
+#
+#   str('a').absnt?               # will match if at the current position there is an 'a'. 
+#   str('a').absnt? >> str('b')   # check for 'a' then match 'b'
+#
+# This means that the second example will not match any input; when the second
+# part is parsed, the first part has asserted the presence of 'a', and thus
+# str('b') cannot match. The prsnt? method is the opposite of absnt?, it
+# asserts presence. 
+#   
 # More documentation on these methods can be found in Parslets::Atoms::Base.
 #
 # = Output transformation
-# 
+#   
 # Naming parslets
 # Construction of lambda blocks
 #
 # = Further documentation
 #
-# Please see the examples subdirectory of the distribution for more examples. 
-# There is also 'rooc', a small compiler experiment written by the author of
-# parslet that demonstrates how to use parslet in a bigger project. 
-#    
+# Please see the examples subdirectory of the distribution for more examples.
+# Check out 'rooc' (github.com/kschiess/rooc) as well - it uses parslet for
+# compiler construction. 
+#      
 module Parslet
   def self.included(base)
     base.extend(ClassMethods)
