@@ -14,13 +14,31 @@ require 'parslet/pattern'
 # original tree and new pieces. Most likely, you will want to transform the
 # original tree wholly, so this isn't a problem.
 #
-# You will not be able to create a loop, given that 
+# You will not be able to create a loop, given that each node will be replaced
+# only once and then left alone. This means that the results of a replacement
+# will not be acted upon. 
 #
-# a) The matcher only matches simple nodes (leafs) to variables, not sequences 
-#    or composites.
+# Example: 
 #
-# b) Each node will be replaced only once and then left alone. This means that
-#    the results of a replacement will not be acted upon. 
+#   transform = Parslet::Transform.new
+#   transform.rule(
+#     :string => simple(:x)       # (1)
+#   ) { |d| 
+#     StringLiteral.new(d[:x])    # (2)
+#   }
+#
+#   # Transforms the tree
+#   transform.apply(tree) 
+#
+# A tree transform (Parslet::Transform) is defined by a set of rules. Each
+# rule can be defined by calling #rule with the pattern as argument. The block
+# given will be called every time the rule matches somewhere in the tree given
+# to #apply. It is passed a Hash containing all the variable bindings of this
+# pattern match. 
+#  
+# In the above example, (1) illustrates a simple matching rule. In general,
+# such rules are composed of strings ("foobar"), arrays (["a", "b"]) and 
+# hashes like in the example above. 
 #
 class Parslet::Transform
   def initialize
