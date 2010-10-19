@@ -59,7 +59,7 @@ module Parslet::Atoms
       Repetition.new(self, min, nil)
     end
     def maybe
-      Repetition.new(self, 0, 1)
+      Repetition.new(self, 0, 1, :maybe)
     end
     def >>(parslet)
       Sequence.new(self, parslet)
@@ -109,6 +109,8 @@ module Parslet::Atoms
             end
           end
         }
+      elsif tag == :maybe
+        return result.first
       else
         if result.any? { |e| e.instance_of?(Hash) }
           # If keyed subtrees are in the array, we'll want to discard all 
@@ -333,14 +335,15 @@ module Parslet::Atoms
   
   class Repetition < Base
     attr_reader :min, :max, :parslet
-    def initialize(parslet, min, max)
+    def initialize(parslet, min, max, tag=:repetition)
       @parslet = parslet
       @min, @max = min, max
+      @tag = tag
     end
     
     def try(io)
       occ = 0
-      result = [:repetition]
+      result = [@tag]   # initialize the result array with the tag (for flattening)
       loop do
         begin
           result << parslet.apply(io)

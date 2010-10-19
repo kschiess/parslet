@@ -41,7 +41,7 @@ describe "Regressions from real examples" do
       argument_list.parse(str)
     end
   end
-  context ArgumentListParser do
+  describe ArgumentListParser do
     let(:instance) { ArgumentListParser.new }
     it "should have method expression" do
       instance.should respond_to(:expression)
@@ -64,4 +64,35 @@ describe "Regressions from real examples" do
     end
   end
 
+  class ParensParser
+    include Parslet
+
+    rule(:balanced) {
+      str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
+    }
+
+    def parse(str)
+      balanced.parse(str)
+    end
+  end
+  describe ParensParser do
+    let(:instance) { ParensParser.new }
+    
+    context "expression '(())'" do
+      let(:result) { instance.parse('(())') }
+
+      it "should yield a doubly nested hash" do
+        result.should be_a(Hash)
+        result.should have_key(:m)
+        result[:m].should be_a(Hash)   # This was an array earlier
+      end 
+      context "inner hash" do
+        let(:inner) { result[:m] }
+        
+        it "should have nil as :m" do
+          inner[:m].should be_nil
+        end 
+      end
+    end
+  end
 end
