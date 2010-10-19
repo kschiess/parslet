@@ -7,7 +7,7 @@ class ParensParser
   include Parslet
   
   rule(:balanced) {
-    str('(').as(:l) >> balanced.as(:b).maybe >> str(')').as(:r)
+    str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
   }
   
   def parse(str)
@@ -18,6 +18,7 @@ end
 parser = ParensParser.new
 %w!
   ()
+  (())
   ((((()))))
   ((())
 !.each do |pexp|

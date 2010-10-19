@@ -40,6 +40,22 @@ require 'parslet/pattern'
 # such rules are composed of strings ("foobar"), arrays (["a", "b"]) and 
 # hashes like in the example above. 
 #
+# Let's say you want to parse matching parentheses and distill a maximum 
+# nest depth. You would probably write a parser like the one in example/parens.rb; 
+# here's the relevant part: 
+#
+#   rule(:balanced) {
+#     str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
+#   }
+#
+# If you now apply this to a string like '(())', you get a intermediate 
+# parse tree that looks like this: 
+#
+#   {:l => "(", 
+#     :m => [{:l=>"(", :m=>"", :r=>")"}], 
+#     :r => ")"}
+# XXX should not have an array!!
+#
 class Parslet::Transform
   def initialize
     @rules = []
