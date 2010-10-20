@@ -1,5 +1,10 @@
+= 0.1.1 / ???
 
-= 0.1.0 / ???
+  * parslet.maybe now yields the result or nil in case of parse failure. This
+    is probably better than the array it did before; the jury is still out on
+    that. 
+
+= 0.1.0 / not released.
 
   * Initial version. Classes for parsing, matching in the resulting trees
     and transforming the trees into something more useful.  

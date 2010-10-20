@@ -84,10 +84,7 @@ describe Parslet do
     end 
   end
   describe "str('foo').maybe" do
-    attr_reader :parslet
-    before(:each) do
-      @parslet = str('foo').maybe
-    end
+    let(:parslet) { str('foo').maybe }
 
     it "should parse a foo" do
       parslet.parse('foo')
@@ -100,6 +97,16 @@ describe Parslet do
     it "should inspect as 'foo'?" do
       parslet.inspect.should == "'foo'?"
     end 
+    context "when parsing 'foo'" do
+      subject { parslet.parse('foo') }
+      
+      it { should == 'foo' }
+    end
+    context "when parsing ''" do
+      subject { parslet.parse('') } 
+      
+      it { should == nil } 
+    end
   end
   describe "str('foo') >> str('bar')" do
     attr_reader :parslet
