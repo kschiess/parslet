@@ -15,7 +15,26 @@ class ParensParser
   end
 end
 
+class ParensTransform
+  include Parslet
+  
+  attr_reader :t
+  def initialize
+    @t = Transform.new
+    
+    t.rule(:l => '(', :m => simple(:x), :r => ')') { |d| 
+      previous = d[:x]
+      
+      previous.nil? ? 1 : previous+1 }
+  end
+  
+  def apply(tree)
+    t.apply(tree)
+  end
+end
+
 parser = ParensParser.new
+transform = ParensTransform.new
 %w!
   ()
   (())
@@ -24,7 +43,7 @@ parser = ParensParser.new
 !.each do |pexp|
   begin
     result = parser.parse(pexp)
-    puts "#{"%20s"%pexp}: #{result.inspect}"
+    puts "#{"%20s"%pexp}: #{result.inspect} (#{transform.apply(result)} parens)"
   rescue Parslet::Atoms::ParseFailed => m
     puts "#{"%20s"%pexp}: #{m}"
   end
