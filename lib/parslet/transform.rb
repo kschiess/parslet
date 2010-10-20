@@ -51,10 +51,23 @@ require 'parslet/pattern'
 # If you now apply this to a string like '(())', you get a intermediate 
 # parse tree that looks like this: 
 #
-#   {:l => "(", 
-#     :m => [{:l=>"(", :m=>"", :r=>")"}], 
-#     :r => ")"}
-# XXX should not have an array!!
+#   {
+#     :l => "(", 
+#     :m => {
+#       :l=>"(", :m=>nil, :r=>")" }, 
+#     :r => ")"
+#   }
+#
+# This parse tree is good for debugging, but what we would really like to have
+# is just the nesting depth. This transformation rule will produce that: 
+#
+#   t.rule(:l => '(', :m => simple(:x), :r => ')') { |d| 
+#     depth = d[:x]
+#  
+#     depth.nil? ? 1 : depth+1 
+#   }
+#   t.apply(tree) # => 2
+#
 #
 class Parslet::Transform
   def initialize
