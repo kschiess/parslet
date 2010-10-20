@@ -3,17 +3,17 @@ require 'stringio'
 # A simple parser generator library. Typical usage would look like this: 
 #
 #   require 'parslet'
-#       
+#        
 #   class MyParser
 #     include Parslet
-#       
+#        
 #     rule(:a) { str('a').repeat }
-#       
+#        
 #     def parse(str)
 #       a.parse(str)
 #     end
 #   end
-#       
+#        
 #   pp MyParser.new.parse('aaaa')   # => 'aaaa'
 #   pp MyParser.new.parse('bbbb')   # => Parslet::Atoms::ParseFailed: 
 #                                   #    Don't know what to do with bbbb at line 1 char 1.
@@ -64,7 +64,7 @@ require 'stringio'
 # a parslet. You can combine the result again: 
 #
 #   ( str('a') >> str('b') ) >> str('c')    # would match 'abc'
-#   
+#    
 # The slash ('/') indicates alternatives: 
 #
 #   str('a') / str('b')   # would match 'a' OR 'b'
@@ -82,20 +82,52 @@ require 'stringio'
 # part is parsed, the first part has asserted the presence of 'a', and thus
 # str('b') cannot match. The prsnt? method is the opposite of absnt?, it
 # asserts presence. 
-#   
+#    
 # More documentation on these methods can be found in Parslets::Atoms::Base.
 #
-# = Output transformation
+# = Intermediary Parse Trees
+#  
+# Output generated
 #   
 # Naming parslets
+#
 # Construction of lambda blocks
+#
+# = Intermediary Tree transformation
+#
+# The intermediary parse tree by itself is most often not very useful. Its
+# form is volatile; changing your parser in the slightest might produce
+# profound changes in the generated trees. 
+#
+# Generally you will want to construct a more stable tree using your own
+# carefully crafted representation of the domain. Parslet provides you with
+# an elegant way of transmogrifying your intermediary tree into the output
+# format you choose. This is achieved by transformation rules such as this
+# one: 
+#
+#   transform.rule(:literal => {:string => :_x}) { |d| 
+#     StringLit.new(*d.values) }
+# 
+# The above rule will transform a subtree looking like this: 
+#
+#                              :literal
+#                                   |     
+#                               :string    
+#                                   |
+#                              "somestring"
+#
+# into just this: 
+#
+#                               StringLit
+#                               value: "somestring"
+#
 #
 # = Further documentation
 #
 # Please see the examples subdirectory of the distribution for more examples.
 # Check out 'rooc' (github.com/kschiess/rooc) as well - it uses parslet for
 # compiler construction. 
-#      
+#       
 module Parslet
   def self.included(base)
     base.extend(ClassMethods)

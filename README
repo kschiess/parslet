@@ -87,7 +87,7 @@ This library should work with both ruby 1.8 and ruby 1.9.
 
 STATUS 
 
-Preparing for first release (0.1.0). Not many edge cases left to be covered, 
-but error reporting is still lacking. Usable for most compiler projects.
+Preparing for first release. Not many edge cases left to be covered, but error
+reporting is still lacking. Usable for most compiler projects.
 
 (c) 2010 Kaspar Schiess

@@ -12,6 +12,13 @@
 #     }
 #   }
 #
+# A pattern that would match against this tree would be: 
+#
+#   { :function_call => { :name => simple(:name), :args => sequence(:args) }}
+#
+# Note that Parslet::Pattern only matches at a given subtree; it wont try 
+# to match recursively. To do that, please use Parslet::Transform. 
+#
 class Parslet::Pattern
   def initialize(pattern)
     @pattern = pattern
