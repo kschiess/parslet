@@ -83,14 +83,16 @@ class Parslet::Transform
   end
   
   def apply(obj)
-    case obj
-      when Hash
-        recurse_hash(obj)
-      when Array
-        recurse_array(obj)
-    else
-      transform_elt(obj)
-    end
+    transform_elt(
+      case obj
+        when Hash
+          recurse_hash(obj)
+        when Array
+          recurse_array(obj)
+      else
+        obj
+      end
+    )
   end
   
   def transform_elt(elt)
@@ -105,14 +107,12 @@ class Parslet::Transform
     return elt
   end
   def recurse_hash(hsh)
-    transform_elt(
-      hsh.inject({}) do |new_hsh, (k,v)|
-        new_hsh[k] = apply(v)
-        new_hsh
-      end)
+    hsh.inject({}) do |new_hsh, (k,v)|
+      new_hsh[k] = apply(v)
+      new_hsh
+    end
   end
   def recurse_array(ary)
-    transform_elt(
-      ary.map { |elt| apply(elt) })
+    ary.map { |elt| apply(elt) }
   end
 end
