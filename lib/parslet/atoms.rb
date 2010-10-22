@@ -180,8 +180,13 @@ module Parslet::Atoms
       not @last_cause.nil?
     end
   private
-    def error(io, str)
-      pre = io.string[0..io.pos]
+    # Report/raise a parse error with the given message, printing the current
+    # position as well. Appends 'at line X char Y.' to the message you give. 
+    # If +pos+ is given, it is used as the real position the error happened, 
+    # correcting the io's current position.
+    #
+    def error(io, str, pos=nil)
+      pre = io.string[0..(pos||io.pos)]
       lines = Array(pre.lines)
       
       if lines.empty?
@@ -398,6 +403,10 @@ module Parslet::Atoms
     end
   end
 
+  # Matches a special kind of regular expression that only ever matches one
+  # character at a time. Useful members of this family are: character ranges, 
+  # \w, \d, \r, \n, ...
+  #
   class Re < Base
     attr_reader :match
     def initialize(match)
@@ -417,6 +426,8 @@ module Parslet::Atoms
     end
   end
   
+  # Matches a string of characters. 
+  #
   class Str < Base
     attr_reader :str
     def initialize(str)
@@ -427,7 +438,8 @@ module Parslet::Atoms
       old_pos = io.pos
       s = io.read(str.size)
       error(io, "Premature end of input") unless s && s.size==str.size
-      error(io, "Expected #{str.inspect}, but got #{s.inspect}") unless s==str
+      error(io, "Expected #{str.inspect}, but got #{s.inspect}", old_pos) \
+        unless s==str
       return s
     end
     
