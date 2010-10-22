@@ -9,7 +9,22 @@ module Parslet::Atoms
     OUTER      = (prec+=1)    # printing is done here.
   end
   
-  class ParseFailed < Exception; end
+  # This is raised when the parse failed to match or to consume all its input.
+  # It contains the message that should be presented to the user. If you want
+  # to display more error explanation, you can print the #error_tree that is
+  # stored in the parslet. This is a graphical representation of what went
+  # wrong. 
+  #
+  # Example: 
+  #    
+  #   begin
+  #     parslet.parse(str)
+  #   rescue Parslet::ParseFailed => failure
+  #     puts parslet.error_tree.ascii_tree
+  #   end
+  #
+  class ParseFailed < Exception
+  end
   
   # Base class for all parslets, handles orchestration of calls and implements
   # a lot of the operator and chaining methods.
@@ -178,7 +193,7 @@ module Parslet::Atoms
 
       @last_cause = formatted_cause
       
-      raise ParseFailed, formatted_cause
+      raise ParseFailed, formatted_cause, nil
     end
     def warn_about_duplicate_keys(h1, h2)
       d = h1.keys & h2.keys

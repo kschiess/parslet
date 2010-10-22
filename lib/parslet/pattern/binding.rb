@@ -1,4 +1,7 @@
 
+# Used internally for representing a bind placeholder in a Parslet::Transform
+# pattern. This is the superclass for all bindings. 
+#
 class Parslet::Pattern::Bind
   attr_reader :symbol
   def initialize(symbol)
@@ -23,7 +26,7 @@ class Parslet::Pattern::SimpleBind < Parslet::Pattern::Bind
   end
 end
 
-# Binds a symbol to a sequence of simple subtrees ([tree1, tree2, ...])
+# Binds a symbol to a sequence of simple leafs ([element1, element2, ...])
 #
 class Parslet::Pattern::SequenceBind < Parslet::Pattern::Bind
   def inspect
