@@ -77,7 +77,8 @@ describe Parslet do
       lambda {
         parslet.parse('bar')
       }.should not_parse
-      parslet.cause.should == "Expected \"foo\", but got \"bar\" at line 1 char 3."
+      parslet.cause.should == 
+        "Expected \"foo\", but got \"bar\" at line 1 char 1."
     end
     it "should inspect as 'foo'" do
       parslet.inspect.should == "'foo'"
