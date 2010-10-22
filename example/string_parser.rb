@@ -66,9 +66,10 @@ end
 
 transform = Parslet::Transform.new
 
-transform.rule(:literal => {:integer => :_x}) { |d| IntLit.new(*d.values) }
-transform.rule(:literal => {:string => :_x}) { |d| StringLit.new(*d.values) }
-  # replace([Lit])                          { |x| tree(x) }
+transform.rule(:literal => {:integer => simple(:x)}) { |d| 
+  IntLit.new(*d.values) }
+transform.rule(:literal => {:string => simple(:x)}) { |d| 
+  StringLit.new(*d.values) }
   
 ast = transform.apply(parsetree)
 pp ast
