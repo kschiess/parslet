@@ -44,7 +44,7 @@ module Parslet::Atoms
         # error to fail with. Otherwise just report that we cannot consume the
         # input.
         if cause 
-          raise ParseFailed, cause
+          raise ParseFailed, "Unconsumed input, maybe because of this: #{cause}"
         else
           error(io, "Don't know what to do with #{io.string[io.pos,100]}") 
         end
