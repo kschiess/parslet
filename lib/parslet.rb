@@ -23,11 +23,23 @@ require 'stringio'
 # parsers; instead, it allows you to construct grammars that are easier to
 # debug, since less magic is involved. 
 #
+# Parslet is typically used in stages: 
+#
+# 
+# * Parsing the input string; this yields an intermediary tree
+# * Transformation of the tree into something useful to you
+#
+# The first stage is traditionally intermingled with the second stage; output
+# from the second stage is usually called the 'Abstract Syntax Tree' or AST. 
+#
+# The stages are completely decoupled; You can change your grammar around 
+# and use the second stage to isolate the rest of your code from the changes
+# you've effected. 
+#
 # = Language Atoms
 #
-# PEG-style grammars build on a very small number of atoms, or parslets as
-# I'll call them. In fact, only three types of parslets exist. Here's how to
-# match a string: 
+# PEG-style grammars build on a very small number of atoms, or parslets. In
+# fact, only three types of parslets exist. Here's how to match a string: 
 #
 #   str('a string')
 #
@@ -86,8 +98,23 @@ require 'stringio'
 # More documentation on these methods can be found in Parslets::Atoms::Base.
 #
 # = Intermediary Parse Trees
-#  
-# Output generated
+# 
+# As you have probably seen above, you can hand input (strings or StringIOs) to
+# your parslets like this: 
+#
+#   parslet.parse(str)    
+#
+# This returns an intermediary parse tree or raises an exception
+# (Parslet::ParseFailed) when the input is not well formed. 
+#
+# Intermediary parse trees are essentially just Plain Old Ruby Objects. (PORO
+# technology as we call it.) Parslets try very hard to return sensible stuff; 
+# it is quite easy to use the results for the later stages of your program. 
+#
+# Here a few examples and what their intermediary tree looks like: 
+#
+#   str('foo').parse('foo')                           # => 'foo'
+#   (str('f') >> str('o') >> str('o')).parse('foo')   # => 'foo'
 #   
 # Naming parslets
 #
