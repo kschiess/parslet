@@ -9,8 +9,11 @@ describe 'Result of a Parslet#parse' do
       [str('foo').maybe >> str('bar'), "bar", "bar"],
       [str('bar') >> str('foo').maybe, "bar", nil], 
       
+      # These might be hard to understand; look at the result of str.maybe >> str
+      # and str.maybe >> str first. 
       [(str('f').maybe >> str('b')).repeat, "bb", "bb"],
       [(str('b') >> str('f').maybe).repeat, "bb", ""]
+      
     ].each do |parslet, input, result|
       context "#{parslet.inspect}" do
         it "should parse \"#{input}\" into \"#{result}\"" do
