@@ -103,47 +103,56 @@ module Parslet::Atoms
       result = tail.
         map { |e| flatten(e) }            # first flatten each element
         
-      if tag == :sequence
-        result.inject('') { |r, e|        # and then merge flat elements
-          case [r, e].map { |o| o.class }
-            when [Hash, Hash]             # two keyed subtrees: make one
-              warn_about_duplicate_keys(r, e)
-              r.merge(e)
-            # a keyed tree and an array (push down)
-            when [Hash, Array]
-              [r] + e
-            when [Array, Hash]   
-              r + [e]
-            when [String, String]
-              r << e
-          else
-            if r.instance_of? Hash
-              r   # Ignore e, since its not a hash we can merge
-            else
-              e   # Whatever e is at this point, we keep it
-            end
-          end
-        }
-      elsif tag == :maybe
-        return result.first
-      else
-        if result.any? { |e| e.instance_of?(Hash) }
-          # If keyed subtrees are in the array, we'll want to discard all 
-          # strings inbetween. To keep them, name them. 
-          return result.select { |e| e.instance_of?(Hash) }
-        end
-
-        if result.any? { |e| e.instance_of?(Array) }
-          # If any arrays are nested in this array, flatten all arrays to this
-          # level. 
-          return result.
-            select { |e| e.instance_of?(Array) }.
-            flatten(1)
-        end
-        
-        # If there are only strings, concatenate them and return that. 
-        result.inject('') { |s,e| s<<e }
+      case tag
+        when :sequence
+          return flatten_sequence(result)
+        when :maybe
+          return result.first
+        when :repetition
+          return flatten_repetition(result)
       end
+      
+      fail "BUG: Unknown tag #{tag.inspect}."
+    end
+    def flatten_sequence(list)
+      list.inject('') { |r, e|        # and then merge flat elements
+        case [r, e].map { |o| o.class }
+          when [Hash, Hash]             # two keyed subtrees: make one
+            warn_about_duplicate_keys(r, e)
+            r.merge(e)
+          # a keyed tree and an array (push down)
+          when [Hash, Array]
+            [r] + e
+          when [Array, Hash]   
+            r + [e]
+          when [String, String]
+            r << e
+        else
+          if r.instance_of? Hash
+            r   # Ignore e, since its not a hash we can merge
+          else
+            e   # Whatever e is at this point, we keep it
+          end
+        end
+      }
+    end
+    def flatten_repetition(list)
+      if list.any? { |e| e.instance_of?(Hash) }
+        # If keyed subtrees are in the array, we'll want to discard all 
+        # strings inbetween. To keep them, name them. 
+        return list.select { |e| e.instance_of?(Hash) }
+      end
+
+      if list.any? { |e| e.instance_of?(Array) }
+        # If any arrays are nested in this array, flatten all arrays to this
+        # level. 
+        return list.
+          select { |e| e.instance_of?(Array) }.
+          flatten(1)
+      end
+      
+      # If there are only strings, concatenate them and return that. 
+      list.inject('') { |s,e| s<<(e||'') }
     end
 
     def self.precedence(prec)
