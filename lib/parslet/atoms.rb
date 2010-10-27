@@ -9,23 +9,6 @@ module Parslet::Atoms
     OUTER      = (prec+=1)    # printing is done here.
   end
   
-  # This is raised when the parse failed to match or to consume all its input.
-  # It contains the message that should be presented to the user. If you want
-  # to display more error explanation, you can print the #error_tree that is
-  # stored in the parslet. This is a graphical representation of what went
-  # wrong. 
-  #
-  # Example: 
-  #    
-  #   begin
-  #     parslet.parse(str)
-  #   rescue Parslet::ParseFailed => failure
-  #     puts parslet.error_tree.ascii_tree
-  #   end
-  #
-  class ParseFailed < Exception
-  end
-  
   # Base class for all parslets, handles orchestration of calls and implements
   # a lot of the operator and chaining methods.
   #
@@ -44,7 +27,7 @@ module Parslet::Atoms
         # error to fail with. Otherwise just report that we cannot consume the
         # input.
         if cause 
-          raise ParseFailed, "Unconsumed input, maybe because of this: #{cause}"
+          raise Parslet::ParseFailed, "Unconsumed input, maybe because of this: #{cause}"
         else
           error(io, "Don't know what to do with #{io.string[io.pos,100]}") 
         end
@@ -64,7 +47,7 @@ module Parslet::Atoms
         # p [:return_from, self, flatten(r)]
         @last_cause = nil
         return r
-      rescue ParseFailed => ex
+      rescue Parslet::ParseFailed => ex
         # p [:failing, self, io.string[io.pos, 20]]
         io.pos = old_pos; raise ex
       end
@@ -207,7 +190,7 @@ module Parslet::Atoms
 
       @last_cause = formatted_cause
       
-      raise ParseFailed, formatted_cause, nil
+      raise Parslet::ParseFailed, formatted_cause, nil
     end
     def warn_about_duplicate_keys(h1, h2)
       d = h1.keys & h2.keys
@@ -257,7 +240,7 @@ module Parslet::Atoms
       pos = io.pos
       begin
         bound_parslet.apply(io)
-      rescue ParseFailed 
+      rescue Parslet::ParseFailed 
         return fail(io)
       ensure 
         io.pos = pos
@@ -310,7 +293,7 @@ module Parslet::Atoms
       alternatives.each { |a|
         begin
           return a.apply(io)
-        rescue ParseFailed => ex
+        rescue Parslet::ParseFailed => ex
         end
       }
       # If we reach this point, all alternatives have failed. 
@@ -347,7 +330,7 @@ module Parslet::Atoms
         @offending_parslet = p
         p.apply(io) 
       }
-    rescue ParseFailed
+    rescue Parslet::ParseFailed
       error(io, "Failed to match sequence (#{self.inspect})")
     end
         
@@ -381,7 +364,7 @@ module Parslet::Atoms
           # If we're not greedy (max is defined), check if that has been 
           # reached. 
           return result if max && occ>=max
-        rescue ParseFailed => ex
+        rescue Parslet::ParseFailed => ex
           # Greedy matcher has produced a failure. Check if occ (which will
           # contain the number of sucesses) is in {min, max}.
           # p [:repetition, occ, min, max]

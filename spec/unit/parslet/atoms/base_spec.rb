@@ -8,7 +8,7 @@ describe Parslet::Atoms::Base do
       it "should not raise an error" do
         begin
           parslet.send(:error, StringIO.new, 'test') 
-        rescue Parslet::Atoms::ParseFailed
+        rescue Parslet::ParseFailed
           # This is what error does, other exceptions are bugs in #error.
         end
       end 
@@ -19,7 +19,7 @@ describe Parslet::Atoms::Base do
       before(:each) do
         begin
           parslet.send(:error, StringIO.new, 'cause') 
-        rescue Parslet::Atoms::ParseFailed
+        rescue Parslet::ParseFailed
         end
 
         parslet.cause.should == 'cause'

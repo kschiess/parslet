@@ -4,7 +4,7 @@ require 'parslet'
 
 describe Parslet do
   def not_parse
-    raise_error(Parslet::Atoms::ParseFailed)
+    raise_error(Parslet::ParseFailed)
   end
   
   include Parslet
@@ -240,12 +240,9 @@ describe Parslet do
     end
     
     it "should not loop infinitly" do
-      begin 
-        timeout 1 do
-          parslet.parse('bar')
-        end
-      rescue Parslet::Atoms::ParseFailed
-      end
+      lambda {
+        timeout(1) { parslet.parse('bar') }
+      }.should raise_error(Parslet::ParseFailed)
     end 
   end
   describe "any" do

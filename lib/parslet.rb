@@ -160,6 +160,23 @@ module Parslet
     base.extend(ClassMethods)
   end
   
+  # This is raised when the parse failed to match or to consume all its input.
+  # It contains the message that should be presented to the user. If you want
+  # to display more error explanation, you can print the #error_tree that is
+  # stored in the parslet. This is a graphical representation of what went
+  # wrong. 
+  #
+  # Example: 
+  #    
+  #   begin
+  #     parslet.parse(str)
+  #   rescue Parslet::ParseFailed => failure
+  #     puts parslet.error_tree.ascii_tree
+  #   end
+  #
+  class ParseFailed < Exception
+  end
+  
   module ClassMethods
     # Define an entity for the parser. This generates a method of the same name
     # that can be used as part of other patterns. Those methods can be freely
