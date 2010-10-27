@@ -3,6 +3,8 @@
   * parslet.maybe now yields the result or nil in case of parse failure. This
     is probably better than the array it did before; the jury is still out on
     that. 
+    
+  * parslet.repeat(min, max) is now valid syntax
 
 = 0.1.0 / not released.
 
