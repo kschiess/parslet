@@ -9,16 +9,17 @@ Bryan Ford here [2].
 
 Other Ruby projects that work on the same topic are: 
 http://wiki.github.com/luikore/rsec/
+http://github.com/mjijackson/citrus
 http://github.com/nathansobo/treetop
 
-My goal here is to see how a parser/parser generator should be constructed to
+My goal here was to see how a parser/parser generator should be constructed to
 allow clean AST construction and good error handling. It seems to me that most
 often, parser generators only handle the success-case and forget about
 debugging and error generation.
 
-More specifically, this library is motivated by the project rooc[3], a
-compiler I am writing. I started out using 'treetop' (see the link above), but
-found it unusable. It was lacking in
+More specifically, this library is motivated by one of my compiler projects. I
+started out using 'treetop' (see the link above), but found it unusable. It
+was lacking in
 
   * error reporting: Hard to see where a grammar fails. 
   
@@ -35,12 +36,13 @@ parse then generates a parser tree consisting entirely of hashes and arrays
 and strings (read: instable). This parser tree can then be converted to a real
 AST (read: stable) using a pattern matcher that is also part of this library.
 
-Error reporting is still lacking in many parts. I will be working on that part
-as a user of the library while constructing rooc. [3] 
+Error reporting is another area where parslet excels: It is able to print not
+only the error you are used to seeing ('Parse failed because of REASON at line
+1 and char 2'), but also prints what led to that failure in the form of a
+tree (#error_tree method).
 
 [1] http://en.wikipedia.org/wiki/Parsing_expression_grammar
 [2] http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf
-[3] http://github.com/kschiess/rooc
 
 SYNOPSIS
 
