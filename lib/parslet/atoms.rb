@@ -35,7 +35,7 @@ module Parslet::Atoms
       
       return flatten(result)
     end
-    
+
     def apply(io)
       # p [:start, self, io.string[io.pos, 10]]
       
@@ -53,8 +53,8 @@ module Parslet::Atoms
       end
     end
     
-    def repeat(min=0)
-      Repetition.new(self, min, nil)
+    def repeat(min=0, max=nil)
+      Repetition.new(self, min, max)
     end
     def maybe
       Repetition.new(self, 0, 1, :maybe)
