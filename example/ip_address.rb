@@ -21,8 +21,8 @@ module IPv4
   # some platforms, as described in Section 7.4, but only the dotted-decimal
   # form of four octets is allowed by this grammar.
   rule(:ipv4) {
-    dec_octet >> str('.') >> dec_octet >> str('.') >>
-      dec_octet >> str('.') >> dec_octet
+    (dec_octet >> str('.') >> dec_octet >> str('.') >>
+      dec_octet >> str('.') >> dec_octet).as(:ipv4)
   }
   
   rule(:dec_octet) {
@@ -65,7 +65,7 @@ module IPv6
   # their digits and leaving exactly two consecutive colons in their place to
   # mark the elision.
   rule(:ipv6) {
-    ((
+    (((
       h16r(6) /
       (dcolon >> h16r(5)) / 
       (h16.maybe >> dcolon >> h16r(4)) /
@@ -75,7 +75,7 @@ module IPv6
       ((h16 >> h16l(4)).maybe >> dcolon)
     ) >> ls32) /
     ((h16 >> h16l(5)).maybe >> dcolon >> h16) /
-    ((h16 >> h16l(6)).maybe >> dcolon)
+    ((h16 >> h16l(6)).maybe >> dcolon)).as(:ipv6)
   }
   
   rule(:h16) {
