@@ -22,8 +22,8 @@ describe "Regressions from real examples" do
     rule :string do
       str('"') >> 
       (
-        (str('\\') >> any) /
-        (str('"').absnt? >> any)
+        str('\\') >> any |
+        str('"').absnt? >> any
       ).repeat.as(:string) >>
       str('"') >> space?
     end

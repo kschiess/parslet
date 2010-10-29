@@ -36,7 +36,7 @@ describe Parslet::Atoms::Entity do
         str('(') >> atom >> str(')')
       end
       rule :atom do
-        str('a') / str('b') / recdef
+        str('a') | str('b') | recdef
       end
     end
     let(:parser) { RecDefParser.new }

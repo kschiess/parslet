@@ -5,7 +5,7 @@ module Parslet::Atoms
     LOOKAHEAD  = (prec+=1)    # &SOMETHING
     REPETITION = (prec+=1)    # 'a'+, 'a'?
     SEQUENCE   = (prec+=1)    # 'a' 'b'
-    ALTERNATE  = (prec+=1)    # 'a' / 'b'
+    ALTERNATE  = (prec+=1)    # 'a' | 'b'
     OUTER      = (prec+=1)    # printing is done here.
   end
   
@@ -62,7 +62,7 @@ module Parslet::Atoms
     def >>(parslet)
       Sequence.new(self, parslet)
     end
-    def /(parslet)
+    def |(parslet)
       Alternative.new(self, parslet)
     end
     def absnt?
@@ -284,7 +284,7 @@ module Parslet::Atoms
       @alternatives = alternatives
     end
     
-    def /(parslet)
+    def |(parslet)
       @alternatives << parslet
       self
     end
@@ -302,7 +302,7 @@ module Parslet::Atoms
 
     precedence Precedence::ALTERNATE
     def to_s_inner(prec)
-      alternatives.map { |a| a.to_s(prec) }.join(' / ')
+      alternatives.map { |a| a.to_s(prec) }.join(' | ')
     end
 
     def error_tree

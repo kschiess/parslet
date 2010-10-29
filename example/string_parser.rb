@@ -21,13 +21,13 @@ class LiteralsParser
   end
   
   rule :literal do
-    (integer / string).as(:literal) >> space.maybe
+    (integer | string).as(:literal) >> space.maybe
   end
   
   rule :string do
     str('"') >> 
     (
-      (str('\\') >> any) /
+      (str('\\') >> any) |
       (str('"').absnt? >> any)
     ).repeat.as(:string) >> 
     str('"')

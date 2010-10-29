@@ -139,10 +139,10 @@ describe Parslet do
       parslet.inspect.should == "'foo' 'bar'"
     end 
   end
-  describe "str('foo') / str('bar')" do
+  describe "str('foo') | str('bar')" do
     attr_reader :parslet
     before(:each) do
-      @parslet = str('foo') / str('bar')
+      @parslet = str('foo') | str('bar')
     end
     
     context "when failing on input 'baz'" do
@@ -167,10 +167,10 @@ describe Parslet do
       parslet.parse('bar')
     end
     it "should return self for chaining" do
-      (parslet / str('baz')).should == parslet
+      (parslet | str('baz')).should == parslet
     end 
-    it "should inspect as ('foo' / 'bar')" do
-      parslet.inspect.should == "'foo' / 'bar'"
+    it "should inspect as ('foo' | 'bar')" do
+      parslet.inspect.should == "'foo' | 'bar'"
     end 
   end
   describe "str('foo').prsnt? (positive lookahead)" do
@@ -424,11 +424,11 @@ describe Parslet do
 
     inspection=[
       [str('a'),                              "'a'"                 ], 
-      [(str('a') / str('b')).maybe,           "('a' / 'b')?"        ], 
+      [(str('a') | str('b')).maybe,           "('a' | 'b')?"        ], 
       [(str('a') >> str('b')).maybe,          "('a' 'b')?"          ], 
       [str('a').maybe.maybe,                  "'a'??"               ], 
       [(str('a')>>str('b')).maybe.maybe,      "('a' 'b')??"         ], 
-      [(str('a') >> (str('b') / str('c'))),   "'a' ('b' / 'c')"], 
+      [(str('a') >> (str('b') | str('c'))),   "'a' ('b' | 'c')"], 
       
       [str('a') >> str('b').repeat,           "'a' 'b'{0, }"        ], 
       [(str('a')>>str('b')).repeat,           "('a' 'b'){0, }"      ]  

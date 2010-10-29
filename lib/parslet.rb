@@ -62,7 +62,7 @@ require 'stringio'
 #
 # Parslets only get useful when combined to grammars. To combine one parslet
 # with the other, you have 4 kinds of methods available: repeat and maybe, >>
-# (sequence), / (alternation), absnt? and prsnt?.
+# (sequence), | (alternation), absnt? and prsnt?.
 #
 #   str('a').repeat     # any number of 'a's, including 0
 #   str('a').maybe      # maybe there'll be an 'a', maybe not   
@@ -77,9 +77,9 @@ require 'stringio'
 #
 #   ( str('a') >> str('b') ) >> str('c')    # would match 'abc'
 #    
-# The slash ('/') indicates alternatives: 
+# The slash ('|') indicates alternatives: 
 #
-#   str('a') / str('b')   # would match 'a' OR 'b'
+#   str('a') | str('b')   # would match 'a' OR 'b'
 #
 # The left side of an alternative is matched first; if it matches, the right
 # side is never looked at. 

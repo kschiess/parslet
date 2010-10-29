@@ -10,8 +10,8 @@ include Parslet
 # Constructs a parser using a Parser Expression Grammar like DSL: 
 parser =  str('"') >> 
           (
-            (str('\\') >> any) /
-            (str('"').absnt? >> any)
+            str('\\') >> any |
+            str('"').absnt? >> any
           ).repeat.as(:string) >> 
           str('"')
     

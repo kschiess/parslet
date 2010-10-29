@@ -26,10 +26,10 @@ module IPv4
   }
   
   rule(:dec_octet) {
-    (str('25') >> match("[0-5]")) /
-    (str('2') >> match("[0-4]") >> digit) /
-    (str('1') >> digit >> digit) / 
-    (match('[1-9]') >> digit) /
+    str('25') >> match("[0-5]") |
+    str('2') >> match("[0-4]") >> digit |
+    str('1') >> digit >> digit |
+    match('[1-9]') >> digit |
     digit
   }
   
@@ -65,17 +65,19 @@ module IPv6
   # their digits and leaving exactly two consecutive colons in their place to
   # mark the elision.
   rule(:ipv6) {
-    (((
-      h16r(6) /
-      (dcolon >> h16r(5)) / 
-      (h16.maybe >> dcolon >> h16r(4)) /
-      ((h16 >> h16l(1)).maybe >> dcolon >> h16r(3)) /
-      ((h16 >> h16l(2)).maybe >> dcolon >> h16r(2)) /
-      ((h16 >> h16l(3)).maybe >> dcolon >> h16r(1)) /
-      ((h16 >> h16l(4)).maybe >> dcolon)
-    ) >> ls32) /
-    ((h16 >> h16l(5)).maybe >> dcolon >> h16) /
-    ((h16 >> h16l(6)).maybe >> dcolon)).as(:ipv6)
+    (
+      (
+        h16r(6) |
+        dcolon >> h16r(5) | 
+        h16.maybe >> dcolon >> h16r(4) |
+        (h16 >> h16l(1)).maybe >> dcolon >> h16r(3) |
+        (h16 >> h16l(2)).maybe >> dcolon >> h16r(2) |
+        (h16 >> h16l(3)).maybe >> dcolon >> h16r(1) |
+        (h16 >> h16l(4)).maybe >> dcolon
+      ) >> ls32 |
+      (h16 >> h16l(5)).maybe >> dcolon >> h16 |
+      (h16 >> h16l(6)).maybe >> dcolon
+    ).as(:ipv6)
   }
   
   rule(:h16) {
@@ -83,12 +85,12 @@ module IPv6
   }
   
   rule(:ls32) {
-    (h16 >> colon >> h16) /
+    (h16 >> colon >> h16) |
     ipv4
   }
 
   rule(:hexdigit) {
-    digit / match("[a-fA-F]")
+    digit | match("[a-fA-F]")
   }
 end
 
@@ -97,7 +99,7 @@ class Parser
   include IPv6
   
   def parse(str)
-    (ipv4 / ipv6).parse(str)
+    (ipv4 | ipv6).parse(str)
   end
 end
 

@@ -1,4 +1,7 @@
-= 0.1.1 / ???
+= 0.9.0 / ???
+  * Breaking change: Ruby's binary or ('|') is now used for alternatives, 
+    instead of the division sign ('/') - this reduces the amount of 
+    parenthesis needed for a grammar overall. 
 
   * parslet.maybe now yields the result or nil in case of parse failure. This
     is probably better than the array it did before; the jury is still out on
