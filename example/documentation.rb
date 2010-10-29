@@ -1,3 +1,6 @@
+# A small example that shows a really small parser and what happens on parser
+# errors. 
+
 $:.unshift '../lib'
 
 require 'pp'

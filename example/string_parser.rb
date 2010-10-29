@@ -1,7 +1,13 @@
+# A more complex parser that illustrates how a compiler might be constructed.
+# The parser recognizes strings and integer literals and constructs almost a
+# useful AST from the file contents. 
+
 require 'pp'
 
 $:.unshift '../lib/'
 require 'parslet'
+
+include Parslet
 
 class LiteralsParser
   include Parslet

@@ -1,3 +1,7 @@
+# A small example that demonstrates the power of tree pattern matching. Also
+# uses '.as(:name)' to construct a tree that can reliably be matched
+# afterwards. 
+
 $:.unshift '../lib'
 
 require 'pp'
