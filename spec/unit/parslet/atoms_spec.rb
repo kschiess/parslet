@@ -239,7 +239,7 @@ describe Parslet do
       @parslet = str('foo').repeat.maybe
     end
     
-    it "should not loop infinitly" do
+    it "should not loop infinitely" do
       lambda {
         timeout(1) { parslet.parse('bar') }
       }.should raise_error(Parslet::ParseFailed)
