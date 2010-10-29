@@ -74,7 +74,7 @@ SYNOPSIS
   # Defines the classes of our new Syntax Tree
   class StringLiteral < Struct.new(:text); end
 
-  # Defines a set of transformation rules on tree leafes
+  # Defines a set of transformation rules on tree leaves
   transform = Transform.new
   transform.rule(:string => simple(:x)) { |d| StringLiteral.new(d[:x]) }
 
