@@ -1,4 +1,6 @@
 = 0.9.0 / ???
+  * More of everything: Examples, documentation, etc...
+
   * Breaking change: Ruby's binary or ('|') is now used for alternatives, 
     instead of the division sign ('/') - this reduces the amount of 
     parenthesis needed for a grammar overall. 
