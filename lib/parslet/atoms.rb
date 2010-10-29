@@ -466,7 +466,9 @@ module Parslet::Atoms
     end
     
     def parslet
-      @parslet ||= context.instance_eval(&block)
+      @parslet ||= context.instance_eval(&block).tap { |p| 
+        raise_not_implemented unless p
+      }
     end
 
     def to_s_inner(prec)
@@ -475,6 +477,15 @@ module Parslet::Atoms
 
     def error_tree
       parslet.error_tree
+    end
+    
+  private 
+    def raise_not_implemented
+      trace = caller.reject {|l| l =~ %r{#{Regexp.escape(__FILE__)}}} # blatantly stolen from dependencies.rb in activesupport
+      exception = NotImplementedError.new("rule(#{name.inspect}) { ... }  returns nil. Still not implemented, but already used?")
+      exception.set_backtrace(trace)
+      
+      raise exception
     end
   end
 end
