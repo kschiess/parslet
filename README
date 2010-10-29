@@ -52,8 +52,8 @@ SYNOPSIS
   # Constructs a parser using a Parser Expression Grammar like DSL: 
   parser =  str('"') >> 
             (
-              (str('\\') >> any) /
-              (str('"').absnt? >> any)
+              str('\\') >> any |
+              str('"').absnt? >> any
             ).repeat.as(:string) >> 
             str('"')
     
@@ -69,20 +69,20 @@ SYNOPSIS
     puts "String contents: #{dictionary[:x]}"
   end
   
-  # Here's how to transform that tree into something else --------------------
+  # Here's how to transform that tree into something else ----------------------
 
   # Defines the classes of our new Syntax Tree
   class StringLiteral < Struct.new(:text); end
 
-  # Defines a set of transformation rules on tree leaves
+  # Defines a set of transformation rules on tree leafes
   transform = Transform.new
   transform.rule(:string => simple(:x)) { |d| StringLiteral.new(d[:x]) }
 
   # Transforms the tree
   transform.apply(tree) 
 
-  # => #<struct StringLiteral text="This is a \\\"String\\\" ... escape stuff">
-  
+  # => #<struct StringLiteral text="This is a \\\"String\\\" ... escape stuff">  
+
 COMPATIBILITY
 
 This library should work with both ruby 1.8 and ruby 1.9.
