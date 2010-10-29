@@ -1,6 +1,7 @@
 
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
-Spec::Rake::SpecTask.new
+desc "Run all examples"
+RSpec::Core::RakeTask.new
 
 task :default => :spec

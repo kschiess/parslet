@@ -3,17 +3,17 @@ require 'spec_helper'
 describe "Parslet combinations" do
   include Parslet
 
-  def parse(string)
-    simple_matcher("parse string #{string.inspect}") { |given| 
+  RSpec::Matchers.define :parse do |string|
+    match do |parslet|
       begin
-        given.parse(string)
+        parslet.parse(string)
         true
       rescue Parslet::ParseFailed
         false
       end
-    }
+    end
   end
-  
+
   describe "repeat" do
     let(:parslet) { str('a') }
     

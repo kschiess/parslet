@@ -14,15 +14,17 @@ describe Parslet::Pattern do
     obj
   end
   
-  def match_with_bind(pattern, *bindings)
-    simple_matcher("match with bindings") { |tree, matcher|  
-      matcher.failure_message = "expected #{pattern.inspect} to match #{tree.inspect}, but didn't. (block wasn't called or not correctly)"
-      
+  RSpec::Matchers.define :match_with_bind do |pattern, *bindings|
+    failure_message_for_should do |tree|
+      "expected #{pattern.inspect} to match #{tree.inspect}, but didn't. (block wasn't called or not correctly)"
+    end
+    match do |tree|
       expectation = flexmock(:block).
         should_receive(:call).with(*bindings).once.
         mock
 
-      p(pattern).each_match(tree) { |*vals| expectation.call(*vals) }
+      Parslet::Pattern.new(pattern).
+        each_match(tree) { |*vals| expectation.call(*vals) }
       
       begin
         # Use flexmock to verify the assumption, since that allows to reuse
@@ -33,9 +35,9 @@ describe Parslet::Pattern do
       else
         true
       end
-    }
+    end
   end
-
+  
   describe "<- #match" do
     it "should match simple strings" do
       t('aaaa').should match_with_bind(simple(:x), :x => 'aaaa')
