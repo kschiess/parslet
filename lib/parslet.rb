@@ -263,7 +263,19 @@ module Parslet
     Atoms::Re.new('.')
   end
   module_function :any
-
+  
+  # A special kind of atom that allows embedding whole treetop expressions
+  # into parslet construction. 
+  #
+  # Example: 
+  #
+  #   exp(%Q("a" "b"?))     # => returns the same as str('a') >> str('b').absnt?
+  #
+  def exp(str)
+    Parslet::Expression.new(str).to_parslet
+  end
+  module_function :exp
+  
   # Returns a placeholder for a tree transformation that will only match a 
   # sequence of elements. The +symbol+ you specify will be the key for the 
   # matched sequence in the returned dictionary.
@@ -292,6 +304,8 @@ module Parslet
     Pattern::SimpleBind.new(symbol)
   end
   module_function :simple
+  
+  autoload :Expression, 'parslet/expression'
 end
 
 require 'parslet/error_tree'
