@@ -15,14 +15,11 @@ class Parslet::Expression
   # Transforms the parse tree into a parslet expression. 
   #
   def transform(tree)
-    require 'pp'
-    pp tree
-    
     transform = Parslet::Transform.new
     transform.rule(:string => simple(:str)) { |d| 
       str(d[:str]) }
     
-    transform.apply(tree).tap { |r| pp r }
+    transform.apply(tree)
   end
   
   class Treetop
