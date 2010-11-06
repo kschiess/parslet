@@ -18,15 +18,19 @@ describe Parslet::Expression do
     end
   end
 
-  # REPLACE ME TODO
-  def match(str)
-    simple_matcher("match") do |parslet|
-      parslet.parse(str)
+  RSpec::Matchers.define :accept do |string|
+    match do |parslet|
+      begin
+        parslet.parse(string)
+        true
+      rescue Parslet::ParseFailed
+        false
+      end
     end
   end
   
   context "simple strings ('abc')" do
     subject { exp("'abc'") }
-    it { should match('abc') }
+    it { should accept('abc') }
   end
 end

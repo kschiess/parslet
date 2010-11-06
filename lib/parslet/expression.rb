@@ -37,8 +37,8 @@ class Parslet::Expression
     rule(:string) {
       str('\'') >> 
       (
-        (str('\\') >> any) /
-        (str('\'').absnt? >> any)
+        (str('\\') >> any) |
+        (str("'").absnt? >> any)
       ).repeat.as(:string) >> 
       str('\'')
     }
