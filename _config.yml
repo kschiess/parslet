@@ -1,5 +1,7 @@
 sass: true
 haml: true
 
+layout: default
+
 # post_defaults: 
 #   layout: post

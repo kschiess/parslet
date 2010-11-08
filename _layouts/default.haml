@@ -14,9 +14,13 @@
     
   %body
     #everything
-      .tagline
-        <a href="/">blog.absurd:li</a> - press play on tape
-    
+      .main_menu
+        %ul
+          %li= link_to('about', 'about.html')
+          %li= link_to('get started', 'about.html')
+          %li= link_to('documentation', 'about.html')
+          %li= link_to('status', 'status.html')
+          
       .content
         = content
     
