@@ -1,0 +1,20 @@
+---
+layout: default
+title: ima progrmr
+---
+
+.post 
+  .meta
+    = link_to('about me', 'http://www.absurd.li')
+
+  - current_year = nil    # ugly, but good enough
+  - group_posts_by_month_and_day(site.posts) do |year, month, posts|
+    - if current_year != year
+      - current_year = year
+      .year= year.to_s[-2, 2]
+    %dl
+      %dt= posts.first.date.strftime("%B")
+      - for post in posts
+        %dd
+          %a{:href => post.url}= post.title
+        
