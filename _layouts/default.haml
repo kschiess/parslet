@@ -10,6 +10,7 @@
     %meta{ :name => 'author', :content => 'Kaspar Schiess (http://absurd.li)' }
 
     %link{ :type => 'text/css', :rel => 'stylesheet', :href => '/css/site.css' }
+    %link{ :type => 'text/css', :rel => 'stylesheet', :href => '/css/pygments.css' }
     -# %script{ :type => 'text/javascript', :src => 'http://getfirebug.com/releases/lite/1.2/firebug-lite.js' }
     
   %body
@@ -23,7 +24,7 @@
           %li= link_to('contributors', 'contributors.html')
           
       .content
-        = content
+        = flatten content
     
       .copyright
         MIT License, 2010, (c) Kaspar Schiess

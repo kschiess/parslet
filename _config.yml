@@ -2,3 +2,4 @@ sass: true
 haml: true
 
 layout: default
+pygments: true
