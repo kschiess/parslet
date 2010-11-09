@@ -10,3 +10,12 @@ your conventional LR parser, except that they are easier to work with, since
 they haven't been conceived for generation, but for recognition of languages.
 You can read the founding paper of the field by Bryan Ford
 "here":http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf.
+
+Parslet makes developing complex grammars easy. It does so by
+
+* providing the best error reporting possible (-> Error Reporting)
+
+* generating a relatively stable intermediary tree and a totally stable
+  abstract syntax tree (-> Stability)
+  
+* not generating reams of code for you to debug (-> Other Libraries)
