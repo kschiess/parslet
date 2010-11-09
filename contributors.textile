@@ -1,0 +1,12 @@
+---
+layout: default
+title: Contributors
+---
+
+Thanks to ... 
+floere
+
+Author: 
+kaspar
+
+License MIT

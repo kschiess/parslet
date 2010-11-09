@@ -1,5 +1,11 @@
 ---
-title: Status
+layout: default
+title: status
 ---
 
-test
+working towards 1.0
+
+feature complete (with some fuzzy edges)
+stable
+good test coverage
+
