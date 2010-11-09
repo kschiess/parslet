@@ -3,6 +3,10 @@ layout: default
 title: About
 ---
 
-synopsis
-what is this
-
+Parslet is a Parsing Expression Grammar
+("PEG":http://en.wikipedia.org/wiki/Parsing_expression_grammar) Parser. These
+are a different kind of grammar that recognize almost the same languages as
+your conventional LR parser, except that they are easier to work with, since
+they haven't been conceived for generation, but for recognition of languages.
+You can read the founding paper of the field by Bryan Ford
+"here":http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf.
