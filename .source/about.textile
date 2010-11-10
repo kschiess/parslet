@@ -19,3 +19,15 @@ Parslet makes developing complex grammars easy. It does so by
   abstract syntax tree (-> Stability)
   
 * not generating reams of code for you to debug (-> Other Libraries)
+
+A parser constructed with parslet works in two stages: 
+
+1. *Recognition*, yields PORO (Plain Old Ruby Objects (tm))
+
+2. *Transformation*, yields whatevery you want it to
+
+h2. Recognition Stage
+
+h2. Transformation Stage
+
+h2. Where to go from here

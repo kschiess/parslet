@@ -17,11 +17,11 @@
     #everything
       .main_menu
         %ul
-          %li= link_to('about', 'about.html')
-          %li= link_to('get started', 'get-started.html')
-          %li= link_to('documentation', 'documentation.html')
-          %li= link_to('status', 'status.html')
-          %li= link_to('contributors', 'contributors.html')
+          %li= link_to_unless_current('about', 'about.html')
+          %li= link_to_unless_current('get started', 'get-started.html')
+          %li= link_to_unless_current('documentation', 'documentation.html')
+          %li= link_to_unless_current('status', 'status.html')
+          %li= link_to_unless_current('contributors', 'contributors.html')
           
       .content
         = flatten content
