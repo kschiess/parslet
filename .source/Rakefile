@@ -20,7 +20,7 @@ task :publish do
     next if File.directory?(file)
     next if stoplist.any? { |r| r.match(file) }
     
-    target = File.split(file)[1..-1]
+    target = file.split('/')[1..-1]
     target_dir = File.join('..', *target[0..-2])
     target_file = File.join('..', *target)
     
