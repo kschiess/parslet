@@ -3,10 +3,33 @@ require 'rake/clean'
 
 # Clean _site so that everything we look at is new
 CLEAN << '_site'
+CLEAN << FileList['../**/*']
 
 desc "Runs the site through jekyll, producing _site"
 task :compile_site do
   sh "jekyll"
 end
 
-task :default => :compile_site
+task :publish do
+  stoplist = [    # these files are excluded
+    /README/,
+    /Rakefile/,
+    /\.sass$/
+  ]
+  Dir.glob('_site/**/*').each do |file|
+    next if File.directory?(file)
+    next if stoplist.any? { |r| r.match(file) }
+    
+    target = File.split(file)[1..-1]
+    target_dir = File.join('..', *target[0..-2])
+    target_file = File.join('..', *target)
+    
+    unless File.directory?(target_dir)
+      FileUtils.mkdir_p target_dir, :verbose => true
+    end
+    FileUtils.cp file, target_file, :verbose => true
+  end
+end
+
+task :default => [:clean, :compile_site, :publish]
+
