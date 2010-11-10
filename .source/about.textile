@@ -3,6 +3,22 @@ layout: default
 title: About
 ---
 
+h2. Synopsis
+
+{% highlight ruby %} 
+class Parser
+  include Parslet
+  
+  root :integer
+  rule(:integer) {
+    match('[0-9]').repeat
+  }
+end
+
+Parser.new.parse('1234') # => '1234' 
+Parser.new.parse('sdlfkjsldj')  # => raises Parslet::ParseFailed
+{% endhighlight %}
+
 Parslet is a Parsing Expression Grammar
 ("PEG":http://en.wikipedia.org/wiki/Parsing_expression_grammar) Parser. These
 are a different kind of grammar that recognize almost the same languages as
@@ -13,21 +29,11 @@ You can read the founding paper of the field by Bryan Ford
 
 Parslet makes developing complex grammars easy. It does so by
 
-* providing the best error reporting possible (-> Error Reporting)
+* providing the best error reporting possible
 
 * generating a relatively stable intermediary tree and a totally stable
-  abstract syntax tree (-> Stability)
+  abstract syntax tree
   
-* not generating reams of code for you to debug (-> Other Libraries)
+* not generating reams of code for you to debug
 
-A parser constructed with parslet works in two stages: 
-
-1. *Recognition*, yields PORO (Plain Old Ruby Objects (tm))
-
-2. *Transformation*, yields whatevery you want it to
-
-h2. Recognition Stage
-
-h2. Transformation Stage
-
-h2. Where to go from here
+Eager to try this out? "Get started":/get-started.html!
