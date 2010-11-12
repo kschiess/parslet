@@ -14,6 +14,9 @@ describe Parslet::Pattern do
     obj
   end
   
+  # Tries to match pattern to the tree, and verifies the bindings hash. Don't
+  # use this for new examples.
+  #
   RSpec::Matchers.define :match_with_bind do |pattern, *bindings|
     failure_message_for_should do |tree|
       "expected #{pattern.inspect} to match #{tree.inspect}, but didn't. (block wasn't called or not correctly)"
@@ -37,10 +40,27 @@ describe Parslet::Pattern do
       end
     end
   end
+
+  # This is the more modern version of verifying a match: 
+  #
+  def with_match(pattern, tree, &block) 
+    called = false
+    wrap = lambda { |*args| called=true; block.call(*args) }
+    p(pattern).each_match(tree, &wrap)
+    
+    called.should == true # pattern must match at least once
+  end
   
   describe "<- #match" do
     it "should match simple strings" do
       t('aaaa').should match_with_bind(simple(:x), :x => 'aaaa')
+    end 
+    it "should have local bindings as well" do
+      pending "New style local variable bindings"
+      with_match(simple(:x), 'aaaa') { |d|
+        d[:x].should == 'aaaa'
+        x.should == 'aaaa'
+      }
     end 
 
     context "simple hash {:a => 'b'}" do
