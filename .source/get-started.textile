@@ -3,37 +3,66 @@ layout: default
 title: Get Started
 ---
 
-get started
-
-Parslet is a Parsing Expression Grammar
-("PEG":http://en.wikipedia.org/wiki/Parsing_expression_grammar) Parser. These
-are a different kind of grammars that recognize almost the same languages as
-your conventional LR parser, except that they are easier to work with, since
-they haven't been conceived for generation, but for recognition of languages.
-You can read the founding paper of the field by Bryan Ford
-"here":http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf.
-
+Let's develop a small language that allows for simple computation together. 
+Here's a valid input file for that language: 
 
 {% highlight ruby %} 
-$:.unshift File.dirname(__FILE__) # For use/testing when no gem is installed
+puts(1 + 2)
+puts(4 / 2)
+{% endhighlight %}
 
-# Require all of the Ruby files in the given directory.
-#
-# path - The String relative path from here to the directory.
-#
-# Returns nothing.
-def require_all(path)
-  glob = File.join(File.dirname(__FILE__), path, '*.rb')
-  Dir[glob].each do |f|
-    require f
-  end
+To install the parslet library, please do a 
+
+{% highlight bash %} 
+gem install parslet
+{% endhighlight %}
+
+Now let's write the first part of our parser. 
+
+{% highlight ruby %} 
+require 'parslet' 
+
+class Mini < Parslet::Parser
+  rule(:integer) { match('[0-9]').repeat(1) }
+  root(:integer)
 end
 
-# rubygems
-require 'rubygems'
-
-# stdlib
-require 'fileutils'
-require 'time'
-require 'yaml'
+p Mini.new.parse("132432")
 {% endhighlight %}
+
+Running this example will print "132432". Congratulations! You just have
+written your first parser.
+
+There are just two lines to the definition of this parser, let's go through them: 
+
+{% highlight ruby %} 
+rule(:integer) { match('[0-9]').repeat(1) }
+{% endhighlight %}
+
+<code>rule</code> lets you create a new parser rule. Inside the block of that
+<code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>. This says: "match a character that is in the range <code>0-9</code>, then 
+match any number of those, but at least match one."
+
+{% highlight ruby %} 
+root(:integer)
+{% endhighlight %}
+
+That second line just says: Start parsing at the rule called
+<code>:integer</code>.
+
+h2. Addition
+
+Let's go for simple addition. We'll have to allow for spaces in our input,
+since those help make code readable. Here are two rules that will serve us
+good:
+
+{% highlight ruby %} 
+rule(:space)  { match('\s').repeat(1) }
+rule(:space?) { space.maybe }
+{% endhighlight %}
+
+Two things are new here: (and both in the second line)
+
+* you can use ('call') other rules in your rules 
+* <code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
+  the thing before it is maybe present in the input.
