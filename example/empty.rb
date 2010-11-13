@@ -5,9 +5,7 @@ $:.unshift '../lib'
 
 require 'parslet'
 
-class Parser
-  include Parslet
-  
+class Parser < Parslet::Parser
   rule(:empty) { }
 end
 

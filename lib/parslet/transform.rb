@@ -70,8 +70,14 @@ require 'parslet/pattern'
 #
 #
 class Parslet::Transform
-  def initialize
+  include Parslet   # FIXME: Maybe only part of it?
+  
+  def initialize(&block)
     @rules = []
+    
+    if block
+      instance_eval(&block)
+    end
   end
   
   attr_reader :rules

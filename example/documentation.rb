@@ -6,9 +6,7 @@ $:.unshift '../lib'
 require 'pp'
 require 'parslet'
 
-class MyParser
-  include Parslet
-
+class MyParser < Parslet::Parser
   rule(:a) { str('a').repeat }
   
   def parse(str)

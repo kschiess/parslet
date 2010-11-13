@@ -7,9 +7,7 @@ require 'pp'
 require 'parslet'
 
 module MiniLisp
-  class Parser
-    include Parslet
-        
+  class Parser < Parslet::Parser
     root :expression
     rule(:expression) {
       space? >> str('(') >> space? >> body >> str(')')
@@ -69,20 +67,15 @@ module MiniLisp
       @t = Parslet::Transform.new
       
       # To understand these, take a look at what comes out of the parser. 
-      t.rule(:identifier => simple(:ident)) { |d| 
-        d[:ident].to_sym }
+      t.rule(:identifier => simple(:ident)) { ident.to_sym }
         
-      t.rule(:string => simple(:str)) { |d| 
-        d[:str] }
+      t.rule(:string => simple(:str))       { str }
         
-      t.rule(:integer => simple(:int)) { |d| 
-        Integer(d[:int]) }
+      t.rule(:integer => simple(:int))      { Integer(int) }
         
-      t.rule(:float=>{:integer=> simple(:a), :e=> simple(:b)}) { |d| 
-        Float(d[:a] + d[:b]) }
+      t.rule(:float=>{:integer=> simple(:a), :e=> simple(:b)}) { Float(a + b) }
         
-      t.rule(:exp => sequence(:exp)) { |d| 
-        LispExp.new(d[:exp]) }
+      t.rule(:exp => sequence(:exp))        { LispExp.new(exp) }
     end
     
     def do(tree)
