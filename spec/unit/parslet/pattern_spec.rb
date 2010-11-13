@@ -22,30 +22,21 @@ describe Parslet::Pattern do
       "expected #{pattern.inspect} to match #{tree.inspect}, but didn't. (block wasn't called or not correctly)"
     end
     match do |tree|
-      expectation = flexmock(:block).
-        should_receive(:call).with(*bindings).once.
-        mock
-
+      called = false
       Parslet::Pattern.new(pattern).
-        each_match(tree) { |*vals| expectation.call(*vals) }
+        each_match(tree) { |*vals| 
+          called = true
+          bindings.should == vals }
       
-      begin
-        # Use flexmock to verify the assumption, since that allows to reuse
-        # the argument matcher flexmock contains.
-        flexmock_verify
-      rescue => ex
-        false
-      else
-        true
-      end
+      called.should == true
     end
   end
 
   # This is the more modern version of verifying a match: 
   #
-  def with_match(pattern, tree, &block) 
+  def with_match_locals(pattern, tree, &block) 
     called = false
-    wrap = lambda { |*args| called=true; block.call(*args) }
+    wrap = proc { called=true; instance_eval(&block) }
     p(pattern).each_match(tree, &wrap)
     
     called.should == true # pattern must match at least once
@@ -56,9 +47,7 @@ describe Parslet::Pattern do
       t('aaaa').should match_with_bind(simple(:x), :x => 'aaaa')
     end 
     it "should have local bindings as well" do
-      pending "New style local variable bindings"
-      with_match(simple(:x), 'aaaa') { |d|
-        d[:x].should == 'aaaa'
+      with_match_locals(simple(:x), 'aaaa') {
         x.should == 'aaaa'
       }
     end 

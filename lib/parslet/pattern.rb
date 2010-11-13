@@ -1,4 +1,3 @@
-
 # Matches trees against expressions. Trees are formed by arrays and hashes
 # for expressing membership and sequence. The leafs of the tree are other
 # classes. 
@@ -20,6 +19,8 @@
 # to match recursively. To do that, please use Parslet::Transform. 
 #
 class Parslet::Pattern
+  autoload :Context, 'parslet/pattern/context'
+  
   def initialize(pattern)
     @pattern = pattern
   end
@@ -36,9 +37,11 @@ class Parslet::Pattern
   #   end
   #
   def each_match(tree, &block) # :yield: subtree
+    raise ArgumentError, "Must pass a block" unless block
+    
     recurse_into(tree) do |subtree|
       if bindings=match(subtree)
-        block.call(bindings) if block
+        call_on_match(subtree, bindings, block)
       end
     end
     
@@ -53,6 +56,21 @@ class Parslet::Pattern
     return bindings if element_match(subtree, @pattern, bindings)
   end
 
+  # Executes the block on the bindings obtained by #match, if such a match
+  # can be made. Contains the logic that will switch to instance variables
+  # depending on the arity of the block. 
+  #
+  def call_on_match(tree, bindings, block)
+    if block
+      if block.arity != 0
+        return block.call(bindings)
+      else
+        context = Context.new(bindings)
+        return context.instance_eval(&block)
+      end
+    end
+  end
+  
   def recurse_into(expr, &block)
     # p [:attempt_match, expr]
     block.call(expr)

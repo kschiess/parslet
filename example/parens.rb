@@ -26,10 +26,10 @@ class ParensTransform
   def initialize
     @t = Transform.new
     
-    t.rule(:l => '(', :m => simple(:x), :r => ')') { |d| 
-      previous = d[:x]
-      
-      previous.nil? ? 1 : previous+1 }
+    t.rule(:l => '(', :m => simple(:x), :r => ')') { 
+      # innermost :m will contain nil
+      x.nil? ? 1 : x+1
+    }
   end
   
   def apply(tree)
@@ -48,7 +48,7 @@ transform = ParensTransform.new
   begin
     result = parser.parse(pexp)
     puts "#{"%20s"%pexp}: #{result.inspect} (#{transform.apply(result)} parens)"
-  rescue Parslet::Atoms::ParseFailed => m
+  rescue Parslet::ParseFailed => m
     puts "#{"%20s"%pexp}: #{m}"
   end
   puts

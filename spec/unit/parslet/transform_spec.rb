@@ -53,4 +53,14 @@ describe Parslet::Transform do
         Bi.new('c', 'f')
     end 
   end
+  
+  context "when not using the bindings as hash, but as local variables" do
+    before(:each) do
+      transform.rule(simple(:x)) { A.new(x) }
+    end
+    
+    it "should access the variables" do
+      transform.apply('a').should == A.new('a')
+    end 
+  end
 end
