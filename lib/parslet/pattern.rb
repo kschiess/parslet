@@ -62,7 +62,7 @@ class Parslet::Pattern
   #
   def call_on_match(tree, bindings, block)
     if block
-      if block.arity != 0
+      if block.arity == 1
         return block.call(bindings)
       else
         context = Context.new(bindings)

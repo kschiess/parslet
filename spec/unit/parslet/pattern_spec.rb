@@ -17,14 +17,14 @@ describe Parslet::Pattern do
   # Tries to match pattern to the tree, and verifies the bindings hash. Don't
   # use this for new examples.
   #
-  RSpec::Matchers.define :match_with_bind do |pattern, *bindings|
+  RSpec::Matchers.define :match_with_bind do |pattern, bindings|
     failure_message_for_should do |tree|
       "expected #{pattern.inspect} to match #{tree.inspect}, but didn't. (block wasn't called or not correctly)"
     end
     match do |tree|
       called = false
       Parslet::Pattern.new(pattern).
-        each_match(tree) { |*vals| 
+        each_match(tree) { |vals| 
           called = true
           bindings.should == vals }
       
