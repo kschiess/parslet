@@ -1,3 +1,11 @@
+
+# Matches a parslet repeatedly. 
+#
+# Example: 
+#
+#   str('a').repeat(1,3)  # matches 'a' at least once, but at most three times
+#   str('a').maybe        # matches 'a' if it is present in the input (repeat(0,1))
+#
 class Parslet::Atoms::Repetition < Parslet::Atoms::Base  
   attr_reader :min, :max, :parslet
   def initialize(parslet, min, max, tag=:repetition)

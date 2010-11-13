@@ -2,6 +2,11 @@
 # character at a time. Useful members of this family are: character ranges, 
 # \w, \d, \r, \n, ...
 #
+# Example: 
+#
+#   match('[a-z]')  # matches a-z
+#   match('\s')     # like regexps: matches space characters
+#
 class Parslet::Atoms::Re < Parslet::Atoms::Base
   attr_reader :match
   def initialize(match)

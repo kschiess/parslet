@@ -1,5 +1,9 @@
 # A sequence of parslets, matched from left to right. Denoted by '>>'
 #
+# Example: 
+#
+#   str('a') >> str('b')  # matches 'a', then 'b'
+#
 class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   attr_reader :parslets
   def initialize(*parslets)

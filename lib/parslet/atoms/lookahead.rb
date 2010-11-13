@@ -1,3 +1,9 @@
+# Either positive or negative lookahead, doesn't consume its input. 
+#
+# Example: 
+#
+#   str('foo').prsnt?   # matches when the input contains 'foo', but leaves it
+#
 class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   attr_reader :positive
   attr_reader :bound_parslet

@@ -1,3 +1,10 @@
+# Names a match to influence tree construction. 
+#
+# Example: 
+#
+#   str('foo')            # will return 'foo', 
+#   str('foo').as(:foo)   # will return :foo => 'foo'
+#
 class Parslet::Atoms::Named < Parslet::Atoms::Base
   attr_reader :parslet, :name
   def initialize(parslet, name)

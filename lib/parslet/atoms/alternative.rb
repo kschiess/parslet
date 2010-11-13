@@ -1,3 +1,11 @@
+
+# Alternative during matching. Contains a list of parslets that is tried each
+# one in turn. Only fails if all alternatives fail. 
+#
+# Example: 
+# 
+#   str('a') | str('b')   # matches either 'a' or 'b'
+#
 class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   attr_reader :alternatives
   def initialize(*alternatives)

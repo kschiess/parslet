@@ -1,5 +1,9 @@
 # Matches a string of characters. 
 #
+# Example: 
+# 
+#   str('foo') # matches 'foo'
+#
 class Parslet::Atoms::Str < Parslet::Atoms::Base
   attr_reader :str
   def initialize(str)
