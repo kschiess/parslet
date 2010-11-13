@@ -1,4 +1,13 @@
-= 0.9.0 / ???
+= 0.10.0 / ???
+
+  + Parslet::Transform now takes a block on initialisation, wherein you can
+    define all the rules directly.
+    
+  + Parslet::Transform now only passes a hash to the block during transform
+    when its arity is 1. Otherwise all hash contents as bound as local     
+    variables.
+
+= 0.9.0 / 28Oct2010
   * More of everything: Examples, documentation, etc...
 
   * Breaking change: Ruby's binary or ('|') is now used for alternatives, 
