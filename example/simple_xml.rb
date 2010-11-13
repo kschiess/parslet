@@ -38,20 +38,16 @@ def check(xml)
   include XML
   r=parse(xml)
 
-  # We'll validate the tree by reducing valid pairs of tags into simply the string
-  # ok. If the transformation ends on a string, then the document was 'valid'. 
+  # We'll validate the tree by reducing valid pairs of tags into simply the
+  # string "verified". If the transformation ends on a string, then the
+  # document was 'valid'. 
+  #
   t = Parslet::Transform.new
   t.rule(
-    o: {name: simple(:o)}, 
-    c: {name: simple(:c)}, 
+    o: {name: simple(:tag)}, 
+    c: {name: simple(:tag)}, 
     i: simple(:t)
-  ) { |d| 
-    if d[:o] == d[:c]
-      "ok." 
-    else
-      fail "Open tag doesn't match close tag ... #{d.inspect}"
-    end
-  }
+  ) { 'verified' } 
 
   t.apply(r)
 end

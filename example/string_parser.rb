@@ -9,9 +9,7 @@ require 'parslet'
 
 include Parslet
 
-class LiteralsParser
-  include Parslet
-  
+class LiteralsParser < Parslet::Parser
   rule :space do
     (match '[ ]').repeat(1)
   end
@@ -48,10 +46,8 @@ class LiteralsParser
   rule :crlf do
     match('[\r\n]').repeat(1)
   end
-  
-  def parse(str)
-    literals.parse(str)
-  end
+
+  root :literals
 end
 
 parsetree = LiteralsParser.new.parse(
@@ -70,12 +66,10 @@ class IntLit < Lit
   end
 end
 
-transform = Parslet::Transform.new
-
-transform.rule(:literal => {:integer => simple(:x)}) { |d| 
-  IntLit.new(*d.values) }
-transform.rule(:literal => {:string => simple(:x)}) { |d| 
-  StringLit.new(*d.values) }
+transform = Parslet::Transform.new do
+  rule(:literal => {:integer => simple(:x)}) { IntLit.new(x) }
+  rule(:literal => {:string => simple(:s)}) { StringLit.new(s) }
+end
   
 ast = transform.apply(parsetree)
 pp ast

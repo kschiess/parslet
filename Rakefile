@@ -34,7 +34,7 @@ spec = Gem::Specification.new do |s|
 
   # If you want to depend on other gems, add them here, along with any
   # relevant versions
-  # s.add_dependency("map", "~> 1.5.1")
+  s.add_dependency("blankslate", "~> 2.1.2.3")
 
   # If your tests use any gems, include them here
   s.add_development_dependency("rspec")

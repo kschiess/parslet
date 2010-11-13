@@ -1,3 +1,5 @@
+require 'blankslate'
+
 # Provides a context for tree transformations to run in. The context allows
 # accessing each of the bindings in the bindings hash as local method.
 #
@@ -8,7 +10,7 @@
 #     a # => :b
 #   end
 #
-class Parslet::Pattern::Context 
+class Parslet::Pattern::Context < BlankSlate
   def initialize(bindings)
     @bindings = bindings
   end

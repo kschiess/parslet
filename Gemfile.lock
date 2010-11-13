@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    blankslate (2.1.2.3)
     diff-lcs (1.1.2)
     flexmock (0.8.11)
     rspec (2.0.1)
@@ -18,5 +19,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  blankslate (>= 2.1.2.3)
   flexmock
   rspec
