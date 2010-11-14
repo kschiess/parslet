@@ -1,4 +1,3 @@
-$:.unshift '/Users/kaspar/git_work/own/rooc/ext/parslet/lib' # REMOVE ME
 require 'parslet'
 
 class Mini < Parslet::Parser
