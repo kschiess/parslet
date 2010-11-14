@@ -17,16 +17,17 @@
     #everything
       .main_menu
         %ul
-          %li= link_to_unless_current('about', 'index.html')
-          %li= link_to_unless_current('get started', 'get-started.html')
-          %li= link_to_unless_current('documentation', 'documentation.html')
-          %li= link_to_unless_current('status', 'status.html')
-          %li= link_to_unless_current('contributors', 'contributors.html')
+          %li= link_to('about', 'index.html')
+          %li= link_to('get started', 'get-started.html')
+          %li= link_to('documentation', 'documentation.html')
+          %li= link_to('status', 'status.html')
+          %li= link_to('contributors', 'contributors.html')
           
       .content
+        %h1= page.title
         = flatten content
     
       .copyright
-        MIT License, 2010, (c) Kaspar Schiess
+        MIT License, 2010, (c) <a href="http://absurd.li">Kaspar Schiess</a>
       
     

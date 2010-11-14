@@ -1,15 +1,60 @@
 
+=clearfix 
+  display: inline-block
+  
+  &:after 
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    visibility: hidden
+  
+  * html & 
+    height: 1px
+    
 body
   font:
-    size: 110%
+    size: 100%
     family: Helvetica
   background-color: #C0C7F9
   
-a
-  font-decoration: none
+.main_menu  
+  margin:
+    bottom: 1cm
   
+  ul
+    +clearfix
+    list-style-type: none
+
+  li
+    float: left
+    font-variant: small-caps
+    padding-left: 2em
+    
+  a:visited
+    text-decoration: none
+    
 .content
+  font-size: 1em
   width: 36em
   line-height: 1.4em
   margin: 
     left: 1cm
+    
+  p
+    margin: 1em
+    
+.copyright
+  font-variant: small-caps
+  font-size: 0.6em
+  color: #A0AEF8
+  margin:
+    left: 22em
+    top: 2cm
+    
+  a
+    text-decoration: none
+    color: #A0AEF8
+  
+    
+    

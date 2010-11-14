@@ -65,5 +65,5 @@ Two things are new here: (and both in the second line)
 
 * you can use ('call') other rules in your rules 
 * <code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
-  the thing before it is maybe present in the input.
+  the thing before it is maybe present once in the input.
   

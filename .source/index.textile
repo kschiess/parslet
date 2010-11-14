@@ -3,8 +3,6 @@ layout: default
 title: About
 ---
 
-h2. Synopsis
-
 {% highlight ruby %} 
 require 'parslet'
 include Parslet
@@ -29,9 +27,8 @@ construct real language parsers.
 
 Parslet makes developing complex parsers easy. It does so by
 
-* providing the best error reporting possible (and yeah, tell me how to improve on that!)
-  
-* not generating reams of code for you to debug
+* providing the best *error reporting* possible
+* *not generating* reams of code for you to debug
 
 Parslet takes the long way around to make your job easier. It allows for
 incremental language construction. Often, you start out small, implementing

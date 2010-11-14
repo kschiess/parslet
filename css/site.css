@@ -1,5 +1,14 @@
-body { font-size: 110%; font-family: Helvetica; background-color: #c0c7f9; }
+body { font-size: 100%; font-family: Helvetica; background-color: #c0c7f9; }
 
-a { font-decoration: none; }
+.main_menu { margin-bottom: 1cm; }
+.main_menu ul { display: inline-block; list-style-type: none; }
+.main_menu ul:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+* html .main_menu ul { height: 1px; }
+.main_menu li { float: left; font-variant: small-caps; padding-left: 2em; }
+.main_menu a:visited { text-decoration: none; }
 
-.content { width: 36em; line-height: 1.4em; margin-left: 1cm; }
+.content { font-size: 1em; width: 36em; line-height: 1.4em; margin-left: 1cm; }
+.content p { margin: 1em; }
+
+.copyright { font-variant: small-caps; font-size: 0.6em; color: #a0aef8; margin-left: 22em; margin-top: 2cm; }
+.copyright a { text-decoration: none; color: #a0aef8; }
