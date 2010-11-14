@@ -1,11 +1,11 @@
 body { font-size: 100%; font-family: Helvetica; background-color: #c0c7f9; }
 
-.main_menu { margin-bottom: 1cm; }
+.main_menu { font-size: 1.2em; margin-bottom: 1cm; }
 .main_menu ul { display: inline-block; list-style-type: none; }
 .main_menu ul:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 * html .main_menu ul { height: 1px; }
-.main_menu li { float: left; font-variant: small-caps; padding-left: 2em; }
-.main_menu a:visited { text-decoration: none; }
+.main_menu li { float: left; font-variant: small-caps; padding-left: 1em; }
+.main_menu a, .main_menu:visited { text-decoration: none; }
 
 .content { font-size: 1em; width: 36em; line-height: 1.4em; margin-left: 1cm; }
 .content p { margin: 1em; }

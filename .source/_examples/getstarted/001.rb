@@ -1,11 +1,6 @@
 $:.unshift '/Users/kaspar/git_work/own/rooc/ext/parslet/lib' # REMOVE ME
 require 'parslet'
 
-# Remove this later on!
-class Parslet::Parser
-  include Parslet
-end
-
 class Mini < Parslet::Parser
   root :integer
   rule(:integer) { match('[0-9]').repeat(1) }
@@ -15,3 +10,4 @@ class Mini < Parslet::Parser
 end
 
 p Mini.new.parse("132432")
+p Mini.new.parse("puts(1)")

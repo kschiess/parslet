@@ -17,7 +17,8 @@ To install the parslet library, please do a
 gem install parslet
 {% endhighlight %}
 
-Now let's write the first part of our parser. 
+Now let's write the first part of our parser. For now, let's just recognize
+simple numbers like '1' or '42'.
 
 {% highlight ruby %} 
 require 'parslet' 
@@ -31,7 +32,15 @@ p Mini.new.parse("132432")
 {% endhighlight %}
 
 Running this example will print "132432". Congratulations! You just have
-written your first parser.
+written your first parser. Running it on the input '<code>puts(1)</code>' will not work
+yet. Let's see what happens in case of a failure:
+
+{% highlight ruby %} 
+Mini.new.parse("puts(1)") # raises Parslet::ParseFailed
+{% endhighlight %}
+
+Here's the error message provided by that exception: "Expected at least 1 of [0-9] at line 1 char 1." parslet tries to find a number there, but can't find
+one.
 
 There are just two lines to the definition of this parser, let's go through them: 
 
