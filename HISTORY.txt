@@ -11,6 +11,9 @@
   
   + You can now use 'subtree(:x)' to bind any subtree to x during tree pattern
     matching. 
+    
+  + Transform classes can now include rules into class definition. This makes
+    Parser and Transformer behave the same. 
 
 = 0.9.0 / 28Oct2010
   * More of everything: Examples, documentation, etc...

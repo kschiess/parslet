@@ -66,6 +66,16 @@ describe Parslet::Transform do
       transform.apply('a').should == A.new('a')
     end 
   end
+  describe "class construction" do
+    class OptimusPrime < Parslet::Transform 
+      rule(simple(:x)) { A.new(x) }
+    end
+    let(:transform) { OptimusPrime.new }
+    
+    it "should evaluate rules" do
+      transform.apply('a').should == A.new('a')
+    end 
+  end
   
   context "when not using the bindings as hash, but as local variables" do
     before(:each) do

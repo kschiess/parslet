@@ -20,36 +20,30 @@ require 'parslet/pattern'
 #
 # Example: 
 #
-#   transform = Parslet::Transform.new
-#   transform.rule(
-#     :string => simple(:x)       # (1)
-#   ) { |d| 
-#     StringLiteral.new(d[:x])    # (2)
-#   }
-#
-#   # Transforms the tree
-#   transform.apply(tree) 
+#   class Example < Parslet::Transform
+#     rule(:string => simple(:x)) {  # (1)
+#       StringLiteral.new(x)
+#     }
+#   end
 #
 # A tree transform (Parslet::Transform) is defined by a set of rules. Each
 # rule can be defined by calling #rule with the pattern as argument. The block
 # given will be called every time the rule matches somewhere in the tree given
 # to #apply. It is passed a Hash containing all the variable bindings of this
 # pattern match. 
-#  
-# In the above example, (1) illustrates a simple matching rule. In general,
-# such rules are composed of strings ("foobar"), arrays (["a", "b"]) and 
-# hashes like in the example above. 
+#   
+# In the above example, (1) illustrates a simple matching rule. 
 #
-# Let's say you want to parse matching parentheses and distill a maximum 
-# nest depth. You would probably write a parser like the one in example/parens.rb; 
+# Let's say you want to parse matching parentheses and distill a maximum nest
+# depth. You would probably write a parser like the one in example/parens.rb;
 # here's the relevant part: 
 #
 #   rule(:balanced) {
 #     str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
 #   }
 #
-# If you now apply this to a string like '(())', you get a intermediate 
-# parse tree that looks like this: 
+# If you now apply this to a string like '(())', you get a intermediate parse
+# tree that looks like this: 
 #
 #   {
 #     :l => "(", 
@@ -61,16 +55,55 @@ require 'parslet/pattern'
 # This parse tree is good for debugging, but what we would really like to have
 # is just the nesting depth. This transformation rule will produce that: 
 #
-#   t.rule(:l => '(', :m => simple(:x), :r => ')') { |d| 
-#     depth = d[:x]
-#  
-#     depth.nil? ? 1 : depth+1 
+#   rule(:l => '(', :m => simple(:x), :r => ')') { 
+#     # innermost :m will contain nil
+#     x.nil? ? 1 : x+1
 #   }
-#   t.apply(tree) # => 2
 #
+# = Usage patterns
+#
+# There are four ways of using this class. The first one is very much
+# recommended, followed by the second one for generality. The other ones are
+# omitted here. 
+#
+# Recommended usage is as follows: 
+#
+#   class MyTransformator < Parslet::Transform
+#     rule(...) { ... }
+#     rule(...) { ... }
+#     # ...
+#   end
+#   MyTransformator.new.apply(tree)
+#
+# Alternatively, you can use the Transform class as follows: 
+#
+#   transform = Parslet::Transform.new do
+#     rule(...) { ... }
+#   end
+#   transform.apply(tree)
 #
 class Parslet::Transform
-  include Parslet   # FIXME: Maybe only part of it?
+  # FIXME: Maybe only part of it? Or maybe only include into constructor
+  # context?
+  include Parslet   
+
+  class << self
+    # FIXME: Only do this for subclasses?
+    include Parslet
+    
+    # Define a rule for the transform subclass. 
+    #
+    def rule(expression, &block)
+      @__transform_rules ||= []
+      @__transform_rules << [Parslet::Pattern.new(expression), block]
+    end
+    
+    # Allows accessing the class' rules
+    #
+    def rules
+      @__transform_rules || []
+    end
+  end
   
   def initialize(&block)
     @rules = []
@@ -80,7 +113,6 @@ class Parslet::Transform
     end
   end
   
-  attr_reader :rules
   def rule(expression, &block)
     @rules << [
       Parslet::Pattern.new(expression), 
@@ -99,6 +131,13 @@ class Parslet::Transform
         obj
       end
     )
+  end
+  
+  # Allow easy access to all rules, the ones defined in the instance and the 
+  # ones predefined in a subclass definition. 
+  #
+  def rules
+    self.class.rules + @rules
   end
   
   def transform_elt(elt)
