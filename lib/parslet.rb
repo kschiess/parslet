@@ -182,6 +182,17 @@ module Parslet
   end
   module_function :simple
   
+  # Returns a placeholder for tree transformation patterns that will match 
+  # any kind of subtree. 
+  #
+  # Example: 
+  #
+  #   { :expression => subtree(:exp) }
+  #
+  def subtree(symbol)
+    Pattern::SubtreeBind.new(symbol)
+  end
+  
   autoload :Expression, 'parslet/expression'
 end
 

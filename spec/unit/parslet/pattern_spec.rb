@@ -32,34 +32,43 @@ describe Parslet::Pattern do
     end
   end
 
-  # This is the more modern version of verifying a match: 
+  # This is the more modern version of verifying a match: (uses 'exp'
+  # implicitly)
   #
-  def with_match_locals(pattern, tree, &block) 
+  def with_match_locals(pattern, &block) 
     called = false
     wrap = proc { called=true; instance_eval(&block) }
-    p(pattern).each_match(tree, &wrap)
+    p(pattern).each_match(exp, &wrap)
     
     called.should == true # pattern must match at least once
   end
   
   describe "<- #match" do
-    it "should match simple strings" do
-      t('aaaa').should match_with_bind(simple(:x), :x => 'aaaa')
-    end 
-    it "should have local bindings as well" do
-      with_match_locals(simple(:x), 'aaaa') {
-        x.should == 'aaaa'
-      }
-    end 
+    context "simple strings" do
+      let(:exp) { 'aaaa' }
 
+      it "should match simple strings" do
+        exp.should match_with_bind(simple(:x), :x => 'aaaa')
+      end 
+      it "should have local bindings as well" do
+        with_match_locals(simple(:x)) {
+          x.should == 'aaaa'
+        }
+      end 
+    end
     context "simple hash {:a => 'b'}" do
       attr_reader :exp
       before(:each) do
         @exp = t(:a => 'b')
       end
 
-      it "should match {:a => simple(:x)}, binding 'b' to the first argument" do
+      it "should match {:a => simple(:x)}, binding 'x' to the first argument" do
         exp.should match_with_bind({:a => simple(:x)}, :x => 'b')
+      end 
+      it "should match :a => subtree(:x), binding :x" do
+        with_match_locals(:a => subtree(:x)) do
+          x.should == 'b'
+        end
       end 
       it "should match {:a => 'b'} with no binds" do
         exp.should match_with_bind({:a => 'b'}, {})
@@ -77,6 +86,11 @@ describe Parslet::Pattern do
       it "should match wholly with {:a => {:b => simple(:x)}}" do
         exp.should match_with_bind({:a => {:b => simple(:x)}}, :x => 'c')
       end
+      it "should match wholly with {:a => subtree(:t)}" do
+        with_match_locals(:a => subtree(:t)) do
+          t.should == {:b => 'c'}
+        end
+      end
       it "should match element wise with 'c'" do
         exp.should match_with_bind('c', {})
       end
@@ -88,10 +102,7 @@ describe Parslet::Pattern do
       end
     end
     context "an array of 'a', 'b', 'c'" do
-      attr_reader :exp
-      before(:each) do
-        @exp = t(['a', 'b', 'c'])
-      end
+      let(:exp) { ['a', 'b', 'c'] }
 
       it "should match each element in turn" do
         verify = flexmock().should_expect do |expect|
@@ -109,6 +120,21 @@ describe Parslet::Pattern do
           [simple(:x), simple(:y), simple(:z)], 
           :x => 'a', :y => 'b', :z => 'c')
       end 
+      describe "subtree bind" do
+        it "should match all elements" do
+          matches = flexmock(:matches).should_expect do |matches|
+            matches.should_be_strict
+            matches.should_have(%w(a b c))
+            matches.should_have('a')
+            matches.should_have('b')
+            matches.should_have('c')
+          end.mock
+          
+          with_match_locals(subtree(:x)) do
+            matches.should_have(x)
+          end
+        end 
+      end
     end
     context "{:a => 'a', :b => 'b'}" do
       attr_reader :exp
