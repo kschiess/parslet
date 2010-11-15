@@ -49,16 +49,6 @@ module MiniLisp
     }
   end
   
-  class LispExp
-    def initialize(parts)
-      @parts = parts
-    end
-    def to_ary
-      @parts.map { |e| e.respond_to?(:to_ary) ? e.to_ary : e }
-    end
-    alias :to_a :to_ary
-  end
-
   class Transform
     include Parslet
     
@@ -75,7 +65,7 @@ module MiniLisp
         
       t.rule(:float=>{:integer=> simple(:a), :e=> simple(:b)}) { Float(a + b) }
         
-      t.rule(:exp => sequence(:exp))        { LispExp.new(exp) }
+      t.rule(:exp => subtree(:exp))         { exp }
     end
     
     def do(tree)
@@ -92,11 +82,11 @@ begin
   result = parser.parse('(this "is" a test( 1 2.0 3))')
 rescue Parslet::ParseFailed => failure
   puts failure
-  puts parser.root.error_tree.ascii_tree
+  puts parser.root.error_tree
 end
 
 # Transform the result
-pp transform.do(result).to_ary
+pp transform.do(result)
 
 # Thereby reducing it to the earlier problem: 
 # http://github.com/kschiess/toylisp
