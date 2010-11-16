@@ -1,40 +1,39 @@
-
 $:.unshift '../lib/'
 require 'parslet'
 require 'pp'
 
 tree = {:bud => {:stem => []}}
 
-class ComeSpring < Parslet::Transform
+class Spring < Parslet::Transform
   rule(:stem => sequence(:branches)) {
     {:stem => (branches + [{:branch => :leaf}])}
   }
 end
-class ComeSummer < Parslet::Transform
+class Summer < Parslet::Transform
   rule(:stem => subtree(:branches)) {
     new_branches = branches.map { |b| {:branch => [:leaf, :flower]} }
     {:stem => new_branches}
   }
 end
-class ComeFall < Parslet::Transform
+class Fall < Parslet::Transform
   rule(:branch => sequence(:x)) {
     x.each { |e| puts "Fruit!" if e==:flower }
-    x.each { |e| puts "Faling Leaves!" if e==:leaf }
+    x.each { |e| puts "Falling Leaves!" if e==:leaf }
     {:branch => []}
   }
 end
-class ComeWinter < Parslet::Transform
+class Winter < Parslet::Transform
   rule(:stem => subtree(:x)) {
     {:stem => []}
   }
 end
 
 def do_seasons(tree)
-  ['spring', 'summer', 'fall', 'winter'].each do |season|
-    klass = Kernel.const_get "Come"+season.capitalize
-    tree = klass.new.apply(tree)
+  [Spring, Summer, Fall, Winter].each do |season|
     p "And when #{season} comes"
+    tree = season.new.apply(tree)
     pp tree
+    puts
   end
   tree
 end
