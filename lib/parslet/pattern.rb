@@ -71,6 +71,8 @@ class Parslet::Pattern
     end
   end
   
+  # Handles preorder, depth-first recursion through the +expr+ given. 
+  #
   def recurse_into(expr, &block)
     # p [:attempt_match, expr]
     block.call(expr)
@@ -148,15 +150,5 @@ class Parslet::Pattern
     
     # Match succeeds
     return true
-  end
-      
-  # Called on a bind variable, returns the variable name without the _
-  #
-  def variable_name(bind_var)
-    str = bind_var.to_s
-    
-    if str.size>1
-      str[1..-1].to_sym
-    end
   end
 end
