@@ -7,38 +7,25 @@ $:.unshift '../lib'
 require 'pp'
 require 'parslet'
 
-class ParensParser
-  include Parslet
+module LISP # as in 'lots of insipid and stupid parenthesis'
+  class Parser < Parslet::Parser
+    rule(:balanced) {
+      str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
+    }
   
-  rule(:balanced) {
-    str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
-  }
-  
-  def parse(str)
-    balanced.parse(str)
+    root(:balanced)
   end
-end
 
-class ParensTransform
-  include Parslet
-  
-  attr_reader :t
-  def initialize
-    @t = Transform.new
-    
-    t.rule(:l => '(', :m => simple(:x), :r => ')') { 
+  class Transform < Parslet::Transform
+    rule(:l => '(', :m => simple(:x), :r => ')') { 
       # innermost :m will contain nil
       x.nil? ? 1 : x+1
     }
   end
-  
-  def apply(tree)
-    t.apply(tree)
-  end
 end
 
-parser = ParensParser.new
-transform = ParensTransform.new
+parser = LISP::Parser.new
+transform = LISP::Transform.new
 %w!
   ()
   (())
