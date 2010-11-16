@@ -2,6 +2,8 @@
 # Allows specifying rules as strings using the exact same grammar that treetop
 # does, minus the actions. This is on one hand a good example of a fully fledged
 # parser and on the other hand might even turn out really useful. 
+# 
+# NOT FINISHED & EXPERIMENTAL
 #
 class Parslet::Expression
   include Parslet
