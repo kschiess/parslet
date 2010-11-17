@@ -20,7 +20,6 @@ class Parslet::ErrorTree
   def cause
     parslet.cause || "Unknown error in #{parslet.inspect}"
   end
-  alias :to_s :cause
   
   # Returns an ascii tree representation of the causes of this node and its
   # children. 
@@ -30,10 +29,11 @@ class Parslet::ErrorTree
       recursive_ascii_tree(self, io, [true]) }.
       string
   end
+  alias to_s ascii_tree
 private
   def recursive_ascii_tree(node, stream, curved)
     append_prefix(stream, curved)
-    stream.puts node
+    stream.puts node.cause
     
     node.children.each do |child|
       last_child = (node.children.last == child)

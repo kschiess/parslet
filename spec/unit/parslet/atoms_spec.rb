@@ -283,7 +283,6 @@ describe Parslet do
       end 
       it "should have an error tree" do
         parslet.error_tree.nodes.should == 1
-        parslet.error_tree.to_s.should == "Expected \"a\", but got \".\" at line 1 char 2."
       end 
     end
   end

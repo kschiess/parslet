@@ -8,7 +8,7 @@ describe Parslet::ErrorTree, 'instance' do
 
   subject { error_tree }
   its(:nodes) { should == 1 }
-  its(:to_s) { should == 'foo' }
+  its(:to_s) { should == error_tree.ascii_tree }
   its(:cause) { should == 'foo' }
   its(:children) { should be_empty }
   
@@ -24,6 +24,7 @@ describe Parslet::ErrorTree, 'instance' do
     end
 
     its(:nodes) { should == 3 }
+    its(:to_s) { should == error_tree.ascii_tree }
     its(:ascii_tree) { should == "`- foo\n   |- foo\n   `- foo\n" }
   end
 end
