@@ -29,8 +29,17 @@ describe Parslet::Expression do
     end
   end
   
-  context "simple strings ('abc')" do
-    subject { exp("'abc'") }
-    it { should accept('abc') }
+  describe "running a few samples" do
+    [ # pattern             # input
+      "'abc'",              'abc', 
+      
+      "'abc'?",             'abc', 
+      "'abc'?",             '', 
+    ].each_slice(2) do |pattern, input|
+      context "exp(#{pattern})" do
+        subject { exp(pattern) }
+        it { should accept(input) }
+      end
+    end
   end
 end

@@ -146,7 +146,7 @@ module Parslet
   #
   # Example: 
   #
-  #   exp(%Q("a" "b"?))     # => returns the same as str('a') >> str('b').absnt?
+  #   exp(%Q("a" "b"?))     # => returns the same as str('a') >> str('b').maybe
   #
   def exp(str)
     Parslet::Expression.new(str).to_parslet

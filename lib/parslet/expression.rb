@@ -8,7 +8,10 @@
 class Parslet::Expression
   include Parslet
   
-  def initialize(str)
+  autoload :Treetop, 'parslet/expression/treetop'
+  
+  def initialize(str, opts={})
+    @type = opts[:type] || :treetop
     @exp = str
     @parslet = transform(
       parse(str))
@@ -17,39 +20,15 @@ class Parslet::Expression
   # Transforms the parse tree into a parslet expression. 
   #
   def transform(tree)
-    transform = Parslet::Transform.new
-    transform.rule(:string => simple(:str)) { |d| 
-      str(d[:str]) }
+    transform = Treetop::Transform.new
     
     transform.apply(tree)
-  end
-  
-  class Treetop
-    include Parslet
-    
-    # root :expression
-    def parse(str)
-      expression.parse(str)
-    end
-    
-    rule(:expression) {
-      string
-    }
-    
-    rule(:string) {
-      str('\'') >> 
-      (
-        (str('\\') >> any) |
-        (str("'").absnt? >> any)
-      ).repeat.as(:string) >> 
-      str('\'')
-    }
   end
   
   # Parses the string and returns a parse tree.
   #
   def parse(str)
-    parser = Treetop.new
+    parser = Treetop::Parser.new
     parser.parse(str)
   end
 
