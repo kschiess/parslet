@@ -39,10 +39,23 @@ describe Parslet::Expression do
       "('abc')",            'abc', 
       
       "'a' 'b'",            'ab', 
+      "'a' ('b')",          'ab', 
+      
+      # "'a' / 'b'",          'a', 
+      # "'a' / 'b'",          'b', 
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }
         it { should accept(input) }
+      end
+    end
+
+    [ # pattern             # input
+      "'abc'",              'cba', 
+    ].each_slice(2) do |pattern, input|
+      context "exp(#{pattern.inspect})" do
+        subject { exp(pattern) }
+        it { should_not accept(input) }
       end
     end
   end

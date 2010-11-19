@@ -3,12 +3,21 @@ class Parslet::Expression::Treetop
     root(:expression)
     
     rule(:expression) {
-      (atom >> str('?')).as(:maybe) |
+      alternatives.as(:maybe) >> str('?') >> space? | 
+      alternatives
+    }
+    
+    rule(:alternatives) {
+      simple >> str('/') >> alternatives |
+      simple
+    }
+
+    rule(:simple) {
       atom.repeat
     }
     
     rule(:atom) { 
-      str('(') >> expression.as(:unwrap) >> str(')') |
+      str('(') >> expression.as(:unwrap) >> str(')') >> space? |
       string 
     }
 
