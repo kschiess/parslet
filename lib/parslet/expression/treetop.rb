@@ -3,7 +3,13 @@ class Parslet::Expression::Treetop
     root(:expression)
     
     rule(:expression) {
-      string
+      (atom >> str('?')).as(:maybe) |
+      atom
+    }
+    
+    rule(:atom) { 
+      str('(') >> expression >> str(')') |
+      string 
     }
 
     rule(:string) {
@@ -17,6 +23,7 @@ class Parslet::Expression::Treetop
   end
   
   class Transform < Parser::Transform
+    rule(:maybe => simple(:m)) { |d| d[:m].maybe }
     rule(:string => simple(:s)) { |d| str(d[:s]) }
   end
   
