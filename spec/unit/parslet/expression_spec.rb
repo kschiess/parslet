@@ -35,8 +35,12 @@ describe Parslet::Expression do
       
       "'abc'?",             'abc', 
       "'abc'?",             '', 
+      
+      "('abc')",            'abc', 
+      
+      "'a' 'b'",            'ab', 
     ].each_slice(2) do |pattern, input|
-      context "exp(#{pattern})" do
+      context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }
         it { should accept(input) }
       end
