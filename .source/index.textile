@@ -19,18 +19,17 @@ result = parser.parse %Q("this is a valid string")
 result # => {:string=>"this is a valid string"}
 {% endhighlight %}
 
-Don't be afraid, it's all Ruby! Parslet is a parser library that
-allows you to easily construct parsers using a construction method that is
-called "PEG":http://en.wikipedia.org/wiki/Parsing_expression_grammar (Parsing
-Expression Grammar). With it, you can go beyond regular expressions and
-construct real language parsers. 
+A small Ruby library for constructing parsers in the
+"PEG":http://en.wikipedia.org/wiki/Parsing_expression_grammar (Parsing
+Expression Grammar) fashion.
+
 
 Parslet makes developing complex parsers easy. It does so by
 
 * providing the best *error reporting* possible
 * *not generating* reams of code for you to debug
 
-Parslet takes the long way around to make your job easier. It allows for
+Parslet takes the long way around to make *your job* easier. It allows for
 incremental language construction. Often, you start out small, implementing
 the atoms of your language first; _parslet_ takes pride in making this
 possible. 

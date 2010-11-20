@@ -1,9 +1,7 @@
 ---
 layout: default
-title: Contributors
+title: Contribute
 ---
-
-h1. Contributors 
 
 * *Florian Hanke* ("floere":floere.github.com) has given a lot of very
   inspiring input for parslet. His questions have been key to rounding off the
@@ -11,10 +9,4 @@ h1. Contributors
 
 Want to be on this list? Then write bug reports, patches or documenation! All 
 contributions are more than welcome.
-
-h1. About
-
-Parslet is released under a MIT license. That basically means that you're
-allowed to do almost anything with it, as long as you leave my name in and
-give proper credit.
 

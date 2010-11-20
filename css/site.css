@@ -1,5 +1,7 @@
 body { font-size: 100%; font-family: Helvetica; background-color: white; }
 
+a { color: black; }
+
 .main_menu { font-size: 1.2em; margin-bottom: 1cm; }
 .main_menu ul { display: inline-block; list-style-type: none; margin-left: -10em; }
 .main_menu ul:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
@@ -10,5 +12,5 @@ body { font-size: 100%; font-family: Helvetica; background-color: white; }
 .content { font-size: 1em; width: 50em; line-height: 1.4em; margin-left: 1cm; }
 .content p { margin: 1em; }
 
-.copyright { font-variant: small-caps; font-size: 0.6em; color: #a0aef8; margin-left: 22em; margin-top: 2cm; }
-.copyright a { text-decoration: none; color: #a0aef8; }
+.copyright { font-variant: small-caps; font-size: 0.6em; color: #00ad00; margin-left: 22em; margin-top: 3cm; }
+.copyright a { text-decoration: none; color: #00ad00; }

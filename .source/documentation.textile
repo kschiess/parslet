@@ -3,13 +3,11 @@ title: Documentation
 layout: default
 ---
 
-Are you brand new to parslet? Well then let's introduce you guys. Please read 
-the *Tutorial*!
+"*Getting Started*":get-started.html
 
-Parslet has inline comments that detail some of its usage. Have a look at the 
-*rdoc documentation*.
+Are you brand new to parslet? Well then let's introduce you guys. This is what
+you should read and try out first. 
 
-The source tree of parslet also comprises a few examples that illustrate details about how to and when to. Please refer to the *examples section*. 
+"*rdoc Class Documentation*":test.html
 
-Have you made a full blown parser/interpreter/compiler using parslet? I would 
-be glad to link to your project here as an example for others. 
+The rdoc documentation will help you with the nitty gritty.
