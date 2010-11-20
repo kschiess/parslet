@@ -3,10 +3,32 @@ layout: default
 title: Contribute
 ---
 
+Find parslet to be really useful? Or just found a bug that is really ruining the
+day for you? Please take part by contributing: 
+
+h2. Bugs 
+
+Log in to github and open a bug ticket "here":https://github.com/kschiess/parslet/issues. 
+Please be sure to include the version of parslet and Ruby; maybe you can even
+provide some code that exhibits the bug?
+
+And of course if you provide a properly tested patch, you'll be my hero and 
+get a place in the space below for lifetime. Just send me a pull request!
+
+h2. Projects
+
+Have you got a project that uses parslet? Please write
+"me":mailto:kaspar.schiess@absurd.li about it. I would like to include you in
+this project list: 
+
+"*Examples*":https://github.com/kschiess/parslet/tree/master/example/
+
+In here, you can find a parser for a lisp like language and much more. 
+
+h2. Thanks for all the fish
+
 * *Florian Hanke* ("floere":floere.github.com) has given a lot of very
   inspiring input for parslet. His questions have been key to rounding off the
-  corners and making the library as aesthetic as it is.
-
-Want to be on this list? Then write bug reports, patches or documenation! All 
-contributions are more than welcome.
+  corners and making the library as aesthetic as it is. And just look at the 
+  logo. 
 

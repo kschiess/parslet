@@ -8,6 +8,11 @@ layout: default
 Are you brand new to parslet? Well then let's introduce you guys. This is what
 you should read and try out first. 
 
-"*rdoc Class Documentation*":test.html
+"*Examples*":https://github.com/kschiess/parslet/tree/master/example/
+
+Parslet comes with a lot of examples that explain how to use various aspects. 
+Take a look at those. 
+
+"*rdoc Class Documentation*":doc/rdoc-0.10.0/index.html
 
 The rdoc documentation will help you with the nitty gritty.

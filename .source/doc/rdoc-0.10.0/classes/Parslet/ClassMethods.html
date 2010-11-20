@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::ClassMethods</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen" />
+    <script src="../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Module</span> 
+            Parslet::ClassMethods 
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../files/lib/parslet_rb.html">lib/parslet.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>R</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000096">root</a>,</li>
+                
+                <li><a href="#M000097">rule</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000096">
+                    
+                    <a name="M000096"></a><b>root</b>(name)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Define the parsers <a href="ClassMethods.html#M000096">root</a> function.
+This is the place where you start parsing; if you have a rule for
+&#8216;file&#8217; that describes what should be in a file, this would be
+your root declaration:
+</p>
+<pre>
+  class Parser
+    root :file
+    rule(:file) { ... }
+  end
+</pre>
+<p>
+<a href="ClassMethods.html#M000096">root</a> declares a &#8216;parse&#8217;
+function that works just like the parse function that you can call on a
+simple parslet, taking a string as input and producing parse output.
+</p>
+<p>
+In a way, <a href="ClassMethods.html#M000096">root</a> is a shorthand for:
+</p>
+<pre>
+  def parse(str)
+    your_parser_root.parse(str)
+  end
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000096_source')" id="l_M000096_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/53c3cd0a833ded4ba38a19be7c274a171161aa5a/lib/parslet.rb#L76" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000096_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet.rb, line 76</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">root</span>(<span class="ruby-identifier">name</span>)
+      <span class="ruby-identifier">define_method</span>(<span class="ruby-identifier">:root</span>) <span class="ruby-keyword kw">do</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">name</span>)
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">define_method</span>(<span class="ruby-identifier">:parse</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">str</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">root</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">str</span>)
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000097">
+                    
+                    <a name="M000097"></a><b>rule</b>(name, &amp;definition)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Define an entity for the parser. This generates a method of the same name
+that can be used as part of other patterns. Those methods can be freely
+mixed in your parser class with real ruby methods.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  class MyParser
+    include Parslet
+
+    rule :bar { str('bar') }
+    rule :twobar do
+      bar &gt;&gt; bar
+    end
+
+    def parse(str)
+      twobar.parse(str)
+    end
+  end
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000097_source')" id="l_M000097_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/53c3cd0a833ded4ba38a19be7c274a171161aa5a/lib/parslet.rb#L104" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000097_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet.rb, line 104</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rule</span>(<span class="ruby-identifier">name</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">definition</span>)
+      <span class="ruby-identifier">define_method</span>(<span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">do</span>
+        <span class="ruby-ivar">@rules</span> <span class="ruby-operator">||=</span> {}     <span class="ruby-comment cmt"># &lt;name, rule&gt; memoization</span>
+        <span class="ruby-ivar">@rules</span>[<span class="ruby-identifier">name</span>] <span class="ruby-keyword kw">or</span>
+          (<span class="ruby-ivar">@rules</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Entity</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>, <span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">definition</span>))
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>README</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" />
+    <script src="../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            README
+        </h1>
+        <ul class="files">
+            <li>README</li>
+            <li>Last modified: 2010-11-14 09:04:05 +0100</li>
+        </ul>
+    </div>
+
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+INTRODUCTION
+</p>
+<p>
+A small library that implements a PEG grammar. PEG means Parsing Expression
+Grammars [1]. These are a different kind of grammars that recognize almost
+the same languages as your conventional LR parser, except that they are
+easier to work with, since they haven&#8217;t been conceived for
+generation, but for recognition of languages. You can read the founding
+paper of the field by Bryan Ford here [2].
+</p>
+<p>
+Other Ruby projects that work on the same topic are: <a
+href="http://wiki.github.com/luikore/rsec/">wiki.github.com/luikore/rsec/</a>
+<a
+href="http://github.com/mjijackson/citrus">github.com/mjijackson/citrus</a>
+<a
+href="http://github.com/nathansobo/treetop">github.com/nathansobo/treetop</a>
+</p>
+<p>
+My goal here was to see how a parser/parser generator should be constructed
+to allow clean AST construction and good error handling. It seems to me
+that most often, parser generators only handle the success-case and forget
+about debugging and error generation.
+</p>
+<p>
+More specifically, this library is motivated by one of my compiler
+projects. I started out using &#8216;treetop&#8217; (see the link above),
+but found it unusable. It was lacking in
+</p>
+<pre>
+  * error reporting: Hard to see where a grammar fails.
+
+  * stability of generated trees: Intermediary trees were dictated by the
+    grammar. It was hard to define invariants in that system - what was
+    convenient when writing the grammar often wasn't in subsequent stages.
+
+  * clarity of parser code: The parser code is generated and is very hard
+    to read. Add that to the first point to understand my pain.
+</pre>
+<p>
+So parslet tries to be different. It doesn&#8217;t generate the parser, but
+instead defines it in a DSL which is very close to what you find in [2]. A
+successful parse then generates a parser tree consisting entirely of hashes
+and arrays and strings (read: instable). This parser tree can then be
+converted to a real AST (read: stable) using a pattern matcher that is also
+part of this library.
+</p>
+<p>
+Error reporting is another area where parslet excels: It is able to print
+not only the error you are used to seeing (&#8216;Parse failed because of
+REASON at line 1 and char 2&#8217;), but also prints what led to that
+failure in the form of a tree (error_tree method).
+</p>
+<dl>
+<dt>1</dt><dd><a
+href="http://en.wikipedia.org/wiki/Parsing_expression_grammar">en.wikipedia.org/wiki/Parsing_expression_grammar</a>
+
+</dd>
+<dt>2</dt><dd><a
+href="http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf">pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf</a>
+
+</dd>
+</dl>
+<p>
+SYNOPSIS
+</p>
+<pre>
+  require 'parslet'
+  include Parslet
+
+  # Constructs a parser using a Parser Expression Grammar like DSL:
+  parser =  str('&quot;') &gt;&gt;
+            (
+              str('\\') &gt;&gt; any |
+              str('&quot;').absnt? &gt;&gt; any
+            ).repeat.as(:string) &gt;&gt;
+            str('&quot;')
+
+  # Parse the string and capture parts of the interpretation (:string above)
+  tree = parser.parse(%Q{
+    &quot;This is a \\&quot;String\\&quot; in which you can escape stuff&quot;
+  }.strip)
+
+  tree # =&gt; {:string=&gt;&quot;This is a \\\&quot;String\\\&quot; in which you can escape stuff&quot;}
+
+  # Here's how you can grab results from that tree, two methods:
+
+  # 1)
+  Pattern.new(:string =&gt; simple(:x)).each_match(tree) do |dictionary|
+    puts &quot;String contents (method 1): #{dictionary[:x]}&quot;
+  end
+
+  # 2)
+  transform = Parslet::Transform.new do
+    rule(:string =&gt; simple(:x)) {
+      puts &quot;String contents (method 2): #{x}&quot; }
+  end
+  transform.apply(tree)
+</pre>
+<p>
+COMPATIBILITY
+</p>
+<p>
+This library should work with both ruby 1.8 and ruby 1.9.
+</p>
+<p>
+AUTHORS
+</p>
+<p>
+My gigantous thanks go to the following cool guys and gals that help make
+this rock:
+</p>
+<p>
+Florian Hanke (<a href="http://floere.github.com">floere.github.com</a>)
+</p>
+<p>
+STATUS
+</p>
+<p>
+On the road to 1.0; improving documentation, packaging and upgrading to
+rspec2.
+</p>
+<p>
+&#169; 2010 Kaspar Schiess
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+    </div>
+  </body>
+</html>

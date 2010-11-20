@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::Base</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Atoms::Base 
+            
+                <span class="parent">&lt; 
+                    
+                    Object
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/parslet/atoms/base_rb.html">lib/parslet/atoms/base.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+<a href="Base.html">Base</a> class for all parslets, handles orchestration
+of calls and implements a lot of the operator and chaining methods.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>#</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000009">>></a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>A</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000011">absnt?</a>,</li>
+                
+                <li><a href="#M000006">apply</a>,</li>
+                
+                <li><a href="#M000013">as</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>C</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000026">cause</a>,</li>
+                
+                <li><a href="#M000028">cause?</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>E</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000027">error_tree</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>F</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000014">flatten</a>,</li>
+                
+                <li><a href="#M000016">flatten_repetition</a>,</li>
+                
+                <li><a href="#M000015">flatten_sequence</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>I</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000024">inspect</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>M</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000008">maybe</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>P</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000005">parse</a>,</li>
+                
+                <li><a href="#M000017">precedence</a>,</li>
+                
+                <li><a href="#M000012">prsnt?</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>R</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000007">repeat</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>T</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000023">to_s</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>#</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000010">|</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+    <div class="sectiontitle">Included Modules</div>
+    <ul>
+        
+        <li>
+            
+            <a href="../../Parslet.html">Parslet</a>
+            
+            START:includes
+        </li>
+        
+    </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Class Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000017">
+                    
+                    <a name="M000017"></a><b>precedence</b>(prec)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000017_source')" id="l_M000017_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L132" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000017_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 132</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">precedence</span>(<span class="ruby-identifier">prec</span>)
+    <span class="ruby-identifier">define_method</span>(<span class="ruby-identifier">:precedence</span>) { <span class="ruby-identifier">prec</span> }
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000009">
+                    
+                    <a name="M000009"></a><b>&gt;&gt;</b>(parslet)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000009_source')" id="l_M000009_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L53" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000009_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 53</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&gt;&gt;</span>(<span class="ruby-identifier">parslet</span>)
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Sequence</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">parslet</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000011">
+                    
+                    <a name="M000011"></a><b>absnt?</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000011_source')" id="l_M000011_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L59" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000011_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 59</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">absnt?</span>
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Lookahead</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">false</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000006">
+                    
+                    <a name="M000006"></a><b>apply</b>(io)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000006_source')" id="l_M000006_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L30" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000006_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 30</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">io</span>)
+    <span class="ruby-comment cmt"># p [:start, self, io.string[io.pos, 10]]</span>
+    
+    <span class="ruby-identifier">old_pos</span> = <span class="ruby-identifier">io</span>.<span class="ruby-identifier">pos</span>
+    
+    <span class="ruby-comment cmt"># p [:try, self, io.string[io.pos, 20]]</span>
+    <span class="ruby-keyword kw">begin</span>
+      <span class="ruby-identifier">r</span> = <span class="ruby-identifier">try</span>(<span class="ruby-identifier">io</span>)
+      <span class="ruby-comment cmt"># p [:return_from, self, flatten(r)]</span>
+      <span class="ruby-ivar">@last_cause</span> = <span class="ruby-keyword kw">nil</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">r</span>
+    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ParseFailed</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
+      <span class="ruby-comment cmt"># p [:failing, self, io.string[io.pos, 20]]</span>
+      <span class="ruby-identifier">io</span>.<span class="ruby-identifier">pos</span> = <span class="ruby-identifier">old_pos</span>; <span class="ruby-identifier">raise</span> <span class="ruby-identifier">ex</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000013">
+                    
+                    <a name="M000013"></a><b>as</b>(name)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000013_source')" id="l_M000013_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L65" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000013_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 65</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">as</span>(<span class="ruby-identifier">name</span>)
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Named</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">name</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000026">
+                    
+                    <a name="M000026"></a><b>cause</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Cause should return the current best approximation of this parslet of what
+went wrong with the parse. Not relevant if the parse succeeds, but needed
+for clever error reports.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000026_source')" id="l_M000026_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L151" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000026_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 151</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cause</span>
+    <span class="ruby-ivar">@last_cause</span>
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000028">
+                    
+                    <a name="M000028"></a><b>cause?</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000028_source')" id="l_M000028_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L162" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000028_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 162</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cause?</span>
+    <span class="ruby-keyword kw">not</span> <span class="ruby-ivar">@last_cause</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000027">
+                    
+                    <a name="M000027"></a><b>error_tree</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Error tree returns what went wrong here plus what went wrong inside
+subexpressions as a tree. The error stored for this node will be equal with
+<a href="Base.html#M000026">cause</a>.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000027_source')" id="l_M000027_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L159" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000027_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 159</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">error_tree</span>
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ErrorTree</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">cause?</span>
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000014">
+                    
+                    <a name="M000014"></a><b>flatten</b>(value)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000014_source')" id="l_M000014_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L69" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000014_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 69</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">flatten</span>(<span class="ruby-identifier">value</span>)
+    <span class="ruby-comment cmt"># Passes through everything that isn't an array of things</span>
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">value</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">instance_of?</span> <span class="ruby-constant">Array</span>
+
+    <span class="ruby-comment cmt"># Extracts the s-expression tag</span>
+    <span class="ruby-identifier">tag</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">tail</span> = <span class="ruby-identifier">value</span>
+    
+    <span class="ruby-comment cmt"># Merges arrays:</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">tail</span>.
+      <span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">flatten</span>(<span class="ruby-identifier">e</span>) }            <span class="ruby-comment cmt"># first flatten each element</span>
+      
+    <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">tag</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:sequence</span>
+        <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">flatten_sequence</span>(<span class="ruby-identifier">result</span>)
+      <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:maybe</span>
+        <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">first</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:repetition</span>
+        <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">flatten_repetition</span>(<span class="ruby-identifier">result</span>)
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">fail</span> <span class="ruby-node">&quot;BUG: Unknown tag #{tag.inspect}.&quot;</span>
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000016">
+                    
+                    <a name="M000016"></a><b>flatten_repetition</b>(list)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000016_source')" id="l_M000016_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L113" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000016_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 113</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">flatten_repetition</span>(<span class="ruby-identifier">list</span>)
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">any?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Hash</span>) }
+      <span class="ruby-comment cmt"># If keyed subtrees are in the array, we'll want to discard all </span>
+      <span class="ruby-comment cmt"># strings inbetween. To keep them, name them. </span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Hash</span>) }
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">any?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Array</span>) }
+      <span class="ruby-comment cmt"># If any arrays are nested in this array, flatten all arrays to this</span>
+      <span class="ruby-comment cmt"># level. </span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">list</span>.
+        <span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Array</span>) }.
+        <span class="ruby-identifier">flatten</span>(<span class="ruby-value">1</span>)
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-comment cmt"># If there are only strings, concatenate them and return that. </span>
+    <span class="ruby-identifier">list</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value str">''</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">s</span>,<span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span><span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">e</span><span class="ruby-operator">||</span><span class="ruby-value str">''</span>) }
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000015">
+                    
+                    <a name="M000015"></a><b>flatten_sequence</b>(list)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000015_source')" id="l_M000015_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L91" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000015_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 91</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">flatten_sequence</span>(<span class="ruby-identifier">list</span>)
+    <span class="ruby-identifier">list</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value str">''</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span>, <span class="ruby-identifier">e</span><span class="ruby-operator">|</span>        <span class="ruby-comment cmt"># and then merge flat elements</span>
+      <span class="ruby-keyword kw">case</span> [<span class="ruby-identifier">r</span>, <span class="ruby-identifier">e</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">class</span> }
+        <span class="ruby-keyword kw">when</span> [<span class="ruby-constant">Hash</span>, <span class="ruby-constant">Hash</span>]             <span class="ruby-comment cmt"># two keyed subtrees: make one</span>
+          <span class="ruby-identifier">warn_about_duplicate_keys</span>(<span class="ruby-identifier">r</span>, <span class="ruby-identifier">e</span>)
+          <span class="ruby-identifier">r</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">e</span>)
+        <span class="ruby-comment cmt"># a keyed tree and an array (push down)</span>
+        <span class="ruby-keyword kw">when</span> [<span class="ruby-constant">Hash</span>, <span class="ruby-constant">Array</span>]
+          [<span class="ruby-identifier">r</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">e</span>
+        <span class="ruby-keyword kw">when</span> [<span class="ruby-constant">Array</span>, <span class="ruby-constant">Hash</span>]   
+          <span class="ruby-identifier">r</span> <span class="ruby-operator">+</span> [<span class="ruby-identifier">e</span>]
+        <span class="ruby-keyword kw">when</span> [<span class="ruby-constant">String</span>, <span class="ruby-constant">String</span>]
+          <span class="ruby-identifier">r</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">instance_of?</span> <span class="ruby-constant">Hash</span>
+          <span class="ruby-identifier">r</span>   <span class="ruby-comment cmt"># Ignore e, since its not a hash we can merge</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-identifier">e</span>   <span class="ruby-comment cmt"># Whatever e is at this point, we keep it</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    }
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000024">
+                    
+                    <a name="M000024"></a><b>inspect</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000024_source')" id="l_M000024_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L143" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000024_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 143</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inspect</span>
+    <span class="ruby-identifier">to_s</span>(<span class="ruby-constant">OUTER</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000008">
+                    
+                    <a name="M000008"></a><b>maybe</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000008_source')" id="l_M000008_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L50" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000008_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 50</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">maybe</span>
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Repetition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-identifier">:maybe</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000005">
+                    
+                    <a name="M000005"></a><b>parse</b>(io)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000005_source')" id="l_M000005_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L7" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000005_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 7</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">io</span>)
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">io</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-identifier">:to_str</span>
+      <span class="ruby-identifier">io</span> = <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">io</span>)
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">io</span>)
+    
+    <span class="ruby-comment cmt"># If we haven't consumed the input, then the pattern doesn't match. Try</span>
+    <span class="ruby-comment cmt"># to provide a good error message (even asking down below)</span>
+    <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">io</span>.<span class="ruby-identifier">eof?</span>
+      <span class="ruby-comment cmt"># Do we know why we stopped matching input? If yes, that's a good</span>
+      <span class="ruby-comment cmt"># error to fail with. Otherwise just report that we cannot consume the</span>
+      <span class="ruby-comment cmt"># input.</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">cause</span> 
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ParseFailed</span>, <span class="ruby-node">&quot;Unconsumed input, maybe because of this: #{cause}&quot;</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">error</span>(<span class="ruby-identifier">io</span>, <span class="ruby-node">&quot;Don't know what to do with #{io.string[io.pos,100]}&quot;</span>) 
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+    
+    <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">flatten</span>(<span class="ruby-identifier">result</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000012">
+                    
+                    <a name="M000012"></a><b>prsnt?</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000012_source')" id="l_M000012_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L62" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000012_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 62</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">prsnt?</span>
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Lookahead</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">true</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000007">
+                    
+                    <a name="M000007"></a><b>repeat</b>(min=0, max=nil)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000007_source')" id="l_M000007_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L47" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000007_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 47</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">repeat</span>(<span class="ruby-identifier">min</span>=<span class="ruby-value">0</span>, <span class="ruby-identifier">max</span>=<span class="ruby-keyword kw">nil</span>)
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Repetition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000023">
+                    
+                    <a name="M000023"></a><b>to_s</b>(outer_prec)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000023_source')" id="l_M000023_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L136" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000023_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 136</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>(<span class="ruby-identifier">outer_prec</span>)
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">outer_prec</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">precedence</span>
+      <span class="ruby-value str">&quot;(&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">to_s_inner</span>(<span class="ruby-identifier">precedence</span>)<span class="ruby-operator">+</span><span class="ruby-value str">&quot;)&quot;</span>
+    <span class="ruby-keyword kw">else</span>
+      <span class="ruby-identifier">to_s_inner</span>(<span class="ruby-identifier">precedence</span>)
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000010">
+                    
+                    <a name="M000010"></a><b>|</b>(parslet)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000010_source')" id="l_M000010_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/a932658fcbe841b88641378f4226e56c19ff0d79/lib/parslet/atoms/base.rb#L56" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000010_source" class="dyn-source">
+                        <pre><span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 56</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-operator">|</span>(<span class="ruby-identifier">parslet</span>)
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Alternative</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">parslet</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    
