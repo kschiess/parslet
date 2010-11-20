@@ -1,0 +1,12 @@
+.highlight { border: 2px solid #686868; -moz-border-radius: 10px; border-radius: 10px; background-color: #f8f8f8; color: #4679a9; width: 72ex; line-height: 1em; margin-top: 1ex; margin-bottom: 1ex; margin-left: 3em; padding-left: 0.4cm; padding-bottom: 1.5ex; }
+.highlight pre { padding: 0; margin: 0; }
+.highlight code { font: 1em "Monaco"; }
+.highlight code.ruby .k { color: #761a47; }
+.highlight code.ruby .c1 { color: #686868; }
+.highlight code.ruby .s1 { color: #42aa7a; background-color: #edf7f7; }
+.highlight code.ruby .sx { color: #42aa7a; }
+.highlight code.ruby .no { color: #551e03; }
+.highlight code.ruby .nb { color: #4679a9; }
+.highlight code.ruby .ss { color: #551e03; }
+.highlight code.ruby .mi { color: #42aa7a; }
+.highlight code.ruby .o, .highlight code.ruby .p { color: #a94179; }
