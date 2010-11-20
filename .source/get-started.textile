@@ -8,7 +8,7 @@ Here's a valid input file for that language:
 
 {% highlight ruby %} 
 puts(1 + 2)
-puts(4 / 2)
+puts(4 + 2)
 {% endhighlight %}
 
 To install the parslet library, please do a 
@@ -117,5 +117,23 @@ encountered. Running the code on '<code>1++2</code>' for example outputs:
 
 {% highlight bash %} 
 Parsing 1 ++ 2: Don't know what to do with ++ 2 at line 1 char 3.
-Unknown error in SUM | INTEGER
+`- Unknown error in SUM | INTEGER
+   |- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 4.
+   |  `- Unknown error in [0-9]{1, } SPACE?
+   |     `- Failed to match \\s at line 1 char 4.
+   `- Unknown error in [0-9]{1, } SPACE?
+      `- Failed to match \\s at line 1 char 4.
 {% endhighlight %}
+
+This is what parslet calls an <code>#error_tree</code>. Not only the output of your parser, 
+but also its grammar is constructed like a tree. When things go wrong, every
+branch of the tree has its own reasons for not accepting a given input. The 
+<code>#error_tree</code> method returns those reasons. 
+
+Our grammar has essentially two branches, <code>SUM</code> and
+<code>INTEGER</code>. Can you see why all rules expect a space at character 4?
+
+h2. Making the parser complete
+
+Let's look at the complete parser definition that also allows for function
+calls like we postulated at the beginning.

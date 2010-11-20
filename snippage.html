@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html;charset=UTF-8" http-equiv="Content-type" />
+    <title>
+      parslet -
+      Snippage
+    </title>
+    <meta content="Kaspar Schiess (http://absurd.li)" name="author" />
+    <link href="css/site.css" rel="stylesheet" type="text/css" />
+    <link href="css/pygments.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="everything">
+      <div class="main_menu">
+        <ul>
+          <li><a href="index.html">about</a></li>
+          <li><a href="get-started.html">get started</a></li>
+          <li><a href="documentation.html">documentation</a></li>
+          <li><a href="status.html">status</a></li>
+          <li><a href="contributors.html">contributors</a></li>
+        </ul>
+      </div>
+      <div class="content">
+        <h1>Snippage</h1>
+        <p>= Language Atoms</p>&#x000A;<p><span class="caps">PEG</span>-style grammars build on a very small number of atoms, or parslets. In&#x000A;fact, only three types of parslets exist. Here&#8217;s how to match a string:</p>&#x000A;str(&#8216;a string&#8217;)&#x000A;<p>This matches the string &#8216;a string&#8217; literally and nothing else. If your input&#x000A;doesn&#8217;t contain the string, it will fail. Here&#8217;s how to match a character&#x000A;set:</p>&#x000A;match(&#8216;[abc]&#8217;)&#x000A;<p>This matches &#8216;a&#8217;, &#8216;b&#8217; or &#8216;c&#8217;. The string matched will always have a length&#x000A;of 1; to match longer strings, please see the title below. The last parslet&#x000A;of the three is &#8216;any&#8217;:</p>&#x000A;any&#x000A;<p>&#8216;any&#8217; functions like the dot in regular expressions &#8211; it matches any single&#x000A;character.</p>&#x000A;<p>= Combination and Repetition</p>&#x000A;<p>Parslets only get useful when combined to grammars. To combine one parslet&#x000A;with the other, you have 4 kinds of methods available: repeat and maybe, &gt;&gt;&#x000A;(sequence), | (alternation), absnt? and prsnt?.</p>&#x000A;str(&#8216;a&#8217;).repeat     # any number of &#8217;a&#8217;s, including 0&#x000A;str(&#8216;a&#8217;).maybe      # maybe there&#8217;ll be an &#8216;a&#8217;, maybe not&#x000A;<p>Parslets can be joined using &gt;&gt;. This means: Match the left parslet, then&#x000A;match the right parslet.</p>&#x000A;str(&#8216;a&#8217;) &gt;&gt; str(&#8216;b&#8217;)  # would match &#8216;ab&#8217;&#x000A;<p>Keep in mind that all combination and repetition operators themselves return&#x000A;a parslet. You can combine the result again:</p>&#x000A;( str(&#8216;a&#8217;) &gt;&gt; str(&#8216;b&#8217;) ) &gt;&gt; str(&#8216;c&#8217;)    # would match &#8216;abc&#8217;&#x000A;&#x000A;<p>The slash (&#8216;|&#8217;) indicates alternatives:</p>&#x000A;str(&#8216;a&#8217;) | str(&#8216;b&#8217;)   # would match &#8216;a&#8217; OR &#8216;b&#8217;&#x000A;<p>The left side of an alternative is matched first; if it matches, the right&#x000A;side is never looked at.</p>&#x000A;<p>The absnt? and prsnt? qualifiers allow looking at input without consuming&#x000A;it:</p>&#x000A;str(&#8216;a&#8217;).absnt?               # will match if at the current position there is an &#8216;a&#8217;.&#x000A;str(&#8216;a&#8217;).absnt? &gt;&gt; str(&#8216;b&#8217;)   # check for &#8216;a&#8217; then match &#8216;b&#8217;&#x000A;<p>This means that the second example will not match any input; when the second&#x000A;part is parsed, the first part has asserted the presence of &#8216;a&#8217;, and thus&#x000A;str(&#8216;b&#8217;) cannot match. The prsnt? method is the opposite of absnt?, it&#x000A;asserts presence.</p>&#x000A;<p>More documentation on these methods can be found in Parslets::Atoms::Base.</p>&#x000A;<p>= Intermediary Parse Trees</p>&#x000A;<p>As you have probably seen above, you can hand input (strings or StringIOs) to&#x000A;your parslets like this:</p>&#x000A;parslet.parse(str)&#x000A;<p>This returns an intermediary parse tree or raises an exception&#x000A;(Parslet::ParseFailed) when the input is not well formed.</p>&#x000A;<p>Intermediary parse trees are essentially just Plain Old Ruby Objects. (<span class="caps">PORO</span>&#x000A;technology as we call it.) Parslets try very hard to return sensible stuff; &#x000A;it is quite easy to use the results for the later stages of your program.</p>&#x000A;<p>Here a few examples and what their intermediary tree looks like:</p>&#x000A;str(&#8216;foo&#8217;).parse(&#8216;foo&#8217;)                           # =&gt; &#8216;foo&#8217;&#x000A;(str(&#8216;f&#8217;) &gt;&gt; str(&#8216;o&#8217;) &gt;&gt; str(&#8216;o&#8217;)).parse(&#8216;foo&#8217;)   # =&gt; &#8216;foo&#8217;&#x000A;&#x000A;<p>Naming parslets</p>&#x000A;<p>Construction of lambda blocks</p>&#x000A;<p>= Intermediary Tree transformation</p>&#x000A;<p>The intermediary parse tree by itself is most often not very useful. Its&#x000A;form is volatile; changing your parser in the slightest might produce&#x000A;profound changes in the generated trees.</p>&#x000A;<p>Generally you will want to construct a more stable tree using your own&#x000A;carefully crafted representation of the domain. Parslet provides you with&#x000A;an elegant way of transmogrifying your intermediary tree into the output&#x000A;format you choose. This is achieved by transformation rules such as this&#x000A;one:</p>&#x000A;transform.rule(:literal =&gt; {:string =&gt; :_x}) { |d|&#x000A;StringLit.new(*d.values) }&#x000A;<p>The above rule will transform a subtree looking like this:</p>&#x000A;:literal&#x000A;|&#x000A;:string&#x000A;|&#x000A;&#8220;somestring&#8221;&#x000A;<p>into just this:</p>&#x000A;StringLit&#x000A;value: &#8220;somestring&#8221;&#x000A;<p>= Further documentation</p>&#x000A;<p>Please see the examples subdirectory of the distribution for more examples.&#x000A;Check out &#8216;rooc&#8217; (github.com/kschiess/rooc) as well &#8211; it uses parslet for&#x000A;compiler construction.</p>
+      </div>
+      <div class="copyright">
+        MIT License, 2010, (c) <a href="http://absurd.li">Kaspar Schiess</a>
+      </div>
+    </div>
+  </body>
+</html>
