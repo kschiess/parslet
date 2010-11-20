@@ -60,11 +60,15 @@ end
 
 task :package => :gemspec
 
+require 'sdoc'
+
 # Generate documentation
-Rake::RDocTask.new do |rd|
-  rd.main = "README"
-  rd.rdoc_files.include("README", "lib/**/*.rb")
-  rd.rdoc_dir = "rdoc"
+Rake::RDocTask.new do |rdoc|
+  rdoc.options << '--fmt' << 'shtml' # explictly set shtml generator
+  rdoc.template = 'direct' # lighter template used on railsapi.com
+  rdoc.main = "README"
+  rdoc.rdoc_files.include("README", "lib/**/*.rb")
+  rdoc.rdoc_dir = "rdoc"
 end
 
 desc 'Clear out RDoc and generated packages'
