@@ -34,4 +34,4 @@ incremental language construction. Often, you start out small, implementing
 the atoms of your language first; _parslet_ takes pride in making this
 possible. 
 
-Eager to try this out? "Get started":/get-started.html!
+Eager to try this out? "Get started":get-started.html!
