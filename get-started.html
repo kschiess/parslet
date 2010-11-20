@@ -18,13 +18,123 @@
         <ul>
           <li><a href="index.html">about</a></li>
           <li><a href="get-started.html">get started</a></li>
+          <li><a href="install.html">install</a></li>
           <li><a href="documentation.html">documentation</a></li>
           <li><a href="contribute.html">contribute</a></li>
         </ul>
       </div>
       <div class="content">
         <h1>Get Started</h1>
-        <p>Let&#8217;s develop a small language that allows for simple computation together. &#x000A;Here&#8217;s a valid input file for that language:</p>&#x000A;<div class="highlight"><pre><code class="ruby"> &#x000A;<span class="nb">puts</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>&#x000A;<span class="nb">puts</span><span class="p">(</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>&#x000A;</code></pre>&#x000A;</div><p>To install the parslet library, please do a</p>&#x000A;<div class="highlight"><pre><code class="bash"> &#x000A;gem install parslet&#x000A;</code></pre>&#x000A;</div><p>Now let&#8217;s write the first part of our parser. For now, let&#8217;s just recognize&#x000A;simple numbers like &#8216;1&#8217; or &#8216;42&#8217;.</p>&#x000A;<div class="highlight"><pre><code class="ruby"> &#x000A;<span class="nb">require</span> <span class="s1">&#39;parslet&#39;</span> &#x000A;&#x000A;<span class="k">class</span> <span class="nc">Mini</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>&#x000A;  <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>&#x000A;  <span class="n">root</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>&#x000A;<span class="k">end</span>&#x000A;&#x000A;<span class="nb">p</span> <span class="no">Mini</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;132432&quot;</span><span class="p">)</span>&#x000A;</code></pre>&#x000A;</div><p>Running this example will print &#8220;132432&#8221;. Congratulations! You just have&#x000A;written your first parser. Running it on the input &#8216;<code>puts(1)</code>&#8217; will&#x000A;not work yet. Let&#8217;s see what happens in case of a failure:</p>&#x000A;<div class="highlight"><pre><code class="ruby"> &#x000A;<span class="no">Mini</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;puts(1)&quot;</span><span class="p">)</span> <span class="c1"># raises Parslet::ParseFailed</span>&#x000A;</code></pre>&#x000A;</div><p>Here&#8217;s the error message provided by that exception: &#8220;Expected at least 1 of [0-9] at line 1 char 1.&#8221; parslet tries to find a number there, but can&#8217;t find&#x000A;one.</p>&#x000A;<p>There are just two lines to the definition of this parser, let&#8217;s go through them:</p>&#x000A;<div class="highlight"><pre><code class="ruby"> &#x000A;<span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>&#x000A;</code></pre>&#x000A;</div><p><code>rule</code> lets you create a new parser rule. Inside the block of that&#x000A;<code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>. This says: &#8220;match a character that is in the range <code>0-9</code>, then &#x000A;match any number of those, but at least match one.&#8221;</p>&#x000A;<div class="highlight"><pre><code class="ruby"> &#x000A;<span class="n">root</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>&#x000A;</code></pre>&#x000A;</div><p>That second line just says: Start parsing at the rule called&#x000A;<code>:integer</code>.</p>&#x000A;<h2>Addition</h2>&#x000A;<p>Let&#8217;s go for simple addition. We&#8217;ll have to allow for spaces in our input,&#x000A;since those help make code readable. Here are two rules that will serve us&#x000A;good:</p>&#x000A;<div class="highlight"><pre><code class="ruby"> &#x000A;<span class="n">rule</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span>  <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>&#x000A;<span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span> <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>&#x000A;</code></pre>&#x000A;</div><p>Two things are new here: (and both in the second line)</p>&#x000A;<ul>&#x000A;	<li>you can use (&#8216;call&#8217;) other rules in your rules</li>&#x000A;	<li><code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that&#x000A;  the thing before it is maybe present once in the input.</li>&#x000A;</ul>&#x000A;<p>Here&#8217;s the full parser, including a small problem that will be interesting to&#x000A;talk about later on:</p>&#x000A;<div class="highlight"><pre><code class="ruby">  &#x000A;<span class="k">class</span> <span class="nc">Mini</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>&#x000A;  <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>    <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>&#x000A;  &#x000A;  <span class="n">rule</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span>      <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>&#x000A;  <span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span>     <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>&#x000A;  &#x000A;  <span class="n">rule</span><span class="p">(</span><span class="ss">:operator</span><span class="p">)</span>   <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[+]&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>&#x000A;  &#x000A;  <span class="n">rule</span><span class="p">(</span><span class="ss">:sum</span><span class="p">)</span>        <span class="p">{</span> <span class="n">integer</span> <span class="o">&gt;&gt;</span> <span class="n">operator</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span> <span class="p">}</span>&#x000A;  <span class="n">rule</span><span class="p">(</span><span class="ss">:expression</span><span class="p">)</span> <span class="p">{</span> <span class="n">sum</span> <span class="o">|</span> <span class="n">integer</span> <span class="p">}</span>&#x000A;&#x000A;  <span class="n">root</span> <span class="ss">:expression</span>&#x000A;<span class="k">end</span>&#x000A;&#x000A;<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>&#x000A;  <span class="n">mini</span> <span class="o">=</span> <span class="no">Mini</span><span class="o">.</span><span class="n">new</span>&#x000A;  <span class="nb">print</span> <span class="s2">&quot;Parsing </span><span class="si">#{</span><span class="n">str</span><span class="si">}</span><span class="s2">: &quot;</span>&#x000A;  &#x000A;  <span class="nb">p</span> <span class="n">mini</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>&#x000A;<span class="k">rescue</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">ParseFailed</span> <span class="o">=&gt;</span> <span class="n">error</span>&#x000A;  <span class="nb">puts</span> <span class="n">error</span><span class="p">,</span> <span class="n">mini</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">error_tree</span>&#x000A;<span class="k">end</span>&#x000A;&#x000A;<span class="n">parse</span> <span class="s2">&quot;1 + 2 + 3&quot;</span>&#x000A;</code></pre>&#x000A;</div><p>As you can see, the parser got decorated with the <code>space?</code> idiom.&#x000A;Every atom of our language consumes the space right after it. This is a useful&#x000A;convention that makes top level rules (the important ones) look cleaner.</p>&#x000A;<p>Note also the addition of <code>:operator</code>, <code>:sum</code> and&#x000A;<code>:expression</code>. The runner code has been extended a bit, so as to&#x000A;throw nice explanations of what went wrong when a parse failure is&#x000A;encountered. Running the code on &#8216;<code>1++2</code>&#8217; for example outputs:</p>&#x000A;<div class="highlight"><pre><code class="bash"> &#x000A;Parsing 1 ++ 2: Don<span class="err">&#39;</span>t know what to <span class="k">do </span>with ++ 2 at line 1 char 3.&#x000A;<span class="sb">`</span>- Unknown error in SUM | INTEGER&#x000A;   |- Failed to match sequence <span class="o">(</span>INTEGER OPERATOR EXPRESSION<span class="o">)</span> at line 1 char 4.&#x000A;   |  <span class="sb">`</span>- Unknown error in <span class="o">[</span>0-9<span class="o">]{</span>1, <span class="o">}</span> SPACE?&#x000A;   |     <span class="sb">`</span>- Failed to match <span class="se">\\</span>s at line 1 char 4.&#x000A;   <span class="sb">`</span>- Unknown error in <span class="o">[</span>0-9<span class="o">]{</span>1, <span class="o">}</span> SPACE?&#x000A;      <span class="sb">`</span>- Failed to match <span class="se">\\</span>s at line 1 char 4.&#x000A;</code></pre>&#x000A;</div><p>This is what parslet calls an <code>#error_tree</code>. Not only the output of your parser, &#x000A;but also its grammar is constructed like a tree. When things go wrong, every&#x000A;branch of the tree has its own reasons for not accepting a given input. The &#x000A;<code>#error_tree</code> method returns those reasons.</p>&#x000A;<p>Our grammar has essentially two branches, <code>SUM</code> and&#x000A;<code>INTEGER</code>. Can you see why all rules expect a space at character 4?</p>&#x000A;<h2>Making the parser complete</h2>&#x000A;<p>Let&#8217;s look at the complete parser definition that also allows for function&#x000A;calls like we postulated at the beginning.</p>
+        <p><span class="caps">THIS</span> IS <span class="caps">UNFINISHED</span>, <span class="caps">PLEASE</span> BE <span class="caps">PATIENT</span>.</p>
+        <p>Let&#8217;s develop a small language that allows for simple computation together. 
+        Here&#8217;s a valid input file for that language:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="nb">puts</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="nb">puts</span><span class="p">(</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        </code></pre>
+        </div><p>To install the parslet library, please do a</p>
+        <div class="highlight"><pre><code class="bash"> 
+        gem install parslet
+        </code></pre>
+        </div><p>Now let&#8217;s write the first part of our parser. For now, let&#8217;s just recognize
+        simple numbers like &#8216;1&#8217; or &#8216;42&#8217;.</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="nb">require</span> <span class="s1">&#39;parslet&#39;</span> 
+        
+        <span class="k">class</span> <span class="nc">Mini</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">root</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>
+        <span class="k">end</span>
+        
+        <span class="nb">p</span> <span class="no">Mini</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;132432&quot;</span><span class="p">)</span>
+        </code></pre>
+        </div><p>Running this example will print &#8220;132432&#8221;. Congratulations! You just have
+        written your first parser. Running it on the input &#8216;<code>puts(1)</code>&#8217; will
+        not work yet. Let&#8217;s see what happens in case of a failure:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="no">Mini</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;puts(1)&quot;</span><span class="p">)</span> <span class="c1"># raises Parslet::ParseFailed</span>
+        </code></pre>
+        </div><p>Here&#8217;s the error message provided by that exception: &#8220;Expected at least 1 of [0-9] at line 1 char 1.&#8221; parslet tries to find a number there, but can&#8217;t find
+        one.</p>
+        <p>There are just two lines to the definition of this parser, let&#8217;s go through them:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+        </code></pre>
+        </div><p><code>rule</code> lets you create a new parser rule. Inside the block of that
+        <code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>. This says: &#8220;match a character that is in the range <code>0-9</code>, then 
+        match any number of those, but at least match one.&#8221;</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">root</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>
+        </code></pre>
+        </div><p>That second line just says: Start parsing at the rule called
+        <code>:integer</code>.</p>
+        <h2>Addition</h2>
+        <p>Let&#8217;s go for simple addition. We&#8217;ll have to allow for spaces in our input,
+        since those help make code readable. Here are two rules that will serve us
+        good:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span>  <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span> <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
+        </code></pre>
+        </div><p>Two things are new here: (and both in the second line)</p>
+        <ul>
+        	<li>you can use (&#8216;call&#8217;) other rules in your rules</li>
+        	<li><code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
+          the thing before it is maybe present once in the input.</li>
+        </ul>
+        <p>Here&#8217;s the full parser, including a small problem that will be interesting to
+        talk about later on:</p>
+        <div class="highlight"><pre><code class="ruby">  
+        <span class="k">class</span> <span class="nc">Mini</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>    <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span>      <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span>     <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
+          
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:operator</span><span class="p">)</span>   <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[+]&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:sum</span><span class="p">)</span>        <span class="p">{</span> <span class="n">integer</span> <span class="o">&gt;&gt;</span> <span class="n">operator</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:expression</span><span class="p">)</span> <span class="p">{</span> <span class="n">sum</span> <span class="o">|</span> <span class="n">integer</span> <span class="p">}</span>
+        
+          <span class="n">root</span> <span class="ss">:expression</span>
+        <span class="k">end</span>
+        
+        <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+          <span class="n">mini</span> <span class="o">=</span> <span class="no">Mini</span><span class="o">.</span><span class="n">new</span>
+          <span class="nb">print</span> <span class="s2">&quot;Parsing </span><span class="si">#{</span><span class="n">str</span><span class="si">}</span><span class="s2">: &quot;</span>
+          
+          <span class="nb">p</span> <span class="n">mini</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+        <span class="k">rescue</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">ParseFailed</span> <span class="o">=&gt;</span> <span class="n">error</span>
+          <span class="nb">puts</span> <span class="n">error</span><span class="p">,</span> <span class="n">mini</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">error_tree</span>
+        <span class="k">end</span>
+        
+        <span class="n">parse</span> <span class="s2">&quot;1 + 2 + 3&quot;</span>
+        </code></pre>
+        </div><p>As you can see, the parser got decorated with the <code>space?</code> idiom.
+        Every atom of our language consumes the space right after it. This is a useful
+        convention that makes top level rules (the important ones) look cleaner.</p>
+        <p>Note also the addition of <code>:operator</code>, <code>:sum</code> and
+        <code>:expression</code>. The runner code has been extended a bit, so as to
+        throw nice explanations of what went wrong when a parse failure is
+        encountered. Running the code on &#8216;<code>1++2</code>&#8217; for example outputs:</p>
+        <div class="highlight"><pre><code class="bash"> 
+        Parsing 1 ++ 2: Don<span class="err">&#39;</span>t know what to <span class="k">do </span>with ++ 2 at line 1 char 3.
+        <span class="sb">`</span>- Unknown error in SUM | INTEGER
+           |- Failed to match sequence <span class="o">(</span>INTEGER OPERATOR EXPRESSION<span class="o">)</span> at line 1 char 4.
+           |  <span class="sb">`</span>- Unknown error in <span class="o">[</span>0-9<span class="o">]{</span>1, <span class="o">}</span> SPACE?
+           |     <span class="sb">`</span>- Failed to match <span class="se">\\</span>s at line 1 char 4.
+           <span class="sb">`</span>- Unknown error in <span class="o">[</span>0-9<span class="o">]{</span>1, <span class="o">}</span> SPACE?
+              <span class="sb">`</span>- Failed to match <span class="se">\\</span>s at line 1 char 4.
+        </code></pre>
+        </div><p>This is what parslet calls an <code>#error_tree</code>. Not only the output of your parser, 
+        but also its grammar is constructed like a tree. When things go wrong, every
+        branch of the tree has its own reasons for not accepting a given input. The 
+        <code>#error_tree</code> method returns those reasons.</p>
+        <p>Our grammar has essentially two branches, <code>SUM</code> and
+        <code>INTEGER</code>. Can you see why all rules expect a space at character 4?</p>
+        <h2>Making the parser complete</h2>
+        <p>Let&#8217;s look at the complete parser definition that also allows for function
+        calls like we postulated at the beginning.</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>

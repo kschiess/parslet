@@ -20,12 +20,13 @@
         %ul
           %li= link_to('about', 'index.html')
           %li= link_to('get started', 'get-started.html')
+          %li= link_to('install', 'install.html')
           %li= link_to('documentation', 'documentation.html')
           %li= link_to('contribute', 'contribute.html')
           
       .content
         %h1= page.title
-        = flatten content
+        = content
     
       .copyright
         :textile

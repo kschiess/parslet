@@ -6,24 +6,23 @@
   background-color: #f8f8f8
   color: #4679a9
   
-  width: 72ex
+  width: 56em
   
   line-height: 1em
-  
+
   margin: 
-    top: 1ex
-    bottom: 1ex
     left: 3em
-  padding:
-    left: 0.4cm
-    bottom: 1.5ex
+  padding: 0
     
-  pre
+  pre 
+    margin: 
+      left: -3em
+      top: -1ex
+      bottom: -1ex
     padding: 0
-    margin: 0
+  
   code 
     font: 1em "Monaco"
-    
     &.ruby
       // _why's poignant guide theme
       .k  // keyword
@@ -53,4 +52,3 @@
     
       .o, .p  // operator
         color: #a94179
-    

@@ -1,5 +1,5 @@
-.highlight { border: 2px solid #686868; -moz-border-radius: 10px; border-radius: 10px; background-color: #f8f8f8; color: #4679a9; width: 72ex; line-height: 1em; margin-top: 1ex; margin-bottom: 1ex; margin-left: 3em; padding-left: 0.4cm; padding-bottom: 1.5ex; }
-.highlight pre { padding: 0; margin: 0; }
+.highlight { border: 2px solid #686868; -moz-border-radius: 10px; border-radius: 10px; background-color: #f8f8f8; color: #4679a9; width: 56em; line-height: 1em; margin-left: 3em; padding: 0; }
+.highlight pre { margin-left: -3em; margin-top: -1ex; margin-bottom: -1ex; padding: 0; }
 .highlight code { font: 1em "Monaco"; }
 .highlight code.ruby .k { color: #761a47; }
 .highlight code.ruby .c1 { color: #686868; }

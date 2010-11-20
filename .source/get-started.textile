@@ -3,6 +3,8 @@ layout: default
 title: Get Started
 ---
 
+THIS IS UNFINISHED, PLEASE BE PATIENT.
+
 Let's develop a small language that allows for simple computation together. 
 Here's a valid input file for that language: 
 

@@ -18,13 +18,41 @@
         <ul>
           <li><a href="index.html">about</a></li>
           <li><a href="get-started.html">get started</a></li>
+          <li><a href="install.html">install</a></li>
           <li><a href="documentation.html">documentation</a></li>
           <li><a href="contribute.html">contribute</a></li>
         </ul>
       </div>
       <div class="content">
         <h1>About</h1>
-        <div class="highlight"><pre><code class="ruby"> &#x000A;<span class="nb">require</span> <span class="s1">&#39;parslet&#39;</span>&#x000A;<span class="kp">include</span> <span class="no">Parslet</span>&#x000A;&#x000A;<span class="c1"># Constructs a parser using a Parser Expression Grammar </span>&#x000A;<span class="n">parser</span> <span class="o">=</span>  <span class="n">str</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> &#x000A;          <span class="p">(</span>&#x000A;            <span class="n">str</span><span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">any</span> <span class="o">|</span>&#x000A;            <span class="n">str</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">absnt?</span> <span class="o">&gt;&gt;</span> <span class="n">any</span>&#x000A;          <span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:string</span><span class="p">)</span> <span class="o">&gt;&gt;</span> &#x000A;          <span class="n">str</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>&#x000A;&#x000A;<span class="n">result</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span> <span class="sx">%Q(&quot;this is a valid string&quot;)</span> &#x000A;<span class="n">result</span> <span class="c1"># =&gt; {:string=&gt;&quot;this is a valid string&quot;}</span>&#x000A;</code></pre>&#x000A;</div><p>A small Ruby library for constructing parsers in the&#x000A;<a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar"><span class="caps">PEG</span></a> (Parsing&#x000A;Expression Grammar) fashion.</p>&#x000A;<p>Parslet makes developing complex parsers easy. It does so by</p>&#x000A;<ul>&#x000A;	<li>providing the best <strong>error reporting</strong> possible</li>&#x000A;	<li><strong>not generating</strong> reams of code for you to debug</li>&#x000A;</ul>&#x000A;<p>Parslet takes the long way around to make <strong>your job</strong> easier. It allows for&#x000A;incremental language construction. Often, you start out small, implementing&#x000A;the atoms of your language first; <em>parslet</em> takes pride in making this&#x000A;possible.</p>&#x000A;<p>Eager to try this out? <a href="/get-started.html">Get started</a>!</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="nb">require</span> <span class="s1">&#39;parslet&#39;</span>
+        <span class="kp">include</span> <span class="no">Parslet</span>
+        
+        <span class="c1"># Constructs a parser using a Parser Expression Grammar </span>
+        <span class="n">parser</span> <span class="o">=</span>  <span class="n">str</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> 
+                  <span class="p">(</span>
+                    <span class="n">str</span><span class="p">(</span><span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">any</span> <span class="o">|</span>
+                    <span class="n">str</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">absnt?</span> <span class="o">&gt;&gt;</span> <span class="n">any</span>
+                  <span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:string</span><span class="p">)</span> <span class="o">&gt;&gt;</span> 
+                  <span class="n">str</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        
+        <span class="n">result</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span> <span class="sx">%Q(&quot;this is a valid string&quot;)</span> 
+        <span class="n">result</span> <span class="c1"># =&gt; {:string=&gt;&quot;this is a valid string&quot;}</span>
+        </code></pre>
+        </div><p>A small Ruby library for constructing parsers in the
+        <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar"><span class="caps">PEG</span></a> (Parsing
+        Expression Grammar) fashion.</p>
+        <p>Parslet makes developing complex parsers easy. It does so by</p>
+        <ul>
+        	<li>providing the best <strong>error reporting</strong> possible</li>
+        	<li><strong>not generating</strong> reams of code for you to debug</li>
+        </ul>
+        <p>Parslet takes the long way around to make <strong>your job</strong> easier. It allows for
+        incremental language construction. Often, you start out small, implementing
+        the atoms of your language first; <em>parslet</em> takes pride in making this
+        possible.</p>
+        <p>Eager to try this out? <a href="/get-started.html">Get started</a>!</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
