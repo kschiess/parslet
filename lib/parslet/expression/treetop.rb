@@ -3,21 +3,25 @@ class Parslet::Expression::Treetop
     root(:expression)
     
     rule(:expression) {
-      alternatives.as(:maybe) >> str('?') >> space? | 
       alternatives
     }
     
     rule(:alternatives) {
-      simple >> str('/') >> alternatives |
+      simple >> (spaced('/') >> alternatives) |
       simple
     }
-
+    
     rule(:simple) {
-      atom.repeat
+      perhaps.repeat
+    }
+
+    rule(:perhaps) {
+      atom.as(:maybe) >> spaced('?') | 
+      atom
     }
     
     rule(:atom) { 
-      str('(') >> expression.as(:unwrap) >> str(')') >> space? |
+      spaced('(') >> expression.as(:unwrap) >> spaced(')') |
       string 
     }
 
@@ -32,6 +36,10 @@ class Parslet::Expression::Treetop
     
     rule(:space) { match("\s").repeat(1) }
     rule(:space?) { space.maybe }
+    
+    def spaced(str)
+      str(str) >> space?
+    end
   end
   
   class Transform < Parser::Transform

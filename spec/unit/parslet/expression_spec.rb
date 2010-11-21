@@ -41,8 +41,8 @@ describe Parslet::Expression do
       "'a' 'b'",            'ab', 
       "'a' ('b')",          'ab', 
       
-      # "'a' / 'b'",          'a', 
-      # "'a' / 'b'",          'b', 
+      "'a' / 'b'",          'a', 
+      "'a' / 'b'",          'b', 
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }
