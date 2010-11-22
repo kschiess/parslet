@@ -1,8 +1,16 @@
 require 'parslet'
 include Parslet
 
-str('foo').parse('foo')         # => 'foo'
-match('[a-z]').parse('f')       # => 'f'
+# Without structure: just strings.
+str('ooo').parse('ooo')                           # => 'ooo'
+str('o').repeat.parse('ooo')                      # => 'ooo'
 
-p (str('a') >> str('b').repeat(1).maybe).parse('ab')  
-p (str('a') >> str('b').repeat(1).maybe).parse('a')  
+# Added structure: .as(...)
+str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"}
+str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  # => {:ex2b=>[{:ex2a=>"o"}, {:ex2a=>"o"}, {:ex2a=>"o"}]}
+
+# Discard behaviour
+parser =  str('a').as(:a) >> str(' ').maybe >> 
+          str('+').as(:o) >> str(' ').maybe >> 
+          str('b').as(:b)
+parser.parse('a + b') # => {:a=>"a", :o=>"+", :b=>"b"}
