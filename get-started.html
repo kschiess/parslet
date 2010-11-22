@@ -70,8 +70,7 @@
         <code>:integer</code>.</p>
         <h2>Addition</h2>
         <p>Let&#8217;s go for simple addition. We&#8217;ll have to allow for spaces in our input,
-        since those help make code readable. Here are two rules that will serve us
-        good:</p>
+        since those help make code readable.</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">rule</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span>  <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
         <span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span> <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
@@ -82,8 +81,22 @@
         	<li><code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
           the thing before it is maybe present once in the input.</li>
         </ul>
-        <p>Here&#8217;s the full parser, including a small problem that will be interesting to
-        talk about later on:</p>
+        <p>Essentially, you can think about parslet construction as instructing Ruby to
+        &#8220;parse this&#8221; and &#8220;parse that&#8221;. Calling other rules can be looked at in the 
+        same way; you tell Ruby to go off, parse that subrule and then come back with
+        the results. This helps when thinking about rule recursion. For example, a 
+        self-recursive rule like this one will of course create an endless loop:</p>
+        <div class="highlight"><pre><code class="ruby"><span class="n">rule</span><span class="p">(</span><span class="ss">:infinity</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">infinity</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+        </code></pre>
+        </div><p>Even though infinity seems to be delimited by &#8216;;&#8217;, in reality, infinity is
+        very long, especially towards the end. There is no way of knowing for the
+        parser when to stop processing <code>infinity</code> and start reading
+        semicolons. Ergo, we need to make sure we talk about concrete items that
+        consume input first, and then do recursion. This way we ensure that our
+        grammar terminates, since in a way, it is like a normal program.</p>
+        <p>Here&#8217;s the full parser:</p>
         <div class="highlight"><pre><code class="ruby">  
         <span class="k">class</span> <span class="nc">Mini</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>    <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
@@ -132,7 +145,17 @@
         <code>#error_tree</code> method returns those reasons.</p>
         <p>Our grammar has essentially two branches, <code>SUM</code> and
         <code>INTEGER</code>. Can you see why all rules expect a space at character 4?</p>
-        <h2>Making the parser complete</h2>
+        <h2>Tree output (and what to do about it)</h2>
+        <p>But if we leave the negative examples for a second; what happens if the parse
+        succeeds? It turns out, not much:</p>
+        <div class="highlight"><pre><code class="bash">* ruby getstarted/002.rb 
+        Parsing 1 + 2 + 3: nil
+        </code></pre>
+        </div><p>The code we now have parses the input sucessfully, but doesn&#8217;t do much else. 
+        Let&#8217;s change that. Here&#8217;s how:</p>
+        <div class="highlight"><pre><code class="ruby">
+        </code></pre>
+        </div><h2>Making the parser complete</h2>
         <p>Let&#8217;s look at the complete parser definition that also allows for function
         calls like we postulated at the beginning.</p>
       </div>
