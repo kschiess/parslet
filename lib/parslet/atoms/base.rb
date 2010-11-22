@@ -72,7 +72,7 @@ class Parslet::Atoms::Base
 
     # Extracts the s-expression tag
     tag, *tail = value
-    
+
     # Merges arrays:
     result = tail.
       map { |e| flatten(e) }            # first flatten each element
@@ -105,7 +105,10 @@ class Parslet::Atoms::Base
         if r.instance_of? Hash
           r   # Ignore e, since its not a hash we can merge
         else
-          e   # Whatever e is at this point, we keep it
+          # Now e is either nil, in which case we drop it, or something else. 
+          # If it is something else, it is probably more important than r, 
+          # since we've checked for important values of r above. 
+          e||r
         end
       end
     }
