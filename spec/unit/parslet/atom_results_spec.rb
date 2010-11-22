@@ -7,12 +7,12 @@ describe 'Result of a Parslet#parse' do
     [
       # Behaviour with maybe-nil
       [str('foo').maybe >> str('bar'), "bar", "bar"],
-      [str('bar') >> str('foo').maybe, "bar", nil], 
+      [str('bar') >> str('foo').maybe, "bar", 'bar'], 
       
       # These might be hard to understand; look at the result of str.maybe >> str
       # and str.maybe >> str first. 
       [(str('f').maybe >> str('b')).repeat, "bb", "bb"],
-      [(str('b') >> str('f').maybe).repeat, "bb", ""]
+      [(str('b') >> str('f').maybe).repeat, "bb", 'bb']
       
     ].each do |parslet, input, result|
       context "#{parslet.inspect}" do
