@@ -83,7 +83,7 @@ same way; you tell Ruby to go off, parse that subrule and then come back with
 the results. This helps when thinking about rule recursion. For example, a 
 self-recursive rule like this one will of course create an endless loop: 
 
-{% highlight ruby %}
+{% highlight ruby %} 
 rule(:infinity) {
   infinity >> str(';')
 }
@@ -157,7 +157,7 @@ h2. Tree output (and what to do about it)
 But if we leave the negative examples for a second; what happens if the parse
 succeeds? It turns out, not much: 
 
-{% highlight bash %}
+{% highlight bash %} 
 * ruby getstarted/002.rb 
 Parsing 1 + 2 + 3: nil
 {% endhighlight %}

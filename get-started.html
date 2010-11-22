@@ -86,7 +86,8 @@
         same way; you tell Ruby to go off, parse that subrule and then come back with
         the results. This helps when thinking about rule recursion. For example, a 
         self-recursive rule like this one will of course create an endless loop:</p>
-        <div class="highlight"><pre><code class="ruby"><span class="n">rule</span><span class="p">(</span><span class="ss">:infinity</span><span class="p">)</span> <span class="p">{</span>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:infinity</span><span class="p">)</span> <span class="p">{</span>
           <span class="n">infinity</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
         <span class="p">}</span>
         </code></pre>
@@ -148,7 +149,8 @@
         <h2>Tree output (and what to do about it)</h2>
         <p>But if we leave the negative examples for a second; what happens if the parse
         succeeds? It turns out, not much:</p>
-        <div class="highlight"><pre><code class="bash">* ruby getstarted/002.rb 
+        <div class="highlight"><pre><code class="bash"> 
+        * ruby getstarted/002.rb 
         Parsing 1 + 2 + 3: nil
         </code></pre>
         </div><p>The code we now have parses the input sucessfully, but doesn&#8217;t do much else. 
