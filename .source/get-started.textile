@@ -64,8 +64,7 @@ That second line just says: Start parsing at the rule called
 h2. Addition
 
 Let's go for simple addition. We'll have to allow for spaces in our input,
-since those help make code readable. Here are two rules that will serve us
-good:
+since those help make code readable. 
 
 {% highlight ruby %} 
 rule(:space)  { match('\s').repeat(1) }
@@ -78,8 +77,26 @@ Two things are new here: (and both in the second line)
 * <code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
   the thing before it is maybe present once in the input.
   
-Here's the full parser, including a small problem that will be interesting to
-talk about later on: 
+Essentially, you can think about parslet construction as instructing Ruby to
+"parse this" and "parse that". Calling other rules can be looked at in the 
+same way; you tell Ruby to go off, parse that subrule and then come back with
+the results. This helps when thinking about rule recursion. For example, a 
+self-recursive rule like this one will of course create an endless loop: 
+
+{% highlight ruby %}
+rule(:infinity) {
+  infinity >> str(';')
+}
+{% endhighlight %}
+
+Even though infinity seems to be delimited by ';', in reality, infinity is
+very long, especially towards the end. There is no way of knowing for the
+parser when to stop processing <code>infinity</code> and start reading
+semicolons. Ergo, we need to make sure we talk about concrete items that
+consume input first, and then do recursion. This way we ensure that our
+grammar terminates, since in a way, it is like a normal program.
+
+Here's the full parser:
 
 {% highlight ruby %}  
 class Mini < Parslet::Parser
@@ -134,6 +151,23 @@ branch of the tree has its own reasons for not accepting a given input. The
 
 Our grammar has essentially two branches, <code>SUM</code> and
 <code>INTEGER</code>. Can you see why all rules expect a space at character 4?
+
+h2. Tree output (and what to do about it)
+
+But if we leave the negative examples for a second; what happens if the parse
+succeeds? It turns out, not much: 
+
+{% highlight bash %}
+* ruby getstarted/002.rb 
+Parsing 1 + 2 + 3: nil
+{% endhighlight %}
+
+The code we now have parses the input sucessfully, but doesn't do much else. 
+Let's change that. Here's how: 
+
+{% highlight ruby%}
+
+{% endhighlight %}
 
 h2. Making the parser complete
 

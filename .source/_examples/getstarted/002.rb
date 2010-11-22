@@ -23,4 +23,4 @@ rescue Parslet::ParseFailed => error
   puts error, mini.root.error_tree
 end
 
-parse "1 ++ 2"
+parse "1 + 2 + 3"
