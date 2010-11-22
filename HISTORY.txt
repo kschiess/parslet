@@ -1,4 +1,8 @@
-= 0.10.0 / ???
+= 0.10.1 / ???
+
+  ! Fixed output inconsistencies (behaviour in connection to 'maybe')
+
+= 0.10.0 / 22Nov2010
 
   + Parslet::Transform now takes a block on initialisation, wherein you can
     define all the rules directly.
@@ -14,7 +18,7 @@
     
   + Transform classes can now include rules into class definition. This makes
     Parser and Transformer behave the same. 
-
+  
 = 0.9.0 / 28Oct2010
   * More of everything: Examples, documentation, etc...
 
