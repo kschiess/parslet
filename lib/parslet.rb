@@ -110,6 +110,14 @@ module Parslet
     end
   end
   
+  # Allows for delayed construction of #match.
+  #
+  class DelayedMatchConstructor
+    def [](str)
+      Atoms::Re.new("[" + str + "]")
+    end
+  end
+  
   # Returns an atom matching a character class. This is essentially a regular
   # expression, but you should only match a single character. 
   #
@@ -118,8 +126,10 @@ module Parslet
   #   match('[ab]')     # will match either 'a' or 'b'
   #   match('[\n\s]')   # will match newlines and spaces
   #
-  def match(obj)
-    Atoms::Re.new(obj)
+  def match(str=nil)
+    return DelayedMatchConstructor.new unless str
+    
+    return Atoms::Re.new(str)
   end
   module_function :match
   

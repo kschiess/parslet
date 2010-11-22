@@ -1,5 +1,7 @@
 = 0.10.1 / ???
 
+  + Allow match['a-z'], shortcut for match('[a-z]')
+
   ! Fixed output inconsistencies (behaviour in connection to 'maybe')
 
 = 0.10.0 / 22Nov2010
