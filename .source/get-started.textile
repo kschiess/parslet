@@ -257,3 +257,6 @@ Our intermediary tree uses an array for the ordering of the argument list of
 <code>puts</code>. 
 
 h2. Where to go from here: An Interpreter
+
+As nice as the format above is for printing and looking at - it may be difficult
+at times to get the information out of it again. 

@@ -150,16 +150,93 @@
         <p>But if we leave the negative examples for a second; what happens if the parse
         succeeds? It turns out, not much:</p>
         <div class="highlight"><pre><code class="bash"> 
-        * ruby getstarted/002.rb 
-        Parsing 1 + 2 + 3: nil
+        * ruby 002.rb 
+        Parsing 1 + 2 + 3: <span class="s2">&quot;1 + 2 + 3&quot;</span>
         </code></pre>
-        </div><p>The code we now have parses the input sucessfully, but doesn&#8217;t do much else. 
-        Let&#8217;s change that. Here&#8217;s how:</p>
-        <div class="highlight"><pre><code class="ruby">
+        </div><p>The code we now have parses the input successfully, but doesn&#8217;t do much else. 
+        Out of the box, parslet only performs one of the two functions of a parser. It
+        accepts input, but doesn&#8217;t structure it. To do that, we have to point out to
+        parslet the pieces that we&#8217;re interested in. Look at this bit:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># Without structure: just strings.</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>                           <span class="c1"># =&gt; &#39;ooo&#39;</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>                      <span class="c1"># =&gt; &#39;ooo&#39;</span>
+        
+        <span class="c1"># Added structure: .as(...)</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex1</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>                  <span class="c1"># =&gt; {:ex1=&gt;&quot;ooo&quot;}</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2a</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2b</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; {:ex2b=&gt;[{:ex2a=&gt;&quot;o&quot;}, {:ex2a=&gt;&quot;o&quot;}, {:ex2a=&gt;&quot;o&quot;}]}</span>
+        </code></pre>
+        </div><p>You get to name things the way you want! This is also free. Seriously: parslet
+        requires you to add all the structure to its output. Annotate important parts
+        of your grammar with <code>.as(:symbol)</code> and get back a tree-like
+        structure composed of hashes (sequence), arrays (repetition) and strings (like
+        we had initially).</p>
+        <p>Once you start naming things, you&#8217;ll notice that what you don&#8217;t name,
+        disappears. Parslet assumes that <em>what you don&#8217;t name is unimportant</em>.</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">parser</span> <span class="o">=</span>  <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:a</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">maybe</span> <span class="o">&gt;&gt;</span> 
+                  <span class="n">str</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:o</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">maybe</span> <span class="o">&gt;&gt;</span> 
+                  <span class="n">str</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:b</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;a + b&#39;</span><span class="p">)</span> <span class="c1"># =&gt; {:a=&gt;&quot;a&quot;, :o=&gt;&quot;+&quot;, :b=&gt;&quot;b&quot;}</span>
         </code></pre>
         </div><h2>Making the parser complete</h2>
         <p>Let&#8217;s look at the complete parser definition that also allows for function
         calls like we postulated at the beginning.</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="k">class</span> <span class="nc">Mini</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
+          <span class="c1"># Single character rules</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:lparen</span><span class="p">)</span>     <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:rparen</span><span class="p">)</span>     <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:comma</span><span class="p">)</span>      <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+        
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span>      <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span>     <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
+        
+          <span class="c1"># Things</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>    <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:identifier</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="o">[</span><span class="s1">&#39;a-z&#39;</span><span class="o">].</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:operator</span><span class="p">)</span>   <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[+]&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          
+          <span class="c1"># Grammar parts</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:sum</span><span class="p">)</span>        <span class="p">{</span> <span class="n">integer</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:left</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">operator</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:op</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:right</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">)</span>    <span class="p">{</span> <span class="n">expression</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:arg</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">comma</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:arg</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:funcall</span><span class="p">)</span>    <span class="p">{</span> <span class="n">identifier</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:funcall</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">lparen</span> <span class="o">&gt;&gt;</span> <span class="n">arglist</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">rparen</span> <span class="p">}</span>
+          
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:expression</span><span class="p">)</span> <span class="p">{</span> <span class="n">funcall</span> <span class="o">|</span> <span class="n">sum</span> <span class="o">|</span> <span class="n">integer</span> <span class="p">}</span>
+          <span class="n">root</span> <span class="ss">:expression</span>
+        <span class="k">end</span>
+        </code></pre>
+        </div><p>That&#8217;s really all there is to it &#8212; our language is a really simple language. 
+        When fed with a string like &#8217;<code>puts(1+2+3, 45)</code>, our parser outputs
+        the following:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># Ruby 1.9 hash syntax for easier reading</span>
+        <span class="p">{</span>
+          <span class="n">funcall</span><span class="p">:</span> <span class="s1">&#39;puts&#39;</span><span class="p">,</span> 
+          <span class="n">arglist</span><span class="p">:</span> <span class="o">[</span>
+            <span class="p">{</span><span class="n">arg</span><span class="p">:</span> <span class="p">{</span><span class="n">left</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">:</span> <span class="s1">&#39;+ &#39;</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="p">{</span><span class="n">left</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">:</span> <span class="s1">&#39;+ &#39;</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">}}},</span> 
+            <span class="p">{</span><span class="n">arg</span><span class="p">:</span> <span class="s1">&#39;45&#39;</span><span class="p">}</span>
+          <span class="o">]</span>
+        <span class="p">}</span>
+        </code></pre>
+        </div><p>Parslet calls this the <em>intermediary tree</em>. There are really only three types
+        of nodes in this tree:</p>
+        <ul>
+        	<li>Hashes form a node that has subtrees that have names</li>
+        	<li>Arrays form a node storing a collection of sub-nodes anonymously</li>
+        	<li>Strings are the leaves</li>
+        </ul>
+        <p>The intermediary tree is where parslet excels in our eyes. The format is 
+        easy to work with and to read. And it corresponds already much to what you 
+        would wish for when constructing an abstract syntax tree. It corresponds to
+        this:</p>
+        <p><img src="imgs/ast.png" alt="" /></p>
+        <p>Note that some information we have above is only implicit in this illustration. 
+        Our intermediary tree uses an array for the ordering of the argument list of 
+        <code>puts</code>.</p>
+        <h2>Where to go from here: An Interpreter</h2>
+        <p>As nice as the format above is for printing and looking at &#8211; it may be difficult
+        at times to get the information out of it again.</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
