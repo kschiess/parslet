@@ -197,3 +197,63 @@ h2. Making the parser complete
 
 Let's look at the complete parser definition that also allows for function
 calls like we postulated at the beginning.
+
+{% highlight ruby%} 
+class Mini < Parslet::Parser
+  # Single character rules
+  rule(:lparen)     { str('(') >> space? }
+  rule(:rparen)     { str(')') >> space? }
+  rule(:comma)      { str(',') >> space? }
+
+  rule(:space)      { match('\s').repeat(1) }
+  rule(:space?)     { space.maybe }
+
+  # Things
+  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+  rule(:identifier) { match['a-z'].repeat(1) }
+  rule(:operator)   { match('[+]') >> space? }
+  
+  # Grammar parts
+  rule(:sum)        { integer.as(:left) >> operator.as(:op) >> expression.as(:right) }
+  rule(:arglist)    { expression.as(:arg) >> (comma >> expression.as(:arg)).repeat }
+  rule(:funcall)    { identifier.as(:funcall) >> lparen >> arglist.as(:arglist) >> rparen }
+  
+  rule(:expression) { funcall | sum | integer }
+  root :expression
+end
+{% endhighlight %}
+
+That's really all there is to it -- our language is a really simple language. 
+When fed with a string like '<code>puts(1+2+3, 45)</code>, our parser outputs
+the following: 
+
+{% highlight ruby %} 
+# Ruby 1.9 hash syntax for easier reading
+{
+  funcall: 'puts', 
+  arglist: [
+    {arg: {left: '1', op: '+ ', right: {left: '2', op: '+ ', right: '3'}}}, 
+    {arg: '45'}
+  ]
+}
+{% endhighlight %}
+
+Parslet calls this the _intermediary tree_. There are really only three types
+of nodes in this tree: 
+
+* Hashes form a node that has subtrees that have names
+* Arrays form a node storing a collection of subnodes anonymously
+* Strings are the leaves
+
+The intermediary tree is where parslet excels in our eyes. The format is 
+easy to work with and to read. And it corresponds already much to what you 
+would whish for when constructing an abstract syntax tree. It corresponds to
+this: 
+
+!imgs/ast.png!
+
+Note that some information we have above is only implicit in this illustration. 
+Our intermediary tree uses an array for the ordering of the argument list of 
+<code>puts</code>. 
+
+h2. Where to go from here: An Interpreter

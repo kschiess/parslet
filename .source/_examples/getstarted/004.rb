@@ -15,9 +15,9 @@ class Mini < Parslet::Parser
   rule(:operator)   { match('[+]') >> space? }
   
   # Grammar parts
-  rule(:sum)        { integer.as(:l) >> operator.as(:o) >> expression.as(:r) }
-  rule(:arglist)    { expression.as(:a) >> (comma >> expression.as(:a)).repeat }
-  rule(:funcall)    { identifier.as(:f) >> lparen >> arglist.as(:al) >> rparen }
+  rule(:sum)        { integer.as(:left) >> operator.as(:op) >> expression.as(:right) }
+  rule(:arglist)    { expression.as(:arg) >> (comma >> expression.as(:arg)).repeat }
+  rule(:funcall)    { identifier.as(:funcall) >> lparen >> arglist.as(:arglist) >> rparen }
   
   rule(:expression) { funcall | sum | integer }
   root :expression
