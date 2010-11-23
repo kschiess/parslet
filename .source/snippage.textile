@@ -122,3 +122,8 @@ Please see the examples subdirectory of the distribution for more examples.
 Check out 'rooc' (github.com/kschiess/rooc) as well - it uses parslet for
 compiler construction. 
       
+
+Other Ruby projects that work on the same topic are: 
+http://wiki.github.com/luikore/rsec/
+http://github.com/mjijackson/citrus
+http://github.com/nathansobo/treetop
