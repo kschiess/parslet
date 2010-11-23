@@ -17,7 +17,7 @@ class Mini < Parslet::Parser
   # Grammar parts
   rule(:sum)        { integer.as(:l) >> operator.as(:o) >> expression.as(:r) }
   rule(:arglist)    { expression.as(:a) >> (comma >> expression.as(:a)).repeat }
-  rule(:funcall)    { identifier.as(:f) >> lparen >> arglist >> rparen }
+  rule(:funcall)    { identifier.as(:f) >> lparen >> arglist.as(:al) >> rparen }
   
   rule(:expression) { funcall | sum | integer }
   root :expression
