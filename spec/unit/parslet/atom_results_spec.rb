@@ -12,7 +12,10 @@ describe 'Result of a Parslet#parse' do
       # These might be hard to understand; look at the result of str.maybe >> str
       # and str.maybe >> str first. 
       [(str('f').maybe >> str('b')).repeat, "bb", "bb"],
-      [(str('b') >> str('f').maybe).repeat, "bb", 'bb']
+      [(str('b') >> str('f').maybe).repeat, "bb", 'bb'], 
+      
+      [str('a').as(:a) >> (str('b') >> str('c').as(:a)).repeat, 'abc', 
+        [{:a=>'a'}, {:a=>'c'}]]
       
     ].each do |parslet, input, result|
       context "#{parslet.inspect}" do
