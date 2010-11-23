@@ -1,48 +1,17 @@
 INTRODUCTION
 
-A small library that implements a PEG grammar. PEG means Parsing Expression
-Grammars [1]. These are a different kind of grammars that recognize almost the
-same languages as your conventional LR parser, except that they are easier to
-work with, since they haven't been conceived for generation, but for
-recognition of languages. You can read the founding paper of the field by
-Bryan Ford here [2].
+Parslet makes developing complex parsers easy. It does so by
 
-Other Ruby projects that work on the same topic are: 
-http://wiki.github.com/luikore/rsec/
-http://github.com/mjijackson/citrus
-http://github.com/nathansobo/treetop
+* providing the best *error reporting* possible
+* *not generating* reams of code for you to debug
 
-My goal here was to see how a parser/parser generator should be constructed to
-allow clean AST construction and good error handling. It seems to me that most
-often, parser generators only handle the success-case and forget about
-debugging and error generation.
+Parslet takes the long way around to make *your job* easier. It allows for
+incremental language construction. Often, you start out small, implementing
+the atoms of your language first; _parslet_ takes pride in making this
+possible. 
 
-More specifically, this library is motivated by one of my compiler projects. I
-started out using 'treetop' (see the link above), but found it unusable. It
-was lacking in
-
-  * error reporting: Hard to see where a grammar fails. 
-  
-  * stability of generated trees: Intermediary trees were dictated by the 
-    grammar. It was hard to define invariants in that system - what was 
-    convenient when writing the grammar often wasn't in subsequent stages. 
-    
-  * clarity of parser code: The parser code is generated and is very hard
-    to read. Add that to the first point to understand my pain. 
-    
-So parslet tries to be different. It doesn't generate the parser, but instead
-defines it in a DSL which is very close to what you find in [2]. A successful
-parse then generates a parser tree consisting entirely of hashes and arrays
-and strings (read: instable). This parser tree can then be converted to a real
-AST (read: stable) using a pattern matcher that is also part of this library.
-
-Error reporting is another area where parslet excels: It is able to print not
-only the error you are used to seeing ('Parse failed because of REASON at line
-1 and char 2'), but also prints what led to that failure in the form of a
-tree (#error_tree method).
-
-[1] http://en.wikipedia.org/wiki/Parsing_expression_grammar
-[2] http://pdos.csail.mit.edu/~baford/packrat/popl04/peg-popl04.pdf
+Eager to try this out? Please see the associated web site:
+http://kschiess.github.com/parslet
 
 SYNOPSIS
 
@@ -81,13 +50,6 @@ SYNOPSIS
 COMPATIBILITY
 
 This library should work with both ruby 1.8 and ruby 1.9.
-
-AUTHORS
-
-My gigantous thanks go to the following cool guys and gals that help make this
-rock:
-
-Florian Hanke (http://floere.github.com)
 
 STATUS 
 
