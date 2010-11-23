@@ -162,7 +162,7 @@ succeeds? It turns out, not much:
 Parsing 1 + 2 + 3: "1 + 2 + 3"
 {% endhighlight %}
 
-The code we now have parses the input sucessfully, but doesn't do much else. 
+The code we now have parses the input successfully, but doesn't do much else. 
 Out of the box, parslet only performs one of the two functions of a parser. It
 accepts input, but doesn't structure it. To do that, we have to point out to
 parslet the pieces that we're interested in. Look at this bit: 
@@ -242,12 +242,12 @@ Parslet calls this the _intermediary tree_. There are really only three types
 of nodes in this tree: 
 
 * Hashes form a node that has subtrees that have names
-* Arrays form a node storing a collection of subnodes anonymously
+* Arrays form a node storing a collection of sub-nodes anonymously
 * Strings are the leaves
 
 The intermediary tree is where parslet excels in our eyes. The format is 
 easy to work with and to read. And it corresponds already much to what you 
-would whish for when constructing an abstract syntax tree. It corresponds to
+would wish for when constructing an abstract syntax tree. It corresponds to
 this: 
 
 !imgs/ast.png!
