@@ -196,10 +196,10 @@ parser.parse('a + b') # => {:a=>"a", :o=>"+", :b=>"b"}
 h2. Making the parser complete
 
 Let's look at the complete parser definition that also allows for function
-calls like we postulated at the beginning.
+calls:
 
 {% highlight ruby%} 
-class Mini < Parslet::Parser
+class MiniP < Parslet::Parser
   # Single character rules
   rule(:lparen)     { str('(') >> space? }
   rule(:rparen)     { str(')') >> space? }
@@ -209,13 +209,13 @@ class Mini < Parslet::Parser
   rule(:space?)     { space.maybe }
 
   # Things
-  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+  rule(:integer)    { match('[0-9]').repeat(1).as(:int) >> space? }
   rule(:identifier) { match['a-z'].repeat(1) }
   rule(:operator)   { match('[+]') >> space? }
   
   # Grammar parts
   rule(:sum)        { integer.as(:left) >> operator.as(:op) >> expression.as(:right) }
-  rule(:arglist)    { expression.as(:arg) >> (comma >> expression.as(:arg)).repeat }
+  rule(:arglist)    { expression >> (comma >> expression).repeat }
   rule(:funcall)    { identifier.as(:funcall) >> lparen >> arglist.as(:arglist) >> rparen }
   
   rule(:expression) { funcall | sum | integer }
@@ -238,17 +238,15 @@ the following:
 }
 {% endhighlight %}
 
-Parslet calls this the _intermediary tree_. There are really only three types
-of nodes in this tree: 
+Parslet calls this the _intermediary tree_. There are three types of nodes in
+this tree:
 
-* Hashes form a node that has subtrees that have names
-* Arrays form a node storing a collection of sub-nodes anonymously
-* Strings are the leaves
+* *Hashes*: a node that has named subtrees
+* *Arrays*: a node storing a collection of sub-nodes
+* *Strings* are the leaves, containing the _accepted source_
 
-The intermediary tree is where parslet excels in our eyes. The format is 
-easy to work with and to read. And it corresponds already much to what you 
-would wish for when constructing an abstract syntax tree. It corresponds to
-this: 
+The format of this tree is easy to work with and to read. Here's what the above
+tree would look like as a graphic: 
 
 !imgs/ast.png!
 
@@ -259,4 +257,94 @@ Our intermediary tree uses an array for the ordering of the argument list of
 h2. Where to go from here: An Interpreter
 
 As nice as the format above is for printing and looking at - it may be difficult
-at times to get the information out of it again. 
+at times to get the information out of it again. Let's look at how to transform
+the tree: 
+
+{% highlight ruby %} 
+class SimpleTransform < Parslet::Transform
+  rule(funcall: 'puts', arglist: sequence(:args)) {
+    "puts(#{args.inspect})"
+  }
+  # ... other rules
+end
+
+tree = {funcall: 'puts', arglist: [1,2,3]}
+SimpleTransform.new.apply(tree) # => "puts([1, 2, 3])"
+{% endhighlight %}
+
+Transformation is an entire topic by itself; this will be covered in detail
+later on. To whet your appetite, let me just give you a few teasers:
+
+* Transformations match portions of your tree at any depth, replacing them
+with whatever you decide. 
+* In addition to <code>sequence(sym)</code>, there is also 
+<code>simple(sym)</code> and <code>subtree(sym)</code>. Those match
+simple strings and entire subtrees respectively. Caution with the latter. 
+
+Here's how you would write a somewhat classical interpreter for our little 
+language by using a transformation. Note that from this point on, there is
+not one way to go about this, but thousands; you are really free (and on
+your own): 
+
+{% highlight ruby %} 
+# Parser ---------------------------------------------------------------------
+class MiniP < Parslet::Parser
+  # Single character rules
+  rule(:lparen)     { str('(') >> space? }
+  rule(:rparen)     { str(')') >> space? }
+  rule(:comma)      { str(',') >> space? }
+
+  rule(:space)      { match('\s').repeat(1) }
+  rule(:space?)     { space.maybe }
+
+  # Things
+  rule(:integer)    { match('[0-9]').repeat(1).as(:int) >> space? }
+  rule(:identifier) { match['a-z'].repeat(1) }
+  rule(:operator)   { match('[+]') >> space? }
+  
+  # Grammar parts
+  rule(:sum)        { integer.as(:left) >> operator.as(:op) >> expression.as(:right) }
+  rule(:arglist)    { expression >> (comma >> expression).repeat }
+  rule(:funcall)    { identifier.as(:funcall) >> lparen >> arglist.as(:arglist) >> rparen }
+  
+  rule(:expression) { funcall | sum | integer }
+  root :expression
+end
+
+# AST nodes ------------------------------------------------------------------
+class IntLit   < Struct.new(:int)
+  def eval; int.to_i; end
+end
+class Addition < Struct.new(:left, :right) 
+  def eval; left.eval + right.eval; end
+end
+class FunCall < Struct.new(:name, :args); 
+  def eval
+    p args.map { |s| s.eval } if name == 'puts'
+  end
+end
+
+# Transform ------------------------------------------------------------------
+class MiniT < Parslet::Transform
+  rule(:int => simple(:int)) { IntLit.new(int) }
+  rule(:left => simple(:left), :right => simple(:right), :op => '+') {
+    Addition.new(left, right)
+  }
+  rule(:funcall => simple(:name), :arglist => subtree(:arglist)) {
+    FunCall.new(name, arglist)
+  }
+end
+
+parser = MiniP.new
+transf = MiniT.new
+
+ast = transf.apply(
+  parser.parse(
+    'puts(1,2,3, 4+5)'))
+        
+ast.eval
+{% endhighlight %}
+
+That's a bunch of code for printing <code>[1, 2, 3, 9]</code>. Welcome to the
+fantastic world of compiler and interpreter writing!
+

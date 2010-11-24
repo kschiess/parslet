@@ -1,6 +1,6 @@
 require 'parslet'
 
-class Mini < Parslet::Parser
+class MiniP < Parslet::Parser
   # Single character rules
   rule(:lparen)     { str('(') >> space? }
   rule(:rparen)     { str(')') >> space? }
@@ -24,7 +24,7 @@ class Mini < Parslet::Parser
 end
 
 def parse(str)
-  mini = Mini.new
+  mini = MiniP.new
   print "Parsing #{str}: "
   
   p mini.parse(str)

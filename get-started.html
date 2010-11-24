@@ -181,9 +181,9 @@
         </code></pre>
         </div><h2>Making the parser complete</h2>
         <p>Let&#8217;s look at the complete parser definition that also allows for function
-        calls like we postulated at the beginning.</p>
+        calls:</p>
         <div class="highlight"><pre><code class="ruby"> 
-        <span class="k">class</span> <span class="nc">Mini</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
+        <span class="k">class</span> <span class="nc">MiniP</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
           <span class="c1"># Single character rules</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:lparen</span><span class="p">)</span>     <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:rparen</span><span class="p">)</span>     <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
@@ -193,13 +193,13 @@
           <span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span>     <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
         
           <span class="c1"># Things</span>
-          <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>    <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>    <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:int</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:identifier</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="o">[</span><span class="s1">&#39;a-z&#39;</span><span class="o">].</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:operator</span><span class="p">)</span>   <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[+]&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
           
           <span class="c1"># Grammar parts</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:sum</span><span class="p">)</span>        <span class="p">{</span> <span class="n">integer</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:left</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">operator</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:op</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:right</span><span class="p">)</span> <span class="p">}</span>
-          <span class="n">rule</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">)</span>    <span class="p">{</span> <span class="n">expression</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:arg</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">comma</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:arg</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">)</span>    <span class="p">{</span> <span class="n">expression</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">comma</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span> <span class="p">}</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:funcall</span><span class="p">)</span>    <span class="p">{</span> <span class="n">identifier</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:funcall</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">lparen</span> <span class="o">&gt;&gt;</span> <span class="n">arglist</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">rparen</span> <span class="p">}</span>
           
           <span class="n">rule</span><span class="p">(</span><span class="ss">:expression</span><span class="p">)</span> <span class="p">{</span> <span class="n">funcall</span> <span class="o">|</span> <span class="n">sum</span> <span class="o">|</span> <span class="n">integer</span> <span class="p">}</span>
@@ -219,24 +219,107 @@
           <span class="o">]</span>
         <span class="p">}</span>
         </code></pre>
-        </div><p>Parslet calls this the <em>intermediary tree</em>. There are really only three types
-        of nodes in this tree:</p>
+        </div><p>Parslet calls this the <em>intermediary tree</em>. There are three types of nodes in
+        this tree:</p>
         <ul>
-        	<li>Hashes form a node that has subtrees that have names</li>
-        	<li>Arrays form a node storing a collection of sub-nodes anonymously</li>
-        	<li>Strings are the leaves</li>
+        	<li><strong>Hashes</strong>: a node that has named subtrees</li>
+        	<li><strong>Arrays</strong>: a node storing a collection of sub-nodes</li>
+        	<li><strong>Strings</strong> are the leaves, containing the <em>accepted source</em></li>
         </ul>
-        <p>The intermediary tree is where parslet excels in our eyes. The format is 
-        easy to work with and to read. And it corresponds already much to what you 
-        would wish for when constructing an abstract syntax tree. It corresponds to
-        this:</p>
+        <p>The format of this tree is easy to work with and to read. Here&#8217;s what the above
+        tree would look like as a graphic:</p>
         <p><img src="imgs/ast.png" alt="" /></p>
         <p>Note that some information we have above is only implicit in this illustration. 
         Our intermediary tree uses an array for the ordering of the argument list of 
         <code>puts</code>.</p>
         <h2>Where to go from here: An Interpreter</h2>
         <p>As nice as the format above is for printing and looking at &#8211; it may be difficult
-        at times to get the information out of it again.</p>
+        at times to get the information out of it again. Let&#8217;s look at how to transform
+        the tree:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="k">class</span> <span class="nc">SimpleTransform</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
+          <span class="n">rule</span><span class="p">(</span><span class="n">funcall</span><span class="p">:</span> <span class="s1">&#39;puts&#39;</span><span class="p">,</span> <span class="n">arglist</span><span class="p">:</span> <span class="n">sequence</span><span class="p">(</span><span class="ss">:args</span><span class="p">))</span> <span class="p">{</span>
+            <span class="s2">&quot;puts(</span><span class="si">#{</span><span class="n">args</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">)&quot;</span>
+          <span class="p">}</span>
+          <span class="c1"># ... other rules</span>
+        <span class="k">end</span>
+        
+        <span class="n">tree</span> <span class="o">=</span> <span class="p">{</span><span class="n">funcall</span><span class="p">:</span> <span class="s1">&#39;puts&#39;</span><span class="p">,</span> <span class="n">arglist</span><span class="p">:</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">]</span><span class="p">}</span>
+        <span class="no">SimpleTransform</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span> <span class="c1"># =&gt; &quot;puts([1, 2, 3])&quot;</span>
+        </code></pre>
+        </div><p>Transformation is an entire topic by itself; this will be covered in detail
+        later on. To whet your appetite, let me just give you a few teasers:</p>
+        <ul>
+        	<li>Transformations match portions of your tree at any depth, replacing them
+        with whatever you decide.</li>
+        	<li>In addition to <code>sequence(sym)</code>, there is also 
+        <code>simple(sym)</code> and <code>subtree(sym)</code>. Those match
+        simple strings and entire subtrees respectively. Caution with the latter.</li>
+        </ul>
+        <p>Here&#8217;s how you would write a somewhat classical interpreter for our little 
+        language by using a transformation. Note that from this point on, there is
+        not one way to go about this, but thousands; you are really free (and on
+        your own):</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># Parser ---------------------------------------------------------------------</span>
+        <span class="k">class</span> <span class="nc">MiniP</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
+          <span class="c1"># Single character rules</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:lparen</span><span class="p">)</span>     <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:rparen</span><span class="p">)</span>     <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:comma</span><span class="p">)</span>      <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+        
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span>      <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:space?</span><span class="p">)</span>     <span class="p">{</span> <span class="n">space</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
+        
+          <span class="c1"># Things</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>    <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:int</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:identifier</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="o">[</span><span class="s1">&#39;a-z&#39;</span><span class="o">].</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:operator</span><span class="p">)</span>   <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[+]&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
+          
+          <span class="c1"># Grammar parts</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:sum</span><span class="p">)</span>        <span class="p">{</span> <span class="n">integer</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:left</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">operator</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:op</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:right</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">)</span>    <span class="p">{</span> <span class="n">expression</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">comma</span> <span class="o">&gt;&gt;</span> <span class="n">expression</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:funcall</span><span class="p">)</span>    <span class="p">{</span> <span class="n">identifier</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:funcall</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">lparen</span> <span class="o">&gt;&gt;</span> <span class="n">arglist</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">rparen</span> <span class="p">}</span>
+          
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:expression</span><span class="p">)</span> <span class="p">{</span> <span class="n">funcall</span> <span class="o">|</span> <span class="n">sum</span> <span class="o">|</span> <span class="n">integer</span> <span class="p">}</span>
+          <span class="n">root</span> <span class="ss">:expression</span>
+        <span class="k">end</span>
+        
+        <span class="c1"># AST nodes ------------------------------------------------------------------</span>
+        <span class="k">class</span> <span class="nc">IntLit</span>   <span class="o">&lt;</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:int</span><span class="p">)</span>
+          <span class="k">def</span> <span class="nf">eval</span><span class="p">;</span> <span class="n">int</span><span class="o">.</span><span class="n">to_i</span><span class="p">;</span> <span class="k">end</span>
+        <span class="k">end</span>
+        <span class="k">class</span> <span class="nc">Addition</span> <span class="o">&lt;</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:left</span><span class="p">,</span> <span class="ss">:right</span><span class="p">)</span> 
+          <span class="k">def</span> <span class="nf">eval</span><span class="p">;</span> <span class="n">left</span><span class="o">.</span><span class="n">eval</span> <span class="o">+</span> <span class="n">right</span><span class="o">.</span><span class="n">eval</span><span class="p">;</span> <span class="k">end</span>
+        <span class="k">end</span>
+        <span class="k">class</span> <span class="nc">FunCall</span> <span class="o">&lt;</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:args</span><span class="p">);</span> 
+          <span class="k">def</span> <span class="nf">eval</span>
+            <span class="nb">p</span> <span class="n">args</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">eval</span> <span class="p">}</span> <span class="k">if</span> <span class="nb">name</span> <span class="o">==</span> <span class="s1">&#39;puts&#39;</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+        
+        <span class="c1"># Transform ------------------------------------------------------------------</span>
+        <span class="k">class</span> <span class="nc">MiniT</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:int</span><span class="p">))</span> <span class="p">{</span> <span class="no">IntLit</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">int</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:left</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:left</span><span class="p">),</span> <span class="ss">:right</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:right</span><span class="p">),</span> <span class="ss">:op</span> <span class="o">=&gt;</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="no">Addition</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+          <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:funcall</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span> <span class="ss">:arglist</span> <span class="o">=&gt;</span> <span class="n">subtree</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">))</span> <span class="p">{</span>
+            <span class="no">FunCall</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">arglist</span><span class="p">)</span>
+          <span class="p">}</span>
+        <span class="k">end</span>
+        
+        <span class="n">parser</span> <span class="o">=</span> <span class="no">MiniP</span><span class="o">.</span><span class="n">new</span>
+        <span class="n">transf</span> <span class="o">=</span> <span class="no">MiniT</span><span class="o">.</span><span class="n">new</span>
+        
+        <span class="n">ast</span> <span class="o">=</span> <span class="n">transf</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+          <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+            <span class="s1">&#39;puts(1,2,3, 4+5)&#39;</span><span class="p">))</span>
+                
+        <span class="n">ast</span><span class="o">.</span><span class="n">eval</span>
+        </code></pre>
+        </div><p>That&#8217;s a bunch of code for printing <code>[1, 2, 3, 9]</code>. Welcome to the
+        fantastic world of compiler and interpreter writing!</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
