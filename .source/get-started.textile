@@ -3,8 +3,6 @@ layout: default
 title: Get Started
 ---
 
-THIS IS UNFINISHED, PLEASE BE PATIENT.
-
 Let's develop a small language that allows for simple computation together. 
 Here's a valid input file for that language: 
 
@@ -273,7 +271,7 @@ SimpleTransform.new.apply(tree) # => "puts([1, 2, 3])"
 {% endhighlight %}
 
 Transformation is an entire topic by itself; this will be covered in detail
-later on. To whet your appetite, let me just give you a few teasers:
+"later on":documentation.html. To whet your appetite, let me just give you a few teasers:
 
 * Transformations match portions of your tree at any depth, replacing them
 with whatever you decide. 
@@ -287,7 +285,6 @@ not one way to go about this, but thousands; you are really free (and on
 your own): 
 
 {% highlight ruby %} 
-# Parser ---------------------------------------------------------------------
 class MiniP < Parslet::Parser
   # Single character rules
   rule(:lparen)     { str('(') >> space? }
@@ -311,7 +308,6 @@ class MiniP < Parslet::Parser
   root :expression
 end
 
-# AST nodes ------------------------------------------------------------------
 class IntLit   < Struct.new(:int)
   def eval; int.to_i; end
 end
@@ -320,19 +316,14 @@ class Addition < Struct.new(:left, :right)
 end
 class FunCall < Struct.new(:name, :args); 
   def eval
-    p args.map { |s| s.eval } if name == 'puts'
+    p args.map { |s| s.eval }
   end
 end
 
-# Transform ------------------------------------------------------------------
 class MiniT < Parslet::Transform
-  rule(:int => simple(:int)) { IntLit.new(int) }
-  rule(:left => simple(:left), :right => simple(:right), :op => '+') {
-    Addition.new(left, right)
-  }
-  rule(:funcall => simple(:name), :arglist => subtree(:arglist)) {
-    FunCall.new(name, arglist)
-  }
+  rule(:int => simple(:int))                                          { IntLit.new(int) }
+  rule(:left => simple(:left), :right => simple(:right), :op => '+')  { Addition.new(left, right) }
+  rule(:funcall => 'puts', :arglist => subtree(:arglist))             { FunCall.new('puts', arglist) }
 end
 
 parser = MiniP.new

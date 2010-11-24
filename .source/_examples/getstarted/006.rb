@@ -32,18 +32,14 @@ class Addition < Struct.new(:left, :right)
 end
 class FunCall < Struct.new(:name, :args); 
   def eval
-    p args.map { |s| s.eval } if name == 'puts'
+    p args.map { |s| s.eval }
   end
 end
 
 class MiniT < Parslet::Transform
-  rule(:int => simple(:int)) { IntLit.new(int) }
-  rule(:left => simple(:left), :right => simple(:right), :op => '+') {
-    Addition.new(left, right)
-  }
-  rule(:funcall => simple(:name), :arglist => subtree(:arglist)) {
-    FunCall.new(name, arglist)
-  }
+  rule(:int => simple(:int))                                          { IntLit.new(int) }
+  rule(:left => simple(:left), :right => simple(:right), :op => '+')  { Addition.new(left, right) }
+  rule(:funcall => 'puts', :arglist => subtree(:arglist))             { FunCall.new('puts', arglist) }
 end
 
 parser = MiniP.new

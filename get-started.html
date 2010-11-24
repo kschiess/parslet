@@ -25,7 +25,6 @@
       </div>
       <div class="content">
         <h1>Get Started</h1>
-        <p><span class="caps">THIS</span> IS <span class="caps">UNFINISHED</span>, <span class="caps">PLEASE</span> BE <span class="caps">PATIENT</span>.</p>
         <p>Let&#8217;s develop a small language that allows for simple computation together. 
         Here&#8217;s a valid input file for that language:</p>
         <div class="highlight"><pre><code class="ruby"> 
@@ -248,7 +247,7 @@
         <span class="no">SimpleTransform</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span> <span class="c1"># =&gt; &quot;puts([1, 2, 3])&quot;</span>
         </code></pre>
         </div><p>Transformation is an entire topic by itself; this will be covered in detail
-        later on. To whet your appetite, let me just give you a few teasers:</p>
+        <a href="documentation.html">later on</a>. To whet your appetite, let me just give you a few teasers:</p>
         <ul>
         	<li>Transformations match portions of your tree at any depth, replacing them
         with whatever you decide.</li>
@@ -261,7 +260,6 @@
         not one way to go about this, but thousands; you are really free (and on
         your own):</p>
         <div class="highlight"><pre><code class="ruby"> 
-        <span class="c1"># Parser ---------------------------------------------------------------------</span>
         <span class="k">class</span> <span class="nc">MiniP</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
           <span class="c1"># Single character rules</span>
           <span class="n">rule</span><span class="p">(</span><span class="ss">:lparen</span><span class="p">)</span>     <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">space?</span> <span class="p">}</span>
@@ -285,7 +283,6 @@
           <span class="n">root</span> <span class="ss">:expression</span>
         <span class="k">end</span>
         
-        <span class="c1"># AST nodes ------------------------------------------------------------------</span>
         <span class="k">class</span> <span class="nc">IntLit</span>   <span class="o">&lt;</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:int</span><span class="p">)</span>
           <span class="k">def</span> <span class="nf">eval</span><span class="p">;</span> <span class="n">int</span><span class="o">.</span><span class="n">to_i</span><span class="p">;</span> <span class="k">end</span>
         <span class="k">end</span>
@@ -294,19 +291,14 @@
         <span class="k">end</span>
         <span class="k">class</span> <span class="nc">FunCall</span> <span class="o">&lt;</span> <span class="no">Struct</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:args</span><span class="p">);</span> 
           <span class="k">def</span> <span class="nf">eval</span>
-            <span class="nb">p</span> <span class="n">args</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">eval</span> <span class="p">}</span> <span class="k">if</span> <span class="nb">name</span> <span class="o">==</span> <span class="s1">&#39;puts&#39;</span>
+            <span class="nb">p</span> <span class="n">args</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">eval</span> <span class="p">}</span>
           <span class="k">end</span>
         <span class="k">end</span>
         
-        <span class="c1"># Transform ------------------------------------------------------------------</span>
         <span class="k">class</span> <span class="nc">MiniT</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
-          <span class="n">rule</span><span class="p">(</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:int</span><span class="p">))</span> <span class="p">{</span> <span class="no">IntLit</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">int</span><span class="p">)</span> <span class="p">}</span>
-          <span class="n">rule</span><span class="p">(</span><span class="ss">:left</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:left</span><span class="p">),</span> <span class="ss">:right</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:right</span><span class="p">),</span> <span class="ss">:op</span> <span class="o">=&gt;</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="no">Addition</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
-          <span class="p">}</span>
-          <span class="n">rule</span><span class="p">(</span><span class="ss">:funcall</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:name</span><span class="p">),</span> <span class="ss">:arglist</span> <span class="o">=&gt;</span> <span class="n">subtree</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">))</span> <span class="p">{</span>
-            <span class="no">FunCall</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">arglist</span><span class="p">)</span>
-          <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:int</span><span class="p">))</span>                                          <span class="p">{</span> <span class="no">IntLit</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">int</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:left</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:left</span><span class="p">),</span> <span class="ss">:right</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:right</span><span class="p">),</span> <span class="ss">:op</span> <span class="o">=&gt;</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span>  <span class="p">{</span> <span class="no">Addition</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:funcall</span> <span class="o">=&gt;</span> <span class="s1">&#39;puts&#39;</span><span class="p">,</span> <span class="ss">:arglist</span> <span class="o">=&gt;</span> <span class="n">subtree</span><span class="p">(</span><span class="ss">:arglist</span><span class="p">))</span>             <span class="p">{</span> <span class="no">FunCall</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;puts&#39;</span><span class="p">,</span> <span class="n">arglist</span><span class="p">)</span> <span class="p">}</span>
         <span class="k">end</span>
         
         <span class="n">parser</span> <span class="o">=</span> <span class="no">MiniP</span><span class="o">.</span><span class="n">new</span>
