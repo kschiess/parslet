@@ -2,18 +2,15 @@ class Parslet::Expression::Treetop
   class Parser < Parslet::Parser
     root(:expression)
     
-    rule(:expression) {
-      alternatives
-    }
+    rule(:expression) { alternatives }
     
+    # alternative 'a' / 'b'
     rule(:alternatives) {
-      simple >> (spaced('/') >> alternatives) |
-      simple
+      (simple >> (spaced('/') >> simple).repeat).as(:alt)
     }
     
-    rule(:simple) {
-      perhaps.repeat
-    }
+    # sequence by simple concatenation 'a' 'b'
+    rule(:simple) { perhaps.repeat(1).as(:seq) }
 
     rule(:perhaps) {
       atom.as(:maybe) >> spaced('?') | 
@@ -43,8 +40,9 @@ class Parslet::Expression::Treetop
   end
   
   class Transform < Parser::Transform
+    rule(:alt => subtree(:alt)) { Parslet::Atoms::Alternative.new(*alt) }
+    rule(:seq => sequence(:s))  { Parslet::Atoms::Sequence.new(*s) }
     rule(:unwrap => simple(:u)) { u }
-    rule(sequence(:s))          { |d| Parslet::Atoms::Sequence.new(*d[:s]) }
     rule(:maybe => simple(:m))  { |d| d[:m].maybe }
     rule(:string => simple(:s)) { |d| str(d[:s]) }
   end

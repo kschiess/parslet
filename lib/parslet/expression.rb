@@ -22,7 +22,7 @@ class Parslet::Expression
   def transform(tree)
     transform = Treetop::Transform.new
     
-    pp tree
+    # pp tree
     transform.apply(tree)
   end
   

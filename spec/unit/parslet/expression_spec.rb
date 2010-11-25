@@ -5,19 +5,6 @@ require 'parslet'
 describe Parslet::Expression do
   include Parslet
 
-  examples = <<-EXPRESSION_EXAMPLES
-    'a'
-  EXPRESSION_EXAMPLES
-  
-  examples.lines.each do |example|
-    example = example.strip.chomp
-    context "[#{example}]" do
-      it "should parse without exception" do
-        exp = Parslet::Expression.new(example)
-      end 
-    end
-  end
-
   RSpec::Matchers.define :accept do |string|
     match do |parslet|
       begin
@@ -41,8 +28,8 @@ describe Parslet::Expression do
       "'a' 'b'",            'ab', 
       "'a' ('b')",          'ab', 
       
-      # "'a' / 'b'",          'a', 
-      # "'a' / 'b'",          'b', 
+      "'a' / 'b'",          'a', 
+      "'a' / 'b'",          'b', 
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }
@@ -52,6 +39,8 @@ describe Parslet::Expression do
 
     [ # pattern             # input
       "'abc'",              'cba', 
+      
+      "'a' / 'b'",          'c', 
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }
