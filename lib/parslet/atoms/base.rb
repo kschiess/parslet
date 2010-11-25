@@ -89,37 +89,34 @@ class Parslet::Atoms::Base
     fail "BUG: Unknown tag #{tag.inspect}."
   end
   def flatten_sequence(list)
-    list.inject('') { |r, e|        # and then merge flat elements
-      case [r, e].map { |o| o.class }
-        when [Hash, Hash]             # two keyed subtrees: make one
-          warn_about_duplicate_keys(r, e)
-          r.merge(e)
-          
-        # a keyed tree and an array (push down)
-        when [Hash, Array]
-          [r] + e
-        when [Array, Hash]   
-          r + [e]
-          
-        # Either repetition or two sequences. For now (I am in two minds about
-        # this) just keep the structure.
-        when [Array, Array]
-          r + e
-          
-        when [String, String]
-          r << e
-      else
-        if r.instance_of? Hash
-          r   # Ignore e, since its not a hash we can merge
-        else
-          # Now e is either nil, in which case we drop it, or something else. 
-          # If it is something else, it is probably more important than r, 
-          # since we've checked for important values of r above. 
-          e||r
-        end
-      end
+    list.compact.inject('') { |r, e|        # and then merge flat elements
+      merge_fold(r, e)
     }
   end
+  def merge_fold(l, r)
+    # equal pairs: merge. 
+    if l.class == r.class
+      if l.is_a?(Hash)
+        warn_about_duplicate_keys(l, r)
+        return l.merge(r)
+      else
+        return l + r
+      end
+    end
+    
+    # unequal pairs: hoist to same level. 
+    
+    # special case: If one of them is a string, the other is more important 
+    return l if r.class == String
+    return r if l.class == String
+    
+    # otherwise just create an array for one of them to live in 
+    return l + [r] if r.class == Hash
+    return [l] + r if l.class == Hash
+    
+    fail "Unhandled case when foldr'ing sequence."
+  end
+
   def flatten_repetition(list)
     if list.any? { |e| e.instance_of?(Hash) }
       # If keyed subtrees are in the array, we'll want to discard all 
