@@ -18,7 +18,7 @@ spec = Gem::Specification.new do |s|
 
   # Change these as appropriate
   s.name              = "parslet"
-  s.version           = "0.10.1"
+  s.version           = "0.11.0"
   s.summary           = "Parser construction library with great error reporting in Ruby."
   s.author            = "Kaspar Schiess"
   s.email             = "kaspar.schiess@absurd.li"
