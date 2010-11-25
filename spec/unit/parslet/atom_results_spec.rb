@@ -15,7 +15,9 @@ describe 'Result of a Parslet#parse' do
       [(str('b') >> str('f').maybe).repeat, "bb", 'bb'], 
       
       [str('a').as(:a) >> (str('b') >> str('c').as(:a)).repeat, 'abc', 
-        [{:a=>'a'}, {:a=>'c'}]]
+        [{:a=>'a'}, {:a=>'c'}]], 
+      
+      [str('a').as(:a).repeat >> str('b').as(:b).repeat, 'ab', [{:a=>'a'}, {:b=>'b'}]]
       
     ].each do |parslet, input, result|
       context "#{parslet.inspect}" do

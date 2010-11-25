@@ -35,7 +35,7 @@ class Parslet::Atoms::Base
     # p [:try, self, io.string[io.pos, 20]]
     begin
       r = try(io)
-      # p [:return_from, self, flatten(r)]
+      # p [:return_from, self, r, flatten(r)]
       @last_cause = nil
       return r
     rescue Parslet::ParseFailed => ex
@@ -94,11 +94,18 @@ class Parslet::Atoms::Base
         when [Hash, Hash]             # two keyed subtrees: make one
           warn_about_duplicate_keys(r, e)
           r.merge(e)
+          
         # a keyed tree and an array (push down)
         when [Hash, Array]
           [r] + e
         when [Array, Hash]   
           r + [e]
+          
+        # Either repetition or two sequences. For now (I am in two minds about
+        # this) just keep the structure.
+        when [Array, Array]
+          r + e
+          
         when [String, String]
           r << e
       else
