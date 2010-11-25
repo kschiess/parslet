@@ -4,7 +4,7 @@ title: Contribute
 ---
 
 Find parslet to be really useful? Or just found a bug that is really ruining
-the day for you? Please take part by contributing. Find the code on 
+the day for you? Please contribute! Find the code on 
 "github":http://github.com/kschiess/parslet.
 
 h2. Bugs 
