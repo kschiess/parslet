@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+require 'timeout'
 require 'parslet'
 
 describe Parslet do
@@ -389,7 +390,7 @@ describe Parslet do
       # Mixed subtrees :sequence of :repetition yields []
       [ [:sequence, [:repetition, {:a => 'a'}], {:a => 'a'} ], [{:a=>'a'}, {:a=>'a'}]],
       [ [:sequence, {:a => 'a'},[:repetition, {:a => 'a'}] ], [{:a=>'a'}, {:a=>'a'}]],
-      [ [:sequence, [:repetition, {:a => 'a'}],[:repetition, {:a => 'a'}] ], [{:a=>'a'}]],
+      [ [:sequence, [:repetition, {:a => 'a'}],[:repetition, {:a => 'a'}] ], [{:a=>'a'}, {:a=>'a'}]],
       # Repetition
       [ [:repetition, [:repetition, {:a=>'a'}], [:repetition, {:a=>'a'}]], 
         [{:a => 'a'}, {:a => 'a'}]],
