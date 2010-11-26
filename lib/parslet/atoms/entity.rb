@@ -1,13 +1,12 @@
 # This wraps pieces of parslet definition and gives them a name. The wrapped
 # piece is lazily evaluated and cached. This has two purposes: 
 #     
-# a) Avoid infinite recursion during evaluation of the definition
-#
-# b) Be able to print things by their name, not by their sometimes
-#    complicated content.
+# * Avoid infinite recursion during evaluation of the definition
+# * Be able to print things by their name, not by their sometimes
+#   complicated content.
 #
 # You don't normally use this directly, instead you should generated it by
-# using the structuring method Parslet#rule.
+# using the structuring method Parslet.rule.
 #
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
   attr_reader :name, :context, :block

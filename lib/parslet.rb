@@ -21,8 +21,10 @@ require 'stringio'
 # Parslet is typically used in stages: 
 #
 # 
-# * Parsing the input string; this yields an intermediary tree
-# * Transformation of the tree into something useful to you
+# * Parsing the input string; this yields an intermediary tree, see Parslet.any, Parslet.match, 
+#   Parslet.str, Parslet::ClassMethods#rule and Parslet::ClassMethods#root.
+# * Transformation of the tree into something useful to you, see Parslet::Transform, 
+#   Parslet.simple, Parslet.sequence and Parslet.subtree.
 #
 # The first stage is traditionally intermingled with the second stage; output
 # from the second stage is usually called the 'Abstract Syntax Tree' or AST. 
@@ -30,6 +32,12 @@ require 'stringio'
 # The stages are completely decoupled; You can change your grammar around 
 # and use the second stage to isolate the rest of your code from the changes
 # you've effected. 
+#
+# == When things go wrong
+#
+# A parse that fails will raise Parslet::ParseFailed. A detailed explanation
+# of what went wrong can be obtained from the parslet involved or the root
+# of the parser instance. 
 #
 module Parslet
   def self.included(base)
@@ -47,7 +55,7 @@ module Parslet
   #   begin
   #     parslet.parse(str)
   #   rescue Parslet::ParseFailed => failure
-  #     puts parslet.error_tree.ascii_tree
+  #     puts parslet.error_tree
   #   end
   #
   class ParseFailed < Exception
@@ -96,9 +104,7 @@ module Parslet
     #       bar >> bar
     #     end
     #
-    #     def parse(str)
-    #       twobar.parse(str)
-    #     end
+    #     root :twobar
     #   end
     #
     def rule(name, &definition)
@@ -109,22 +115,27 @@ module Parslet
       end
     end
   end
-  
-  # Allows for delayed construction of #match.
+
+  # Allows for delayed construction of #match. See also Parslet.match.
   #
-  class DelayedMatchConstructor
+  class DelayedMatchConstructor #:nodoc:
     def [](str)
       Atoms::Re.new("[" + str + "]")
     end
   end
   
-  # Returns an atom matching a character class. This is essentially a regular
-  # expression, but you should only match a single character. 
+  # Returns an atom matching a character class. All regular expressions can be
+  # used, as long as they match only a single character at a time. 
   #
   # Example: 
   #
   #   match('[ab]')     # will match either 'a' or 'b'
   #   match('[\n\s]')   # will match newlines and spaces
+  #
+  # There is also another (convenience) form of this method: 
+  #
+  #   match['a-z']      # synonymous to match('[a-z]')
+  #   match['\n']       # synonymous to match('[\n]')
   #
   def match(str=nil)
     return DelayedMatchConstructor.new unless str
@@ -158,7 +169,7 @@ module Parslet
   #
   #   exp(%Q("a" "b"?))     # => returns the same as str('a') >> str('b').maybe
   #
-  def exp(str)
+  def exp(str) # :nodoc:
     Parslet::Expression.new(str).to_parslet
   end
   module_function :exp

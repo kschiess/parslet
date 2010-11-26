@@ -1,5 +1,5 @@
 class Parslet::Expression::Treetop
-  class Parser < Parslet::Parser
+  class Parser < Parslet::Parser # :nodoc:
     root(:expression)
     
     rule(:expression) { alternatives }
@@ -39,7 +39,7 @@ class Parslet::Expression::Treetop
     end
   end
   
-  class Transform < Parser::Transform
+  class Transform < Parser::Transform # :nodoc:
     rule(:alt => subtree(:alt)) { Parslet::Atoms::Alternative.new(*alt) }
     rule(:seq => sequence(:s))  { Parslet::Atoms::Sequence.new(*s) }
     rule(:unwrap => simple(:u)) { u }
