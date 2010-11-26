@@ -164,13 +164,21 @@ class Parslet::Transform
     # No rule matched - element is not transformed
     return elt
   end
+<<<<<<< HEAD
   def recurse_hash(hsh) # :nodoc: 
+=======
+  def recurse_hash(hsh) # :nodoc:
+>>>>>>> . less documentation
     hsh.inject({}) do |new_hsh, (k,v)|
       new_hsh[k] = apply(v)
       new_hsh
     end
   end
+<<<<<<< HEAD
   def recurse_array(ary) # :nodoc: 
+=======
+  def recurse_array(ary) # :nodoc:
+>>>>>>> . less documentation
     ary.map { |elt| apply(elt) }
   end
 end
