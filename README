@@ -2,10 +2,10 @@ INTRODUCTION
 
 Parslet makes developing complex parsers easy. It does so by
 
-* providing the best *error reporting* possible
-* *not generating* reams of code for you to debug
+* providing the best <b>error reporting</b> possible
+* <b>not generating</b> reams of code for you to debug
 
-Parslet takes the long way around to make *your job* easier. It allows for
+Parslet takes the long way around to make <b>your job</b> easier. It allows for
 incremental language construction. Often, you start out small, implementing
 the atoms of your language first; _parslet_ takes pride in making this
 possible. 
@@ -53,6 +53,6 @@ This library should work with both ruby 1.8 and ruby 1.9.
 
 STATUS 
 
-On the road to 1.0; improving documentation, packaging and upgrading to rspec2.
+On the road to 1.0; improving documentation, trying to ease access to the API.
 
 (c) 2010 Kaspar Schiess

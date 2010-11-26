@@ -155,7 +155,10 @@ module Parslet
   end
   module_function :str
   
-  # Returns an atom matching any character. 
+  # Returns an atom matching any character. It acts like the '.' (dot)
+  # character in regular expressions.
+  #
+  #   any.parse('a')    # => 'a'
   #
   def any
     Atoms::Re.new('.')
