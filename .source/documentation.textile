@@ -13,6 +13,6 @@ you should read and try out first.
 Parslet comes with a lot of examples that explain how to use various aspects. 
 Take a look at those. 
 
-"*rdoc Class Documentation*":doc/rdoc-0.10.0/index.html
+"*rdoc Class Documentation*":doc/rdoc-0.11.0/index.html
 
 The rdoc documentation will help you with the nitty gritty.
