@@ -74,7 +74,7 @@ class Parslet::Pattern
     end
   end
   
-  def element_match_binding(tree, exp, bindings)
+  def element_match_binding(tree, exp, bindings) # :nodoc:
     var_name = exp.variable_name
 
     # TODO test for the hidden :_ feature.
@@ -88,7 +88,7 @@ class Parslet::Pattern
     return true
   end
   
-  def element_match_ary_single(sequence, exp, bindings)
+  def element_match_ary_single(sequence, exp, bindings) # :nodoc:
     return false if sequence.size != exp.size
     
     return sequence.zip(exp).all? { |elt, subexp|

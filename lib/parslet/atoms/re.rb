@@ -9,11 +9,11 @@
 #
 class Parslet::Atoms::Re < Parslet::Atoms::Base
   attr_reader :match
-  def initialize(match)
+  def initialize(match) # :nodoc:
     @match = match
   end
 
-  def try(io)
+  def try(io) # :nodoc:
     r = Regexp.new(match, Regexp::MULTILINE)
     s = io.read(1)
     error(io, "Premature end of input") unless s
@@ -21,7 +21,7 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     return s
   end
 
-  def to_s_inner(prec)
+  def to_s_inner(prec) # :nodoc:
     match.inspect[1..-2]
   end
 end

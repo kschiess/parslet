@@ -8,13 +8,13 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   attr_reader :positive
   attr_reader :bound_parslet
   
-  def initialize(bound_parslet, positive=true)
-    # Model positive and negative lookahead by testing this flag.
+  def initialize(bound_parslet, positive=true) # :nodoc:
+    # Model positive and negative lookahead by testing this flag.
     @positive = positive
     @bound_parslet = bound_parslet
   end
   
-  def try(io)
+  def try(io) # :nodoc:
     pos = io.pos
     begin
       bound_parslet.apply(io)
@@ -26,7 +26,7 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     return success(io)
   end
   
-  def fail(io)
+  def fail(io) # :nodoc:
     if positive
       error(io, "lookahead: #{bound_parslet.inspect} didn't match, but should have")
     else
@@ -34,7 +34,7 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
       return nil
     end
   end
-  def success(io)
+  def success(io) # :nodoc:
     if positive
       return nil  # see above, TODO
     else
@@ -45,13 +45,13 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   end
 
   precedence LOOKAHEAD
-  def to_s_inner(prec)
+  def to_s_inner(prec) # :nodoc:
     char = positive ? '&' : '!'
     
     "#{char}#{bound_parslet.to_s(prec)}"
   end
 
-  def error_tree
+  def error_tree # :nodoc:
     bound_parslet.error_tree
   end
 end

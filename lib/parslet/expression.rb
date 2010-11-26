@@ -8,7 +8,7 @@
 # 
 # NOT FINISHED & EXPERIMENTAL
 #
-class Parslet::Expression
+class Parslet::Expression # :nodoc:
   include Parslet
   
   autoload :Treetop, 'parslet/expression/treetop'

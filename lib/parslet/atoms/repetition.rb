@@ -14,7 +14,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     @tag = tag
   end
   
-  def try(io)
+  def try(io) # :nodoc:
     occ = 0
     result = [@tag]   # initialize the result array with the tag (for flattening)
     loop do
@@ -36,18 +36,18 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
   end
   
   precedence REPETITION
-  def to_s_inner(prec)
+  def to_s_inner(prec) # :nodoc:
     minmax = "{#{min}, #{max}}"
     minmax = '?' if min == 0 && max == 1
 
     parslet.to_s(prec) + minmax
   end
 
-  def cause
+  def cause # :nodoc:
     # Either the repetition failed or the parslet inside failed to repeat. 
     super || parslet.cause
   end
-  def error_tree
+  def error_tree # :nodoc:
     if cause?
       Parslet::ErrorTree.new(self, parslet.error_tree)
     else

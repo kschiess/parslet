@@ -27,7 +27,7 @@ class Parslet::Atoms::Base
     return flatten(result)
   end
 
-  def apply(io)
+  def apply(io) # :nodoc:
     # p [:start, self, io.string[io.pos, 10]]
     
     old_pos = io.pos
@@ -66,7 +66,7 @@ class Parslet::Atoms::Base
     Parslet::Atoms::Named.new(self, name)
   end
 
-  def flatten(value)
+  def flatten(value) # :nodoc:
     # Passes through everything that isn't an array of things
     return value unless value.instance_of? Array
 
@@ -88,12 +88,13 @@ class Parslet::Atoms::Base
     
     fail "BUG: Unknown tag #{tag.inspect}."
   end
-  def flatten_sequence(list)
+  
+  def flatten_sequence(list) # :nodoc:
     list.compact.inject('') { |r, e|        # and then merge flat elements
       merge_fold(r, e)
     }
   end
-  def merge_fold(l, r)
+  def merge_fold(l, r) # :nodoc:
     # equal pairs: merge. 
     if l.class == r.class
       if l.is_a?(Hash)
@@ -117,7 +118,7 @@ class Parslet::Atoms::Base
     fail "Unhandled case when foldr'ing sequence."
   end
 
-  def flatten_repetition(list)
+  def flatten_repetition(list) # :nodoc:
     if list.any? { |e| e.instance_of?(Hash) }
       # If keyed subtrees are in the array, we'll want to discard all 
       # strings inbetween. To keep them, name them. 
@@ -136,18 +137,18 @@ class Parslet::Atoms::Base
     list.inject('') { |s,e| s<<(e||'') }
   end
 
-  def self.precedence(prec)
+  def self.precedence(prec) # :nodoc:
     define_method(:precedence) { prec }
   end
   precedence BASE
-  def to_s(outer_prec)
+  def to_s(outer_prec) # :nodoc:
     if outer_prec < precedence
       "("+to_s_inner(precedence)+")"
     else
       to_s_inner(precedence)
     end
   end
-  def inspect
+  def inspect # :nodoc:
     to_s(OUTER)
   end
 
@@ -155,7 +156,7 @@ class Parslet::Atoms::Base
   # of what went wrong with the parse. Not relevant if the parse succeeds, 
   # but needed for clever error reports. 
   #
-  def cause
+  def cause # :nodoc:
     @last_cause
   end
 
@@ -166,7 +167,7 @@ class Parslet::Atoms::Base
   def error_tree
     Parslet::ErrorTree.new(self) if cause?
   end
-  def cause?
+  def cause? # :nodoc:
     not @last_cause.nil?
   end
 private

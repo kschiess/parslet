@@ -8,7 +8,7 @@ class Parslet::ErrorTree
   # All errors that were encountered when parsing part of this +parslet+. 
   attr_reader :children
     
-  def initialize(parslet, *children)
+  def initialize(parslet, *children) # :nodoc:
     @parslet = parslet
     @children = children.compact
   end
@@ -31,7 +31,7 @@ class Parslet::ErrorTree
   end
   alias to_s ascii_tree
 private
-  def recursive_ascii_tree(node, stream, curved)
+  def recursive_ascii_tree(node, stream, curved) # :nodoc:
     append_prefix(stream, curved)
     stream.puts node.cause
     
@@ -41,7 +41,7 @@ private
       recursive_ascii_tree(child, stream, curved + [last_child])
     end
   end
-  def append_prefix(stream, curved)
+  def append_prefix(stream, curved) # :nodoc:
     curved[0..-2].each do |c|
       stream.print c ? "   " : "|  "
     end

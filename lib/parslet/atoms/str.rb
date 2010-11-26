@@ -10,7 +10,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     @str = str
   end
   
-  def try(io)
+  def try(io) # :nodoc:
     old_pos = io.pos
     s = io.read(str.size)
     error(io, "Premature end of input") unless s && s.size==str.size
@@ -19,7 +19,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     return s
   end
   
-  def to_s_inner(prec)
+  def to_s_inner(prec) # :nodoc:
     "'#{str}'"
   end
 end
