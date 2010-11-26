@@ -40,7 +40,7 @@ require 'stringio'
 # of the parser instance. 
 #
 module Parslet
-  def self.included(base)
+  def self.included(base) # :nodoc:
     base.extend(ClassMethods)
   end
   
@@ -118,7 +118,7 @@ module Parslet
 
   # Allows for delayed construction of #match. See also Parslet.match.
   #
-  class DelayedMatchConstructor #:nodoc:
+  class DelayedMatchConstructor # :nodoc:
     def [](str)
       Atoms::Re.new("[" + str + "]")
     end
