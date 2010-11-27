@@ -22,9 +22,18 @@ class Parslet::Expression::Treetop
     }
     
     rule(:atom) { 
-      dot |
       spaced('(') >> expression.as(:unwrap) >> spaced(')') |
-      string 
+      dot |
+      string |
+      char_class
+    }
+    
+    # a character class
+    rule(:char_class) {
+      (str('[') >>
+        (str('\\') >> any |
+        str(']').absnt? >> any).repeat(1) >>
+      str(']')).as(:match) >> space?
     }
     
     # anything at all
@@ -40,6 +49,7 @@ class Parslet::Expression::Treetop
       str('\'') >> space?
     }
     
+    # whitespace handling
     rule(:space) { match("\s").repeat(1) }
     rule(:space?) { space.maybe }
     
@@ -57,8 +67,9 @@ class Parslet::Expression::Treetop
     rule(:seq => sequence(:s))        { Parslet::Atoms::Sequence.new(*s) }
     rule(:unwrap => simple(:u))       { u }
     rule(:maybe => simple(:m))        { |d| d[:m].maybe }
-    rule(:string => simple(:s))       { |d| str(d[:s]) }
-    rule(:any => simple(:a))          { |d| any }
+    rule(:string => simple(:s))       { Parslet::Atoms::Str.new(s) }
+    rule(:match => simple(:m))        { Parslet::Atoms::Re.new(m) }
+    rule(:any => simple(:a))          { Parslet::Atoms::Re.new('.') }
   end
   
 end

@@ -20,6 +20,7 @@ describe Parslet::Expression::Treetop do
     [ # pattern             # input
       "'abc'",              'abc', 
       "...",                'abc', 
+      "[1-4]",              '3',
       
       "'abc'?",             'abc', 
       "'abc'?",             '', 
@@ -47,6 +48,7 @@ describe Parslet::Expression::Treetop do
   describe "negative samples" do
     [ # pattern             # input
       "'abc'",              'cba', 
+      "[1-4]",              '5',
       
       "'a' / 'b'",          'c', 
       
