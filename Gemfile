@@ -8,4 +8,8 @@ group :development do
   gem 'flexmock'
   
   gem 'sdoc'
+  
+  gem 'autotest'
+  gem 'autotest-fsevent'
+  gem 'autotest-growl'
 end

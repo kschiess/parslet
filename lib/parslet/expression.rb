@@ -13,7 +13,13 @@ class Parslet::Expression
   
   autoload :Treetop, 'parslet/expression/treetop'
   
-  def initialize(str, opts={})
+  # Creates a parslet from a foreign language expression. 
+  #
+  # Example: 
+  #   
+  #   Parslet::Expression.new("'a' 'b'")
+  #
+  def initialize(str, opts={}, context=self)
     @type = opts[:type] || :treetop
     @exp = str
     @parslet = transform(

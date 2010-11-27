@@ -10,9 +10,11 @@ class Parslet::Expression::Treetop
     }
     
     # sequence by simple concatenation 'a' 'b'
-    rule(:simple) { perhaps.repeat(1).as(:seq) }
-
-    rule(:perhaps) {
+    rule(:simple) { occurrence.repeat(1).as(:seq) }
+    
+    # occurrence modifiers
+    rule(:occurrence) {
+      atom.as(:repetition) >> spaced('*') |
       atom.as(:maybe) >> spaced('?') | 
       atom
     }
@@ -21,7 +23,8 @@ class Parslet::Expression::Treetop
       spaced('(') >> expression.as(:unwrap) >> spaced(')') |
       string 
     }
-
+    
+    # recognizing strings
     rule(:string) {
       str('\'') >> 
       (
@@ -39,12 +42,13 @@ class Parslet::Expression::Treetop
     end
   end
   
-  class Transform < Parser::Transform # :nodoc:
-    rule(:alt => subtree(:alt)) { Parslet::Atoms::Alternative.new(*alt) }
-    rule(:seq => sequence(:s))  { Parslet::Atoms::Sequence.new(*s) }
-    rule(:unwrap => simple(:u)) { u }
-    rule(:maybe => simple(:m))  { |d| d[:m].maybe }
-    rule(:string => simple(:s)) { |d| str(d[:s]) }
+  class Transform < Parslet::Transform # :nodoc:
+    rule(:repetition => simple(:rep)) { Parslet::Atoms::Repetition.new(rep, 0, nil) }
+    rule(:alt => subtree(:alt))       { Parslet::Atoms::Alternative.new(*alt) }
+    rule(:seq => sequence(:s))        { Parslet::Atoms::Sequence.new(*s) }
+    rule(:unwrap => simple(:u))       { u }
+    rule(:maybe => simple(:m))        { |d| d[:m].maybe }
+    rule(:string => simple(:s))       { |d| str(d[:s]) }
   end
   
 end
