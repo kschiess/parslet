@@ -33,6 +33,9 @@ describe Parslet::Expression::Treetop do
       
       "'a'*",               'aaa', 
       "'a'*",               '', 
+
+      "'a'+",               'aa', 
+      "'a'+",               'a', 
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }
@@ -45,6 +48,8 @@ describe Parslet::Expression::Treetop do
       "'abc'",              'cba', 
       
       "'a' / 'b'",          'c', 
+      
+      "'a'+",               '',
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }

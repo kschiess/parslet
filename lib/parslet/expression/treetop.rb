@@ -14,7 +14,9 @@ class Parslet::Expression::Treetop
     
     # occurrence modifiers
     rule(:occurrence) {
-      atom.as(:repetition) >> spaced('*') |
+      atom.as(:repetition) >> spaced('*').as(:sign) |
+      atom.as(:repetition) >> spaced('+').as(:sign) |
+      
       atom.as(:maybe) >> spaced('?') | 
       atom
     }
@@ -43,7 +45,9 @@ class Parslet::Expression::Treetop
   end
   
   class Transform < Parslet::Transform # :nodoc:
-    rule(:repetition => simple(:rep)) { Parslet::Atoms::Repetition.new(rep, 0, nil) }
+    rule(:repetition => simple(:rep), :sign => simple(:sign)) { 
+      min = sign=='+' ? 1 : 0
+      Parslet::Atoms::Repetition.new(rep, min, nil) }
     rule(:alt => subtree(:alt))       { Parslet::Atoms::Alternative.new(*alt) }
     rule(:seq => sequence(:s))        { Parslet::Atoms::Sequence.new(*s) }
     rule(:unwrap => simple(:u))       { u }
