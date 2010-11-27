@@ -19,6 +19,7 @@ describe Parslet::Expression::Treetop do
   describe "positive samples" do
     [ # pattern             # input
       "'abc'",              'abc', 
+      "...",                'abc', 
       
       "'abc'?",             'abc', 
       "'abc'?",             '', 

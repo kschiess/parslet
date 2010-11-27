@@ -22,9 +22,13 @@ class Parslet::Expression::Treetop
     }
     
     rule(:atom) { 
+      dot |
       spaced('(') >> expression.as(:unwrap) >> spaced(')') |
       string 
     }
+    
+    # anything at all
+    rule(:dot) { spaced('.').as(:any) }
     
     # recognizing strings
     rule(:string) {
@@ -45,6 +49,7 @@ class Parslet::Expression::Treetop
   end
   
   class Transform < Parslet::Transform # :nodoc:
+    
     rule(:repetition => simple(:rep), :sign => simple(:sign)) { 
       min = sign=='+' ? 1 : 0
       Parslet::Atoms::Repetition.new(rep, min, nil) }
@@ -53,6 +58,7 @@ class Parslet::Expression::Treetop
     rule(:unwrap => simple(:u))       { u }
     rule(:maybe => simple(:m))        { |d| d[:m].maybe }
     rule(:string => simple(:s))       { |d| str(d[:s]) }
+    rule(:any => simple(:a))          { |d| any }
   end
   
 end
