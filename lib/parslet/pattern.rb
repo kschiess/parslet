@@ -25,29 +25,6 @@ class Parslet::Pattern
     @pattern = pattern
   end
 
-  # # Searches the given +tree+ for this pattern, yielding the subtrees that
-  # # match to the block. 
-  # #
-  # # Example: 
-  # #
-  # #   tree = parslet.apply(input)
-  # #   pat = Parslet::Pattern.new(:_x)
-  # #   pat.each_match(tree) do |subtree|
-  # #     # do something with the matching subtree here
-  # #   end
-  # #
-  # def each_match(tree, &block) # :yield: subtree
-  #   raise ArgumentError, "Must pass a block" unless block
-  #   
-  #   recurse_into(tree) do |subtree|
-  #     if bindings=match(subtree)
-  #       call_on_match(subtree, bindings, block)
-  #     end
-  #   end
-  #   
-  #   return nil
-  # end
-  
   # Decides if the given subtree matches this pattern. Returns the bindings
   # made on a successful match or nil if the match fails. 
   #
@@ -71,23 +48,9 @@ class Parslet::Pattern
     end
   end
   
-  # Handles preorder, depth-first recursion through the +expr+ given. 
-  #
-  def recurse_into(expr, &block)
-    # p [:attempt_match, expr]
-    block.call(expr)
-    
-    case expr
-      when Array
-        expr.each { |y| recurse_into(y, &block) }
-      when Hash
-        expr.each { |k,v| recurse_into(v, &block) }
-    end
-  end
-    
   # Returns true if the tree element given by +tree+ matches the expression
   # given by +exp+. This match must respect bindings already made in
-  # +bindings+. 
+  # +bindings+. Note that bindings is carried along and modified. 
   #
   def element_match(tree, exp, bindings) 
     # p [:elm, tree, exp]
@@ -133,22 +96,18 @@ class Parslet::Pattern
   end
   
   def element_match_hash(tree, exp, bindings)
-    # For a hash to match, all keys must correspond and all values must 
-    # match element wise.
-    tree.each do |tree_key,tree_value|
-      return nil unless exp.has_key?(tree_key)
+    # p [:emh, tree, exp, bindings]
+    
+    # We iterate over expected pattern, since we demand that the keys that
+    # are there should be in tree as well.
+    exp.each do |expected_key, expected_value|
+      return false unless tree.has_key? expected_key
       
-      # We know they both have tk as element.
-      exp_value = exp[tree_key]
-      
-      # Recurse into the values
-      unless element_match(tree_value, exp_value, bindings)
-        # Stop matching early
-        return false
-      end
+      # Recurse into the value and stop early on failure
+      value = tree[expected_key]
+      return false unless element_match(value, expected_value, bindings)
     end
     
-    # Match succeeds
     return true
-  end
+  end  
 end

@@ -44,11 +44,11 @@ describe Parslet::Pattern do
   # Can't use #match here, so I went to the Thesaurus.
   #
   RSpec::Matchers.define :detect do |pattern|
-    match(&lambda do |tree|
+    match do |tree|
       bindings = Parslet::Pattern.new(pattern).match(tree)
-      
+
       bindings ? true : false
-    end)
+    end
   end
   
   describe "<- #call_on_match" do
@@ -166,7 +166,7 @@ describe Parslet::Pattern do
       it "should verify constraints over several subtrees" do
         exp.should_not match_with_bind({
           :sub1 => {:a => simple(:x)}, 
-          :sub1 => {:a => simple(:x)} 
+          :sub2 => {:a => simple(:x)} 
         }, :x => 'a')
       end
       it "should return both bind variables simple(:x), simple(:y)" do
