@@ -25,28 +25,28 @@ class Parslet::Pattern
     @pattern = pattern
   end
 
-  # Searches the given +tree+ for this pattern, yielding the subtrees that
-  # match to the block. 
-  #
-  # Example: 
-  #
-  #   tree = parslet.apply(input)
-  #   pat = Parslet::Pattern.new(:_x)
-  #   pat.each_match(tree) do |subtree|
-  #     # do something with the matching subtree here
+  # # Searches the given +tree+ for this pattern, yielding the subtrees that
+  # # match to the block. 
+  # #
+  # # Example: 
+  # #
+  # #   tree = parslet.apply(input)
+  # #   pat = Parslet::Pattern.new(:_x)
+  # #   pat.each_match(tree) do |subtree|
+  # #     # do something with the matching subtree here
+  # #   end
+  # #
+  # def each_match(tree, &block) # :yield: subtree
+  #   raise ArgumentError, "Must pass a block" unless block
+  #   
+  #   recurse_into(tree) do |subtree|
+  #     if bindings=match(subtree)
+  #       call_on_match(subtree, bindings, block)
+  #     end
   #   end
-  #
-  def each_match(tree, &block) # :yield: subtree
-    raise ArgumentError, "Must pass a block" unless block
-    
-    recurse_into(tree) do |subtree|
-      if bindings=match(subtree)
-        call_on_match(subtree, bindings, block)
-      end
-    end
-    
-    return nil
-  end
+  #   
+  #   return nil
+  # end
   
   # Decides if the given subtree matches this pattern. Returns the bindings
   # made on a successful match or nil if the match fails. 

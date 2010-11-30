@@ -33,6 +33,9 @@ class Parslet::Expression
     
     # pp tree
     transform.apply(tree)
+  rescue 
+    warn "Could not transform: " + tree.inspect
+    raise
   end
   
   # Parses the string and returns a parse tree.

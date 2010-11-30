@@ -25,14 +25,9 @@ tree = parser.parse(%Q{
 
 tree # => {:string=>"This is a \\\"String\\\" in which you can escape stuff"}
 
-# Here's how you can grab results from that tree, two methods: 
+# Here's how you can grab results from that tree:
 
 # 1)
-Pattern.new(:string => simple(:x)).each_match(tree) do |dictionary|
-  puts "String contents (method 1): #{dictionary[:x]}"
-end
-
-# 2)
 transform = Parslet::Transform.new do
   rule(:string => simple(:x)) { 
     puts "String contents (method 2): #{x}" }

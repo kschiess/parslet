@@ -16,11 +16,12 @@ class Parslet::Expression::Treetop
     rule(:occurrence) {
       atom.as(:repetition) >> spaced('*').as(:sign) |
       atom.as(:repetition) >> spaced('+').as(:sign) |
+      atom.as(:repetition) >> repetition_spec |
       
       atom.as(:maybe) >> spaced('?') | 
       atom
     }
-    
+        
     rule(:atom) { 
       spaced('(') >> expression.as(:unwrap) >> spaced(')') |
       dot |
@@ -47,6 +48,15 @@ class Parslet::Expression::Treetop
         (str("'").absnt? >> any)
       ).repeat.as(:string) >> 
       str('\'') >> space?
+    }
+    
+    # repetition specification like {1, 2}
+    rule(:repetition_spec) {
+      spaced('{') >> integer.maybe >> spaced(',') >> 
+        integer.maybe >> spaced('}')
+    }
+    rule(:integer) {
+      match['0-9'].repeat(1)
     }
     
     # whitespace handling
