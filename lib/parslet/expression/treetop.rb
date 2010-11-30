@@ -75,7 +75,10 @@ class Parslet::Expression::Treetop
       min = sign=='+' ? 1 : 0
       Parslet::Atoms::Repetition.new(rep, min, nil) }
     rule(:repetition => simple(:rep), :min => simple(:min), :max => simple(:max)) { 
-      Parslet::Atoms::Repetition.new(rep, Integer(min), Integer(max)) }
+      Parslet::Atoms::Repetition.new(rep, 
+        Integer(min || 0), 
+        max && Integer(max) || nil) }
+      
     rule(:alt => subtree(:alt))       { Parslet::Atoms::Alternative.new(*alt) }
     rule(:seq => sequence(:s))        { Parslet::Atoms::Sequence.new(*s) }
     rule(:unwrap => simple(:u))       { u }
