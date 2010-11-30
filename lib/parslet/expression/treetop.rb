@@ -52,8 +52,9 @@ class Parslet::Expression::Treetop
     
     # repetition specification like {1, 2}
     rule(:repetition_spec) {
-      spaced('{') >> integer.maybe >> spaced(',') >> 
-        integer.maybe >> spaced('}')
+      spaced('{') >> 
+        integer.maybe.as(:min) >> spaced(',') >> 
+        integer.maybe.as(:max) >> spaced('}')
     }
     rule(:integer) {
       match['0-9'].repeat(1)
@@ -73,6 +74,8 @@ class Parslet::Expression::Treetop
     rule(:repetition => simple(:rep), :sign => simple(:sign)) { 
       min = sign=='+' ? 1 : 0
       Parslet::Atoms::Repetition.new(rep, min, nil) }
+    rule(:repetition => simple(:rep), :min => simple(:min), :max => simple(:max)) { 
+      Parslet::Atoms::Repetition.new(rep, Integer(min), Integer(max)) }
     rule(:alt => subtree(:alt))       { Parslet::Atoms::Alternative.new(*alt) }
     rule(:seq => sequence(:s))        { Parslet::Atoms::Sequence.new(*s) }
     rule(:unwrap => simple(:u))       { u }
