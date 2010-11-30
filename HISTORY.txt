@@ -1,3 +1,9 @@
+= 0.12.0 / ???
+
+  - #each_match was removed. There was some duplication of code that even 
+    confused me - and we should not have 2 methods of achieving the same
+    goal. Ruby ain't Perl.
+
 = 0.11.0 / 25Nov2010
 
   ! Bugfixes to tree handling. Let's hope that was the last such significant
