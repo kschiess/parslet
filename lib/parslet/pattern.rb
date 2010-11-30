@@ -37,7 +37,7 @@ class Parslet::Pattern
   # can be made. Contains the logic that will switch to instance variables
   # depending on the arity of the block. 
   #
-  def call_on_match(tree, bindings, block)
+  def call_on_match(bindings, block)
     if block
       if block.arity == 1
         return block.call(bindings)

@@ -157,7 +157,7 @@ class Parslet::Transform
     rules.each do |pattern, block|
       if bindings=pattern.match(elt)
         # Produces transformed value
-        return pattern.call_on_match(elt, bindings, block)
+        return pattern.call_on_match(bindings, block)
       end
     end
     
