@@ -33,14 +33,8 @@ SYNOPSIS
 
   tree # => {:string=>"This is a \\\"String\\\" in which you can escape stuff"}
 
-  # Here's how you can grab results from that tree, two methods: 
+  # Here's how you can grab results from that tree:
 
-  # 1)
-  Pattern.new(:string => simple(:x)).each_match(tree) do |dictionary|
-    puts "String contents (method 1): #{dictionary[:x]}"
-  end
-
-  # 2)
   transform = Parslet::Transform.new do
     rule(:string => simple(:x)) { 
       puts "String contents (method 2): #{x}" }
@@ -52,6 +46,8 @@ COMPATIBILITY
 This library should work with both ruby 1.8 and ruby 1.9.
 
 STATUS 
+
+0.12.0 
 
 On the road to 1.0; improving documentation, trying to ease access to the API.
 
