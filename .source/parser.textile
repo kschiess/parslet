@@ -1,0 +1,62 @@
+---
+title: Parser construction
+layout: default
+---
+
+A parser is nothing more than a class that derives from
+<code>Parslet::Parser</code>. The simplest parser that one could write would
+look like this: 
+
+{% highlight ruby %} 
+class SimpleParser < Parslet::Parser
+  rule(:a_rule) { str('simple_parser') }
+  root(:a_rule)
+end
+{% endhighlight %}
+
+The language recognized by this parser is simply the string "simple_parser". 
+Parser rules do look a lot like methods and are defined by 
+
+{% highlight ruby %} 
+rule(name) { definition_block }
+{% endhighlight %}
+
+Behind the scenes, this really defines a method that returns whatever you 
+return from it. 
+
+Every parser has a root. This designates where parsing should start. It is like
+an entry point to your parser. With a root defined like this: 
+
+{% highlight ruby %} 
+root(:my_root)
+{% endhighlight %}
+
+you create a <code>#parse</code> method in your parser that will start parsing
+by calling the <code>#my_root</code> method. You'll also have a <code>#root</code>
+(instance) method that is an alias of the root method. The following things are
+really one and the same: 
+
+{% highlight ruby %} 
+SimpleParser.new.parse(string)
+SimpleParser.new.root.parse(string)
+SimpleParser.new.a_rule.parse(string)
+{% endhighlight %}
+
+(If you are wondering what this <code>SimpleParser</code> is about, scroll
+right to the top of the page). Knowing these things gives you a lot of 
+flexibility; I'll explain why at the end of the chapter. For now, just let me
+point out that because all of this is Ruby, your favorite editor will syntax
+highlight parser code just fine. 
+
+h2. Atoms: The inside of a parser
+
+A parser is constructed from parser atoms (or parslets, hence the name). The
+atoms are what appear inside your rules (and maybe elsewhere). We've already
+encountered an atom, the string atom: 
+
+{% highlight ruby %} 
+str('simple_parser')
+{% endhighlight %}
+
+
+
