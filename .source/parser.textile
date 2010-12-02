@@ -58,5 +58,33 @@ encountered an atom, the string atom:
 str('simple_parser')
 {% endhighlight %}
 
+This returns a <code>Parslet::Atoms::Str</code> instance. These parser atoms
+all derive from <code>Parslet::Atoms::Base</code> and have essentially just
+one method you can call: <code>#parse</code>. So this works: 
 
+{% highlight ruby %} 
+str('foobar').parse('foobar') # => 'foobar'
+{% endhighlight %}
 
+The atoms are small parsers that can recognize languages and throw errors, just
+like real <code>Parslet::Parser</code> subclasses. 
+
+h3. Matching character ranges
+
+The second parser atom you will have to know about allows you to match
+character ranges: 
+
+{% highlight ruby %} 
+match('[0-9a-f]')
+{% endhighlight %}
+
+The above atom would match the numbers zero through nine and the letters 'a' 
+to 'f' - yeah, you guessed right - hexadecimal numbers for example. The inside
+of such a match parslet is essentially a regular expression that matches 
+a single character of input. Because we'll be using ranges so much with 
+<code>#match</code> and because typing ('[]') is tiresome, here's another way
+to write the above <code>#match</code> atom:
+
+{% highlight ruby %} 
+match['0-9a-f']
+{% endhighlight %}

@@ -67,6 +67,29 @@
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">str</span><span class="p">(</span><span class="s1">&#39;simple_parser&#39;</span><span class="p">)</span>
         </code></pre>
+        </div><p>This returns a <code>Parslet::Atoms::Str</code> instance. These parser atoms
+        all derive from <code>Parslet::Atoms::Base</code> and have essentially just
+        one method you can call: <code>#parse</code>. So this works:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;foobar&#39;</span><span class="p">)</span> <span class="c1"># =&gt; &#39;foobar&#39;</span>
+        </code></pre>
+        </div><p>The atoms are small parsers that can recognize languages and throw errors, just
+        like real <code>Parslet::Parser</code> subclasses.</p>
+        <h3>Matching character ranges</h3>
+        <p>The second parser atom you will have to know about allows you to match
+        character ranges:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9a-f]&#39;</span><span class="p">)</span>
+        </code></pre>
+        </div><p>The above atom would match the numbers zero through nine and the letters &#8216;a&#8217; 
+        to &#8216;f&#8217; &#8211; yeah, you guessed right &#8211; hexadecimal numbers for example. The inside
+        of such a match parslet is essentially a regular expression that matches 
+        a single character of input. Because we&#8217;ll be using ranges so much with 
+        <code>#match</code> and because typing (&#8216;[]&#8217;) is tiresome, here&#8217;s another way
+        to write the above <code>#match</code> atom:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">match</span><span class="o">[</span><span class="s1">&#39;0-9a-f&#39;</span><span class="o">]</span>
+        </code></pre>
         </div>
       </div>
       <div class="copyright">
