@@ -110,12 +110,60 @@ any
 
 h2. Composition of Atoms
 
-sequence
+These basic atoms can be composed to form complex grammars. The following
+few sections will tell you about the various ways atoms can be composed.
 
-repetition
+h3. Simple Sequences
 
-alternation
+Match 'foo' and then 'bar': 
 
+{% highlight ruby %} 
+str('foo') >> str('bar')    # same as str('foobar')
+{% endhighlight %}
+
+Sequences correspond to instances of the class
+<code>Parslet::Atoms::Sequence</code>.
+
+h3. Repetition and its Special Cases
+
+To model atoms that can be repeated, you should use <code>#repeat</code>: 
+
+{% highlight ruby %} 
+str('foo').repeat
+{% endhighlight %}
+
+This will allow foo to repeat any number of times, including zero. If you
+look at the signature for <code>#repeat</code> in <code>Parslet::Atoms::Base</code>, 
+you'll see that it has really two arguments: _min_ and _max_. So the following
+code all makes sense: 
+
+{% highlight ruby %} 
+str('foo').repeat(1)      # match 'foo' at least once
+str('foo').repeat(1,3)    # at least once and at most 3 times
+str('foo').repeat(0, nil) # the default: same as str('foo').repeat
+{% endhighlight %}
+
+Repetition has a special case that is used frequently: Matching something
+once or not at all can be achieved by <code>repeat(0,1)</code>, but also 
+through the prettier: 
+
+{% highlight ruby %} 
+str('foo').maybe          # same as str('foo').repeat(0,1)
+{% endhighlight %}
+
+These all map to <code>Parslet::Atoms::Repetition</code>
+
+h3. Alternation
+
+The most important composition method for grammars is alternation. Without
+it, your grammars would only vary in the amount of things matched, but not
+in content. Here's how this looks: 
+
+{% highlight ruby %} 
+str('foo') | str('bar')   # matches 'foo' OR 'bar'
+{% endhighlight %}
+
+This reads naturally as "'foo' or 'bar'". 
 h3. And more
 
 Parslet atoms are not as pretty as Treetop atoms. There you go, we said it. 

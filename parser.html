@@ -104,10 +104,45 @@
         <span class="n">any</span> 
         </code></pre>
         </div><h2>Composition of Atoms</h2>
-        <p>sequence</p>
-        <p>repetition</p>
-        <p>alternation</p>
-        <h3>And more</h3>
+        <p>These basic atoms can be composed to form complex grammars. The following
+        few sections will tell you about the various ways atoms can be composed.</p>
+        <h3>Simple Sequences</h3>
+        <p>Match &#8216;foo&#8217; and then &#8216;bar&#8217;:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>    <span class="c1"># same as str(&#39;foobar&#39;)</span>
+        </code></pre>
+        </div><p>Sequences correspond to instances of the class
+        <code>Parslet::Atoms::Sequence</code>.</p>
+        <h3>Repetition and its Special Cases</h3>
+        <p>To model atoms that can be repeated, you should use <code>#repeat</code>:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span>
+        </code></pre>
+        </div><p>This will allow foo to repeat any number of times, including zero. If you
+        look at the signature for <code>#repeat</code> in <code>Parslet::Atoms::Base</code>, 
+        you&#8217;ll see that it has really two arguments: <em>min</em> and <em>max</em>. So the following
+        code all makes sense:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>      <span class="c1"># match &#39;foo&#39; at least once</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>    <span class="c1"># at least once and at most 3 times</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span> <span class="c1"># the default: same as str(&#39;foo&#39;).repeat</span>
+        </code></pre>
+        </div><p>Repetition has a special case that is used frequently: Matching something
+        once or not at all can be achieved by <code>repeat(0,1)</code>, but also 
+        through the prettier:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">maybe</span>          <span class="c1"># same as str(&#39;foo&#39;).repeat(0,1)</span>
+        </code></pre>
+        </div><p>These all map to <code>Parslet::Atoms::Repetition</code></p>
+        <h3>Alternation</h3>
+        <p>The most important composition method for grammars is alternation. Without
+        it, your grammars would only vary in the amount of things matched, but not
+        in content. Here&#8217;s how this looks:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>   <span class="c1"># matches &#39;foo&#39; OR &#39;bar&#39;</span>
+        </code></pre>
+        </div><p>This reads naturally as &#8220;&#8216;foo&#8217; or &#8216;bar&#8217;&#8221;. 
+        h3. And more</p>
         <p>Parslet atoms are not as pretty as Treetop atoms. There you go, we said it. 
         However, there seems to be a different kind of aesthetic about them; they 
         are pure Ruby and integrate well with the rest of your environment. Have a 
