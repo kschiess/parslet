@@ -164,6 +164,9 @@ str('foo') | str('bar')   # matches 'foo' OR 'bar'
 {% endhighlight %}
 
 This reads naturally as "'foo' or 'bar'". 
+
+op precedence and layouting
+
 h3. And more
 
 Parslet atoms are not as pretty as Treetop atoms. There you go, we said it. 
