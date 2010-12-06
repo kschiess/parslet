@@ -1,4 +1,24 @@
 ---
 title: Transformation
+layout: default
 ---
 
+depth-first, post-order
+
+poro
+
+h2. Transformation rules
+
+h3. patterns
+
+h3. Action blocks: Two flavors 
+
+h3. why doesn't it loop around?
+
+h2. Working with Captures
+
+h3. simple
+
+h3. sequence
+
+h3. subtree
