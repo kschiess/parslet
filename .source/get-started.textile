@@ -175,7 +175,8 @@ str('o').repeat.parse('ooo')                      # => 'ooo'
 
 # Added structure: .as(...)
 str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"}
-str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  # => {:ex2b=>[{:ex2a=>"o"}, {:ex2a=>"o"}, {:ex2a=>"o"}]}
+str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  
+    # => {:ex2b=>[{:ex2a=>"o"}, {:ex2a=>"o"}, {:ex2a=>"o"}]}
 {% endhighlight %}
 
 You get to name things the way you want! This is also free. Seriously: parslet
