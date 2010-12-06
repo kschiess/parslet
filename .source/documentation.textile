@@ -18,6 +18,8 @@ Take a look at those.
 This is the real technical documentation, showing you how to use all aspects
 of parslet. Especially: 
 
+* "Overview":overview.html explains parslets goals and gives you a bigger
+  picture.
 * Using "Parslet::Parser":parser.html to *write parsers*.
 * Using "Parslet::Transform":transform.html to *transmogrify your intermediary
   trees*.

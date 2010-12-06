@@ -17,7 +17,7 @@ To install the parslet library, please do a
 gem install parslet
 {% endhighlight %}
 
-Now let's write the first part of our parser. For now, let's just recognize
+Now let's write the first part of our parser. For now, we'll just recognize
 simple numbers like '1' or '42'.
 
 {% highlight ruby %} 
@@ -39,17 +39,20 @@ not work yet. Let's see what happens in case of a failure:
 Mini.new.parse("puts(1)") # raises Parslet::ParseFailed
 {% endhighlight %}
 
-Here's the error message provided by that exception: "Expected at least 1 of [0-9] at line 1 char 1." parslet tries to find a number there, but can't find
+Here's the error message provided by that exception: "Expected at least 1 of
+[0-9] at line 1 char 1." parslet tries to find a number there, but can't find
 one.
 
-There are just two lines to the definition of this parser, let's go through them: 
+There are just two lines to the definition of this parser, let's go through
+them:
 
 {% highlight ruby %} 
 rule(:integer) { match('[0-9]').repeat(1) }
 {% endhighlight %}
 
 <code>rule</code> lets you create a new parser rule. Inside the block of that
-<code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>. This says: "match a character that is in the range <code>0-9</code>, then 
+<code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>.
+This says: "match a character that is in the range <code>0-9</code>, then
 match any number of those, but at least match one."
 
 {% highlight ruby %} 
@@ -75,11 +78,11 @@ Two things are new here: (and both in the second line)
 * <code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
   the thing before it is maybe present once in the input.
   
-Essentially, you can think about parslet construction as instructing Ruby to
-"parse this" and "parse that". Calling other rules can be looked at in the 
-same way; you tell Ruby to go off, parse that subrule and then come back with
-the results. This helps when thinking about rule recursion. For example, a 
-self-recursive rule like this one will of course create an endless loop: 
+Essentially, you can think about parslet rules as instructing Ruby to "parse
+this" and "parse that". Calling other rules can be looked at in the same way;
+you tell Ruby to go off, parse that subrule and then come back with the
+results. This helps when thinking about rule recursion. For example, a
+self-recursive rule like this one will of course create an endless loop:
 
 {% highlight ruby %} 
 rule(:infinity) {
@@ -142,10 +145,10 @@ Parsing 1 ++ 2: Don't know what to do with ++ 2 at line 1 char 3.
       `- Failed to match \\s at line 1 char 4.
 {% endhighlight %}
 
-This is what parslet calls an <code>#error_tree</code>. Not only the output of your parser, 
-but also its grammar is constructed like a tree. When things go wrong, every
-branch of the tree has its own reasons for not accepting a given input. The 
-<code>#error_tree</code> method returns those reasons. 
+This is what parslet calls an <code>#error_tree</code>. Not only the output of
+your parser, but also its grammar is constructed like a tree. When things go
+wrong, every branch of the tree has its own reasons for not accepting a given
+input. The <code>#error_tree</code> method returns those reasons.
 
 Our grammar has essentially two branches, <code>SUM</code> and
 <code>INTEGER</code>. Can you see why all rules expect a space at character 4?
@@ -161,9 +164,9 @@ Parsing 1 + 2 + 3: "1 + 2 + 3"
 {% endhighlight %}
 
 The code we now have parses the input successfully, but doesn't do much else. 
-Out of the box, parslet only performs one of the two functions of a parser. It
-accepts input, but doesn't structure it. To do that, we have to point out to
-parslet the pieces that we're interested in. Look at this bit: 
+Parslet hasn't got its own opinion on what to do with your input. By default, 
+it will just play it back to you. But parslet provides also a method of 
+structuring its output: 
 
 {% highlight ruby%} 
 # Without structure: just strings.
@@ -190,6 +193,9 @@ parser =  str('a').as(:a) >> str(' ').maybe >>
           str('b').as(:b)
 parser.parse('a + b') # => {:a=>"a", :o=>"+", :b=>"b"}
 {% endhighlight%}
+
+Think of this like using a highlighter on your input: What is there not to like
+about neon yellow?
 
 h2. Making the parser complete
 
@@ -243,14 +249,10 @@ this tree:
 * *Arrays*: a node storing a collection of sub-nodes
 * *Strings* are the leaves, containing the _accepted source_
 
-The format of this tree is easy to work with and to read. Here's what the above
-tree would look like as a graphic: 
+The format of this tree is easy to work with and to read. Here's what the
+above tree would look like as a graphic:
 
 !imgs/ast.png!
-
-Note that some information we have above is only implicit in this illustration. 
-Our intermediary tree uses an array for the ordering of the argument list of 
-<code>puts</code>. 
 
 h2. Where to go from here: An Interpreter
 
@@ -271,13 +273,14 @@ SimpleTransform.new.apply(tree) # => "puts([1, 2, 3])"
 {% endhighlight %}
 
 Transformation is an entire topic by itself; this will be covered in detail
-"later on":documentation.html. To whet your appetite, let me just give you a few teasers:
+"later on":transform.html. To whet your appetite, let me just give you a few
+teasers:
 
 * Transformations match portions of your tree at any depth, replacing them
-with whatever you decide. 
-* In addition to <code>sequence(sym)</code>, there is also 
-<code>simple(sym)</code> and <code>subtree(sym)</code>. Those match
-simple strings and entire subtrees respectively. Caution with the latter. 
+  with whatever you decide.
+* In addition to <code>sequence(sym)</code>, there is also
+  <code>simple(sym)</code> and <code>subtree(sym)</code>. Those match simple
+  strings and entire subtrees respectively. Caution with the latter.
 
 Here's how you would write a somewhat classical interpreter for our little 
 language by using a transformation. Note that from this point on, there is
