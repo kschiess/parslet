@@ -165,7 +165,16 @@ str('foo') | str('bar')   # matches 'foo' OR 'bar'
 
 This reads naturally as "'foo' or 'bar'". 
 
-op precedence and layouting
+h3. Operator precedence
+
+The operators we have chosen for parslet atom combination have the operator
+precedence that you would expect. No parenthesis are needed to express
+alternation of sequences:
+
+{% highlight ruby %} 
+str('s') >> str('equence') | 
+  str('se') >> str('quence')
+{% endhighlight %}
 
 h3. And more
 
@@ -204,9 +213,48 @@ all your tools should work well with parslet.
 
 h2. Tree construction
 
-as(...)
+By default, parslet will just echo back to you the strings you feed into it. 
+Parslet will not generate a parser for you and neither will it generate your
+abstract syntax tree for you. The method <code>#as(name)</code> allows you
+to specify exactly how you want your tree to look like: 
 
-simple rules
+{% highlight ruby %} 
+str('foo').parse('foo')             # => 'foo'
+str('foo').as(:bar).parse('foo')    # => {:bar => 'foo'}
+{% endhighlight %}
 
-"Parslet::Transform":transform.html
+So you think: <code>#as(name)</code> allows me to create a hash, big deal.
+That's not all. You'll notice that annotating everything that you want to keep
+in your grammar with <code>#as(name)</code> autocreates a sensible tree
+composed of hashes and arrays and strings. It's really somewhat magic: Parslet
+has a set of clever rules that merge the annotated output from your atoms into
+a tree. Here are some more examples, with the atom on the left and the resulting
+tree (assuming a successful parse) on the right: 
+
+{% highlight ruby %} 
+# Normal strings just map to strings
+str('a').repeat                          "aaa"                                   
+
+# Arrays capture repetition of non-strings
+str('a').repeat.as(:b)                   {:b=>"aaa"}                             
+str('a').as(:b).repeat                   [{:b=>"a"}, {:b=>"a"}, {:b=>"a"}]       
+
+# Subtrees get merged - unlabeled strings discarded
+str('a').as(:a) >> str('b').as(:b)       {:a=>"a", :b=>"b"}                      
+str('a') >> str('b').as(:b) >> str('c')  {:b=>"b"}                               
+
+# #maybe will return nil, not the empty array
+str('a').maybe.as(:a)                    {:a=>"a"}                               
+str('a').maybe.as(:a)                    {:a=>nil}                               
+{% endhighlight %}
+
+h2. And more
+
+Now you know exactly how to create parsers using Parslet. Your parsers
+will output intricate structures made of endless arrays, complex hashes and 
+a few string leftovers. But your programming skills fail you when you try
+to put all this data to use. Selecting keys upon keys in hash after hash, you
+feel like a cockroach that has just read Kafka's works. 
+
+Time to introduce you to "Parslet::Transform":transform.html and its workings.
 

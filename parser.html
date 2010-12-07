@@ -141,8 +141,16 @@
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>   <span class="c1"># matches &#39;foo&#39; OR &#39;bar&#39;</span>
         </code></pre>
-        </div><p>This reads naturally as &#8220;&#8216;foo&#8217; or &#8216;bar&#8217;&#8221;. 
-        h3. And more</p>
+        </div><p>This reads naturally as &#8220;&#8216;foo&#8217; or &#8216;bar&#8217;&#8221;.</p>
+        <h3>Operator precedence</h3>
+        <p>The operators we have chosen for parslet atom combination have the operator
+        precedence that you would expect. No parenthesis are needed to express
+        alternation of sequences:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;equence&#39;</span><span class="p">)</span> <span class="o">|</span> 
+          <span class="n">str</span><span class="p">(</span><span class="s1">&#39;se&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;quence&#39;</span><span class="p">)</span>
+        </code></pre>
+        </div><h3>And more</h3>
         <p>Parslet atoms are not as pretty as Treetop atoms. There you go, we said it. 
         However, there seems to be a different kind of aesthetic about them; they 
         are pure Ruby and integrate well with the rest of your environment. Have a 
@@ -172,9 +180,44 @@
         &#8482;), it allows for very tight code. Module inclusion, class inheritance, &#8230;
         all your tools should work well with parslet.</p>
         <h2>Tree construction</h2>
-        <p>as(&#8230;)</p>
-        <p>simple rules</p>
-        <p><a href="transform.html">Parslet::Transform</a></p>
+        <p>By default, parslet will just echo back to you the strings you feed into it. 
+        Parslet will not generate a parser for you and neither will it generate your
+        abstract syntax tree for you. The method <code>#as(name)</code> allows you
+        to specify exactly how you want your tree to look like:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>             <span class="c1"># =&gt; &#39;foo&#39;</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:bar</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>    <span class="c1"># =&gt; {:bar =&gt; &#39;foo&#39;}</span>
+        </code></pre>
+        </div><p>So you think: <code>#as(name)</code> allows me to create a hash, big deal.
+        That&#8217;s not all. You&#8217;ll notice that annotating everything that you want to keep
+        in your grammar with <code>#as(name)</code> autocreates a sensible tree
+        composed of hashes and arrays and strings. It&#8217;s really somewhat magic: Parslet
+        has a set of clever rules that merge the annotated output from your atoms into
+        a tree. Here are some more examples, with the atom on the left and the resulting
+        tree (assuming a successful parse) on the right:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># Normal strings just map to strings</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span>                          <span class="s2">&quot;aaa&quot;</span>                                   
+        
+        <span class="c1"># Arrays capture repetition of non-strings</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:b</span><span class="p">)</span>                   <span class="p">{</span><span class="ss">:b</span><span class="o">=&gt;</span><span class="s2">&quot;aaa&quot;</span><span class="p">}</span>                             
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:b</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span>                   <span class="o">[</span><span class="p">{</span><span class="ss">:b</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">},</span> <span class="p">{</span><span class="ss">:b</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">},</span> <span class="p">{</span><span class="ss">:b</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">}</span><span class="o">]</span>       
+        
+        <span class="c1"># Subtrees get merged - unlabeled strings discarded</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:a</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:b</span><span class="p">)</span>       <span class="p">{</span><span class="ss">:a</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="ss">:b</span><span class="o">=&gt;</span><span class="s2">&quot;b&quot;</span><span class="p">}</span>                      
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:b</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>  <span class="p">{</span><span class="ss">:b</span><span class="o">=&gt;</span><span class="s2">&quot;b&quot;</span><span class="p">}</span>                               
+        
+        <span class="c1"># #maybe will return nil, not the empty array</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">maybe</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:a</span><span class="p">)</span>                    <span class="p">{</span><span class="ss">:a</span><span class="o">=&gt;</span><span class="s2">&quot;a&quot;</span><span class="p">}</span>                               
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">maybe</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:a</span><span class="p">)</span>                    <span class="p">{</span><span class="ss">:a</span><span class="o">=&gt;</span><span class="kp">nil</span><span class="p">}</span>                               
+        </code></pre>
+        </div><h2>And more</h2>
+        <p>Now you know exactly how to create parsers using Parslet. Your parsers
+        will output intricate structures made of endless arrays, complex hashes and 
+        a few string leftovers. But your programming skills fail you when you try
+        to put all this data to use. Selecting keys upon keys in hash after hash, you
+        feel like a cockroach that has just read Kafka&#8217;s works.</p>
+        <p>Time to introduce you to <a href="transform.html">Parslet::Transform</a> and its workings.</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
