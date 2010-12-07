@@ -254,7 +254,8 @@ Now you know exactly how to create parsers using Parslet. Your parsers
 will output intricate structures made of endless arrays, complex hashes and 
 a few string leftovers. But your programming skills fail you when you try
 to put all this data to use. Selecting keys upon keys in hash after hash, you
-feel like a cockroach that has just read Kafka's works. 
+feel like a cockroach that has just read Kafka's works. This is no fun. This 
+is not what you signed up for. 
 
 Time to introduce you to "Parslet::Transform":transform.html and its workings.
 
