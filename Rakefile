@@ -65,7 +65,7 @@ require 'sdoc'
 # Generate documentation
 Rake::RDocTask.new do |rdoc|
   rdoc.title    = "parslet - construction of parsers made easy"
-  rdoc.options << '--line-numbers' << '--inline-source'
+  rdoc.options << '--line-numbers'
   rdoc.options << '--fmt' << 'shtml' # explictly set shtml generator
   rdoc.template = 'direct' # lighter template used on railsapi.com
   rdoc.main = "README"
