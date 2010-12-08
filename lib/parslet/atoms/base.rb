@@ -201,7 +201,7 @@ class Parslet::Atoms::Base
     define_method(:precedence) { prec }
   end
   precedence BASE
-  def to_s(outer_prec) # :nodoc:
+  def to_s(outer_prec=OUTER) # :nodoc:
     if outer_prec < precedence
       "("+to_s_inner(precedence)+")"
     else

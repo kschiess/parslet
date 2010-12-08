@@ -41,7 +41,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
 
   precedence ALTERNATE
   def to_s_inner(prec) # :nodoc:
-    alternatives.map { |a| a.to_s(prec) }.join(' | ')
+    alternatives.map { |a| a.to_s(prec) }.join(' / ')
   end
 
   def error_tree # :nodoc:

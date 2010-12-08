@@ -50,8 +50,13 @@ describe Parslet::Expression::Treetop do
       "'a'{,2}",            'aa',
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
-        subject { exp(pattern) }
+        let(:parslet) { exp(pattern) }
+        subject { parslet }
         it { should accept(input) }
+        context "string representation" do
+          subject { exp(parslet.to_s) }
+          it { should accept(input) }
+        end
       end
     end
   end
