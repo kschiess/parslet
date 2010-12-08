@@ -21,23 +21,31 @@ require 'stringio'
 # Parslet is typically used in stages: 
 #
 # 
-# * Parsing the input string; this yields an intermediary tree, see Parslet.any, Parslet.match, 
-#   Parslet.str, Parslet::ClassMethods#rule and Parslet::ClassMethods#root.
-# * Transformation of the tree into something useful to you, see Parslet::Transform, 
-#   Parslet.simple, Parslet.sequence and Parslet.subtree.
+# * Parsing the input string; this yields an intermediary tree, see
+#   Parslet.any, Parslet.match, Parslet.str, Parslet::ClassMethods#rule and
+#   Parslet::ClassMethods#root.
+# * Transformation of the tree into something useful to you, see
+#   Parslet::Transform, Parslet.simple, Parslet.sequence and Parslet.subtree.
 #
 # The first stage is traditionally intermingled with the second stage; output
 # from the second stage is usually called the 'Abstract Syntax Tree' or AST. 
 #
-# The stages are completely decoupled; You can change your grammar around 
-# and use the second stage to isolate the rest of your code from the changes
+# The stages are completely decoupled; You can change your grammar around and
+# use the second stage to isolate the rest of your code from the changes
 # you've effected. 
+#
+# == Further reading
+# 
+# All parslet atoms are subclasses of Parslet::Atoms::Base. You might want to
+# look at all of those: Parslet::Atoms::Re, Parslet::Atoms::Str,
+# Parslet::Atoms::Repetition, Parslet::Atoms::Sequence,
+# Parslet::Atoms::Alternative.
 #
 # == When things go wrong
 #
 # A parse that fails will raise Parslet::ParseFailed. A detailed explanation
-# of what went wrong can be obtained from the parslet involved or the root
-# of the parser instance. 
+# of what went wrong can be obtained from the parslet involved or the root of
+# the parser instance. 
 #
 module Parslet
   def self.included(base) # :nodoc:
@@ -216,6 +224,7 @@ module Parslet
   def subtree(symbol)
     Pattern::SubtreeBind.new(symbol)
   end
+  module_function :subtree
   
   autoload :Expression, 'parslet/expression'
 end
