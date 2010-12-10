@@ -3,9 +3,55 @@ title: Transformation
 layout: default
 ---
 
-depth-first, post-order
+Parslet parsers output deep nested hashes. Those are nice for printing, but 
+hard to work with. The structure of the nested hashes is determined by the
+grammar and can thus vary largely. Testing for the presence of individual 
+keys would produce code that is hard to read and maintain. 
+
+This is why parslet also comes with a hash transformation engine. To construct
+such a transform, you have to derive from <code>Parslet::Transform</code>: 
+
+{% highlight ruby %} 
+class MyTransform < Parslet::Transform
+  rule('a') { 'b' }
+end
+MyTransform.new.apply('a') # => 'b'
+{% endhighlight %}
+
+This is a transformation that replaces all 'a's with 'b's. A transformation
+rule has two parts: A *pattern* (here: <code>'a'</code>) and an *action block*
+(<code>{ 'b' }</code>).
+
+The engine will go through the input and traverse the tree in depth-first
+post-order fashion. This means that for a given tree node, it will first visit
+the children and only then look at the node itself. While traversing, all
+rules are tested in the order in which they are defined. If a rule matches, the
+corresponding tree is _replaced_ by whatever the action block returns.
+
+Here's another way of saying the same thing, perhaps more in line with what 
+you need as a user of Parslet: <code>Parslet::Transform</code> is what allows
+you to transform the PORO-trees magically into a real abstract syntax tree. The
+rule definitions are the futuristic nano-machines that act on tree leaves first, 
+eating them away and replacing them with contraptions of your own design. Here's
+how that might look like in Ruby: 
+
+{% highlight ruby %} 
+tree = {:left => {:int => '1'}, 
+        :op   => '+', 
+        :right => {:int => '2'}}
+{% endhighlight %}
+
+
 
 poro
+
+h2. Working with Captures
+
+h3. simple
+
+h3. sequence
+
+h3. subtree
 
 h2. Transformation rules
 
@@ -15,10 +61,6 @@ h3. Action blocks: Two flavors
 
 h3. why doesn't it loop around?
 
-h2. Working with Captures
+h3. Ruledefs: Two flavors
 
-h3. simple
 
-h3. sequence
-
-h3. subtree

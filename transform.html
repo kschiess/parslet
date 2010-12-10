@@ -25,16 +25,47 @@
       </div>
       <div class="content">
         <h1>Transformation</h1>
-        <p>depth-first, post-order</p>
-        <p>poro</p>
-        <h2>Transformation rules</h2>
-        <h3>patterns</h3>
-        <h3>Action blocks: Two flavors</h3>
-        <h3>why doesn&#8217;t it loop around?</h3>
+        <p>Parslet parsers output deep nested hashes. Those are nice for printing, but 
+        hard to work with. The structure of the nested hashes is determined by the
+        grammar and can thus vary largely. Testing for the presence of individual 
+        keys would produce code that is hard to read and maintain.</p>
+        <p>This is why parslet also comes with a hash transformation engine. To construct
+        such a transform, you have to derive from <code>Parslet::Transform</code>:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="k">class</span> <span class="nc">MyTransform</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
+          <span class="n">rule</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="s1">&#39;b&#39;</span> <span class="p">}</span>
+        <span class="k">end</span>
+        <span class="no">MyTransform</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="c1"># =&gt; &#39;b&#39;</span>
+        </code></pre>
+        </div><p>This is a transformation that replaces all &#8217;a&#8217;s with &#8217;b&#8217;s. A transformation
+        rule has two parts: A <strong>pattern</strong> (here: <code>'a'</code>) and an <strong>action block</strong>
+        (<code>{ 'b' }</code>).</p>
+        <p>The engine will go through the input and traverse the tree in depth-first
+        post-order fashion. This means that for a given tree node, it will first visit
+        the children and only then look at the node itself. While traversing, all
+        rules are tested in the order in which they are defined. If a rule matches, the
+        corresponding tree is <em>replaced</em> by whatever the action block returns.</p>
+        <p>Here&#8217;s another way of saying the same thing, perhaps more in line with what 
+        you need as a user of Parslet: <code>Parslet::Transform</code> is what allows
+        you to transform the <span class="caps">PORO</span>-trees magically into a real abstract syntax tree. The
+        rule definitions are the futuristic nano-machines that act on tree leaves first, 
+        eating them away and replacing them with contraptions of your own design. Here&#8217;s
+        how that might look like in Ruby:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">tree</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:left</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="s1">&#39;1&#39;</span><span class="p">},</span> 
+                <span class="ss">:op</span>   <span class="o">=&gt;</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> 
+                <span class="ss">:right</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="s1">&#39;2&#39;</span><span class="p">}}</span>
+        </code></pre>
+        </div><p>poro</p>
         <h2>Working with Captures</h2>
         <h3>simple</h3>
         <h3>sequence</h3>
         <h3>subtree</h3>
+        <h2>Transformation rules</h2>
+        <h3>patterns</h3>
+        <h3>Action blocks: Two flavors</h3>
+        <h3>why doesn&#8217;t it loop around?</h3>
+        <h3>Ruledefs: Two flavors</h3>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
