@@ -39,15 +39,64 @@ how that might look like in Ruby:
 tree = {:left => {:int => '1'}, 
         :op   => '+', 
         :right => {:int => '2'}}
+        
+class Trans < Parslet::Transform
+  rule(:int => simple(:x)) { Integer(x) }
+end
+Trans.new.apply(tree)     # => {:op=>"+", :right=>2, :left=>1}
 {% endhighlight %}
 
+You can start thinking about the leaves first, transforming those <code>:int
+=> '1'</code> into real Ruby integers. This incremental (test driven!)
+approach will prevent your intermediary tree from turning into grey goo
+from too many nano-machines. Rules should in general be simple and transform
+a small part of the tree into a more useful variant. Turns out that if we were
+looking for an interpreter, one more rule will give us evaluation: 
 
+{% highlight ruby %} 
+# ... snippage ...
 
-poro
+class Trans < Parslet::Transform
+  rule(:int => simple(:x)) { Integer(x) }
+  rule(:op => '+', :left => simple(:l), :right => simple(:r)) { l + r }
+end
+Trans.new.apply(tree)     # => 3
+{% endhighlight %}
+
+Cool, isn't it? To recap: parslet intentionally spits out deep nested hashes, 
+because it also gives you the tool to work with those. Turning the intermediary
+trees into something useful is really easy. 
 
 h2. Working with Captures
 
-h3. simple
+What is this <code>simple(symbol)</code> business all about, you might ask.
+Glad you do.
+
+h3. Simple captures
+
+Transform allows you to specify patterns that have wildcards in them. The
+wildcards match part of the tree, but at the same time capture it for working
+on it in your action block. The wildcard
+
+{% highlight ruby %} 
+simple(:x)
+{% endhighlight %}
+
+will match any object BUT hashes or arrays. While this is obviously useful
+for capturing strings, you can also capture other 'simple' (as opposed to 
+composed) objects of your own creation. <code>simple(:x)</code> would thus match
+all of these objects: 
+
+{% highlight ruby %} 
+"a string"
+123
+Foo.new(:some, :class, :instance)
+{% endhighlight %}
+
+If you think about what you'll be doing to your intermediary trees, replacing
+leaves with more useful objects, <code>simple</code> really makes good sense, 
+since it will stop you from matching entire subtrees. 
+
 
 h3. sequence
 

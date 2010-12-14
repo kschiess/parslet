@@ -55,10 +55,52 @@
         <span class="n">tree</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:left</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="s1">&#39;1&#39;</span><span class="p">},</span> 
                 <span class="ss">:op</span>   <span class="o">=&gt;</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> 
                 <span class="ss">:right</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="s1">&#39;2&#39;</span><span class="p">}}</span>
+                
+        <span class="k">class</span> <span class="nc">Trans</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:x</span><span class="p">))</span> <span class="p">{</span> <span class="nb">Integer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">end</span>
+        <span class="no">Trans</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>     <span class="c1"># =&gt; {:op=&gt;&quot;+&quot;, :right=&gt;2, :left=&gt;1}</span>
         </code></pre>
-        </div><p>poro</p>
+        </div><p>You can start thinking about the leaves first, transforming those <code>:int
+        =&gt; '1'</code> into real Ruby integers. This incremental (test driven!)
+        approach will prevent your intermediary tree from turning into grey goo
+        from too many nano-machines. Rules should in general be simple and transform
+        a small part of the tree into a more useful variant. Turns out that if we were
+        looking for an interpreter, one more rule will give us evaluation:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># ... snippage ...</span>
+        
+        <span class="k">class</span> <span class="nc">Trans</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:int</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:x</span><span class="p">))</span> <span class="p">{</span> <span class="nb">Integer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">}</span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:op</span> <span class="o">=&gt;</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="ss">:left</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:l</span><span class="p">),</span> <span class="ss">:right</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:r</span><span class="p">))</span> <span class="p">{</span> <span class="n">l</span> <span class="o">+</span> <span class="n">r</span> <span class="p">}</span>
+        <span class="k">end</span>
+        <span class="no">Trans</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>     <span class="c1"># =&gt; 3</span>
+        </code></pre>
+        </div><p>Cool, isn&#8217;t it? To recap: parslet intentionally spits out deep nested hashes, 
+        because it also gives you the tool to work with those. Turning the intermediary
+        trees into something useful is really easy.</p>
         <h2>Working with Captures</h2>
-        <h3>simple</h3>
+        <p>What is this <code>simple(symbol)</code> business all about, you might ask.
+        Glad you do.</p>
+        <h3>Simple captures</h3>
+        <p>Transform allows you to specify patterns that have wildcards in them. The
+        wildcards match part of the tree, but at the same time capture it for working
+        on it in your action block. The wildcard</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">simple</span><span class="p">(</span><span class="ss">:x</span><span class="p">)</span>
+        </code></pre>
+        </div><p>will match any object <span class="caps">BUT</span> hashes or arrays. While this is obviously useful
+        for capturing strings, you can also capture other &#8216;simple&#8217; (as opposed to 
+        composed) objects of your own creation. <code>simple(:x)</code> would thus match
+        all of these objects:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="s2">&quot;a string&quot;</span>
+        <span class="mi">123</span>
+        <span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:some</span><span class="p">,</span> <span class="ss">:class</span><span class="p">,</span> <span class="ss">:instance</span><span class="p">)</span>
+        </code></pre>
+        </div><p>If you think about what you&#8217;ll be doing to your intermediary trees, replacing
+        leaves with more useful objects, <code>simple</code> really makes good sense, 
+        since it will stop you from matching entire subtrees.</p>
         <h3>sequence</h3>
         <h3>subtree</h3>
         <h2>Transformation rules</h2>
