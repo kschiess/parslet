@@ -97,10 +97,52 @@ If you think about what you'll be doing to your intermediary trees, replacing
 leaves with more useful objects, <code>simple</code> really makes good sense, 
 since it will stop you from matching entire subtrees. 
 
+h3. Matching Repetitions and Sequences
 
-h3. sequence
+Some patterns (like repetitions and sequences) produce arrays of objects as
+result. You can use <code>simple(...)</code> to replace all parts of these
+arrays with your own objects, but you cannot replace the array as a whole. 
+This is the purpose of <code>sequence(symbol)</code>: 
 
-h3. subtree
+{% highlight ruby %} 
+sequence(:x)
+{% endhighlight %}
+
+will match all of these: 
+
+{% highlight ruby %} 
+['a', 'b', 'c']
+['a', 'a', 'a']
+[Foo.new, Bar.new]
+{% endhighlight %}
+
+but not
+
+{% highlight ruby %} 
+[{:a => :b}]
+[['a', 'b']]
+{% endhighlight %}
+
+Like its smaller brother, <code>sequence</code> is very picky about what it
+consumes and what not. All for the same reasons. 
+
+h3. Matching entire subtrees
+
+So you don't want to listen and really want that big gun with the foot aiming
+addon. You'll be needing <code>subtree(symbol)</code>. It always matches. 
+Nuff said. 
+
+h3. Matching context
+
+A match always binds in a context. The context consists of all bindings
+that were previously made. If you reuse the same symbol for two consecutive
+matches within the same pattern, the engine will assume that you want these
+two matched objects to be equal (under <code>==</code>). This allows to 
+specify constraints on your matches that would need code to express otherwise: 
+
+
+
+
 
 h2. Transformation rules
 

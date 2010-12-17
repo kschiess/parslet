@@ -101,8 +101,37 @@
         </div><p>If you think about what you&#8217;ll be doing to your intermediary trees, replacing
         leaves with more useful objects, <code>simple</code> really makes good sense, 
         since it will stop you from matching entire subtrees.</p>
-        <h3>sequence</h3>
-        <h3>subtree</h3>
+        <h3>Matching Repetitions and Sequences</h3>
+        <p>Some patterns (like repetitions and sequences) produce arrays of objects as
+        result. You can use <code>simple(...)</code> to replace all parts of these
+        arrays with your own objects, but you cannot replace the array as a whole. 
+        This is the purpose of <code>sequence(symbol)</code>:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">sequence</span><span class="p">(</span><span class="ss">:x</span><span class="p">)</span>
+        </code></pre>
+        </div><p>will match all of these:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="o">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="o">]</span>
+        <span class="o">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="o">]</span>
+        <span class="o">[</span><span class="no">Foo</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Bar</span><span class="o">.</span><span class="n">new</span><span class="o">]</span>
+        </code></pre>
+        </div><p>but not</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="o">[</span><span class="p">{</span><span class="ss">:a</span> <span class="o">=&gt;</span> <span class="ss">:b</span><span class="p">}</span><span class="o">]</span>
+        <span class="o">[[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="o">]]</span>
+        </code></pre>
+        </div><p>Like its smaller brother, <code>sequence</code> is very picky about what it
+        consumes and what not. All for the same reasons.</p>
+        <h3>Matching entire subtrees</h3>
+        <p>So you don&#8217;t want to listen and really want that big gun with the foot aiming
+        addon. You&#8217;ll be needing <code>subtree(symbol)</code>. It always matches. 
+        Nuff said.</p>
+        <h3>Matching context</h3>
+        <p>A match always binds in a context. The context consists of all bindings
+        that were previously made. If you reuse the same symbol for two consecutive
+        matches within the same pattern, the engine will assume that you want these
+        two matched objects to be equal (under <code>==</code>). This allows to 
+        specify constraints on your matches that would need code to express otherwise:</p>
         <h2>Transformation rules</h2>
         <h3>patterns</h3>
         <h3>Action blocks: Two flavors</h3>
