@@ -140,18 +140,111 @@ matches within the same pattern, the engine will assume that you want these
 two matched objects to be equal (under <code>==</code>). This allows to 
 specify constraints on your matches that would need code to express otherwise: 
 
+{% highlight ruby %} 
+# The following code is an excerpt from example/simple_xml.rb in the distro
+t.rule(
+  open: {name: simple(:tag)}, 
+  close: {name: simple(:tag)}, 
+  inner: simple(:t)
+) { 'verified' }
+{% endhighlight %}
 
-
-
+This replaces _matching_ open and close tags with the word 'verified',
+consuming them from the tree and allowing the same rule to match higher up. A
+valid XML tree will leave only the word 'verified' behind, while the parser
+will stop at the problem nodes in invalid trees.
 
 h2. Transformation rules
 
-h3. patterns
+In this chapter, we'll look more closely at transformation rules and the
+different ways they can be laid out in your code.
+
+h3. Usage Patterns
+
+The way the transformation engine is constructed, there is not one, but three
+ways to use it. Since at least one of those is inconvenient for you, the user,
+I am going to show only the remaining two, Variant 1 that produces an instance
+of the transform for direct use:
+
+{% highlight ruby %} 
+# Variant 1
+transform = Parslet::Transform.new do
+  rule(...) { ... } 
+  rule(...) { ... } 
+  rule(...) { ... } 
+end
+transform.apply(tree)
+{% endhighlight %}
+
+and Variant 2 that allows constructing the transformation as a class: 
+
+{% highlight ruby %} 
+# Variant 2
+class MyTransform < Parslet::Transform
+  rule(...) { ... } 
+  rule(...) { ... } 
+  rule(...) { ... } 
+end
+MyTransform.new.apply(tree)
+{% endhighlight %}
+
+I guess both have their sweet spot. 
 
 h3. Action blocks: Two flavors 
 
-h3. why doesn't it loop around?
+As you might have noticed by now, parslet provides choice as well as nice
+parsers. To recap: Rules have a left side called _pattern_ and a right side 
+called _action block_:
 
-h3. Ruledefs: Two flavors
+{% highlight ruby %} 
+rule(PATTERN) {ACTION_BLOCK}
+{% endhighlight %}
 
+There are two ways of writing action blocks, and the difference might be 
+fundamental to know to you one day. If written like this: 
+
+{% highlight ruby %} 
+rule(:foo => simple(:x)) { puts x }
+{% endhighlight %}
+
+the block will be able to access <code>x</code> as a local variable. This is 
+very convenient and shortens the action code, often to the point of being
+very expressive.
+
+But there is a _big downside_ to this way of writing things: The action block
+must be executed in the context of some magic instance that has <code>x</code>
+as a local method (aka accessor). You can only have one self at any one time; 
+variable access to the binding of the block isn't possible inside this kind
+of action blocks: 
+
+{% highlight ruby %} 
+y = 12
+rule(:foo => simple(:x)) { Integer(x) + y }
+{% endhighlight %}
+
+This will (depending on the context) throw a <code>NameError</code> or a
+<code>NoMethodError</code>.
+
+But this can be fixed by using the other, less elegant style for action
+blocks:
+
+{% highlight ruby %} 
+y = 12
+rule(:foo => simple(:x)) { |dictionary| Integer(dictionary[:x]) + y }
+{% endhighlight %}
+
+In this second flavor, the block gets executed in the context of definition, 
+whatever that was. This means that it can capture and access local variables
+just fine. Access to the bindings (called <code>dictionary</code> here) is 
+more clumsy, but hey, you can't have your cake and eat it too, I guess. Even 
+though that is a pity. 
+
+h2. Summary
+
+This concludes this (three part) introduction to parslet and leaves you with a
+good knowledge of most tricky parts. If you are missing some detail, maybe
+you can find it in the texts referenced "here":documentation.html? 
+
+If not, please tell us about it. We'll include it in this documentation in no 
+time. 
 

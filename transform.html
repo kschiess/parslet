@@ -132,11 +132,89 @@
         matches within the same pattern, the engine will assume that you want these
         two matched objects to be equal (under <code>==</code>). This allows to 
         specify constraints on your matches that would need code to express otherwise:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># The following code is an excerpt from example/simple_xml.rb in the distro</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span>
+          <span class="nb">open</span><span class="p">:</span> <span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:tag</span><span class="p">)},</span> 
+          <span class="n">close</span><span class="p">:</span> <span class="p">{</span><span class="nb">name</span><span class="p">:</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:tag</span><span class="p">)},</span> 
+          <span class="n">inner</span><span class="p">:</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:t</span><span class="p">)</span>
+        <span class="p">)</span> <span class="p">{</span> <span class="s1">&#39;verified&#39;</span> <span class="p">}</span>
+        </code></pre>
+        </div><p>This replaces <em>matching</em> open and close tags with the word &#8216;verified&#8217;,
+        consuming them from the tree and allowing the same rule to match higher up. A
+        valid <span class="caps">XML</span> tree will leave only the word &#8216;verified&#8217; behind, while the parser
+        will stop at the problem nodes in invalid trees.</p>
         <h2>Transformation rules</h2>
-        <h3>patterns</h3>
+        <p>In this chapter, we&#8217;ll look more closely at transformation rules and the
+        different ways they can be laid out in your code.</p>
+        <h3>Usage Patterns</h3>
+        <p>The way the transformation engine is constructed, there is not one, but three
+        ways to use it. Since at least one of those is inconvenient for you, the user,
+        I am going to show only the remaining two, Variant 1 that produces an instance
+        of the transform for direct use:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># Variant 1</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+          <span class="n">rule</span><span class="p">(</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span> <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span> 
+          <span class="n">rule</span><span class="p">(</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span> <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span> 
+          <span class="n">rule</span><span class="p">(</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span> <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span> 
+        <span class="k">end</span>
+        <span class="n">transform</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        </code></pre>
+        </div><p>and Variant 2 that allows constructing the transformation as a class:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># Variant 2</span>
+        <span class="k">class</span> <span class="nc">MyTransform</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
+          <span class="n">rule</span><span class="p">(</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span> <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span> 
+          <span class="n">rule</span><span class="p">(</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span> <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span> 
+          <span class="n">rule</span><span class="p">(</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="p">)</span> <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span> 
+        <span class="k">end</span>
+        <span class="no">MyTransform</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        </code></pre>
+        </div><p>I guess both have their sweet spot.</p>
         <h3>Action blocks: Two flavors</h3>
-        <h3>why doesn&#8217;t it loop around?</h3>
-        <h3>Ruledefs: Two flavors</h3>
+        <p>As you might have noticed by now, parslet provides choice as well as nice
+        parsers. To recap: Rules have a left side called <em>pattern</em> and a right side 
+        called <em>action block</em>:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="no">PATTERN</span><span class="p">)</span> <span class="p">{</span><span class="no">ACTION_BLOCK</span><span class="p">}</span>
+        </code></pre>
+        </div><p>There are two ways of writing action blocks, and the difference might be 
+        fundamental to know to you one day. If written like this:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:x</span><span class="p">))</span> <span class="p">{</span> <span class="nb">puts</span> <span class="n">x</span> <span class="p">}</span>
+        </code></pre>
+        </div><p>the block will be able to access <code>x</code> as a local variable. This is 
+        very convenient and shortens the action code, often to the point of being
+        very expressive.</p>
+        <p>But there is a <em>big downside</em> to this way of writing things: The action block
+        must be executed in the context of some magic instance that has <code>x</code>
+        as a local method (aka accessor). You can only have one self at any one time; 
+        variable access to the binding of the block isn&#8217;t possible inside this kind
+        of action blocks:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:x</span><span class="p">))</span> <span class="p">{</span> <span class="nb">Integer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span> <span class="p">}</span>
+        </code></pre>
+        </div><p>This will (depending on the context) throw a <code>NameError</code> or a
+        <code>NoMethodError</code>.</p>
+        <p>But this can be fixed by using the other, less elegant style for action
+        blocks:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:foo</span> <span class="o">=&gt;</span> <span class="n">simple</span><span class="p">(</span><span class="ss">:x</span><span class="p">))</span> <span class="p">{</span> <span class="o">|</span><span class="n">dictionary</span><span class="o">|</span> <span class="nb">Integer</span><span class="p">(</span><span class="n">dictionary</span><span class="o">[</span><span class="ss">:x</span><span class="o">]</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span> <span class="p">}</span>
+        </code></pre>
+        </div><p>In this second flavor, the block gets executed in the context of definition, 
+        whatever that was. This means that it can capture and access local variables
+        just fine. Access to the bindings (called <code>dictionary</code> here) is 
+        more clumsy, but hey, you can&#8217;t have your cake and eat it too, I guess. Even 
+        though that is a pity.</p>
+        <h2>Summary</h2>
+        <p>This concludes this (three part) introduction to parslet and leaves you with a
+        good knowledge of most tricky parts. If you are missing some detail, maybe
+        you can find it in the texts referenced <a href="documentation.html">here</a>?</p>
+        <p>If not, please tell us about it. We&#8217;ll include it in this documentation in no 
+        time.</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
