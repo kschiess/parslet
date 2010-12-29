@@ -31,10 +31,7 @@ then check if your stream of tokens has a corresponding tree that conforms to
 the grammar. Most of these parsers allow grammars that are ambiguous and will
 provide a mechanism for resolving these. These are the earliest parser
 generators and the most widely used (_yacc_, _bison_, ...) -- chances are,
-you'll have more than one of these libraries installed on your system. I find
-these parsers clumsy to work with and hard to debug.
-
-*Derivative based parsers* XXX?
+you'll have more than one of these libraries installed on your system. 
 
 *PEG or packrat parsers* Parsers in this class are based on a slightly more
 modern algorithm, which translates what one does when writing a parser by hand
