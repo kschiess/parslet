@@ -42,12 +42,13 @@ def check(xml)
   # string "verified". If the transformation ends on a string, then the
   # document was 'valid'. 
   #
-  t = Parslet::Transform.new
-  t.rule(
-    o: {name: simple(:tag)}, 
-    c: {name: simple(:tag)}, 
-    i: simple(:t)
-  ) { 'verified' } 
+  t = Parslet::Transform.new do
+    rule(
+      o: {name: simple(:tag)}, 
+      c: {name: simple(:tag)}, 
+      i: simple(:t)
+    ) { 'verified' } 
+  end
 
   t.apply(r)
 end
