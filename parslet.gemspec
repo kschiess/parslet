@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{parslet}
-  s.version = "0.12.0"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kaspar Schiess"]
-  s.date = %q{2010-11-30}
+  s.date = %q{2010-12-29}
   s.email = %q{kaspar.schiess@absurd.li}
   s.extra_rdoc_files = ["README"]
   s.files = ["Gemfile", "HISTORY.txt", "LICENSE", "Rakefile", "README", "spec", "lib/parslet", "lib/parslet/atoms", "lib/parslet/atoms/alternative.rb", "lib/parslet/atoms/base.rb", "lib/parslet/atoms/entity.rb", "lib/parslet/atoms/lookahead.rb", "lib/parslet/atoms/named.rb", "lib/parslet/atoms/re.rb", "lib/parslet/atoms/repetition.rb", "lib/parslet/atoms/sequence.rb", "lib/parslet/atoms/str.rb", "lib/parslet/atoms.rb", "lib/parslet/error_tree.rb", "lib/parslet/expression", "lib/parslet/expression/treetop.rb", "lib/parslet/expression.rb", "lib/parslet/parser.rb", "lib/parslet/pattern", "lib/parslet/pattern/binding.rb", "lib/parslet/pattern/context.rb", "lib/parslet/pattern.rb", "lib/parslet/transform.rb", "lib/parslet.rb"]

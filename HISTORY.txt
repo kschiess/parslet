@@ -1,8 +1,10 @@
-= 0.12.0 / ???
+= 1.0.0 / 29Dez2010
 
   - #each_match was removed. There was some duplication of code that even 
     confused me - and we should not have 2 methods of achieving the same
-    goal. Ruby ain't Perl.
+    goal. 
+    
+  + Full documentation. Fixed sdoc. 
 
 = 0.11.0 / 25Nov2010
 
