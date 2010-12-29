@@ -24,6 +24,6 @@ of parslet. Especially:
 * Using "Parslet::Transform":transform.html to *transmogrify your intermediary
   trees*.
 
-"*rdoc Class Documentation*":doc/rdoc-0.11.0/index.html
+"*rdoc Class Documentation*":doc/rdoc-1.0.0/index.html
 
 The rdoc documentation will help you with the nitty gritty.
