@@ -27,6 +27,9 @@ In here, you can find a parser for a lisp like language and much more.
 
 h2. Thanks for all the fish -- Contributions
 
+* *R. Konstantin Haase* ("rhk":http://rkh.im/) for rspec matchers that help
+  stamp out, eliminate and abolish redundancy.
+
 * *Florian Hanke* ("floere":http://floere.github.com) has given a lot of very
   inspiring input for parslet. His questions have been key to rounding off the
   corners and making the library as aesthetic as it is. And just look at the 
