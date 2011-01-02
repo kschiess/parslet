@@ -1,0 +1,34 @@
+---
+title: Tricks for common situations
+layout: default
+---
+
+h2. Matching EOF (End Of File)
+
+The best and simplest way of doing this is: Don't. Parslet will raise
+<code>Parslet::ParseFailed</code> if your input cannot be completely consumed
+by the grammar. So the best way of matching EOF is to implicitly match it
+by not having a failed parse. 
+
+{% highlight ruby %} 
+str('a').repeat
+{% endhighlight %}
+
+The above sample looks like it might match a bunch of 'a's, but really it
+matches those 'a's and the end of input. With parslet, all you have to do
+is think of _matching all legal input_. EOF has no representation and cannot
+be matched. 
+
+The common case of matching lines ended by a newline would then look like this: 
+
+{% highlight ruby %} 
+rule(:line)     { ... }
+rule(:eol)      { match['\n\r'].repeat(1) }
+
+rule(:eol_line) { line >> eol}
+rule(:document) { eol_line.repeat >> line.maybe }
+{% endhighlight %}
+ 
+This allows for a document containing only <code>eol_line</code>s, one that
+has any number of <code>eol_line</code>s and then an extra lone
+<code>line</code>, or a completely empty document.

@@ -14,7 +14,7 @@ gem install parslet
 *Bundler*
 
 {% highlight bash %} 
-gem 'parslet', '~> 1.0.0'
+gem 'parslet', '~> 1.0'
 {% endhighlight %}
 
 or if you want to track the edge: 

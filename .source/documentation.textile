@@ -23,6 +23,7 @@ of parslet. Especially:
 * Using "Parslet::Parser":parser.html to *write parsers*.
 * Using "Parslet::Transform":transform.html to *transmogrify your intermediary
   trees*.
+* "Tricks":tricks.html for common situations.
 
 "*rdoc Class Documentation*":doc/rdoc-1.0.0/index.html
 
