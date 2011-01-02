@@ -79,10 +79,18 @@ transform = MiniLisp::Transform.new
 
 # Parse stage
 begin
-  result = parser.parse('(this "is" a test( 1 2.0 3))')
+  result = parser.parse %Q{
+    (define test (lambda ()
+      (begin
+        (display "something")
+        (display 1)
+        (display 3.08))))
+    (test)
+  }
 rescue Parslet::ParseFailed => failure
   puts failure
-  puts parser.root.error_tree
+  puts parser.root.error_tree if parser.root.cause
+  exit
 end
 
 # Transform the result

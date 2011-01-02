@@ -19,6 +19,13 @@ describe Parslet::Atoms::Base do
         }.should throw_symbol(:error)
       end 
     end
+    
+  end
+  describe "<- #error_tree" do
+    it "should always return a tree" do
+      parslet.cause.should be_nil
+      parslet.error_tree.should_not be_nil
+    end 
   end
   describe "<- #flatten_sequence" do
     [

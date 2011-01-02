@@ -258,7 +258,7 @@ class Parslet::Atoms::Base
   # with #cause. 
   #
   def error_tree
-    Parslet::ErrorTree.new(self) if cause?
+    Parslet::ErrorTree.new(self)
   end
   def cause? # :nodoc:
     not @last_cause.nil?
