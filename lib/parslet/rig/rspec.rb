@@ -1,6 +1,8 @@
 require 'rspec/expectations'
 
 RSpec::Matchers.define(:parse) do |input|
+  chain(:as) { |as| @as = as }
+
   match do |parser|
     begin
       @result = parser.parse(input)
@@ -9,8 +11,6 @@ RSpec::Matchers.define(:parse) do |input|
       false
     end
   end
-
-  chain(:as) { |as| @as = as }
 
   failure_message_for_should do |is|
     "expected " << (@result ?

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'parslet/rspec'
+require 'parslet/rig/rspec'
 
 describe 'rspec integration' do
   include Parslet
