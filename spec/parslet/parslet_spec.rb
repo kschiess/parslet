@@ -3,6 +3,15 @@ require 'spec_helper'
 describe Parslet do
   include Parslet
   
+  describe Parslet::ParseFailed do
+    it "should be caught by an empty rescue" do
+      begin
+        raise Parslet::ParseFailed
+      rescue
+        # Success! Ignore this.
+      end
+    end 
+  end
   describe "<- .root" do
     let(:root_parslet) { flexmock() }
     root :root_parslet

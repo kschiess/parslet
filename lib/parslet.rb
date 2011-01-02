@@ -66,7 +66,7 @@ module Parslet
   #     puts parslet.error_tree
   #   end
   #
-  class ParseFailed < Exception
+  class ParseFailed < StandardError
   end
   
   module ClassMethods

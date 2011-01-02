@@ -2,7 +2,7 @@
 
   ! README had 0.12.0; corrected.
   
-  + parslet/rspec.rb contains useful rspec matchers. (R. Konstantin Haase)
+  + parslet/rig/rspec.rb contains useful rspec matchers. (R. Konstantin Haase)
 
 = 1.0.0 / 29Dez2010
 
