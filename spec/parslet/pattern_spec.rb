@@ -21,13 +21,10 @@ describe Parslet::Pattern do
     failure_message_for_should do |tree|
       "expected #{pattern.inspect} to match #{tree.inspect}, but didn't. (block wasn't called or not correctly)"
     end
-    match(&lambda do |tree|
+    match do |tree|
       bindings = Parslet::Pattern.new(pattern).match(tree)
-      return false unless bindings
-      return false unless bindings == exp_bindings
-      
-      true
-    end)
+      bindings && bindings == exp_bindings
+    end
   end
 
   # This is the more modern version of verifying a match: (uses 'exp'
