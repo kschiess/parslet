@@ -45,6 +45,9 @@ COMPATIBILITY
 
 This library should work with both ruby 1.8 and ruby 1.9.
 
+Ruby 1.9 users might try this patch: 
+https://gist.github.com/762807
+
 STATUS 
 
 one dot oh.
