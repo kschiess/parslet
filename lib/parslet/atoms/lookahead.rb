@@ -16,14 +16,16 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   
   def try(io) # :nodoc:
     pos = io.pos
+
     begin
       bound_parslet.apply(io)
     rescue Parslet::ParseFailed 
       return fail(io)
-    ensure 
-      io.pos = pos
     end
     return success(io)
+
+  ensure 
+    io.pos = pos
   end
   
   def fail(io) # :nodoc:
