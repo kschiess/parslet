@@ -31,6 +31,10 @@ class Parslet::Atoms::Base
     return flatten(result)
   end
 
+  #---
+  # Calls the #try method of this parslet. In case of a parse error, apply
+  # leaves the io in the state it was before the attempt. 
+  #+++
   def apply(io) # :nodoc:
     # p [:start, self, io.string[io.pos, 10]]
     
@@ -48,6 +52,9 @@ class Parslet::Atoms::Base
     end
   end
 
+  # Override this in your Atoms::Base subclasses to implement parsing
+  # behaviour. 
+  #
   def try(io)
     raise NotImplementedError, "Atoms::Base doesn't have behaviour, please implement #try(io)."
   end
