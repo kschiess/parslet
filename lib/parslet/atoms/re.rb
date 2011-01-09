@@ -8,16 +8,16 @@
 #   match('\s')     # like regexps: matches space characters
 #
 class Parslet::Atoms::Re < Parslet::Atoms::Base
-  attr_reader :match
+  attr_reader :match, :re
   def initialize(match) # :nodoc:
     @match = match
+    @re    = Regexp.new(match, Regexp::MULTILINE)
   end
 
   def try(io) # :nodoc:
-    r = Regexp.new(match, Regexp::MULTILINE)
     s = io.read(1)
     error(io, "Premature end of input") unless s
-    error(io, "Failed to match #{match.inspect[1..-2]}") unless s.match(r)
+    error(io, "Failed to match #{match.inspect[1..-2]}") unless s.match(re)
     return s
   end
 
