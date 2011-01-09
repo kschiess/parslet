@@ -3,6 +3,13 @@ require 'spec_helper'
 describe Parslet::Atoms::Base do
   let(:parslet) { Parslet::Atoms::Base.new }
 
+  describe "<- #try(io)" do
+    it "should raise NotImplementedError" do
+      lambda {
+        parslet.try(flexmock(:io))
+      }.should raise_error(NotImplementedError)
+    end 
+  end
   describe "<- #error" do
     context "when the io is empty" do
       it "should not raise an error" do

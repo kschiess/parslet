@@ -48,6 +48,10 @@ class Parslet::Atoms::Base
     end
   end
 
+  def try(io)
+    raise NotImplementedError, "Atoms::Base doesn't have behaviour, please implement #try(io)."
+  end
+
   # Construct a new atom that repeats the current atom min times at least and
   # at most max times. max can be nil to indicate that no maximum is present. 
   #
