@@ -30,10 +30,9 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   
   def try(io) # :nodoc:
     alternatives.each { |a|
-      begin
+      catch(:error) {
         return a.apply(io)
-      rescue Parslet::ParseFailed => ex
-      end
+      }
     }
     # If we reach this point, all alternatives have failed. 
     error(io, "Expected one of #{alternatives.inspect}.")

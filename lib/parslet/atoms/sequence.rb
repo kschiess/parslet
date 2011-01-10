@@ -16,12 +16,14 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   end
   
   def try(io) # :nodoc:
-    [:sequence]+parslets.map { |p| 
-      # Save each parslet as potentially offending (raising an error). 
-      @offending_parslet = p
-      p.apply(io) 
+    catch(:error) {
+      return [:sequence]+parslets.map { |p| 
+        # Save each parslet as potentially offending (raising an error). 
+        @offending_parslet = p
+        p.apply(io) 
+      }
     }
-  rescue Parslet::ParseFailed
+
     error(io, "Failed to match sequence (#{self.inspect})")
   end
       

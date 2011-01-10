@@ -17,28 +17,29 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   def try(io) # :nodoc:
     pos = io.pos
 
-    begin
+    failed = true
+    catch(:error) {
       bound_parslet.apply(io)
-    rescue Parslet::ParseFailed 
-      return fail(io)
-    end
-    return success(io)
+      failed = false
+    }
+    return failed ? fail(io) : success(io)
 
   ensure 
     io.pos = pos
   end
   
+  # TODO Both of these will produce results that could be reduced easily. 
+  # Maybe do some shortcut reducing here?
   def fail(io) # :nodoc:
     if positive
       error(io, "lookahead: #{bound_parslet.inspect} didn't match, but should have")
     else
-      # TODO: Squash this down to nothing? Return value handling here...
       return nil
     end
   end
   def success(io) # :nodoc:
     if positive
-      return nil  # see above, TODO
+      return nil
     else
       error(
         io, 

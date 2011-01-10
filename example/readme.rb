@@ -30,7 +30,7 @@ tree # => {:string=>"This is a \\\"String\\\" in which you can escape stuff"}
 # 1)
 transform = Parslet::Transform.new do
   rule(:string => simple(:x)) { 
-    puts "String contents (method 2): #{x}" }
+    puts "String contents: #{x}" }
 end
 transform.apply(tree)
 

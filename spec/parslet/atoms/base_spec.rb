@@ -13,11 +13,10 @@ describe Parslet::Atoms::Base do
   describe "<- #error" do
     context "when the io is empty" do
       it "should not raise an error" do
-        begin
-          parslet.send(:error, StringIO.new, 'test') 
-        rescue Parslet::ParseFailed
-          # This is what error does, other exceptions are bugs in #error.
-        end
+        # We assert that a symbol is thrown and not an exception.
+        lambda {
+          parslet.send(:error, StringIO.new, 'test')
+        }.should throw_symbol(:error)
       end 
     end
   end
@@ -54,10 +53,9 @@ describe Parslet::Atoms::Base do
   context "when a match succeeds" do
     context "when there is an error from a previous run" do
       before(:each) do
-        begin
+        catch(:error) {
           parslet.send(:error, StringIO.new, 'cause') 
-        rescue Parslet::ParseFailed
-        end
+        }
 
         parslet.cause.should == 'cause'
       end

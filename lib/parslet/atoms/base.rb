@@ -13,7 +13,18 @@ class Parslet::Atoms::Base
       io = StringIO.new(io)
     end
     
-    result = apply(io)
+    result = nil
+    error_message_or_success = catch(:error) {
+      result = apply(io)
+      :success
+    }
+    
+    # If we didn't succeed the parse, raise an exception for the user. 
+    # Stack trace will be off, but the error tree should explain the reason
+    # it failed.
+    if error_message_or_success != :success
+      raise Parslet::ParseFailed, error_message_or_success
+    end
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
@@ -22,9 +33,12 @@ class Parslet::Atoms::Base
       # error to fail with. Otherwise just report that we cannot consume the
       # input.
       if cause 
-        raise Parslet::ParseFailed, "Unconsumed input, maybe because of this: #{cause}"
+        # Don't garnish the real cause; but the exception is different anyway.
+        raise Parslet::ParseFailed, 
+          "Unconsumed input, maybe because of this: #{cause}"
       else
-        error(io, "Don't know what to do with #{io.string[io.pos,100]}") 
+        parse_failed(
+          format_cause(io, "Don't know what to do with #{io.string[io.pos,100]}"))
       end
     end
     
@@ -41,15 +55,20 @@ class Parslet::Atoms::Base
     old_pos = io.pos
     
     # p [:try, self, io.string[io.pos, 20]]
-    begin
+    message = catch(:error) {
       r = try(io)
       # p [:return_from, self, r, flatten(r)]
+      
+      # This has just succeeded, so last_cause must be empty
       @last_cause = nil
       return r
-    rescue Parslet::ParseFailed => ex
-      # p [:failing, self, io.string[io.pos, 20]]
-      io.pos = old_pos; raise ex
-    end
+    }
+    
+    # We only reach this point if the parse has failed. message is not nil.
+    # p [:failing, self, io.string[io.pos, 20]]
+    
+    io.pos = old_pos
+    throw :error, message
   end
 
   # Override this in your Atoms::Base subclasses to implement parsing
@@ -242,25 +261,29 @@ class Parslet::Atoms::Base
     not @last_cause.nil?
   end
 private
+  # TODO comments!!!
   # Report/raise a parse error with the given message, printing the current
   # position as well. Appends 'at line X char Y.' to the message you give. 
   # If +pos+ is given, it is used as the real position the error happened, 
   # correcting the io's current position.
   #
   def error(io, str, pos=nil)
+    @last_cause = format_cause(io, str, pos)
+    throw :error, @last_cause
+  end
+  def parse_failed(str)
+    @last_cause = str
+    raise Parslet::ParseFailed,
+      @last_cause
+  end
+  def format_cause(io, str, pos=nil)
     pre = io.string[0..(pos||io.pos)]
     lines = Array(pre.lines)
     
-    if lines.empty?
-      formatted_cause = str
-    else
-      pos   = lines.last.length
-      formatted_cause = "#{str} at line #{lines.count} char #{pos}."
-    end
-
-    @last_cause = formatted_cause
-    
-    raise Parslet::ParseFailed, formatted_cause, nil
+    return str if lines.empty?
+      
+    pos   = lines.last.length
+    return "#{str} at line #{lines.count} char #{pos}."
   end
   def warn_about_duplicate_keys(h1, h2)
     d = h1.keys & h2.keys
