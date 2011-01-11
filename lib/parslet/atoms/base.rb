@@ -156,6 +156,9 @@ class Parslet::Atoms::Base
     Parslet::Atoms::Named.new(self, name)
   end
 
+  # Takes a mixed value coming out of a parslet and converts it to a return
+  # value for the user by dropping things and merging hashes. 
+  #
   def flatten(value) # :nodoc:
     # Passes through everything that isn't an array of things
     return value unless value.instance_of? Array
