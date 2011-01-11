@@ -25,6 +25,11 @@ Have you got a project that uses parslet? Please write
 
 In here, you can find a parser for a lisp like language and much more. 
 
+"*wt* aka working title":https://github.com/kschiess/wt
+
+A small parser that compiles to a postscript file. This is mostly for demoing
+the various aspects of a parser.
+
 h2. Thanks for all the fish -- Contributions
 
 * *R. Konstantin Haase* ("rhk":http://rkh.im/) for rspec matchers that help

@@ -243,7 +243,8 @@ h2. Summary
 
 This concludes this (three part) introduction to parslet and leaves you with a
 good knowledge of most tricky parts. If you are missing some detail, maybe
-you can find it in the texts referenced "here":documentation.html? 
+you can find it in the texts referenced "here":documentation.html? There is 
+also an entire page on the tricks useful in practice here: "Tricks":tricks.html.
 
 If not, please tell us about it. We'll include it in this documentation in no 
 time. 
