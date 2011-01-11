@@ -24,3 +24,4 @@ rescue Parslet::ParseFailed => error
 end
 
 parse "1 + 2 + 3"
+parse '1++2'
