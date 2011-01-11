@@ -49,6 +49,30 @@
         <p>This allows for a document containing only <code>eol_line</code>s, one that
         has any number of <code>eol_line</code>s and then an extra lone
         <code>line</code>, or a completely empty document.</p>
+        <h2>Error reports</h2>
+        <p>If your grammar fails and you&#8217;re aching to know why, here&#8217;s a bit of exception
+        handling code that will help you out:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="k">begin</span>
+          <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">some_input</span><span class="p">)</span>
+        <span class="k">rescue</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">ParseFailed</span> <span class="o">=&gt;</span> <span class="n">error</span>
+          <span class="nb">puts</span> <span class="n">error</span><span class="p">,</span> <span class="n">parser</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">error_tree</span>
+        <span class="k">end</span>
+        </code></pre>
+        </div><p>This should print something akin to:</p>
+        <div class="highlight"><pre><code class="text"> 
+        Parsing 1++2: Don&#39;t know what to do with ++2 at line 1 char 2.
+        `- Unknown error in SUM / INTEGER
+           |- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 3.
+           |  `- Unknown error in [0-9]{1, } SPACE?
+           |     `- Expected at least 1 of \\s at line 1 char 2.
+           |        `- Failed to match \\s at line 1 char 3.
+           `- Unknown error in [0-9]{1, } SPACE?
+              `- Expected at least 1 of \\s at line 1 char 2.
+                 `- Failed to match \\s at line 1 char 3.
+        </code></pre>
+        </div><p>These error reports are probably the fastest way to know exactly where you
+        went wrong (or where your input is wrong, which is aequivalent).</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>

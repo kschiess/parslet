@@ -32,3 +32,33 @@ rule(:document) { eol_line.repeat >> line.maybe }
 This allows for a document containing only <code>eol_line</code>s, one that
 has any number of <code>eol_line</code>s and then an extra lone
 <code>line</code>, or a completely empty document.
+
+h2. Error reports
+
+If your grammar fails and you're aching to know why, here's a bit of exception
+handling code that will help you out: 
+
+{% highlight ruby %} 
+begin
+  parser.parse(some_input)
+rescue Parslet::ParseFailed => error
+  puts error, parser.root.error_tree
+end
+{% endhighlight %}
+
+This should print something akin to: 
+
+{% highlight text %} 
+Parsing 1++2: Don't know what to do with ++2 at line 1 char 2.
+`- Unknown error in SUM / INTEGER
+   |- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 3.
+   |  `- Unknown error in [0-9]{1, } SPACE?
+   |     `- Expected at least 1 of \\s at line 1 char 2.
+   |        `- Failed to match \\s at line 1 char 3.
+   `- Unknown error in [0-9]{1, } SPACE?
+      `- Expected at least 1 of \\s at line 1 char 2.
+         `- Failed to match \\s at line 1 char 3.
+{% endhighlight %}
+
+These error reports are probably the fastest way to know exactly where you
+went wrong (or where your input is wrong, which is aequivalent).
