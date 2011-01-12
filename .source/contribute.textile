@@ -7,6 +7,10 @@ Find parslet to be really useful? Or just found a bug that is really ruining
 the day for you? Please contribute! Find the code on 
 "github":http://github.com/kschiess/parslet.
 
+h2. Contact
+
+Join us on IRC in #parslet. 
+
 h2. Bugs 
 
 Log in to github and open a bug ticket "here":https://github.com/kschiess/parslet/issues. 
