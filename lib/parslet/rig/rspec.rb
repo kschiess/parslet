@@ -1,5 +1,3 @@
-require 'rspec/expectations'
-
 RSpec::Matchers.define(:parse) do |input|
   chain(:as) { |as| @as = as }
 
