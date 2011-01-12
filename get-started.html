@@ -35,7 +35,7 @@
         <div class="highlight"><pre><code class="bash"> 
         gem install parslet
         </code></pre>
-        </div><p>Now let&#8217;s write the first part of our parser. For now, let&#8217;s just recognize
+        </div><p>Now let&#8217;s write the first part of our parser. For now, we&#8217;ll just recognize
         simple numbers like &#8216;1&#8217; or &#8216;42&#8217;.</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="nb">require</span> <span class="s1">&#39;parslet&#39;</span> 
@@ -53,14 +53,17 @@
         <div class="highlight"><pre><code class="ruby"> 
         <span class="no">Mini</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;puts(1)&quot;</span><span class="p">)</span> <span class="c1"># raises Parslet::ParseFailed</span>
         </code></pre>
-        </div><p>Here&#8217;s the error message provided by that exception: &#8220;Expected at least 1 of [0-9] at line 1 char 1.&#8221; parslet tries to find a number there, but can&#8217;t find
+        </div><p>Here&#8217;s the error message provided by that exception: &#8220;Expected at least 1 of
+        [0-9] at line 1 char 1.&#8221; parslet tries to find a number there, but can&#8217;t find
         one.</p>
-        <p>There are just two lines to the definition of this parser, let&#8217;s go through them:</p>
+        <p>There are just two lines to the definition of this parser, let&#8217;s go through
+        them:</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">rule</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span> <span class="p">{</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;[0-9]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
         </code></pre>
         </div><p><code>rule</code> lets you create a new parser rule. Inside the block of that
-        <code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>. This says: &#8220;match a character that is in the range <code>0-9</code>, then 
+        <code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>.
+        This says: &#8220;match a character that is in the range <code>0-9</code>, then
         match any number of those, but at least match one.&#8221;</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">root</span><span class="p">(</span><span class="ss">:integer</span><span class="p">)</span>
@@ -80,10 +83,10 @@
         	<li><code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
           the thing before it is maybe present once in the input.</li>
         </ul>
-        <p>Essentially, you can think about parslet construction as instructing Ruby to
-        &#8220;parse this&#8221; and &#8220;parse that&#8221;. Calling other rules can be looked at in the 
-        same way; you tell Ruby to go off, parse that subrule and then come back with
-        the results. This helps when thinking about rule recursion. For example, a 
+        <p>Essentially, you can think about parslet rules as instructing Ruby to &#8220;parse
+        this&#8221; and &#8220;parse that&#8221;. Calling other rules can be looked at in the same way;
+        you tell Ruby to go off, parse that subrule and then come back with the
+        results. This helps when thinking about rule recursion. For example, a
         self-recursive rule like this one will of course create an endless loop:</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">rule</span><span class="p">(</span><span class="ss">:infinity</span><span class="p">)</span> <span class="p">{</span>
@@ -139,10 +142,10 @@
            <span class="sb">`</span>- Unknown error in <span class="o">[</span>0-9<span class="o">]{</span>1, <span class="o">}</span> SPACE?
               <span class="sb">`</span>- Failed to match <span class="se">\\</span>s at line 1 char 4.
         </code></pre>
-        </div><p>This is what parslet calls an <code>#error_tree</code>. Not only the output of your parser, 
-        but also its grammar is constructed like a tree. When things go wrong, every
-        branch of the tree has its own reasons for not accepting a given input. The 
-        <code>#error_tree</code> method returns those reasons.</p>
+        </div><p>This is what parslet calls an <code>#error_tree</code>. Not only the output of
+        your parser, but also its grammar is constructed like a tree. When things go
+        wrong, every branch of the tree has its own reasons for not accepting a given
+        input. The <code>#error_tree</code> method returns those reasons.</p>
         <p>Our grammar has essentially two branches, <code>SUM</code> and
         <code>INTEGER</code>. Can you see why all rules expect a space at character 4?</p>
         <h2>Tree output (and what to do about it)</h2>
@@ -153,9 +156,9 @@
         Parsing 1 + 2 + 3: <span class="s2">&quot;1 + 2 + 3&quot;</span>
         </code></pre>
         </div><p>The code we now have parses the input successfully, but doesn&#8217;t do much else. 
-        Out of the box, parslet only performs one of the two functions of a parser. It
-        accepts input, but doesn&#8217;t structure it. To do that, we have to point out to
-        parslet the pieces that we&#8217;re interested in. Look at this bit:</p>
+        Parslet hasn&#8217;t got its own opinion on what to do with your input. By default, 
+        it will just play it back to you. But parslet provides also a method of 
+        structuring its output:</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="c1"># Without structure: just strings.</span>
         <span class="n">str</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>                           <span class="c1"># =&gt; &#39;ooo&#39;</span>
@@ -163,7 +166,8 @@
         
         <span class="c1"># Added structure: .as(...)</span>
         <span class="n">str</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex1</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>                  <span class="c1"># =&gt; {:ex1=&gt;&quot;ooo&quot;}</span>
-        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2a</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2b</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; {:ex2b=&gt;[{:ex2a=&gt;&quot;o&quot;}, {:ex2a=&gt;&quot;o&quot;}, {:ex2a=&gt;&quot;o&quot;}]}</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2a</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2b</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>  
+            <span class="c1"># =&gt; {:ex2b=&gt;[{:ex2a=&gt;&quot;o&quot;}, {:ex2a=&gt;&quot;o&quot;}, {:ex2a=&gt;&quot;o&quot;}]}</span>
         </code></pre>
         </div><p>You get to name things the way you want! This is also free. Seriously: parslet
         requires you to add all the structure to its output. Annotate important parts
@@ -178,7 +182,9 @@
                   <span class="n">str</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:b</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;a + b&#39;</span><span class="p">)</span> <span class="c1"># =&gt; {:a=&gt;&quot;a&quot;, :o=&gt;&quot;+&quot;, :b=&gt;&quot;b&quot;}</span>
         </code></pre>
-        </div><h2>Making the parser complete</h2>
+        </div><p>Think of this like using a highlighter on your input: What is there not to like
+        about neon yellow?</p>
+        <h2>Making the parser complete</h2>
         <p>Let&#8217;s look at the complete parser definition that also allows for function
         calls:</p>
         <div class="highlight"><pre><code class="ruby"> 
@@ -225,12 +231,9 @@
         	<li><strong>Arrays</strong>: a node storing a collection of sub-nodes</li>
         	<li><strong>Strings</strong> are the leaves, containing the <em>accepted source</em></li>
         </ul>
-        <p>The format of this tree is easy to work with and to read. Here&#8217;s what the above
-        tree would look like as a graphic:</p>
+        <p>The format of this tree is easy to work with and to read. Here&#8217;s what the
+        above tree would look like as a graphic:</p>
         <p><img src="imgs/ast.png" alt="" /></p>
-        <p>Note that some information we have above is only implicit in this illustration. 
-        Our intermediary tree uses an array for the ordering of the argument list of 
-        <code>puts</code>.</p>
         <h2>Where to go from here: An Interpreter</h2>
         <p>As nice as the format above is for printing and looking at &#8211; it may be difficult
         at times to get the information out of it again. Let&#8217;s look at how to transform
@@ -247,13 +250,14 @@
         <span class="no">SimpleTransform</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span> <span class="c1"># =&gt; &quot;puts([1, 2, 3])&quot;</span>
         </code></pre>
         </div><p>Transformation is an entire topic by itself; this will be covered in detail
-        <a href="documentation.html">later on</a>. To whet your appetite, let me just give you a few teasers:</p>
+        <a href="transform.html">later on</a>. To whet your appetite, let me just give you a few
+        teasers:</p>
         <ul>
         	<li>Transformations match portions of your tree at any depth, replacing them
-        with whatever you decide.</li>
-        	<li>In addition to <code>sequence(sym)</code>, there is also 
-        <code>simple(sym)</code> and <code>subtree(sym)</code>. Those match
-        simple strings and entire subtrees respectively. Caution with the latter.</li>
+          with whatever you decide.</li>
+        	<li>In addition to <code>sequence(sym)</code>, there is also
+          <code>simple(sym)</code> and <code>subtree(sym)</code>. Those match simple
+          strings and entire subtrees respectively. Caution with the latter.</li>
         </ul>
         <p>Here&#8217;s how you would write a somewhat classical interpreter for our little 
         language by using a transformation. Note that from this point on, there is
@@ -317,6 +321,19 @@
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
         Logo by <a href="http://floere.github.com">Florian Hanke</a>, <a href="http://creativecommons.org/licenses/by/1.0/">CC Attribution</a> license</p>
       </div>
+      <script type="text/javascript">
+        //<![CDATA[
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-16365074-2']);
+          _gaq.push(['_trackPageview']);
+          
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        //]]>
+      </script>
     </div>
   </body>
 </html>

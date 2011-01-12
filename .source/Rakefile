@@ -12,7 +12,6 @@ end
 
 task :publish do
   stoplist = [    # these files are excluded
-    /README/,
     /Rakefile/,
     /\.sass$/
   ]

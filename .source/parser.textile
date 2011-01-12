@@ -1,0 +1,261 @@
+---
+title: Parser construction
+layout: default
+---
+
+A parser is nothing more than a class that derives from
+<code>Parslet::Parser</code>. The simplest parser that one could write would
+look like this: 
+
+{% highlight ruby %} 
+class SimpleParser < Parslet::Parser
+  rule(:a_rule) { str('simple_parser') }
+  root(:a_rule)
+end
+{% endhighlight %}
+
+The language recognized by this parser is simply the string "simple_parser". 
+Parser rules do look a lot like methods and are defined by 
+
+{% highlight ruby %} 
+rule(name) { definition_block }
+{% endhighlight %}
+
+Behind the scenes, this really defines a method that returns whatever you 
+return from it. 
+
+Every parser has a root. This designates where parsing should start. It is like
+an entry point to your parser. With a root defined like this: 
+
+{% highlight ruby %} 
+root(:my_root)
+{% endhighlight %}
+
+you create a <code>#parse</code> method in your parser that will start parsing
+by calling the <code>#my_root</code> method. You'll also have a <code>#root</code>
+(instance) method that is an alias of the root method. The following things are
+really one and the same: 
+
+{% highlight ruby %} 
+SimpleParser.new.parse(string)
+SimpleParser.new.root.parse(string)
+SimpleParser.new.a_rule.parse(string)
+{% endhighlight %}
+
+Knowing these things gives you a lot of flexibility; I'll explain why at the
+end of the chapter. For now, just let me point out that because all of this is
+Ruby, your favorite editor will syntax highlight parser code just fine.
+
+h2. Atoms: The inside of a parser
+
+h3. Matching strings of characters
+
+A parser is constructed from parser atoms (or parslets, hence the name). The
+atoms are what appear inside your rules (and maybe elsewhere). We've already
+encountered an atom, the string atom: 
+
+{% highlight ruby %} 
+str('simple_parser')
+{% endhighlight %}
+
+This returns a <code>Parslet::Atoms::Str</code> instance. These parser atoms
+all derive from <code>Parslet::Atoms::Base</code> and have essentially just
+one method you can call: <code>#parse</code>. So this works: 
+
+{% highlight ruby %} 
+str('foobar').parse('foobar') # => 'foobar'
+{% endhighlight %}
+
+The atoms are small parsers that can recognize languages and throw errors, just
+like real <code>Parslet::Parser</code> subclasses. 
+
+h3. Matching character ranges
+
+The second parser atom you will have to know about allows you to match
+character ranges: 
+
+{% highlight ruby %} 
+match('[0-9a-f]')
+{% endhighlight %}
+
+The above atom would match the numbers zero through nine and the letters 'a' 
+to 'f' - yeah, you guessed right - hexadecimal numbers for example. The inside
+of such a match parslet is essentially a regular expression that matches 
+a single character of input. Because we'll be using ranges so much with 
+<code>#match</code> and because typing ('[]') is tiresome, here's another way
+to write the above <code>#match</code> atom:
+
+{% highlight ruby %} 
+match['0-9a-f']
+{% endhighlight %}
+
+Character matches are instances of <code>Parslet::Atoms::Re</code>. Here are 
+some more examples of character ranges: 
+
+{% highlight ruby %} 
+match['[:alnum:]']      # letters and numbers
+match['\\n']            # newlines
+match('\\w')            # word characters
+match('.')              # any character
+{% endhighlight %}
+
+h3. The wild wild <code>#any</code>
+
+The last example above corresponds to the regular expression <code>/./</code> that matches
+any one character. There is a special atom for that: 
+
+{% highlight ruby %} 
+any 
+{% endhighlight %}
+
+h2. Composition of Atoms
+
+These basic atoms can be composed to form complex grammars. The following
+few sections will tell you about the various ways atoms can be composed.
+
+h3. Simple Sequences
+
+Match 'foo' and then 'bar': 
+
+{% highlight ruby %} 
+str('foo') >> str('bar')    # same as str('foobar')
+{% endhighlight %}
+
+Sequences correspond to instances of the class
+<code>Parslet::Atoms::Sequence</code>.
+
+h3. Repetition and its Special Cases
+
+To model atoms that can be repeated, you should use <code>#repeat</code>: 
+
+{% highlight ruby %} 
+str('foo').repeat
+{% endhighlight %}
+
+This will allow foo to repeat any number of times, including zero. If you
+look at the signature for <code>#repeat</code> in <code>Parslet::Atoms::Base</code>, 
+you'll see that it has really two arguments: _min_ and _max_. So the following
+code all makes sense: 
+
+{% highlight ruby %} 
+str('foo').repeat(1)      # match 'foo' at least once
+str('foo').repeat(1,3)    # at least once and at most 3 times
+str('foo').repeat(0, nil) # the default: same as str('foo').repeat
+{% endhighlight %}
+
+Repetition has a special case that is used frequently: Matching something
+once or not at all can be achieved by <code>repeat(0,1)</code>, but also 
+through the prettier: 
+
+{% highlight ruby %} 
+str('foo').maybe          # same as str('foo').repeat(0,1)
+{% endhighlight %}
+
+These all map to <code>Parslet::Atoms::Repetition</code>
+
+h3. Alternation
+
+The most important composition method for grammars is alternation. Without
+it, your grammars would only vary in the amount of things matched, but not
+in content. Here's how this looks: 
+
+{% highlight ruby %} 
+str('foo') | str('bar')   # matches 'foo' OR 'bar'
+{% endhighlight %}
+
+This reads naturally as "'foo' or 'bar'". 
+
+h3. Operator precedence
+
+The operators we have chosen for parslet atom combination have the operator
+precedence that you would expect. No parenthesis are needed to express
+alternation of sequences:
+
+{% highlight ruby %} 
+str('s') >> str('equence') | 
+  str('se') >> str('quence')
+{% endhighlight %}
+
+h3. And more
+
+Parslet atoms are not as pretty as Treetop atoms. There you go, we said it. 
+However, there seems to be a different kind of aesthetic about them; they 
+are pure Ruby and integrate well with the rest of your environment. Have a 
+look at this: 
+
+{% highlight ruby %} 
+# Also consumes the space after important things like ';' or ':'. Call this
+# giving the character you want to match as argument: 
+#
+#   arg >> (spaced(',') >> arg).repeat
+#
+def spaced(character)
+  str(character) >> match["\s"]
+end
+{% endhighlight %}
+
+or even this: 
+
+{% highlight ruby %} 
+# Turns any atom into an expression that matches a left parenthesis, the 
+# atom and then a right parenthesis.
+#
+#   bracketed(sum)
+#
+def bracketed(atom)
+  spaced('(') >> atom >> spaced(')')
+end
+{% endhighlight %}
+
+You might say that because parslet is just plain old Ruby objects itself (PORO
+(tm)), it allows for very tight code. Module inclusion, class inheritance, ...
+all your tools should work well with parslet.
+
+h2. Tree construction
+
+By default, parslet will just echo back to you the strings you feed into it. 
+Parslet will not generate a parser for you and neither will it generate your
+abstract syntax tree for you. The method <code>#as(name)</code> allows you
+to specify exactly how you want your tree to look like: 
+
+{% highlight ruby %} 
+str('foo').parse('foo')             # => 'foo'
+str('foo').as(:bar).parse('foo')    # => {:bar => 'foo'}
+{% endhighlight %}
+
+So you think: <code>#as(name)</code> allows me to create a hash, big deal.
+That's not all. You'll notice that annotating everything that you want to keep
+in your grammar with <code>#as(name)</code> autocreates a sensible tree
+composed of hashes and arrays and strings. It's really somewhat magic: Parslet
+has a set of clever rules that merge the annotated output from your atoms into
+a tree. Here are some more examples, with the atom on the left and the resulting
+tree (assuming a successful parse) on the right: 
+
+{% highlight ruby %} 
+# Normal strings just map to strings
+str('a').repeat                          "aaa"                                   
+
+# Arrays capture repetition of non-strings
+str('a').repeat.as(:b)                   {:b=>"aaa"}                             
+str('a').as(:b).repeat                   [{:b=>"a"}, {:b=>"a"}, {:b=>"a"}]       
+
+# Subtrees get merged - unlabeled strings discarded
+str('a').as(:a) >> str('b').as(:b)       {:a=>"a", :b=>"b"}                      
+str('a') >> str('b').as(:b) >> str('c')  {:b=>"b"}                               
+
+# #maybe will return nil, not the empty array
+str('a').maybe.as(:a)                    {:a=>"a"}                               
+str('a').maybe.as(:a)                    {:a=>nil}                               
+{% endhighlight %}
+
+h2. And more
+
+Now you know exactly how to create parsers using Parslet. Your parsers
+will output intricate structures made of endless arrays, complex hashes and 
+a few string leftovers. But your programming skills fail you when you try
+to put all this data to use. Selecting keys upon keys in hash after hash, you
+feel like a cockroach that has just read Kafka's works. This is no fun. This 
+is not what you signed up for. 
+
+Time to introduce you to "Parslet::Transform":transform.html and its workings.
+

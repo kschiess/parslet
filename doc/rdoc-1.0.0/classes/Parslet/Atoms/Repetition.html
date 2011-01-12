@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::Repetition</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Atoms::Repetition 
+            
+                <span class="parent">&lt; 
+                    
+                    <a href="Base.html">Parslet::Atoms::Base</a>
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/parslet/atoms/repetition_rb.html">lib/parslet/atoms/repetition.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+Matches a parslet repeatedly.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  str('a').repeat(1,3)  # matches 'a' at least once, but at most three times
+  str('a').maybe        # matches 'a' if it is present in the input (repeat(0,1))
+</pre>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>N</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000045">new</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="sectiontitle">Attributes</div>
+    <table border='0' cellpadding='5'>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>min</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>max</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>parslet</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+    </table>
+    
+
+    
+            <div class="sectiontitle">Class Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000045">
+                    
+                    <a name="M000045"></a><b>new</b>(parslet, min, max, tag=:repetition)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000045_source')" id="l_M000045_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/26e8db21515ff0bcc35b634b6da26002ae0d2c4f/lib/parslet/atoms/repetition.rb#L11" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000045_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/repetition.rb, line 11</span>
+11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">parslet</span>, <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">tag</span>=<span class="ruby-identifier">:repetition</span>)
+12:     <span class="ruby-ivar">@parslet</span> = <span class="ruby-identifier">parslet</span>
+13:     <span class="ruby-ivar">@min</span>, <span class="ruby-ivar">@max</span> = <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>
+14:     <span class="ruby-ivar">@tag</span> = <span class="ruby-identifier">tag</span>
+15:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

@@ -17,23 +17,34 @@ Log in to github and open a bug ticket "here":https://github.com/kschiess/parsle
 Please be sure to include the version of parslet and Ruby; maybe you can even
 provide some code that exhibits the bug?
 
-And of course if you provide a properly tested patch, you'll be my hero and 
-get a place in the space below for lifetime. Just send me a pull request!
+And of course if you provide a properly tested patch, you'll be our hero and 
+get a place in the space below for lifetime. 
 
 h2. Projects
 
 Have you got a project that uses parslet? Please write
-"me":mailto:kaspar.schiess@absurd.li about it. I would like to include you in
-this project list: 
+"us":mailto:kaspar.schiess@absurd.li about it. 
 
 "*Examples*":https://github.com/kschiess/parslet/tree/master/example/
 
 In here, you can find a parser for a lisp like language and much more. 
 
-h2. Thanks for all the fish
+"*wt* aka working title":https://github.com/kschiess/wt
+
+A small parser that compiles to a postscript file. This is mostly for demoing
+the various aspects of a parser.
+
+h2. Thanks for all the fish -- Contributions
+
+* *R. Konstantin Haase* ("rhk":http://rkh.im/) for rspec matchers that help
+  stamp out, eliminate and abolish redundancy.
 
 * *Florian Hanke* ("floere":http://floere.github.com) has given a lot of very
   inspiring input for parslet. His questions have been key to rounding off the
   corners and making the library as aesthetic as it is. And just look at the 
   logo. 
+  
+* *Kaspar Schiess* ("absurd.li":http://www.absurd.li) for being brave enough
+  to actually add another parser library to a field that's already bursting
+  at the seams.
 

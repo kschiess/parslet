@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Pattern</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen" />
+    <script src="../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Pattern 
+            
+                <span class="parent">&lt; 
+                    
+                    Object
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../files/lib/parslet/pattern_rb.html">lib/parslet/pattern.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+Matches trees against expressions. Trees are formed by arrays and hashes
+for expressing membership and sequence. The leafs of the tree are other
+classes.
+</p>
+<p>
+A tree issued by the parslet library might look like this:
+</p>
+<pre>
+  {
+    :function_call =&gt; {
+      :name =&gt; 'foobar',
+      :args =&gt; [1, 2, 3]
+    }
+  }
+</pre>
+<p>
+A pattern that would match against this tree would be:
+</p>
+<pre>
+  { :function_call =&gt; { :name =&gt; simple(:name), :args =&gt; sequence(:args) }}
+</pre>
+<p>
+Note that <a href="Pattern.html">Parslet::Pattern</a> only matches at a
+given subtree; it wont try to match recursively. To do that, please use <a
+href="Transform.html">Parslet::Transform</a>.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>C</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000068">call_on_match</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>E</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000069">element_match</a>,</li>
+                
+                <li><a href="#M000081">element_match_hash</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>M</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000067">match</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>N</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000066">new</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+    <div class="sectiontitle">Classes and Modules</div>
+    <ul>
+        
+        <li><span class="type">CLASS</span> <a href="Pattern/Context.html">Parslet::Pattern::Context</a></li>
+        
+        <li><span class="type">CLASS</span> <a href="Pattern/SequenceBind.html">Parslet::Pattern::SequenceBind</a></li>
+        
+        <li><span class="type">CLASS</span> <a href="Pattern/SimpleBind.html">Parslet::Pattern::SimpleBind</a></li>
+        
+        <li><span class="type">CLASS</span> <a href="Pattern/SubtreeBind.html">Parslet::Pattern::SubtreeBind</a></li>
+        
+    </ul>
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Class Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000066">
+                    
+                    <a name="M000066"></a><b>new</b>(pattern)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000066_source')" id="l_M000066_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/39fefa2e3015268089467128b10a299d1d55fa24/lib/parslet/pattern.rb#L24" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000066_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/pattern.rb, line 24</span>
+24:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">pattern</span>)
+25:     <span class="ruby-ivar">@pattern</span> = <span class="ruby-identifier">pattern</span>
+26:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000068">
+                    
+                    <a name="M000068"></a><b>call_on_match</b>(bindings, block)
+                    
+                </div>
+                
+                <div class="description">
+                  <pre>
+ Executes the block on the bindings obtained by #match, if such a match
+ can be made. Contains the logic that will switch to instance variables
+ depending on the arity of the block.
+</pre>
+<hr size="1"></hr><pre>
+ TODO This method should be in Transform.
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000068_source')" id="l_M000068_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/39fefa2e3015268089467128b10a299d1d55fa24/lib/parslet/pattern.rb#L43" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000068_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/pattern.rb, line 43</span>
+43:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">call_on_match</span>(<span class="ruby-identifier">bindings</span>, <span class="ruby-identifier">block</span>)
+44:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block</span>
+45:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">arity</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+46:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">bindings</span>)
+47:       <span class="ruby-keyword kw">else</span>
+48:         <span class="ruby-identifier">context</span> = <span class="ruby-constant">Context</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">bindings</span>)
+49:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">context</span>.<span class="ruby-identifier">instance_eval</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+50:       <span class="ruby-keyword kw">end</span>
+51:     <span class="ruby-keyword kw">end</span>
+52:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000069">
+                    
+                    <a name="M000069"></a><b>element_match</b>(tree, exp, bindings)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Returns true if the tree element given by <tt>tree</tt> matches the
+expression given by <tt>exp</tt>. This match must respect bindings already
+made in <tt>bindings</tt>. Note that bindings is carried along and
+modified.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000069_source')" id="l_M000069_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/39fefa2e3015268089467128b10a299d1d55fa24/lib/parslet/pattern.rb#L58" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000069_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/pattern.rb, line 58</span>
+58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">element_match</span>(<span class="ruby-identifier">tree</span>, <span class="ruby-identifier">exp</span>, <span class="ruby-identifier">bindings</span>) 
+59:     <span class="ruby-comment cmt"># p [:elm, tree, exp]</span>
+60:     <span class="ruby-keyword kw">case</span> [<span class="ruby-identifier">tree</span>, <span class="ruby-identifier">exp</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">class</span> }
+61:       <span class="ruby-keyword kw">when</span> [<span class="ruby-constant">Hash</span>,<span class="ruby-constant">Hash</span>]
+62:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">element_match_hash</span>(<span class="ruby-identifier">tree</span>, <span class="ruby-identifier">exp</span>, <span class="ruby-identifier">bindings</span>)
+63:       <span class="ruby-keyword kw">when</span> [<span class="ruby-constant">Array</span>,<span class="ruby-constant">Array</span>]
+64:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">element_match_ary_single</span>(<span class="ruby-identifier">tree</span>, <span class="ruby-identifier">exp</span>, <span class="ruby-identifier">bindings</span>)
+65:     <span class="ruby-keyword kw">else</span>
+66:       <span class="ruby-comment cmt"># If elements match exactly, then that is good enough in all cases</span>
+67:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">tree</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">exp</span>
+68:       
+69:       <span class="ruby-comment cmt"># If exp is a bind variable: Check if the binding matches</span>
+70:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">exp</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:can_bind?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">exp</span>.<span class="ruby-identifier">can_bind?</span>(<span class="ruby-identifier">tree</span>)
+71:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">element_match_binding</span>(<span class="ruby-identifier">tree</span>, <span class="ruby-identifier">exp</span>, <span class="ruby-identifier">bindings</span>)
+72:       <span class="ruby-keyword kw">end</span>
+73:                   
+74:       <span class="ruby-comment cmt"># Otherwise: No match (we don't know anything about the element</span>
+75:       <span class="ruby-comment cmt"># combination)</span>
+76:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+77:     <span class="ruby-keyword kw">end</span>
+78:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000081">
+                    
+                    <a name="M000081"></a><b>element_match_hash</b>(tree, exp, bindings)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000081_source')" id="l_M000081_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/39fefa2e3015268089467128b10a299d1d55fa24/lib/parslet/pattern.rb#L101" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000081_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/pattern.rb, line 101</span>
+101:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">element_match_hash</span>(<span class="ruby-identifier">tree</span>, <span class="ruby-identifier">exp</span>, <span class="ruby-identifier">bindings</span>)
+102:     <span class="ruby-comment cmt"># p [:emh, tree, exp, bindings]</span>
+103:     
+104:     <span class="ruby-comment cmt"># We iterate over expected pattern, since we demand that the keys that</span>
+105:     <span class="ruby-comment cmt"># are there should be in tree as well.</span>
+106:     <span class="ruby-identifier">exp</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">expected_key</span>, <span class="ruby-identifier">expected_value</span><span class="ruby-operator">|</span>
+107:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">tree</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-identifier">expected_key</span>
+108:       
+109:       <span class="ruby-comment cmt"># Recurse into the value and stop early on failure</span>
+110:       <span class="ruby-identifier">value</span> = <span class="ruby-identifier">tree</span>[<span class="ruby-identifier">expected_key</span>]
+111:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">element_match</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">expected_value</span>, <span class="ruby-identifier">bindings</span>)
+112:     <span class="ruby-keyword kw">end</span>
+113:     
+114:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
+115:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000067">
+                    
+                    <a name="M000067"></a><b>match</b>(subtree)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Decides if the given subtree matches this pattern. Returns the bindings
+made on a successful match or nil if the match fails.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000067_source')" id="l_M000067_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/39fefa2e3015268089467128b10a299d1d55fa24/lib/parslet/pattern.rb#L31" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000067_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/pattern.rb, line 31</span>
+31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">match</span>(<span class="ruby-identifier">subtree</span>)
+32:     <span class="ruby-identifier">bindings</span> = {}
+33:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">bindings</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">element_match</span>(<span class="ruby-identifier">subtree</span>, <span class="ruby-ivar">@pattern</span>, <span class="ruby-identifier">bindings</span>)
+34:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html;charset=UTF-8" http-equiv="Content-type" />
+    <title>
+      parslet -
+      Tricks for common situations
+    </title>
+    <meta content="Kaspar Schiess (http://absurd.li)" name="author" />
+    <link href="css/site.css" rel="stylesheet" type="text/css" />
+    <link href="css/pygments.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="everything">
+      <div class="main_menu">
+        <img alt="Parslet Logo" src="imgs/parsley_logo.png" />
+        <ul>
+          <li><a href="index.html">about</a></li>
+          <li><a href="get-started.html">get started</a></li>
+          <li><a href="install.html">install</a></li>
+          <li><a href="documentation.html">documentation</a></li>
+          <li><a href="contribute.html">contribute</a></li>
+        </ul>
+      </div>
+      <div class="content">
+        <h1>Tricks for common situations</h1>
+        <h2>Matching <span class="caps">EOF</span> (End Of File)</h2>
+        <p>The best and simplest way of doing this is: Don&#8217;t. Parslet will raise
+        <code>Parslet::ParseFailed</code> if your input cannot be completely consumed
+        by the grammar. So the best way of matching <span class="caps">EOF</span> is to implicitly match it
+        by not having a failed parse.</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span>
+        </code></pre>
+        </div><p>The above sample looks like it might match a bunch of &#8217;a&#8217;s, but really it
+        matches those &#8217;a&#8217;s and the end of input. With parslet, all you have to do
+        is think of <em>matching all legal input</em>. <span class="caps">EOF</span> has no representation and cannot
+        be matched.</p>
+        <p>The common case of matching lines ended by a newline would then look like this:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:line</span><span class="p">)</span>     <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span>
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:eol</span><span class="p">)</span>      <span class="p">{</span> <span class="n">match</span><span class="o">[</span><span class="s1">&#39;\n\r&#39;</span><span class="o">].</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+        
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:eol_line</span><span class="p">)</span> <span class="p">{</span> <span class="n">line</span> <span class="o">&gt;&gt;</span> <span class="n">eol</span><span class="p">}</span>
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:document</span><span class="p">)</span> <span class="p">{</span> <span class="n">eol_line</span><span class="o">.</span><span class="n">repeat</span> <span class="o">&gt;&gt;</span> <span class="n">line</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
+        </code></pre>
+        </div>
+        <p>This allows for a document containing only <code>eol_line</code>s, one that
+        has any number of <code>eol_line</code>s and then an extra lone
+        <code>line</code>, or a completely empty document.</p>
+        <h2>Error reports</h2>
+        <p>If your grammar fails and you&#8217;re aching to know why, here&#8217;s a bit of exception
+        handling code that will help you out:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="k">begin</span>
+          <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">some_input</span><span class="p">)</span>
+        <span class="k">rescue</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">ParseFailed</span> <span class="o">=&gt;</span> <span class="n">error</span>
+          <span class="nb">puts</span> <span class="n">error</span><span class="p">,</span> <span class="n">parser</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">error_tree</span>
+        <span class="k">end</span>
+        </code></pre>
+        </div><p>This should print something akin to:</p>
+        <div class="highlight"><pre><code class="text"> 
+        Parsing 1++2: Don&#39;t know what to do with ++2 at line 1 char 2.
+        `- Unknown error in SUM / INTEGER
+           |- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 3.
+           |  `- Unknown error in [0-9]{1, } SPACE?
+           |     `- Expected at least 1 of \\s at line 1 char 2.
+           |        `- Failed to match \\s at line 1 char 3.
+           `- Unknown error in [0-9]{1, } SPACE?
+              `- Expected at least 1 of \\s at line 1 char 2.
+                 `- Failed to match \\s at line 1 char 3.
+        </code></pre>
+        </div><p>These error reports are probably the fastest way to know exactly where you
+        went wrong (or where your input is wrong, which is aequivalent).</p>
+      </div>
+      <div class="copyright">
+        <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
+        Logo by <a href="http://floere.github.com">Florian Hanke</a>, <a href="http://creativecommons.org/licenses/by/1.0/">CC Attribution</a> license</p>
+      </div>
+      <script type="text/javascript">
+        //<![CDATA[
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-16365074-2']);
+          _gaq.push(['_trackPageview']);
+          
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        //]]>
+      </script>
+    </div>
+  </body>
+</html>
