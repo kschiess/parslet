@@ -8,6 +8,9 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   attr_reader :parslets
   def initialize(*parslets)
     @parslets = parslets
+    @error_msgs = {
+      :failed  => "Failed to match sequence (#{self.inspect})"
+    }
   end
   
   def >>(parslet) # :nodoc:
@@ -24,7 +27,7 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
       }
     }
 
-    error(io, "Failed to match sequence (#{self.inspect})")
+    error(io, @error_msgs[:failed])
   end
       
   precedence SEQUENCE

@@ -17,6 +17,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   #
   def initialize(*alternatives)
     @alternatives = alternatives
+    @error_msg = "Expected one of #{alternatives.inspect}."
   end
 
   #---
@@ -35,7 +36,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
       }
     }
     # If we reach this point, all alternatives have failed. 
-    error(io, "Expected one of #{alternatives.inspect}.")
+    error(io, @error_msg)
   end
 
   precedence ALTERNATE
