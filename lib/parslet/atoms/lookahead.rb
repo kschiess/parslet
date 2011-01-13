@@ -12,6 +12,10 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     # Model positive and negative lookahead by testing this flag.
     @positive = positive
     @bound_parslet = bound_parslet
+    @error_msgs = {
+      :positive => "lookahead: #{bound_parslet.inspect} didn't match, but should have", 
+      :negative => "negative lookahead: #{bound_parslet.inspect} matched, but shouldn't have"
+    }
   end
   
   def try(io) # :nodoc:
@@ -32,7 +36,7 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   # Maybe do some shortcut reducing here?
   def fail(io) # :nodoc:
     if positive
-      error(io, "lookahead: #{bound_parslet.inspect} didn't match, but should have")
+      error(io, @error_msgs[:positive])
     else
       return nil
     end
@@ -41,9 +45,7 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     if positive
       return nil
     else
-      error(
-        io, 
-        "negative lookahead: #{bound_parslet.inspect} matched, but shouldn't have")
+      error(io, @error_msgs[:positive])
     end
   end
 

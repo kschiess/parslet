@@ -12,12 +12,16 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
   def initialize(match) # :nodoc:
     @match = match
     @re    = Regexp.new(match, Regexp::MULTILINE)
+    @error_msgs = {
+      :premature  => "Premature end of input", 
+      :failed     => "Failed to match #{match.inspect[1..-2]}"
+    }
   end
 
   def try(io) # :nodoc:
     s = io.read(1)
-    error(io, "Premature end of input") unless s
-    error(io, "Failed to match #{match.inspect[1..-2]}") unless s.match(re)
+    error(io, @error_msgs[:premature]) unless s
+    error(io, @error_msgs[:failed]) unless s.match(re)
     return s
   end
 

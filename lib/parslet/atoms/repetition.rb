@@ -12,6 +12,9 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     @parslet = parslet
     @min, @max = min, max
     @tag = tag
+    @error_msgs = {
+      :minrep  => "Expected at least #{min} of #{parslet.inspect}"
+    }
   end
   
   def try(io) # :nodoc:
@@ -30,7 +33,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     # Greedy matcher has produced a failure. Check if occ (which will
     # contain the number of sucesses) is in {min, max}.
     # p [:repetition, occ, min, max]
-    error(io, "Expected at least #{min} of #{parslet.inspect}") if occ < min
+    error(io, @error_msgs[:minrep]) if occ < min
     return result
   end
   
