@@ -13,9 +13,10 @@ Join us on IRC in #parslet.
 
 h2. Bugs 
 
-Log in to github and open a bug ticket "here":https://github.com/kschiess/parslet/issues. 
-Please be sure to include the version of parslet and Ruby; maybe you can even
-provide some code that exhibits the bug?
+Log in to github and open a bug ticket
+"here":https://github.com/kschiess/parslet/issues. Please be sure to include
+the version of parslet and Ruby; maybe you can even provide some code that
+exhibits the bug?
 
 And of course if you provide a properly tested patch, you'll be our hero and 
 get a place in the space below for lifetime. 
@@ -34,7 +35,15 @@ In here, you can find a parser for a lisp like language and much more.
 A small parser that compiles to a postscript file. This is mostly for demoing
 the various aspects of a parser.
 
+"*Werd.rb*":https://github.com/rk/werd
+
+A variant of Chris Pound's word generator written in Ruby, with some
+improvements. (Robert Kosek)
+
 h2. Thanks for all the fish -- Contributions
+
+* *Hal Brodigan* ("postmodern":http://postmodern.github.com/) for solving our
+  email parsing needs!
 
 * *R. Konstantin Haase* ("rhk":http://rkh.im/) for rspec matchers that help
   stamp out, eliminate and abolish redundancy.
@@ -47,4 +56,3 @@ h2. Thanks for all the fish -- Contributions
 * *Kaspar Schiess* ("absurd.li":http://www.absurd.li) for being brave enough
   to actually add another parser library to a field that's already bursting
   at the seams.
-
