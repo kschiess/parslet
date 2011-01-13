@@ -56,7 +56,7 @@ class Parslet::Atoms::Base
     
     # p [:try, self, io.string[io.pos, 20]]
     message = catch(:error) {
-      r = try(io)
+      r = try_or_cache(io)
       # p [:return_from, self, r, flatten(r)]
       
       # This has just succeeded, so last_cause must be empty
@@ -69,6 +69,32 @@ class Parslet::Atoms::Base
     
     io.pos = old_pos
     throw :error, message
+  end
+  
+  def try_or_cache(io)
+    pos = io.pos
+    @cache ||= {}
+    
+    if last_result=@cache[pos]
+      result, obj, consume = last_result
+      if result
+        io.read(consume)
+        return obj
+      else
+        throw :error, obj
+      end
+    else
+      message = catch(:error) {
+        res = try(io)
+        consume = io.pos
+        
+        @cache[pos] = [true, res, io.pos-pos]
+        return res
+      }
+      
+      @cache[pos] = [false, message, nil]
+      throw :error, message
+    end
   end
 
   # Override this in your Atoms::Base subclasses to implement parsing
