@@ -280,13 +280,24 @@ private
       @last_cause
   end
   def format_cause(io, str, pos=nil)
-    pre = io.string[0..(pos||io.pos)]
-    lines = Array(pre.lines)
+    @cause_suffix ||= {}
     
-    return str if lines.empty?
-      
+    real_pos = (pos||io.pos)
+    if suffix=@cause_suffix[real_pos]
+      str + suffix
+    else
+      @cause_suffix[real_pos] = suffix = compute_suffix(io, real_pos)
+      str + suffix
+    end
+  end
+  def compute_suffix(io, pos)
+    pre = io.string[0..pos]
+    lines = Array(pre.lines)
+  
+    return "" if lines.empty?
+    
     pos   = lines.last.length
-    return "#{str} at line #{lines.count} char #{pos}."
+    return " at line #{lines.count} char #{pos}."
   end
   def warn_about_duplicate_keys(h1, h2)
     d = h1.keys & h2.keys
