@@ -47,18 +47,29 @@ describe Parslet::Source do
     end
   end
   describe "<- #column & #line" do
-    subject { [source.line, source.column] }
+    subject { source.line_and_column }
     
     it { should == [1,1] }
     
     context "on the first line" do
       it "should increase column with every read" do
         10.times do |i|
+          source.line_and_column.last.should == 1+i
           source.read(1)
-          
-          source.column.should == 1+i
         end
       end 
+    end
+    context "on the second line" do
+      before(:each) { source.read(101) }
+      it { should == [2, 1]}
+    end
+  end
+  describe "<- #line_ends" do
+    subject { source.line_ends }
+    context "after reading 101 chars" do
+      before(:each) { source.read(101) }
+      
+      it { should == [101] }
     end
   end
 end
