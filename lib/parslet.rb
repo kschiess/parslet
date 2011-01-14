@@ -229,6 +229,7 @@ module Parslet
   autoload :Expression, 'parslet/expression'
 end
 
+require 'parslet/source'
 require 'parslet/error_tree'
 require 'parslet/atoms'
 require 'parslet/pattern'
