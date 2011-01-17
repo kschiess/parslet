@@ -20,15 +20,20 @@ class Parslet::Source
     # starts at 0; numbers beyond the biggest entry are on any line > size, 
     # but probably make a scan to that position neccessary.
     @line_ends = []
+    @eof_reached_once = false
   end
   
   def read(n)
     start_pos = pos
     @io.read(n).tap { |buf| 
+      # Scan the string for line endings; store the positions of all endings
+      # in @line_ends. 
       cur = -1
       while buf && cur = buf.index("\n", cur+1)
         @line_ends << (start_pos + cur+1)
-      end }
+      end 
+      
+      @eof_reached_once = true }
   end
   
   def eof?
@@ -42,7 +47,7 @@ class Parslet::Source
   def pos=(new_pos)
     # Are we seeking beyond the last line?
     last_offset = line_ends.last
-    if last_offset && new_pos > last_offset
+    if !@eof_reached_once && last_offset && new_pos > last_offset
       raise NotImplementedError
     end
     @io.pos = new_pos
