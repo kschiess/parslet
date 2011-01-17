@@ -136,6 +136,21 @@ describe Parslet::Pattern do
         p(:a => simple(:x)).should_not detect(exp)
       end
     end
+    context "a more complex hash {:a => 'a', :b => 'b'}" do
+      attr_reader :exp
+      before(:each) do
+        @exp = t({:a => 'a', :b => 'b'})
+      end
+
+      it "should not match partially" do
+        exp.should_not match_with_bind(:a => simple(:x), :x => 'a')
+      end 
+      it "should match completely" do
+        exp.should match_with_bind({:a => simple(:x), :b => simple(:y)}, 
+          :x => 'a', 
+          :y => 'b')
+      end 
+    end
     context "an array of 'a', 'b', 'c'" do
       let(:exp) { ['a', 'b', 'c'] }
 
