@@ -54,7 +54,43 @@
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">rule</span><span class="p">(</span><span class="ss">:eof</span><span class="p">)</span> <span class="p">{</span> <span class="n">any</span><span class="o">.</span><span class="n">absnt?</span> <span class="p">}</span>
         </code></pre>
-        </div><h2>Error reports</h2>
+        </div><h2>Testing</h2>
+        <p>Parslet helps you to create parsers that are in turn created out of many small
+        parsers. It is really turtles all the way down. Imagine you have a complex 
+        parser:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="k">class</span> <span class="nc">ComplexParser</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Parser</span>
+          <span class="n">root</span> <span class="ss">:lots_of_stuff</span>
+          
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:lots_of_stuff</span><span class="p">)</span> <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span>
+          
+          <span class="c1"># and many lines later: </span>
+          <span class="n">rule</span><span class="p">(</span><span class="ss">:simple_rule</span><span class="p">)</span> <span class="p">{</span> <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="p">}</span>
+        <span class="k">end</span>
+        </code></pre>
+        </div><p>Also imagine that the parser (as a whole) fails to consume the &#8216;a&#8217; that 
+        <code>simple_rule</code> is talking about.</p>
+        <p>This kind of problem can very often be fixed by bisecting it into two possible
+        problems. Either:</p>
+        <ol>
+        	<li>the <code>lots_of_stuff</code> rule somehow doesn&#8217;t place <code>simple_rule</code>
+          in the right context or</li>
+        	<li>the <code>simple_rule</code> simply (hah!) fails to match its input.</li>
+        </ol>
+        <p>I find it very useful in this situation to eliminate 2. from our options:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">describe</span> <span class="no">ComplexParser</span>  <span class="k">do</span>
+          <span class="n">let</span><span class="p">(</span><span class="ss">:parser</span><span class="p">)</span> <span class="p">{</span> <span class="no">ComplexParser</span><span class="o">.</span><span class="n">new</span> <span class="p">}</span>
+          <span class="n">context</span> <span class="s2">&quot;simple_rule&quot;</span> <span class="k">do</span>
+            <span class="n">it</span> <span class="s2">&quot;should consume &#39;a&#39;&quot;</span> <span class="k">do</span>
+              <span class="n">parser</span><span class="o">.</span><span class="n">simple_rule</span><span class="o">.</span><span class="n">should</span> <span class="n">parse</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+            <span class="k">end</span> 
+          <span class="k">end</span>
+        <span class="k">end</span>
+        </code></pre>
+        </div><p>Parslet parsers have one method per rule. These methods return valid parsers
+        for a subset of your grammar.</p>
+        <h2>Error reports</h2>
         <p>If your grammar fails and you&#8217;re aching to know why, here&#8217;s a bit of exception
         handling code that will help you out:</p>
         <div class="highlight"><pre><code class="ruby"> 

@@ -40,6 +40,49 @@ here's something that also works:
 rule(:eof) { any.absnt? }
 {% endhighlight %}
 
+h2. Testing
+
+Parslet helps you to create parsers that are in turn created out of many small
+parsers. It is really turtles all the way down. Imagine you have a complex 
+parser: 
+
+{% highlight ruby %} 
+class ComplexParser < Parslet::Parser
+  root :lots_of_stuff
+  
+  rule(:lots_of_stuff) { ... }
+  
+  # and many lines later: 
+  rule(:simple_rule) { str('a') }
+end
+{% endhighlight %}
+
+Also imagine that the parser (as a whole) fails to consume the 'a' that 
+<code>simple_rule</code> is talking about. 
+
+This kind of problem can very often be fixed by bisecting it into two possible
+problems. Either: 
+
+# the <code>lots_of_stuff</code> rule somehow doesn't place <code>simple_rule</code>
+  in the right context or
+# the <code>simple_rule</code> simply (hah!) fails to match its input. 
+
+I find it very useful in this situation to eliminate 2. from our options: 
+
+{% highlight ruby %} 
+describe ComplexParser  do
+  let(:parser) { ComplexParser.new }
+  context "simple_rule" do
+    it "should consume 'a'" do
+      parser.simple_rule.should parse('a')
+    end 
+  end
+end
+{% endhighlight %}
+
+Parslet parsers have one method per rule. These methods return valid parsers
+for a subset of your grammar. 
+
 h2. Error reports
 
 If your grammar fails and you're aching to know why, here's a bit of exception
