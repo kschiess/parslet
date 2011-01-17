@@ -17,11 +17,12 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     }
   end
   
-  def try(io) # :nodoc:
+  def try(source) # :nodoc:
     occ = 0
     result = [@tag]   # initialize the result array with the tag (for flattening)
+    start_pos = source.pos
     catch(:error) {
-      result << parslet.apply(io)
+      result << parslet.apply(source)
       occ += 1
       
       # If we're not greedy (max is defined), check if that has been 
@@ -33,7 +34,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     # Greedy matcher has produced a failure. Check if occ (which will
     # contain the number of sucesses) is in {min, max}.
     # p [:repetition, occ, min, max]
-    error(io, @error_msgs[:minrep]) if occ < min
+    error(source, @error_msgs[:minrep], start_pos) if occ < min
     return result
   end
   

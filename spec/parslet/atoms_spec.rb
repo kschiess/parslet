@@ -11,8 +11,8 @@ describe Parslet do
   include Parslet
   extend Parslet
 
-  def gio(str)
-    StringIO.new(str)
+  def src(str)
+    Source.new str
   end
   
   describe "match('[abc]')" do
@@ -49,7 +49,7 @@ describe Parslet do
         }.should not_parse
       end
       it "should have a relevant cause" do
-        parslet.cause.should == "Expected at least 3 of [a] at line 1 char 2."
+        parslet.cause.should == "Expected at least 3 of [a] at line 1 char 1."
       end 
       it "should have a tree with 2 nodes" do
         parslet.error_tree.nodes.should == 2
@@ -92,9 +92,9 @@ describe Parslet do
       parslet.parse('foo')
     end
     it "should leave pos untouched if there is no foo" do
-      io = gio('bar')
-      parslet.apply(io)
-      io.pos.should == 0
+      source = src('bar')
+      parslet.apply(source)
+      source.pos.should == 0
     end
     it "should inspect as 'foo'?" do
       parslet.inspect.should == "'foo'?"
@@ -185,12 +185,12 @@ describe Parslet do
     end 
     context "when fed 'foo'" do
       it "should parse" do
-        parslet.apply(gio('foo'))
+        parslet.apply(src('foo'))
       end
       it "should not change input position" do
-        io = gio('foo')
-        parslet.apply(io)
-        io.pos.should == 0
+        source = src('foo')
+        parslet.apply(source)
+        source.pos.should == 0
       end
     end
     context "when fed 'bar'" do
@@ -200,7 +200,7 @@ describe Parslet do
     end
     describe "<- #parse" do
       it "should return nil" do
-        parslet.apply(gio 'foo').should == nil
+        parslet.apply(src 'foo').should == nil
       end 
     end
   end
@@ -215,12 +215,12 @@ describe Parslet do
     end 
     context "when fed 'bar'" do
       it "should parse" do
-        parslet.apply(gio 'bar')
+        parslet.apply(src 'bar')
       end
       it "should not change input position" do
-        io = gio('bar')
-        parslet.apply(io)
-        io.pos.should == 0
+        source = src('bar')
+        parslet.apply(source)
+        source.pos.should == 0
       end
     end
     context "when fed 'foo'" do
@@ -256,9 +256,9 @@ describe Parslet do
       parslet.parse('.')
     end 
     it "should consume one char" do
-      io = gio('foo')
-      parslet.apply(io)
-      io.pos.should == 1
+      source = src('foo')
+      parslet.apply(source)
+      source.pos.should == 1
     end 
   end
   describe "eof behaviour" do

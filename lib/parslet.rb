@@ -1,5 +1,3 @@
-require 'stringio'
-
 # A simple parser generator library. Typical usage would look like this: 
 #
 #   require 'parslet'

@@ -18,10 +18,11 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     }
   end
 
-  def try(io) # :nodoc:
-    s = io.read(1)
-    error(io, @error_msgs[:premature]) unless s
-    error(io, @error_msgs[:failed]) unless s.match(re)
+  def try(source) # :nodoc:
+    start_pos = source.pos
+    s = source.read(1)
+    error(source, @error_msgs[:premature], start_pos) unless s
+    error(source, @error_msgs[:failed], start_pos) unless s.match(re)
     return s
   end
 

@@ -9,13 +9,11 @@ class Parslet::Atoms::Base
   # will be thrown. 
   #
   def parse(io)
-    if io.respond_to? :to_str
-      io = StringIO.new(io)
-    end
+    source = Parslet::Source.new(io)
     
     result = nil
     error_message_or_success = catch(:error) {
-      result = apply(io)
+      result = apply(source)
       :success
     }
     
@@ -28,7 +26,7 @@ class Parslet::Atoms::Base
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
-    unless io.eof?
+    unless source.eof?
       # Do we know why we stopped matching input? If yes, that's a good
       # error to fail with. Otherwise just report that we cannot consume the
       # input.
@@ -37,8 +35,10 @@ class Parslet::Atoms::Base
         raise Parslet::ParseFailed, 
           "Unconsumed input, maybe because of this: #{cause}"
       else
+        old_pos = source.pos
         parse_failed(
-          format_cause(io, "Don't know what to do with #{io.string[io.pos,100]}"))
+          format_cause(source, 
+            "Don't know what to do with #{source.read(100)}", old_pos))
       end
     end
     
@@ -47,17 +47,13 @@ class Parslet::Atoms::Base
 
   #---
   # Calls the #try method of this parslet. In case of a parse error, apply
-  # leaves the io in the state it was before the attempt. 
+  # leaves the source in the state it was before the attempt. 
   #+++
-  def apply(io) # :nodoc:
-    # p [:start, self, io.string[io.pos, 10]]
+  def apply(source) # :nodoc:
+    old_pos = source.pos
     
-    old_pos = io.pos
-    
-    # p [:try, self, io.string[io.pos, 20]]
     message = catch(:error) {
-      r = try_or_cache(io)
-      # p [:return_from, self, r, flatten(r)]
+      r = try_or_cache(source)
       
       # This has just succeeded, so last_cause must be empty
       @last_cause = nil
@@ -65,30 +61,29 @@ class Parslet::Atoms::Base
     }
     
     # We only reach this point if the parse has failed. message is not nil.
-    # p [:failing, self, io.string[io.pos, 20]]
     
-    io.pos = old_pos
+    source.pos = old_pos
     throw :error, message
   end
   
-  def try_or_cache(io)
-    pos = io.pos
+  def try_or_cache(source)
+    pos = source.pos
     @cache ||= {}
     
     if last_result=@cache[pos]
       result, obj, consume = last_result
       if result
-        io.read(consume)
+        source.read(consume)
         return obj
       else
         throw :error, obj
       end
     else
       message = catch(:error) {
-        res = try(io)
-        consume = io.pos
+        res = try(source)
+        consume = source.pos
         
-        @cache[pos] = [true, res, io.pos-pos]
+        @cache[pos] = [true, res, source.pos-pos]
         return res
       }
       
@@ -100,7 +95,7 @@ class Parslet::Atoms::Base
   # Override this in your Atoms::Base subclasses to implement parsing
   # behaviour. 
   #
-  def try(io)
+  def try(source)
     raise NotImplementedError, "Atoms::Base doesn't have behaviour, please implement #try(io)."
   end
 
@@ -296,8 +291,8 @@ private
   # If +pos+ is given, it is used as the real position the error happened, 
   # correcting the io's current position.
   #
-  def error(io, str, pos=nil)
-    @last_cause = format_cause(io, str, pos)
+  def error(source, str, pos=nil)
+    @last_cause = format_cause(source, str, pos)
     throw :error, @last_cause
   end
   def parse_failed(str)
@@ -305,25 +300,12 @@ private
     raise Parslet::ParseFailed,
       @last_cause
   end
-  def format_cause(io, str, pos=nil)
+  def format_cause(source, str, pos=nil)
     @cause_suffix ||= {}
     
-    real_pos = (pos||io.pos)
-    if suffix=@cause_suffix[real_pos]
-      str + suffix
-    else
-      @cause_suffix[real_pos] = suffix = compute_suffix(io, real_pos)
-      str + suffix
-    end
-  end
-  def compute_suffix(io, pos)
-    pre = io.string[0..pos]
-    lines = Array(pre.lines)
-  
-    return "" if lines.empty?
-    
-    pos   = lines.last.length
-    return " at line #{lines.count} char #{pos}."
+    real_pos = (pos||source.pos)
+    line, column = source.line_and_column(real_pos)
+    str + " at line #{line} char #{column}."
   end
   def warn_about_duplicate_keys(h1, h2)
     d = h1.keys & h2.keys
