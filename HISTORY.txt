@@ -6,6 +6,9 @@
   
   + Uses throw/catch internally for an order of magnitude increase in execution
     speed.
+    
+  ! FIX: Parslet::Transform was wrongly fixed earlier - it now wont mangle 
+    hashes anymore. (Blake Sweeney)
 
 = 1.0.0 / 29Dez2010
 

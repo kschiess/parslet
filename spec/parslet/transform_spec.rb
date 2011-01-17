@@ -77,6 +77,15 @@ describe Parslet::Transform do
     end 
   end
   
+  context "various transformations (regression)" do
+    context "hashes" do
+      it "are matched completely" do
+        transform.rule(:a => simple(:x)) { fail }
+        transform.apply(:a => 'a', :b => 'b')
+      end 
+    end
+  end
+  
   context "when not using the bindings as hash, but as local variables" do
     before(:each) do
       transform.rule(simple(:x)) { A.new(x) }

@@ -35,7 +35,7 @@ describe Parslet::Pattern do
     bindings = p(pattern).match(exp)
     bindings.should_not be_nil
     
-    block.call(bindings)
+    block.call(bindings) if block
   end
   
   # Can't use #match here, so I went to the Thesaurus.
@@ -143,7 +143,7 @@ describe Parslet::Pattern do
       end
 
       it "should not match partially" do
-        exp.should_not match_with_bind(:a => simple(:x), :x => 'a')
+        Parslet::Pattern.new(:a => simple(:x)).match(exp).should be_nil
       end 
       it "should match completely" do
         exp.should match_with_bind({:a => simple(:x), :b => simple(:y)}, 
