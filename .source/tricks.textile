@@ -33,6 +33,13 @@ This allows for a document containing only <code>eol_line</code>s, one that
 has any number of <code>eol_line</code>s and then an extra lone
 <code>line</code>, or a completely empty document.
 
+And just to show that there is always (at least) two ways to answer a question, 
+here's something that also works:
+
+{% highlight ruby %} 
+rule(:eof) { any.absnt? }
+{% endhighlight %}
+
 h2. Error reports
 
 If your grammar fails and you're aching to know why, here's a bit of exception

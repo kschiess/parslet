@@ -49,7 +49,12 @@
         <p>This allows for a document containing only <code>eol_line</code>s, one that
         has any number of <code>eol_line</code>s and then an extra lone
         <code>line</code>, or a completely empty document.</p>
-        <h2>Error reports</h2>
+        <p>And just to show that there is always (at least) two ways to answer a question, 
+        here&#8217;s something that also works:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:eof</span><span class="p">)</span> <span class="p">{</span> <span class="n">any</span><span class="o">.</span><span class="n">absnt?</span> <span class="p">}</span>
+        </code></pre>
+        </div><h2>Error reports</h2>
         <p>If your grammar fails and you&#8217;re aching to know why, here&#8217;s a bit of exception
         handling code that will help you out:</p>
         <div class="highlight"><pre><code class="ruby"> 
