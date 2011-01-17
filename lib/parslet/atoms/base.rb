@@ -85,7 +85,6 @@ class Parslet::Atoms::Base
     else
       message = catch(:error) {
         res = try(source)
-        consume = source.pos
         
         @cache[pos] = [true, res, source.pos-pos]
         return res
