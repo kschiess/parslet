@@ -42,6 +42,9 @@ improvements. (Robert Kosek)
 
 h2. Thanks for all the fish -- Contributions
 
+* *Matthew Draper* ("matthewd":http://matthewd.net/) for bothering with my 
+  broken CSS.
+
 * *Hal Brodigan* ("postmodern":http://postmodern.github.com/) for solving our
   email parsing needs!
 
