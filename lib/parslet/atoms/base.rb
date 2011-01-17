@@ -4,6 +4,11 @@
 class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
   
+  def initialize
+    @cache = {}     # resets packrat cache
+  end
+    
+  
   # Given a string or an IO object, this will attempt a parse of its contents
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
@@ -68,7 +73,6 @@ class Parslet::Atoms::Base
   
   def try_or_cache(source)
     pos = source.pos
-    @cache ||= {}
     
     if last_result=@cache[pos]
       result, obj, consume = last_result

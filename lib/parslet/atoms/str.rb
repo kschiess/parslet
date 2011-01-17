@@ -7,6 +7,8 @@
 class Parslet::Atoms::Str < Parslet::Atoms::Base
   attr_reader :str
   def initialize(str)
+    super()
+
     @str = str
     @error_msgs = {
       :premature  => "Premature end of input", 

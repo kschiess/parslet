@@ -8,6 +8,8 @@
 class Parslet::Atoms::Named < Parslet::Atoms::Base
   attr_reader :parslet, :name
   def initialize(parslet, name) # :nodoc:
+    super()
+
     @parslet, @name = parslet, name
   end
   

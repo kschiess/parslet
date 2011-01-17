@@ -9,6 +9,8 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   attr_reader :bound_parslet
   
   def initialize(bound_parslet, positive=true) # :nodoc:
+    super()
+    
     # Model positive and negative lookahead by testing this flag.
     @positive = positive
     @bound_parslet = bound_parslet

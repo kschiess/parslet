@@ -9,6 +9,8 @@
 class Parslet::Atoms::Repetition < Parslet::Atoms::Base  
   attr_reader :min, :max, :parslet
   def initialize(parslet, min, max, tag=:repetition)
+    super()
+
     @parslet = parslet
     @min, @max = min, max
     @tag = tag
