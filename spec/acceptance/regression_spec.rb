@@ -64,20 +64,25 @@ describe "Regressions from real examples" do
     end
   end
 
-  class ParensParser
-    include Parslet
-
+  class ParensParser < Parslet::Parser
     rule(:balanced) {
       str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
     }
-
-    def parse(str)
-      balanced.parse(str)
-    end
+  
+    root(:balanced)
   end
   describe ParensParser do
     let(:instance) { ParensParser.new }
     
+    context "statefulness: trying several expressions in sequence" do
+      it "should not be stateful" do
+        instance.parse('(())')
+        lambda {
+          instance.parse('((()))')
+          instance.parse('(((())))')
+        }.should_not raise_error(Parslet::ParseFailed)
+      end 
+    end
     context "expression '(())'" do
       let(:result) { instance.parse('(())') }
 
