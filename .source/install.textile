@@ -3,7 +3,7 @@ layout: default
 title: Install
 ---
 
-Parslet is at version _1.0.0_. 
+Parslet is at version _1.0.1_. 
 
 *Rubygems*
 
