@@ -95,6 +95,11 @@ describe Parslet::Source do
         before(:each) { source.pos = 102 }
         it { should == [2, 2] }
       end
+      context "when seeking beyond eof" do
+        it "should not throw an error" do
+          source.pos = 1000
+        end 
+      end
     end
     context "reading char by char, storing the results" do
       let(:results) {
