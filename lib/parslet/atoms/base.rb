@@ -285,12 +285,6 @@ class Parslet::Atoms::Base
     not @last_cause.nil?
   end
 private
-  # TODO comments!!!
-  # Report/raise a parse error with the given message, printing the current
-  # position as well. Appends 'at line X char Y.' to the message you give. 
-  # If +pos+ is given, it is used as the real position the error happened, 
-  # correcting the io's current position.
-  #
   def error(source, str, pos=nil)
     @last_cause = format_cause(source, str, pos)
     throw :error, @last_cause
@@ -300,6 +294,7 @@ private
     raise Parslet::ParseFailed,
       @last_cause
   end
+
   def format_cause(source, str, pos=nil)
     @cause_suffix ||= {}
     
@@ -307,6 +302,7 @@ private
     line, column = source.line_and_column(real_pos)
     str + " at line #{line} char #{column}."
   end
+
   def warn_about_duplicate_keys(h1, h2)
     d = h1.keys & h2.keys
     unless d.empty?
