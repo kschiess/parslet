@@ -34,6 +34,11 @@ class Parslet::Source
   end
   
   def pos=(new_pos)
+    # Are we seeking beyond the last line?
+    last_offset = line_ends.last
+    if last_offset && new_pos > last_offset
+      raise NotImplementedError
+    end
     @io.pos = new_pos
   end
   
@@ -41,10 +46,13 @@ class Parslet::Source
     eol_idx = @line_ends.index { |o| o>pos }
     
     if eol_idx
-      raise NotImplementedError
+      # eol_idx points to the offset that ends the current line.
+      # Let's try to find the offset that starts it: 
+      offset = eol_idx>0 && @line_ends[eol_idx-1] || 0
+      return [eol_idx+1, pos-offset+1]
     else
       # eol_idx is nil, that means that we're beyond the last line end that
-      # we know about. Pretend for now that we're just on the last line. 
+      # we know about. Pretend for now that we're just on the last line.
       offset = @line_ends.last || 0
       return [@line_ends.size+1, pos-offset+1]
     end
