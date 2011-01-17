@@ -10,6 +10,8 @@
 class Parslet::Atoms::Re < Parslet::Atoms::Base
   attr_reader :match, :re
   def initialize(match) # :nodoc:
+    super()
+
     @match = match
     @re    = Regexp.new(match, Regexp::MULTILINE)
     @error_msgs = {

@@ -7,6 +7,8 @@
 class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   attr_reader :parslets
   def initialize(*parslets)
+    super()
+
     @parslets = parslets
     @error_msgs = {
       :failed  => "Failed to match sequence (#{self.inspect})"

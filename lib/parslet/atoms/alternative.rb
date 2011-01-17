@@ -16,6 +16,8 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   #   str('a') | str('b')
   #
   def initialize(*alternatives)
+    super()
+    
     @alternatives = alternatives
     @error_msg = "Expected one of #{alternatives.inspect}."
   end
