@@ -63,6 +63,49 @@ describe Parslet::Source do
       before(:each) { source.read(101) }
       it { should == [2, 1]}
     end
+    context "after reading everything" do
+      before(:each) { source.read(10000) }
+
+      it "should contain all line ends" do
+        source.line_ends.should == [101, 202]
+      end 
+      
+      context "when seeking to 9" do
+        before(:each) { source.pos = 9 }
+        it { should == [1, 10] }
+      end
+      context "when seeking to 100" do
+        before(:each) { source.pos = 100 }
+        it { should == [1, 101] }
+      end
+      context "when seeking to 101" do
+        before(:each) { source.pos = 101 }
+        it { should == [2, 1] }
+      end
+      context "when seeking to 102" do
+        before(:each) { source.pos = 102 }
+        it { should == [2, 2] }
+      end
+    end
+    context "reading char by char, storing the results" do
+      before(:each) { 
+        @results = {}
+        while not source.eof?
+          pos = source.pos
+          @results[pos] = source.line_and_column
+          source.read(1)
+        end
+        
+        @results.should have(202).entries
+      }
+      
+      it "should give the same results when seeking" do
+        @results.each do |pos, result|
+          source.pos = pos
+          source.line_and_column.should == result
+        end
+      end
+    end
   end
   describe "<- #line_ends" do
     subject { source.line_ends }
