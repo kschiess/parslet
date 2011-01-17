@@ -2,14 +2,14 @@
 
 Gem::Specification.new do |s|
   s.name = %q{parslet}
-  s.version = "1.1.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kaspar Schiess"]
-  s.date = %q{2011-01-02}
+  s.date = %q{2011-01-17}
   s.email = %q{kaspar.schiess@absurd.li}
   s.extra_rdoc_files = ["README"]
-  s.files = ["Gemfile", "HISTORY.txt", "LICENSE", "Rakefile", "README", "spec", "lib/parslet", "lib/parslet/atoms", "lib/parslet/atoms/alternative.rb", "lib/parslet/atoms/base.rb", "lib/parslet/atoms/entity.rb", "lib/parslet/atoms/lookahead.rb", "lib/parslet/atoms/named.rb", "lib/parslet/atoms/re.rb", "lib/parslet/atoms/repetition.rb", "lib/parslet/atoms/sequence.rb", "lib/parslet/atoms/str.rb", "lib/parslet/atoms.rb", "lib/parslet/error_tree.rb", "lib/parslet/expression", "lib/parslet/expression/treetop.rb", "lib/parslet/expression.rb", "lib/parslet/parser.rb", "lib/parslet/pattern", "lib/parslet/pattern/binding.rb", "lib/parslet/pattern/context.rb", "lib/parslet/pattern.rb", "lib/parslet/rig", "lib/parslet/rig/rspec.rb", "lib/parslet/transform.rb", "lib/parslet.rb"]
+  s.files = ["Gemfile", "HISTORY.txt", "LICENSE", "Rakefile", "README", "lib/parslet/atoms/alternative.rb", "lib/parslet/atoms/base.rb", "lib/parslet/atoms/entity.rb", "lib/parslet/atoms/lookahead.rb", "lib/parslet/atoms/named.rb", "lib/parslet/atoms/re.rb", "lib/parslet/atoms/repetition.rb", "lib/parslet/atoms/sequence.rb", "lib/parslet/atoms/str.rb", "lib/parslet/atoms.rb", "lib/parslet/error_tree.rb", "lib/parslet/expression/treetop.rb", "lib/parslet/expression.rb", "lib/parslet/parser.rb", "lib/parslet/pattern/binding.rb", "lib/parslet/pattern/context.rb", "lib/parslet/pattern.rb", "lib/parslet/rig/rspec.rb", "lib/parslet/transform.rb", "lib/parslet.rb", "example/documentation.rb", "example/email_parser.rb", "example/empty.rb", "example/ip_address.rb", "example/minilisp.rb", "example/parens.rb", "example/readme.rb", "example/seasons.rb", "example/simple.lit", "example/simple_xml.rb", "example/string_parser.rb", "example/test.lit"]
   s.homepage = %q{http://kschiess.github.com/parslet}
   s.rdoc_options = ["--main", "README"]
   s.require_paths = ["lib"]

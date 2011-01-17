@@ -18,7 +18,7 @@ spec = Gem::Specification.new do |s|
 
   # Change these as appropriate
   s.name              = "parslet"
-  s.version           = "1.1.0"
+  s.version           = "1.0.1"
   s.summary           = "Parser construction library with great error reporting in Ruby."
   s.author            = "Kaspar Schiess"
   s.email             = "kaspar.schiess@absurd.li"
@@ -29,7 +29,7 @@ spec = Gem::Specification.new do |s|
   s.rdoc_options      = %w(--main README)
 
   # Add any extra files to include in the gem
-  s.files             = %w(Gemfile HISTORY.txt LICENSE Rakefile README) + Dir.glob("{spec,lib/**/*}")
+  s.files             = %w(Gemfile HISTORY.txt LICENSE Rakefile README) + Dir.glob("{lib,example}/**/*")
   s.require_paths     = ["lib"]
 
   # If you want to depend on other gems, add them here, along with any
