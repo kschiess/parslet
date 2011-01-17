@@ -1,4 +1,6 @@
 
+require 'stringio'
+
 # Wraps the input IO to parslet. The interface defined by this class is 
 # smaller than what IO offers, but enhances it with a #column and #line 
 # method for the current position. 
@@ -7,6 +9,10 @@ class Parslet::Source
   attr_reader :line_ends
   
   def initialize(io)
+    if io.respond_to? :to_str
+      io = StringIO.new(io)
+    end
+    
     @io = io
     warn "Line counting will be off if the IO is not rewound." unless @io.pos==0
     
@@ -20,7 +26,7 @@ class Parslet::Source
     start_pos = pos
     @io.read(n).tap { |buf| 
       cur = -1
-      while cur = buf.index("\n", cur+1)
+      while buf && cur = buf.index("\n", cur+1)
         @line_ends << (start_pos + cur+1)
       end }
   end
@@ -42,7 +48,8 @@ class Parslet::Source
     @io.pos = new_pos
   end
   
-  def line_and_column
+  def line_and_column(position=nil)
+    pos = (position || self.pos)
     eol_idx = @line_ends.index { |o| o>pos }
     
     if eol_idx

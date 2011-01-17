@@ -4,7 +4,16 @@ describe Parslet::Source do
   let(:io) { StringIO.new("a"*100 + "\n" + "a"*100 + "\n") }
   let(:source) { described_class.new(io) }
   
+  describe "<- #initialize" do
+    it "should turn a string into an IO" do
+      source = described_class.new("foo")
+      source.read(1).should == 'f'
+    end
+  end
   describe "<- #read(n)" do
+    it "should not raise nil error when retval is nil" do
+      described_class.new('').read(1)
+    end 
     it "should return 100 'a's when reading a kilobyte" do
       source.read(100).should == 'a'*100
     end
@@ -88,7 +97,7 @@ describe Parslet::Source do
       end
     end
     context "reading char by char, storing the results" do
-      before(:each) { 
+      let(:results) {
         @results = {}
         while not source.eof?
           pos = source.pos
@@ -97,10 +106,18 @@ describe Parslet::Source do
         end
         
         @results.should have(202).entries
+        @results
       }
       
+      context "when using pos argument" do
+        it "should return the same results" do
+          results.each do |pos, result|
+            source.line_and_column(pos).should == result
+          end
+        end 
+      end
       it "should give the same results when seeking" do
-        @results.each do |pos, result|
+        results.each do |pos, result|
           source.pos = pos
           source.line_and_column.should == result
         end

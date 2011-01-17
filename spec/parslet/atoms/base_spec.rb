@@ -15,7 +15,7 @@ describe Parslet::Atoms::Base do
       it "should not raise an error" do
         # We assert that a symbol is thrown and not an exception.
         lambda {
-          parslet.send(:error, StringIO.new, 'test')
+          parslet.send(:error, Parslet::Source.new('test'), 'test')
         }.should throw_symbol(:error)
       end 
     end
@@ -61,10 +61,10 @@ describe Parslet::Atoms::Base do
     context "when there is an error from a previous run" do
       before(:each) do
         catch(:error) {
-          parslet.send(:error, StringIO.new, 'cause') 
+          parslet.send(:error, Parslet::Source.new('test'), 'cause') 
         }
 
-        parslet.cause.should == 'cause'
+        parslet.cause.should == "cause at line 1 char 1."
       end
       it "should reset the #cause to nil" do
         flexmock(parslet).
