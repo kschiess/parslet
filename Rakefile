@@ -21,5 +21,5 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = "rdoc"
 end
 
-desc 'Clear out RDoc and generated packages'
-task :clean => [:clobber_rdoc, :clobber_package]
+desc 'Clear out RDoc'
+task :clean => :clobber_rdoc
