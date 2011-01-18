@@ -12,7 +12,7 @@ describe Parslet do
   extend Parslet
 
   def src(str)
-    Source.new str
+    Parslet::Source.new str
   end
   
   describe "match('[abc]')" do
