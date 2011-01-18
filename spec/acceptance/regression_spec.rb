@@ -76,6 +76,11 @@ describe "Regressions from real examples" do
     
     context "statefulness: trying several expressions in sequence" do
       it "should not be stateful" do
+        # NOTE: Since you've come here to read this, I'll explain why
+        # this is broken and not fixed: You're looking at the tuning branch, 
+        # which rewrites a bunch of stuff - so I have failing tests to 
+        # remind me of what is left to be done. And to remind you not to 
+        # trust this code. 
         instance.parse('(())')
         lambda {
           instance.parse('((()))')
