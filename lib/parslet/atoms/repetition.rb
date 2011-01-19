@@ -23,21 +23,22 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     occ = 0
     result = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
-    catch(:error) {
-      result << parslet.apply(source, context)
+    loop do
+      value = parslet.apply(source, context)
+      break if value.error?
+
       occ += 1
+      result << value.result
       
       # If we're not greedy (max is defined), check if that has been 
       # reached. 
-      return result if max && occ>=max
-      redo
-    }
+      return success(result) if max && occ>=max
+    end
     
     # Greedy matcher has produced a failure. Check if occ (which will
     # contain the number of sucesses) is in {min, max}.
-    # p [:repetition, occ, min, max]
-    error(source, @error_msgs[:minrep], start_pos) if occ < min
-    return result
+    return error(source, @error_msgs[:minrep], start_pos) if occ < min
+    return success(result)
   end
   
   precedence REPETITION

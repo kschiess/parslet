@@ -20,11 +20,13 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     error_pos = source.pos
     s = source.read(str.size)
 
-    error(source, @error_msgs[:premature]) unless s && s.size==str.size
-    error(source, @error_msgs[:failed]+s.inspect, error_pos) \
-      unless s==str
-        
-    return s
+    return success(s) if s == str
+    
+    # assert: s != str
+
+    # Failures: 
+    return error(source, @error_msgs[:premature]) unless s && s.size==str.size
+    return error(source, @error_msgs[:failed]+s.inspect, error_pos) 
   end
   
   def to_s_inner(prec) # :nodoc:

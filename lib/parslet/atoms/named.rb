@@ -16,7 +16,10 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
   def apply(source, context) # :nodoc:
     value = parslet.apply(source, context)
     
-    produce_return_value value
+    return value if value.error?
+    success(
+      produce_return_value(
+        value.result))
   end
   
   def to_s_inner(prec) # :nodoc:
