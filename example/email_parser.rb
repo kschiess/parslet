@@ -20,7 +20,7 @@ class EmailParser < Parslet::Parser
   }
 
   rule(:word) { match('[a-z0-9]').repeat(1).as(:word) >> space? }
-  rule(:separator) { space? >> dot.as(:dot) >> space? | space }
+  rule(:separator) { dot.as(:dot) >> space? | space }
   rule(:words) { word >> (separator >> word).repeat }
 
   rule(:email) {
