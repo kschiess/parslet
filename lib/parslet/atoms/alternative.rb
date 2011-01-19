@@ -31,14 +31,14 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     self
   end
   
-  def try(io) # :nodoc:
+  def try(source, context) # :nodoc:
     alternatives.each { |a|
       catch(:error) {
-        return a.apply(io)
+        return a.apply(source, context)
       }
     }
     # If we reach this point, all alternatives have failed. 
-    error(io, @error_msg)
+    error(source, @error_msg)
   end
 
   precedence ALTERNATE

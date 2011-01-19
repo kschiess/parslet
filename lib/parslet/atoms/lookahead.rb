@@ -20,18 +20,20 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     }
   end
   
-  def try(io) # :nodoc:
-    pos = io.pos
+  def try(source, context) # :nodoc:
+    pos = source.pos
 
     failed = true
     catch(:error) {
-      bound_parslet.apply(io)
+      bound_parslet.apply(source, context)
       failed = false
     }
-    return failed ? fail(io) : success(io)
-
+    return failed ? fail(source) : success(source)
+    
+  # This is probably the only parslet that rewinds its input in #try.
+  # Lookaheads NEVER consume their input, even on success, that's why. 
   ensure 
-    io.pos = pos
+    source.pos = pos
   end
   
   # TODO Both of these will produce results that could be reduced easily. 

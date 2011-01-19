@@ -20,16 +20,16 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
     self
   end
   
-  def try(io) # :nodoc:
+  def try(source, context) # :nodoc:
     catch(:error) {
       return [:sequence]+parslets.map { |p| 
         # Save each parslet as potentially offending (raising an error). 
         @offending_parslet = p
-        p.apply(io) 
+        p.apply(source, context) 
       }
     }
 
-    error(io, @error_msgs[:failed])
+    error(source, @error_msgs[:failed])
   end
       
   precedence SEQUENCE
