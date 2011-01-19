@@ -4,6 +4,9 @@
 class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
   
+  # Helper class that implements a transient cache that maps position and
+  # parslet object to results. 
+  #
   class Context
     def initialize
       @cache = Hash.new { |h, k| h[k] = Hash.new }
