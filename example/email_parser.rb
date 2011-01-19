@@ -2,6 +2,7 @@
 
 # Example contributed by Hal Brodigan (postmodern). Thanks!
 
+$:.unshift '../lib'
 require 'parslet'
 
 class EmailParser < Parslet::Parser
@@ -23,7 +24,7 @@ class EmailParser < Parslet::Parser
   rule(:words) { word >> (separator >> word).repeat }
 
   rule(:email) {
-    (words >> space? >> at.as(:at) >> space? >> words).as(:email)
+    (words.as(:username) >> space? >> at >> space? >> words).as(:email)
   }
 
   root(:email)
@@ -31,8 +32,11 @@ end
 
 class EmailSanitizer < Parslet::Transform
   rule(:dot => simple(:dot), :word => simple(:word)) { ".#{word}" }
-  rule(:at => simple(:at)) { '@' }
   rule(:word => simple(:word)) { word }
+
+  rule(:username => sequence(:username)) { username.join + "@" }
+  rule(:username => simple(:username)) { username + "@" }
+
   rule(:email => sequence(:email)) { email.join }
 end
 
@@ -45,7 +49,7 @@ unless ARGV[0]
 end
 
 begin
-  puts sanitizer.apply(parser.parse(ARGV[0]))
+  p sanitizer.apply(parser.parse(ARGV[0]))
 rescue Parslet::ParseFailed => error
   puts error
   puts parser.root.error_tree
