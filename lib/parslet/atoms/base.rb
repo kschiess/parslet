@@ -20,13 +20,13 @@ class Parslet::Atoms::Base
     # were consumed by a successful parse. Imitation of such a parse must 
     # advance the input pos by the same amount of bytes.
     #
-    def cache(obj, source)
+    def cache(obj, source, &block)
       beg = source.pos
             
       # Not in cache yet? Return early.
       unless entry = lookup(obj, beg)
         error = catch(:error) {
-          result = yield
+          result = block.call
         
           # Success:
           set obj, beg, [true, result, source.pos-beg]
