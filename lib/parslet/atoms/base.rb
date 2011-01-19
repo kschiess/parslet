@@ -22,20 +22,19 @@ class Parslet::Atoms::Base
     #
     def cache(obj, source)
       beg = source.pos
-      oid = obj.object_id
             
       # Not in cache yet? Return early.
-      unless entry = @cache[oid][beg]
+      unless entry = lookup(obj, beg)
         error = catch (:error) {
           result = yield
         
           # Success:
-          @cache[oid][beg] = [true, result, source.pos-beg]
+          set obj, beg, [true, result, source.pos-beg]
           return result
         }
         
         # Failure: 
-        @cache[oid][beg] = [false, error, nil]
+        set obj, beg, [false, error, nil]
         throw :error, error
       end
 
@@ -48,6 +47,14 @@ class Parslet::Atoms::Base
       source.read(advance)
       return result
     end  
+
+  private 
+    def lookup(obj, pos)
+      @cache[[obj, pos]]
+    end
+    def set(obj, pos, val)
+      @cache[[obj, pos]] = val
+    end
   end
   
   # Given a string or an IO object, this will attempt a parse of its contents
