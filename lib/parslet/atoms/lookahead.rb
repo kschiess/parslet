@@ -23,12 +23,11 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   def try(source, context) # :nodoc:
     pos = source.pos
 
-    failed = true
-    catch(:error) {
-      bound_parslet.apply(source, context)
-      failed = false
-    }
-    return failed ? fail(source) : success(source)
+    value = bound_parslet.apply(source, context)
+    return success(nil) if positive ^ value.error?
+    
+    return error(source, @error_msgs[:positive]) if positive
+    return error(source, @error_msgs[:negative])
     
   # This is probably the only parslet that rewinds its input in #try.
   # Lookaheads NEVER consume their input, even on success, that's why. 
@@ -36,23 +35,6 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     source.pos = pos
   end
   
-  # TODO Both of these will produce results that could be reduced easily. 
-  # Maybe do some shortcut reducing here?
-  def fail(io) # :nodoc:
-    if positive
-      error(io, @error_msgs[:positive])
-    else
-      return nil
-    end
-  end
-  def success(io) # :nodoc:
-    if positive
-      return nil
-    else
-      error(io, @error_msgs[:positive])
-    end
-  end
-
   precedence LOOKAHEAD
   def to_s_inner(prec) # :nodoc:
     char = positive ? '&' : '!'

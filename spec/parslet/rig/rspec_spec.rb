@@ -13,5 +13,9 @@ describe 'rspec integration' do
 
   it { str('foo').as(:bar).should parse('foo').as({:bar => 'foo'}) }
   it { str('foo').as(:bar).should_not parse('foo').as({:b => 'f'}) }
+
   # it { str('foo').should parse('foo').as('bar') }
+  # it { str('foo').should parse('food') }
+  # it { str('foo').should_not parse('foo').as('foo') }
+  # it { str('foo').should_not parse('foo') }
 end

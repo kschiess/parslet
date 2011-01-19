@@ -11,17 +11,6 @@ describe Parslet::Atoms::Base do
       }.should raise_error(NotImplementedError)
     end 
   end
-  describe "<- #error" do
-    context "when the io is empty" do
-      it "should not raise an error" do
-        # We assert that a symbol is thrown and not an exception.
-        lambda {
-          parslet.send(:error, Parslet::Source.new('test'), 'test')
-        }.should throw_symbol(:error)
-      end 
-    end
-    
-  end
   describe "<- #error_tree" do
     it "should always return a tree" do
       parslet.cause.should be_nil
@@ -68,10 +57,11 @@ describe Parslet::Atoms::Base do
         parslet.cause.should == "cause at line 1 char 1."
       end
       it "should reset the #cause to nil" do
+        success = flexmock(:success, :error? => false)
         flexmock(parslet).
-          should_receive(:try => true)
+          should_receive(:try => success)
         
-        parslet.apply(StringIO.new, context)
+        parslet.apply(Parslet::Source.new(''), context)
         
         parslet.cause?.should == false
         parslet.cause.should be_nil

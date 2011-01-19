@@ -25,25 +25,15 @@ class Parslet::Atoms::Base
             
       # Not in cache yet? Return early.
       unless entry = lookup(obj, beg)
-        error = catch(:error) {
-          result = block.call
+        result = yield
         
-          # Success:
-          set obj, beg, [true, result, source.pos-beg]
-          return result
-        }
-        
-        # Failure: 
-        set obj, beg, [false, error, nil]
-        throw :error, error
+        set obj, beg, [result, source.pos-beg]
+        return result
       end
 
       # the condition in unless has returned true, so entry is not nil.
-      success_flag, result, advance = entry
+      result, advance = entry
       
-      throw :error, result unless success_flag
-
-      # success_flag was not false above, so it is true
       source.read(advance)
       return result
     end  
@@ -57,6 +47,28 @@ class Parslet::Atoms::Base
     end
   end
   
+  class Fail
+    attr_reader :message
+    def initialize(message)
+      @message = message
+    end
+    
+    def error?
+      true
+    end
+  end
+  
+  class Success
+    attr_reader :result
+    def initialize(result)
+      @result = result
+    end
+    
+    def error?
+      false
+    end
+  end
+  
   # Given a string or an IO object, this will attempt a parse of its contents
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
@@ -66,17 +78,16 @@ class Parslet::Atoms::Base
     context = Context.new
     
     result = nil
-    error_message_or_success = catch(:error) {
-      result = apply(source, context)
-      :success
-    }
+    value = apply(source, context)
     
     # If we didn't succeed the parse, raise an exception for the user. 
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
-    if error_message_or_success != :success
-      raise Parslet::ParseFailed, error_message_or_success
+    if value.error?
+      raise Parslet::ParseFailed, value.message
     end
+    
+    # assert: value is a success answer
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
@@ -96,7 +107,7 @@ class Parslet::Atoms::Base
       end
     end
     
-    return flatten(result)
+    return flatten(value.result)
   end
 
   #---
@@ -106,20 +117,19 @@ class Parslet::Atoms::Base
   def apply(source, context) # :nodoc:
     old_pos = source.pos
     
-    message = catch(:error) {
-      r = context.cache(self, source) do
-        try(source, context)
-      end
-      
-      # This has just succeeded, so last_cause must be empty
-      @last_cause = nil
-      return r
-    }
+    # result = context.cache(self, source) {
+      result = try(source, context)
+    # }
     
-    # We only reach this point if the parse has failed. message is not nil.
+    # This has just succeeded, so last_cause must be empty
+    unless result.error?
+      @last_cause = nil 
+      return result
+    end
     
+    # We only reach this point if the parse has failed. Rewind the input.
     source.pos = old_pos
-    throw :error, message
+    return result # is instance of Fail
   end
   
   # Override this in your Atoms::Base subclasses to implement parsing
@@ -315,9 +325,12 @@ class Parslet::Atoms::Base
     not @last_cause.nil?
   end
 private
+  def success(result)
+    Success.new(result)
+  end
   def error(source, str, pos=nil)
     @last_cause = format_cause(source, str, pos)
-    throw :error, @last_cause
+    Fail.new(@last_cause)
   end
   def parse_failed(str)
     @last_cause = str
