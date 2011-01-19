@@ -12,14 +12,14 @@ module Parslet::Atoms
     OUTER      = (prec+=1)    # printing is done here.
   end
   
-  autoload :Base,         'parslet/atoms/base'
-  autoload :Named,        'parslet/atoms/named'
-  autoload :Lookahead,    'parslet/atoms/lookahead'
-  autoload :Alternative,  'parslet/atoms/alternative'
-  autoload :Sequence,     'parslet/atoms/sequence'
-  autoload :Repetition,   'parslet/atoms/repetition'
-  autoload :Re,           'parslet/atoms/re'
-  autoload :Str,          'parslet/atoms/str'
-  autoload :Entity,       'parslet/atoms/entity'
+  require 'parslet/atoms/base'
+  require 'parslet/atoms/named'
+  require 'parslet/atoms/lookahead'
+  require 'parslet/atoms/alternative'
+  require 'parslet/atoms/sequence'
+  require 'parslet/atoms/repetition'
+  require 'parslet/atoms/re'
+  require 'parslet/atoms/str'
+  require 'parslet/atoms/entity'
 end
 
