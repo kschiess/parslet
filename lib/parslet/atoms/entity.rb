@@ -18,8 +18,8 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
     @block = block
   end
 
-  def try(io) # :nodoc:
-    parslet.apply(io)
+  def try(source, context) # :nodoc:
+    parslet.apply(source, context)
   end
   
   def parslet

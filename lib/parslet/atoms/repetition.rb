@@ -19,12 +19,12 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     }
   end
   
-  def try(source) # :nodoc:
+  def try(source, context) # :nodoc:
     occ = 0
     result = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
     catch(:error) {
-      result << parslet.apply(source)
+      result << parslet.apply(source, context)
       occ += 1
       
       # If we're not greedy (max is defined), check if that has been 

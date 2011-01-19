@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe Parslet::Atoms::Base do
   let(:parslet) { Parslet::Atoms::Base.new }
+  let(:context) { Parslet::Atoms::Base::Context.new }
 
   describe "<- #try(io)" do
     it "should raise NotImplementedError" do
       lambda {
-        parslet.try(flexmock(:io))
+        parslet.try(flexmock(:io), context)
       }.should raise_error(NotImplementedError)
     end 
   end
@@ -70,7 +71,7 @@ describe Parslet::Atoms::Base do
         flexmock(parslet).
           should_receive(:try => true)
         
-        parslet.apply(StringIO.new)
+        parslet.apply(StringIO.new, context)
         
         parslet.cause?.should == false
         parslet.cause.should be_nil

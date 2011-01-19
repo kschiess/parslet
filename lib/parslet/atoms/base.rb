@@ -4,10 +4,48 @@
 class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
   
-  def initialize
-    @cache = {}     # resets packrat cache
-  end
+  class Context
+    def initialize
+      @cache = Hash.new { |h, k| h[k] = Hash.new }
+    end
     
+    # Caches a parse answer for obj at source.pos. Applying the same parslet
+    # at one position of input always yields the same result, unless the input
+    # has changed. 
+    #
+    # We need the entire source here so we can ask for how many characters 
+    # were consumed by a successful parse. Imitation of such a parse must 
+    # advance the input pos by the same amount of bytes.
+    #
+    def cache(obj, source)
+      beg = source.pos
+      oid = obj.object_id
+            
+      # Not in cache yet? Return early.
+      unless entry = @cache[oid][beg]
+        error = catch (:error) {
+          result = yield
+        
+          # Success:
+          @cache[oid][beg] = [true, result, source.pos-beg]
+          return result
+        }
+        
+        # Failure: 
+        @cache[oid][beg] = [false, error, nil]
+        throw :error, error
+      end
+
+      # the condition in unless has returned true, so entry is not nil.
+      success_flag, result, advance = entry
+      
+      throw :error, result unless success_flag
+
+      # success_flag was not false above, so it is true
+      source.read(advance)
+      return result
+    end  
+  end
   
   # Given a string or an IO object, this will attempt a parse of its contents
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
@@ -15,10 +53,11 @@ class Parslet::Atoms::Base
   #
   def parse(io)
     source = Parslet::Source.new(io)
+    context = Context.new
     
     result = nil
     error_message_or_success = catch(:error) {
-      result = apply(source)
+      result = apply(source, context)
       :success
     }
     
@@ -54,11 +93,13 @@ class Parslet::Atoms::Base
   # Calls the #try method of this parslet. In case of a parse error, apply
   # leaves the source in the state it was before the attempt. 
   #+++
-  def apply(source) # :nodoc:
+  def apply(source, context) # :nodoc:
     old_pos = source.pos
     
     message = catch(:error) {
-      r = try_or_cache(source)
+      r = context.cache(self, source) do
+        try(source, context)
+      end
       
       # This has just succeeded, so last_cause must be empty
       @last_cause = nil
@@ -71,34 +112,10 @@ class Parslet::Atoms::Base
     throw :error, message
   end
   
-  def try_or_cache(source)
-    pos = source.pos
-    
-    if last_result=@cache[pos]
-      result, obj, consume = last_result
-      if result
-        source.read(consume)
-        return obj
-      else
-        throw :error, obj
-      end
-    else
-      message = catch(:error) {
-        res = try(source)
-        
-        @cache[pos] = [true, res, source.pos-pos]
-        return res
-      }
-      
-      @cache[pos] = [false, message, nil]
-      throw :error, message
-    end
-  end
-
   # Override this in your Atoms::Base subclasses to implement parsing
   # behaviour. 
   #
-  def try(source)
+  def try(source, context)
     raise NotImplementedError, "Atoms::Base doesn't have behaviour, please implement #try(io)."
   end
 

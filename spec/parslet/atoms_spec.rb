@@ -11,9 +11,8 @@ describe Parslet do
   include Parslet
   extend Parslet
 
-  def src(str)
-    Parslet::Source.new str
-  end
+  def src(str); Parslet::Source.new str; end
+  let(:context) { Parslet::Atoms::Base::Context.new }
   
   describe "match('[abc]')" do
     attr_reader :parslet
@@ -93,7 +92,7 @@ describe Parslet do
     end
     it "should leave pos untouched if there is no foo" do
       source = src('bar')
-      parslet.apply(source)
+      parslet.apply(source, context)
       source.pos.should == 0
     end
     it "should inspect as 'foo'?" do
@@ -185,11 +184,11 @@ describe Parslet do
     end 
     context "when fed 'foo'" do
       it "should parse" do
-        parslet.apply(src('foo'))
+        parslet.apply(src('foo'), context)
       end
       it "should not change input position" do
         source = src('foo')
-        parslet.apply(source)
+        parslet.apply(source, context)
         source.pos.should == 0
       end
     end
@@ -200,7 +199,7 @@ describe Parslet do
     end
     describe "<- #parse" do
       it "should return nil" do
-        parslet.apply(src 'foo').should == nil
+        parslet.apply(src('foo'), context).should == nil
       end 
     end
   end
@@ -215,11 +214,11 @@ describe Parslet do
     end 
     context "when fed 'bar'" do
       it "should parse" do
-        parslet.apply(src 'bar')
+        parslet.apply(src('bar'), context)
       end
       it "should not change input position" do
         source = src('bar')
-        parslet.apply(source)
+        parslet.apply(source, context)
         source.pos.should == 0
       end
     end
@@ -257,7 +256,7 @@ describe Parslet do
     end 
     it "should consume one char" do
       source = src('foo')
-      parslet.apply(source)
+      parslet.apply(source, context)
       source.pos.should == 1
     end 
   end

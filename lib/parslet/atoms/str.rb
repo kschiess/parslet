@@ -16,12 +16,14 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     }
   end
   
-  def try(io) # :nodoc:
-    old_pos = io.pos
-    s = io.read(str.size)
-    error(io, @error_msgs[:premature]) unless s && s.size==str.size
-    error(io, @error_msgs[:failed]+s.inspect, old_pos) \
+  def try(source, context) # :nodoc:
+    error_pos = source.pos
+    s = source.read(str.size)
+
+    error(source, @error_msgs[:premature]) unless s && s.size==str.size
+    error(source, @error_msgs[:failed]+s.inspect, error_pos) \
       unless s==str
+        
     return s
   end
   
