@@ -9,7 +9,7 @@ class Parslet::Atoms::Base
   #
   class Context
     def initialize
-      @cache = Hash.new { |h, k| h[k] = Hash.new }
+      @cache = Hash.new
     end
     
     # Caches a parse answer for obj at source.pos. Applying the same parslet
@@ -25,7 +25,7 @@ class Parslet::Atoms::Base
             
       # Not in cache yet? Return early.
       unless entry = lookup(obj, beg)
-        error = catch (:error) {
+        error = catch(:error) {
           result = yield
         
           # Success:
