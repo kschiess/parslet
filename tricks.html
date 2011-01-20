@@ -54,6 +54,20 @@
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">rule</span><span class="p">(</span><span class="ss">:eof</span><span class="p">)</span> <span class="p">{</span> <span class="n">any</span><span class="o">.</span><span class="n">absnt?</span> <span class="p">}</span>
         </code></pre>
+        </div><h2>Matching Strings Case Insensitive</h2>
+        <p>Parslet is fully hackable: You can use code to create parsers easily. Here&#8217;s
+        how I would match a string in case insensitive manner:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="k">def</span> <span class="nf">stri</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+          <span class="n">key_chars</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="sr"> //</span>
+        <span class="sr">  key_chars.</span>
+        <span class="sr">    collect! { |char| match[&quot;</span><span class="si">#{</span><span class="n">char</span><span class="o">.</span><span class="n">upcase</span><span class="si">}#{</span><span class="n">char</span><span class="o">.</span><span class="n">downcase</span><span class="si">}</span><span class="sr">&quot;] }.</span>
+        <span class="sr">    reduce(:&gt;&gt;)</span>
+        <span class="sr">end</span>
+        
+        <span class="sr"># Constructs a parser using a Parser Expression Grammar </span>
+        <span class="sr">stri(&#39;keyword&#39;).parse &quot;kEyWoRd&quot;     # =&gt; &quot;kEyWoRd&quot;</span>
+        </code></pre>
         </div><h2>Testing</h2>
         <p>Parslet helps you to create parsers that are in turn created out of many small
         parsers. It is really turtles all the way down. Imagine you have a complex 
@@ -79,6 +93,8 @@
         </ol>
         <p>I find it very useful in this situation to eliminate 2. from our options:</p>
         <div class="highlight"><pre><code class="ruby"> 
+        <span class="nb">require</span> <span class="s1">&#39;parslet/rig/rspec&#39;</span>
+        
         <span class="n">describe</span> <span class="no">ComplexParser</span>  <span class="k">do</span>
           <span class="n">let</span><span class="p">(</span><span class="ss">:parser</span><span class="p">)</span> <span class="p">{</span> <span class="no">ComplexParser</span><span class="o">.</span><span class="n">new</span> <span class="p">}</span>
           <span class="n">context</span> <span class="s2">&quot;simple_rule&quot;</span> <span class="k">do</span>

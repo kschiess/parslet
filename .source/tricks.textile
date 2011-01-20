@@ -40,6 +40,23 @@ here's something that also works:
 rule(:eof) { any.absnt? }
 {% endhighlight %}
 
+h2. Matching Strings Case Insensitive
+
+Parslet is fully hackable: You can use code to create parsers easily. Here's
+how I would match a string in case insensitive manner: 
+
+{% highlight ruby %} 
+def stri(str)
+  key_chars = str.split //
+  key_chars.
+    collect! { |char| match["#{char.upcase}#{char.downcase}"] }.
+    reduce(:>>)
+end
+
+# Constructs a parser using a Parser Expression Grammar 
+stri('keyword').parse "kEyWoRd"     # => "kEyWoRd"
+{% endhighlight %}
+
 h2. Testing
 
 Parslet helps you to create parsers that are in turn created out of many small
@@ -70,6 +87,8 @@ problems. Either:
 I find it very useful in this situation to eliminate 2. from our options: 
 
 {% highlight ruby %} 
+require 'parslet/rig/rspec'
+
 describe ComplexParser  do
   let(:parser) { ComplexParser.new }
   context "simple_rule" do
