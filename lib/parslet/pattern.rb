@@ -99,8 +99,8 @@ class Parslet::Pattern
   end
   
   def element_match_hash(tree, exp, bindings)
-    # Early failure when not all of the hash keys are matched.
-    return false unless exp.keys == tree.keys
+    # Early failure when one hash is bigger than the other
+    return false unless exp.size == tree.size
     
     # We iterate over expected pattern, since we demand that the keys that
     # are there should be in tree as well.
