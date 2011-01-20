@@ -47,7 +47,7 @@ how I would match a string in case insensitive manner:
 
 {% highlight ruby %} 
 def stri(str)
-  key_chars = str.split //
+  key_chars = str.split(//)
   key_chars.
     collect! { |char| match["#{char.upcase}#{char.downcase}"] }.
     reduce(:>>)

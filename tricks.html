@@ -59,14 +59,14 @@
         how I would match a string in case insensitive manner:</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="k">def</span> <span class="nf">stri</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
-          <span class="n">key_chars</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="sr"> //</span>
-        <span class="sr">  key_chars.</span>
-        <span class="sr">    collect! { |char| match[&quot;</span><span class="si">#{</span><span class="n">char</span><span class="o">.</span><span class="n">upcase</span><span class="si">}#{</span><span class="n">char</span><span class="o">.</span><span class="n">downcase</span><span class="si">}</span><span class="sr">&quot;] }.</span>
-        <span class="sr">    reduce(:&gt;&gt;)</span>
-        <span class="sr">end</span>
+          <span class="n">key_chars</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">//</span><span class="p">)</span>
+          <span class="n">key_chars</span><span class="o">.</span>
+            <span class="n">collect!</span> <span class="p">{</span> <span class="o">|</span><span class="n">char</span><span class="o">|</span> <span class="n">match</span><span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">char</span><span class="o">.</span><span class="n">upcase</span><span class="si">}#{</span><span class="n">char</span><span class="o">.</span><span class="n">downcase</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">]</span> <span class="p">}</span><span class="o">.</span>
+            <span class="n">reduce</span><span class="p">(</span><span class="ss">:&gt;&gt;</span><span class="p">)</span>
+        <span class="k">end</span>
         
-        <span class="sr"># Constructs a parser using a Parser Expression Grammar </span>
-        <span class="sr">stri(&#39;keyword&#39;).parse &quot;kEyWoRd&quot;     # =&gt; &quot;kEyWoRd&quot;</span>
+        <span class="c1"># Constructs a parser using a Parser Expression Grammar </span>
+        <span class="n">stri</span><span class="p">(</span><span class="s1">&#39;keyword&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span> <span class="s2">&quot;kEyWoRd&quot;</span>     <span class="c1"># =&gt; &quot;kEyWoRd&quot;</span>
         </code></pre>
         </div><h2>Testing</h2>
         <p>Parslet helps you to create parsers that are in turn created out of many small
