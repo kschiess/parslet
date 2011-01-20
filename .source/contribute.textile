@@ -40,6 +40,10 @@ the various aspects of a parser.
 A variant of Chris Pound's word generator written in Ruby, with some
 improvements. (Robert Kosek)
 
+"*Reak*":https://github.com/rkh/Reak
+
+A smalltalk compiler that targets the rubinius VM. (R. Konstantin Haase)
+
 h2. Thanks for all the fish -- Contributions
 
 * *Matthew Draper* ("matthewd":http://matthewd.net/) for bothering with my 
