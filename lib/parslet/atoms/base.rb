@@ -4,49 +4,6 @@
 class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
   
-  # Helper class that implements a transient cache that maps position and
-  # parslet object to results. 
-  #
-  class Context
-    def initialize
-      @cache = Hash.new
-    end
-    
-    # Caches a parse answer for obj at source.pos. Applying the same parslet
-    # at one position of input always yields the same result, unless the input
-    # has changed. 
-    #
-    # We need the entire source here so we can ask for how many characters 
-    # were consumed by a successful parse. Imitation of such a parse must 
-    # advance the input pos by the same amount of bytes.
-    #
-    def cache(obj, source, &block)
-      beg = source.pos
-            
-      # Not in cache yet? Return early.
-      unless entry = lookup(obj, beg)
-        result = yield
-        
-        set obj, beg, [result, source.pos-beg]
-        return result
-      end
-
-      # the condition in unless has returned true, so entry is not nil.
-      result, advance = entry
-      
-      source.read(advance)
-      return result
-    end  
-
-  private 
-    def lookup(obj, pos)
-      @cache[[obj, pos]]
-    end
-    def set(obj, pos, val)
-      @cache[[obj, pos]] = val
-    end
-  end
-  
   # Internally, all parsing functions return either an instance of Fail 
   # or an instance of Success. 
   #
@@ -317,13 +274,65 @@ class Parslet::Atoms::Base
     not @last_cause.nil?
   end
 private
+  # Helper class that implements a transient cache that maps position and
+  # parslet object to results. 
+  #
+  class Context
+    def initialize
+      @cache = Hash.new
+    end
+  
+    # Caches a parse answer for obj at source.pos. Applying the same parslet
+    # at one position of input always yields the same result, unless the input
+    # has changed. 
+    #
+    # We need the entire source here so we can ask for how many characters 
+    # were consumed by a successful parse. Imitation of such a parse must 
+    # advance the input pos by the same amount of bytes.
+    #
+    def cache(obj, source, &block)
+      beg = source.pos
+          
+      # Not in cache yet? Return early.
+      unless entry = lookup(obj, beg)
+        result = yield
+      
+        set obj, beg, [result, source.pos-beg]
+        return result
+      end
+
+      # the condition in unless has returned true, so entry is not nil.
+      result, advance = entry
+    
+      source.read(advance)
+      return result
+    end  
+
+  private 
+    def lookup(obj, pos)
+      @cache[[obj, pos]]
+    end
+    def set(obj, pos, val)
+      @cache[[obj, pos]] = val
+    end
+  end
+
+  # Produces an instance of Success and returns it. 
+  #
   def success(result)
     Success.new(result)
   end
+
+  # Produces an instance of Fail and returns it. 
+  #
   def error(source, str, pos=nil)
     @last_cause = format_cause(source, str, pos)
     Fail.new(@last_cause)
   end
+
+  # Signals to the outside that the parse has failed. Use this in conjunction
+  # with #format_cause for nice error messages. 
+  #
   def parse_failed(str)
     @last_cause = str
     raise Parslet::ParseFailed,
