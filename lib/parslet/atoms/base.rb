@@ -307,13 +307,28 @@ private
       source.read(advance)
       return result
     end  
+    
+    class Item
+      attr_reader :obj, :pos
+      def initialize(obj, pos)
+        @obj, @pos = obj, pos
+      end
+      def hash
+        @obj.hash - @pos
+      end
+      def eql?(o)
+        o.obj == self.obj && o.pos == self.pos
+      end
+    end
 
   private 
     def lookup(obj, pos)
-      @cache[[obj, pos]]
+      i = Item.new(obj, pos)
+      @cache[i]
     end
     def set(obj, pos, val)
-      @cache[[obj, pos]] = val
+      i = Item.new(obj, pos)
+      @cache[i] = val
     end
   end
 
