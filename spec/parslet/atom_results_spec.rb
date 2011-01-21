@@ -17,8 +17,15 @@ describe 'Result of a Parslet#parse' do
       [str('a').as(:a) >> (str('b') >> str('c').as(:a)).repeat, 'abc', 
         [{:a=>'a'}, {:a=>'c'}]], 
       
-      [str('a').as(:a).repeat >> str('b').as(:b).repeat, 'ab', [{:a=>'a'}, {:b=>'b'}]]
+      [str('a').as(:a).repeat >> str('b').as(:b).repeat, 'ab', [{:a=>'a'}, {:b=>'b'}]], 
       
+      # Repetition behaviour / named vs. unnamed
+      [str('f').repeat, '', ''], 
+      [str('f').repeat.as(:f), '', {:f => []}],
+
+      # Maybe behaviour / named vs. unnamed
+      [str('f').maybe, '', ''], 
+      [str('f').maybe.as(:f), '', {:f => nil}],
     ].each do |parslet, input, result|
       context "#{parslet.inspect}" do
         it "should parse \"#{input}\" into \"#{result}\"" do
@@ -26,21 +33,5 @@ describe 'Result of a Parslet#parse' do
         end
       end
     end
-
   end
-
-  let(:foo) { str('foo') }
-  describe "foo.maybe" do
-    let(:parslet) { foo.maybe }
-    
-    context "when given no matching input" do
-      subject { parslet.parse('') }
-      it { should == nil }
-    end
-    context "when matching" do
-      subject { parslet.parse('foo') }
-      it { should == 'foo' }
-    end
-  end
-
 end

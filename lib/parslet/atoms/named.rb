@@ -15,7 +15,7 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
   
   def apply(source, context) # :nodoc:
     value = parslet.apply(source, context)
-    
+
     return value if value.error?
     success(
       produce_return_value(
@@ -31,6 +31,6 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
   end
 private
   def produce_return_value(val) # :nodoc:
-    { name => flatten(val) }
+    { name => flatten(val, true) }
   end
 end
