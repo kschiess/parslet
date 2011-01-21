@@ -330,6 +330,9 @@ private
       @last_cause
   end
 
+  # Appends 'at line ... char ...' to the string given. Use +pos+ to override
+  # the position of the +source+.
+  #
   def format_cause(source, str, pos=nil)
     @cause_suffix ||= {}
     
@@ -338,6 +341,9 @@ private
     str + " at line #{line} char #{column}."
   end
 
+  # That annoying warning 'Duplicate subtrees while merging result' comes 
+  # from here. You should add more '.as(...)' names to your intermediary tree.
+  #
   def warn_about_duplicate_keys(h1, h2)
     d = h1.keys & h2.keys
     unless d.empty?
