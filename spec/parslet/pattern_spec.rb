@@ -277,5 +277,14 @@ describe Parslet::Pattern do
         exp.should match_with_bind({:a => sequence(:x)}, {:x => [1,2,3]})
       end
     end
+    context "with differently ordered hashes" do
+      it "should still match" do
+        t(:a => 'a', :b => 'b').should detect(:a => 'a', :b => 'b')
+        t(:a => 'a', :b => 'b').should detect(:b => 'b', :a => 'a')
+
+        t(:b => 'b', :a => 'a').should detect(:b => 'b', :a => 'a')
+        t(:b => 'b', :a => 'a').should detect(:a => 'a', :b => 'b')
+      end 
+    end
   end
 end
