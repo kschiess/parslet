@@ -47,26 +47,18 @@ class Parslet::Atoms::Base
     end
   end
   
-  class Fail
-    attr_reader :message
-    def initialize(message)
-      @message = message
-    end
-    
-    def error?
-      true
-    end
+  # Internally, all parsing functions return either an instance of Fail 
+  # or an instance of Success. 
+  #
+  class Fail < Struct.new(:message)
+    def error?; true end
   end
-  
-  class Success
-    attr_reader :result
-    def initialize(result)
-      @result = result
-    end
-    
-    def error?
-      false
-    end
+
+  # Internally, all parsing functions return either an instance of Fail 
+  # or an instance of Success.
+  #
+  class Success < Struct.new(:result)
+    def error?; false end
   end
   
   # Given a string or an IO object, this will attempt a parse of its contents
