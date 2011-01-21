@@ -106,7 +106,7 @@ describe Parslet do
     context "when parsing ''" do
       subject { parslet.parse('') } 
       
-      it { should == nil } 
+      it { should == '' } 
     end
   end
   describe "str('foo') >> str('bar')" do

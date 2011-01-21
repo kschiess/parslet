@@ -169,7 +169,7 @@ class Parslet::Atoms::Base
   # Takes a mixed value coming out of a parslet and converts it to a return
   # value for the user by dropping things and merging hashes. 
   #
-  def flatten(value) # :nodoc:
+  def flatten(value, named=false) # :nodoc:
     # Passes through everything that isn't an array of things
     return value unless value.instance_of? Array
 
@@ -184,9 +184,9 @@ class Parslet::Atoms::Base
       when :sequence
         return flatten_sequence(result)
       when :maybe
-        return result.first
+        return named ? result.first : result.first || ''
       when :repetition
-        return flatten_repetition(result)
+        return flatten_repetition(result, named)
     end
     
     fail "BUG: Unknown tag #{tag.inspect}."
@@ -221,7 +221,7 @@ class Parslet::Atoms::Base
     fail "Unhandled case when foldr'ing sequence."
   end
 
-  def flatten_repetition(list) # :nodoc:
+  def flatten_repetition(list, named) # :nodoc:
     if list.any? { |e| e.instance_of?(Hash) }
       # If keyed subtrees are in the array, we'll want to discard all 
       # strings inbetween. To keep them, name them. 
@@ -236,8 +236,11 @@ class Parslet::Atoms::Base
         flatten(1)
     end
     
+    # Consistent handling of empty lists, when we act on a named result        
+    return [] if named && list.empty?
+            
     # If there are only strings, concatenate them and return that. 
-    list.inject('') { |s,e| s<<(e||'') }
+    list.inject('') { |s,e| s<<e }
   end
 
   def self.precedence(prec) # :nodoc:

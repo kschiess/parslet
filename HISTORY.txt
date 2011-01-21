@@ -3,6 +3,9 @@
   + Uses throw/catch internally for an order of magnitude increase in execution
     speed.
     
+  + str('foo').maybe will now return an empty string again. Use .as(...) to 
+    name things and get back [] from #repeat and nil from #maybe.
+    
 = 1.0.1 / 17Jan2011
 
   A happy new year!
