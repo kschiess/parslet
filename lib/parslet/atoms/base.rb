@@ -1,3 +1,6 @@
+
+require 'parslet/atoms/context'
+
 # Base class for all parslets, handles orchestration of calls and implements
 # a lot of the operator and chaining methods.
 #
@@ -10,7 +13,7 @@ class Parslet::Atoms::Base
   #
   def parse(io)
     source = Parslet::Source.new(io)
-    context = Context.new
+    context = Parslet::Atoms::Context.new
 
     message = catch(:error) {
       result = apply(source, context)
@@ -238,66 +241,6 @@ class Parslet::Atoms::Base
     not @last_cause.nil?
   end
 private
-  # Helper class that implements a transient cache that maps position and
-  # parslet object to results. 
-  #
-  class Context
-    def initialize
-      @cache = Hash.new
-    end
-  
-    # Caches a parse answer for obj at source.pos. Applying the same parslet
-    # at one position of input always yields the same result, unless the input
-    # has changed. 
-    #
-    # We need the entire source here so we can ask for how many characters 
-    # were consumed by a successful parse. Imitation of such a parse must 
-    # advance the input pos by the same amount of bytes.
-    #
-    def cache(obj, source, &block)
-      yield
-    end
-    #   beg = source.pos
-    #       
-    #   # Not in cache yet? Return early.
-    #   unless entry = lookup(obj, beg)
-    #     result = yield
-    #   
-    #     set obj, beg, [result, source.pos-beg]
-    #     return result
-    #   end
-    # 
-    #   # the condition in unless has returned true, so entry is not nil.
-    #   result, advance = entry
-    # 
-    #   source.read(advance)
-    #   return result
-    # end  
-    
-    class Item
-      attr_reader :obj, :pos
-      def initialize(obj, pos)
-        @obj, @pos = obj, pos
-      end
-      def hash
-        @obj.hash - @pos
-      end
-      def eql?(o)
-        o.obj == self.obj && o.pos == self.pos
-      end
-    end
-
-  private 
-    def lookup(obj, pos)
-      i = Item.new(obj, pos)
-      @cache[i]
-    end
-    def set(obj, pos, val)
-      i = Item.new(obj, pos)
-      @cache[i] = val
-    end
-  end
-
   # Produces an instance of Success and returns it. 
   #
   def success(result)
