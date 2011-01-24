@@ -282,7 +282,7 @@ private
   #
   class Context
     def initialize
-      @cache = Hash.new
+      @cache = Hash.new { |h, k| h[k] = {} }
     end
   
     # Caches a parse answer for obj at source.pos. Applying the same parslet
@@ -311,27 +311,12 @@ private
       return result
     end  
     
-    class Item
-      attr_reader :obj, :pos
-      def initialize(obj, pos)
-        @obj, @pos = obj, pos
-      end
-      def hash
-        @obj.hash - @pos
-      end
-      def eql?(o)
-        o.obj == self.obj && o.pos == self.pos
-      end
-    end
-
   private 
     def lookup(obj, pos)
-      i = Item.new(obj, pos)
-      @cache[i]
+      @cache[obj.object_id][pos] 
     end
     def set(obj, pos, val)
-      i = Item.new(obj, pos)
-      @cache[i] = val
+      @cache[obj.object_id][pos] = val
     end
   end
 
