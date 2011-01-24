@@ -20,6 +20,7 @@ class Parslet::Source
     # starts at 0; numbers beyond the biggest entry are on any line > size, 
     # but probably make a scan to that position neccessary.
     @line_ends = []
+    @line_ends.extend RangeSearch
     @eof_reached_once = false
   end
   
@@ -44,7 +45,7 @@ class Parslet::Source
   
   def line_and_column(position=nil)
     pos = (position || self.pos)
-    eol_idx = @line_ends.index { |o| o>pos }
+    eol_idx = @line_ends.lbound(pos)
     
     if eol_idx
       # eol_idx points to the offset that ends the current line.
@@ -56,6 +57,43 @@ class Parslet::Source
       # we know about. Pretend for now that we're just on the last line.
       offset = @line_ends.last || 0
       return [@line_ends.size+1, pos-offset+1]
+    end
+  end
+
+  # Mixin for arrays that implicitly give a number of ranges, where one range
+  # begins where the other one ends.
+  # 
+  #   Example: 
+  #
+  #     [10, 20, 30]
+  #     # would describe [0, 10], (10, 20], (20, 30]
+  #
+  module RangeSearch
+    # Scans the array for the first number that is > than bound. Returns the 
+    # index of that number. 
+    #
+    def lbound(bound)
+      return nil if empty?
+      return nil unless last > bound
+
+      left = 0
+      right = size - 1 
+    
+      n = 10
+      loop do
+        mid = left + (right - left) / 2
+        
+        if self[mid] > bound
+          right = mid
+        else
+          # assert: self[mid] <= bound
+          left = mid+1
+        end
+        
+        if right <= left
+          return right
+        end
+      end
     end
   end
   
