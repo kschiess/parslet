@@ -25,15 +25,7 @@ class Parslet::Source
   
   def read(n)
     start_pos = pos
-    @io.read(n).tap { |buf| 
-      # Scan the string for line endings; store the positions of all endings
-      # in @line_ends. 
-      cur = -1
-      while buf && cur = buf.index("\n", cur+1)
-        @line_ends << (start_pos + cur+1)
-      end 
-      
-      @eof_reached_once = true }
+    @io.read(n).tap { |buf| scan_for_line_endings(start_pos, buf) }
   end
   
   def eof?
@@ -43,13 +35,10 @@ class Parslet::Source
   def pos
     @io.pos
   end
-  
+
+  # NOTE: If you seek beyond the point that you last read, you will get 
+  # undefined behaviour. This is by design. 
   def pos=(new_pos)
-    # Are we seeking beyond the last line?
-    last_offset = line_ends.last
-    if !@eof_reached_once && last_offset && new_pos > last_offset
-      raise NotImplementedError
-    end
     @io.pos = new_pos
   end
   
@@ -68,5 +57,18 @@ class Parslet::Source
       offset = @line_ends.last || 0
       return [@line_ends.size+1, pos-offset+1]
     end
+  end
+  
+private
+
+  def scan_for_line_endings(start_pos, buf)
+    # Scan the string for line endings; store the positions of all endings
+    # in @line_ends. 
+    cur = -1
+    while buf && cur = buf.index("\n", cur+1)
+      @line_ends << (start_pos + cur+1)
+    end 
+    
+    @eof_reached_once = true
   end
 end
