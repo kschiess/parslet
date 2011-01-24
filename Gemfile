@@ -9,6 +9,6 @@ group :development do
   
   gem 'sdoc'
   
-  # gem 'guard'
-  # gem 'growl'
+  gem 'guard'
+  gem 'growl'
 end
