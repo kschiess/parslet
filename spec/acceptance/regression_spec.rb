@@ -23,7 +23,7 @@ describe "Regressions from real examples" do
       str('"') >> 
       (
         str('\\') >> any |
-        str('"').absnt? >> any
+        upto('"')
       ).repeat.as(:string) >>
       str('"') >> space?
     end
@@ -37,12 +37,33 @@ describe "Regressions from real examples" do
       match("[ \t]").repeat(1)
     end
     
-    def parse(str)
-      argument_list.parse(str)
+    def upto(str)
+      str(str).absnt? >> any
     end
+    
+    root :argument_list
   end
   describe ArgumentListParser do
     let(:instance) { ArgumentListParser.new }
+    
+    context "#upto(str)" do
+      let(:parslet) { instance.upto('"')}
+      it "should not parse \"" do
+        parslet.should_not parse('"')
+      end
+      it "should parse anything else" do
+        parslet.should parse('a')
+      end 
+    end
+    context "#string" do
+      it "should parse \"foo\"" do
+        instance.string.should parse(%q("foo"))
+      end
+      it "should not parse \"foo" do
+        instance.string.should_not parse(%q("foo))
+      end
+    end
+    
     it "should have method expression" do
       instance.should respond_to(:expression)
     end 

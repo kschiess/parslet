@@ -4,20 +4,6 @@
 class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
   
-  # Internally, all parsing functions return either an instance of Fail 
-  # or an instance of Success. 
-  #
-  class Fail < Struct.new(:message)
-    def error?; true end
-  end
-
-  # Internally, all parsing functions return either an instance of Fail 
-  # or an instance of Success.
-  #
-  class Success < Struct.new(:result)
-    def error?; false end
-  end
-  
   # Given a string or an IO object, this will attempt a parse of its contents
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
@@ -25,40 +11,19 @@ class Parslet::Atoms::Base
   def parse(io)
     source = Parslet::Source.new(io)
     context = Context.new
-    
-    result = nil
-    value = apply(source, context)
-    
+
+    message = catch(:error) {
+      result = apply(source, context)
+      check_eof(source)
+      return flatten(result)
+    }
+        
     # If we didn't succeed the parse, raise an exception for the user. 
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
-    if value.error?
-      raise Parslet::ParseFailed, value.message
-    end
-    
-    # assert: value is a success answer
-    
-    # If we haven't consumed the input, then the pattern doesn't match. Try
-    # to provide a good error message (even asking down below)
-    unless source.eof?
-      # Do we know why we stopped matching input? If yes, that's a good
-      # error to fail with. Otherwise just report that we cannot consume the
-      # input.
-      if cause 
-        # Don't garnish the real cause; but the exception is different anyway.
-        raise Parslet::ParseFailed, 
-          "Unconsumed input, maybe because of this: #{cause}"
-      else
-        old_pos = source.pos
-        parse_failed(
-          format_cause(source, 
-            "Don't know what to do with #{source.read(100)}", old_pos))
-      end
-    end
-    
-    return flatten(value.result)
+    raise Parslet::ParseFailed, message
   end
-
+  
   #---
   # Calls the #try method of this parslet. In case of a parse error, apply
   # leaves the source in the state it was before the attempt. 
@@ -66,19 +31,15 @@ class Parslet::Atoms::Base
   def apply(source, context) # :nodoc:
     old_pos = source.pos
     
-    result = context.cache(self, source) {
-      try(source, context)
-    }
-    
-    # This has just succeeded, so last_cause must be empty
-    unless result.error?
+    message = catch(:error) {
+      result = context.cache(self, source) { try(source, context) }
       @last_cause = nil 
       return result
-    end
+    }
     
     # We only reach this point if the parse has failed. Rewind the input.
     source.pos = old_pos
-    return result # is instance of Fail
+    throw :error, message  # rethrow, don't use error
   end
   
   # Override this in your Atoms::Base subclasses to implement parsing
@@ -294,22 +255,24 @@ private
     # advance the input pos by the same amount of bytes.
     #
     def cache(obj, source, &block)
-      beg = source.pos
-          
-      # Not in cache yet? Return early.
-      unless entry = lookup(obj, beg)
-        result = yield
-      
-        set obj, beg, [result, source.pos-beg]
-        return result
-      end
-
-      # the condition in unless has returned true, so entry is not nil.
-      result, advance = entry
-    
-      source.read(advance)
-      return result
-    end  
+      yield
+    end
+    #   beg = source.pos
+    #       
+    #   # Not in cache yet? Return early.
+    #   unless entry = lookup(obj, beg)
+    #     result = yield
+    #   
+    #     set obj, beg, [result, source.pos-beg]
+    #     return result
+    #   end
+    # 
+    #   # the condition in unless has returned true, so entry is not nil.
+    #   result, advance = entry
+    # 
+    #   source.read(advance)
+    #   return result
+    # end  
     
     class Item
       attr_reader :obj, :pos
@@ -338,14 +301,14 @@ private
   # Produces an instance of Success and returns it. 
   #
   def success(result)
-    Success.new(result)
+    result
   end
 
   # Produces an instance of Fail and returns it. 
   #
   def error(source, str, pos=nil)
     @last_cause = format_cause(source, str, pos)
-    Fail.new(@last_cause)
+    throw :error, @last_cause
   end
 
   # Signals to the outside that the parse has failed. Use this in conjunction
@@ -376,6 +339,29 @@ private
     unless d.empty?
       warn "Duplicate subtrees while merging result of \n  #{self.inspect}\nonly the values"+
            " of the latter will be kept. (keys: #{d.inspect})"
+    end
+  end
+  
+  # Detects the case where the parse finishes earlier than the input. This is
+  # currently a failure.
+  #
+  def check_eof(source)
+    # If we haven't consumed the input, then the pattern doesn't match. Try
+    # to provide a good error message (even asking down below)
+    unless source.eof?
+      # Do we know why we stopped matching input? If yes, that's a good
+      # error to fail with. Otherwise just report that we cannot consume the
+      # input.
+      if cause 
+        # Don't garnish the real cause; but the exception is different anyway.
+        raise Parslet::ParseFailed, 
+          "Unconsumed input, maybe because of this: #{cause}"
+      else
+        old_pos = source.pos
+        parse_failed(
+          format_cause(source, 
+            "Don't know what to do with #{source.read(100)}", old_pos))
+      end
     end
   end
 end

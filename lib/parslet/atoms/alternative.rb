@@ -33,8 +33,10 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   
   def try(source, context) # :nodoc:
     alternatives.each { |a|
-      value = a.apply(source, context)
-      return value unless value.error?
+      catch(:error) {
+        value = a.apply(source, context)
+        return value
+      }
     }
     # If we reach this point, all alternatives have failed. 
     error(source, @error_msg)

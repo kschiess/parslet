@@ -57,7 +57,7 @@ describe Parslet::Atoms::Base do
         parslet.cause.should == "cause at line 1 char 1."
       end
       it "should reset the #cause to nil" do
-        success = flexmock(:success, :error? => false)
+        success = flexmock(:success)
         flexmock(parslet).
           should_receive(:try => success)
         
