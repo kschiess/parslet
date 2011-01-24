@@ -8,4 +8,7 @@ group :development do
   gem 'flexmock'
   
   gem 'sdoc'
+  
+  # gem 'guard'
+  # gem 'growl'
 end
