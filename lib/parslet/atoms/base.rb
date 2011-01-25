@@ -263,7 +263,10 @@ class Parslet::Atoms::Base
   # but needed for clever error reports. 
   #
   def cause # :nodoc:
-    @last_cause
+    @last_cause && @last_cause.to_s || nil
+  end
+  def cause? # :nodoc:
+    !!@last_cause
   end
 
   # Error tree returns what went wrong here plus what went wrong inside 
@@ -272,9 +275,6 @@ class Parslet::Atoms::Base
   #
   def error_tree
     Parslet::ErrorTree.new(self)
-  end
-  def cause? # :nodoc:
-    not @last_cause.nil?
   end
 private
   # Helper class that implements a transient cache that maps position and
@@ -336,21 +336,25 @@ private
   # Signals to the outside that the parse has failed. Use this in conjunction
   # with #format_cause for nice error messages. 
   #
-  def parse_failed(str)
-    @last_cause = str
+  def parse_failed(cause)
+    @last_cause = cause
     raise Parslet::ParseFailed,
       @last_cause
+  end
+  
+  class Cause < Struct.new(:message, :source, :pos)
+    def to_s
+      line, column = source.line_and_column(pos)
+      message + " at line #{line} char #{column}."
+    end
   end
 
   # Appends 'at line ... char ...' to the string given. Use +pos+ to override
   # the position of the +source+.
   #
   def format_cause(source, str, pos=nil)
-    @cause_suffix ||= {}
-    
     real_pos = (pos||source.pos)
-    line, column = source.line_and_column(real_pos)
-    str + " at line #{line} char #{column}."
+    Cause.new(str, source, real_pos)
   end
 
   # That annoying warning 'Duplicate subtrees while merging result' comes 
