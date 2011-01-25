@@ -1,24 +1,113 @@
 # Allows exporting parslet grammars to other lingos. 
 
+
+module Parslet::Atoms
+  class Base
+    def accept(visitor)
+      raise NotImplementedError, "No visit method on #{self.class.name}."
+    end
+  end
+  
+  class Str
+    def accept(visitor)
+      visitor.str(str)
+    end
+  end
+  
+  class Entity
+    def accept(visitor)
+      visitor.entity(name, context, block)
+    end
+  end
+  
+  class Named
+    def accept(visitor)
+      visitor.named(name, parslet)
+    end
+  end
+  
+  class Sequence
+    def accept(visitor)
+      visitor.sequence(parslets)
+    end
+  end
+  
+  class Repetition
+    def accept(visitor)
+      visitor.repetition(min, max, parslet)
+    end
+  end
+  
+  class Alternative
+    def accept(visitor)
+      visitor.alternative(alternatives)
+    end
+  end
+  
+  class Lookahead
+    def accept(visitor)
+      visitor.lookahead(positive, bound_parslet)
+    end
+  end
+  
+  class Re
+    def accept(visitor)
+      visitor.re(match)
+    end
+  end
+end
+
 class Parslet::Parser
-  # Some metaprogramming to intercept the creation of rules in the parsers
-  # that will be defined after this file is loaded. 
-  class << self
-    alias rule_without_capture rule
-    def rule(name, &definition)
-      @rules ||= []
-      @rules << [name, definition]
-      rule_without_capture(name, &definition)
+  
+  class GrammarPrintVisitor
+    attr_reader :output
+    def initialize
+      @output = ''
     end
     
-    alias root_without_capture root
-    def root(name)
-      @root = name
-      root_without_capture(name)
+    def str(str)
+      output << "'#{str.inspect[1..-2]}'"
+    end
+    
+    def entity(name, context, block)
+      output << "rule #{name}\n"
+      
+      contents = context.instance_eval(&block)
+      contents.accept(self)
+      
+      output << "end\n"
     end
 
-    def grammar
-      [@root, @rules]
+    def named(name, parslet)
+      parslet.accept(self)
+    end
+
+    def sequence(parslets)
+      parslets.each do |parslet|
+        parslet.accept(self)
+        output << ' '
+      end
+    end
+
+    def repetition(min, max, parslet)
+      parslet.accept(self)
+      output << "{#{min}, #{max}}"
+    end
+
+    def alternative(alternatives)
+      alternatives.each do |parslet|
+        parslet.accept(self)
+        output << " / "
+      end
+    end
+
+    def lookahead(positive, bound_parslet)
+      output << (positive ? '&' : '!')
+      bound_parslet.accept(self)
+    end
+
+    def re(match)
+      output << match.inspect
     end
   end
   
@@ -26,20 +115,8 @@ class Parslet::Parser
   # grammar will not have any actions. 
   #
   def to_treetop
-    text = ""
-    
-    text << "grammar " << self.class.name << "\n"
-
-    root, rules = self.class.grammar
-    rules.each do |name, _|
-      text << "  rule " << name.to_s << "\n"
-      text << "    " << self.send(name).parslet.inspect << "\n"
-      text << "  end\n"
-    end
-    
-    text << "end"
-    
-    text
+    visitor = GrammarPrintVisitor.new
+    root.accept(visitor)
   end
 end
 
