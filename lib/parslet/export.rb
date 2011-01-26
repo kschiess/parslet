@@ -57,12 +57,15 @@ module Parslet::Atoms
   end
 end
 
+require 'set'
+
 class Parslet::Parser
   
   class GrammarPrintVisitor
     attr_reader :output
     def initialize
       @output = ''
+      @open = Hash.new
     end
     
     def str(str)
@@ -70,12 +73,9 @@ class Parslet::Parser
     end
     
     def entity(name, context, block)
-      output << "rule #{name}\n"
+      @open[name] = [context, block]
       
-      contents = context.instance_eval(&block)
-      contents.accept(self)
-      
-      output << "end\n"
+      output << name.to_s
     end
 
     def named(name, parslet)
@@ -83,10 +83,12 @@ class Parslet::Parser
     end
 
     def sequence(parslets)
+      output << '('
       parslets.each do |parslet|
         parslet.accept(self)
-        output << ' '
+        output << ' ' unless parslet == parslets.last
       end
+      output << ')'
     end
 
     def repetition(min, max, parslet)
@@ -97,7 +99,7 @@ class Parslet::Parser
     def alternative(alternatives)
       alternatives.each do |parslet|
         parslet.accept(self)
-        output << " / "
+        output << " / " unless parslet == alternatives.last
       end
     end
 
@@ -109,6 +111,28 @@ class Parslet::Parser
     def re(match)
       output << match.inspect
     end
+    
+    def rules 
+      @output = ''
+      seen = Set.new
+      loop do
+        remaining = @open.keys - seen.to_a
+        break if remaining.empty?
+        
+        name = remaining.first
+        context, block = @open[name]
+        
+        seen << name
+        
+        output << "  rule #{name}\n"
+        output << "    "
+        context.instance_eval(&block).accept(self)
+        output << "\n"
+        output << "  end\n"
+      end
+    
+      output
+    end
   end
   
   # Exports this parser as a string in Treetop lingo. The resulting Treetop
@@ -117,6 +141,13 @@ class Parslet::Parser
   def to_treetop
     visitor = GrammarPrintVisitor.new
     root.accept(visitor)
+
+    "grammar Test\n" << 
+    "  rule root\n" <<
+    "    " << visitor.output << "\n" <<
+    "  end\n" <<
+      visitor.rules << 
+    "end\n"
   end
 end
 
