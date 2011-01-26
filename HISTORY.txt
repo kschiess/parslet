@@ -1,11 +1,15 @@
 = 1.1.0 / ???
   
-  + Uses throw/catch, cached line counts, memoizing of parse results and other
-    tricks internally for an order of magnitude increase in execution speed.
+  + Uses return (fail/success), cached line counts, memoizing of parse results 
+    and other tricks internally for at least an order of magnitude increase 
+    in execution speed.
     
   + str('foo').maybe will now return an empty string again. Use .as(...) to 
     name things and get back [] from #repeat and nil from #maybe.
     
+  + If you require 'parslet/atoms/visitor', you'll get an accept method on
+    all known Parslet::Atoms.
+        
 = 1.0.1 / 17Jan2011
 
   A happy new year!
