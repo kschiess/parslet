@@ -1,153 +1,112 @@
 # Allows exporting parslet grammars to other lingos. 
 
-
-module Parslet::Atoms
-  class Base
-    def accept(visitor)
-      raise NotImplementedError, "No visit method on #{self.class.name}."
-    end
-  end
-  
-  class Str
-    def accept(visitor)
-      visitor.str(str)
-    end
-  end
-  
-  class Entity
-    def accept(visitor)
-      visitor.entity(name, context, block)
-    end
-  end
-  
-  class Named
-    def accept(visitor)
-      visitor.named(name, parslet)
-    end
-  end
-  
-  class Sequence
-    def accept(visitor)
-      visitor.sequence(parslets)
-    end
-  end
-  
-  class Repetition
-    def accept(visitor)
-      visitor.repetition(min, max, parslet)
-    end
-  end
-  
-  class Alternative
-    def accept(visitor)
-      visitor.alternative(alternatives)
-    end
-  end
-  
-  class Lookahead
-    def accept(visitor)
-      visitor.lookahead(positive, bound_parslet)
-    end
-  end
-  
-  class Re
-    def accept(visitor)
-      visitor.re(match)
-    end
-  end
-end
-
 require 'set'
+require 'parslet/atoms/visitor'
 
 class Parslet::Parser
-  
-  class GrammarPrintVisitor
-    attr_reader :output
-    def initialize
-      @output = ''
-      @open = Hash.new
-    end
-    
-    def str(str)
-      output << "'#{str.inspect[1..-2]}'"
-    end
-    
-    def entity(name, context, block)
-      @open[name] = [context, block]
+  module Citrus
+    class Visitor
+      attr_reader :context, :output
+      def initialize(context)
+        @context = context
+        @output = StringIO.new
+      end
       
-      output << name.to_s
-    end
-
-    def named(name, parslet)
-      parslet.accept(self)
-    end
-
-    def sequence(parslets)
-      output << '('
-      parslets.each do |parslet|
-        parslet.accept(self)
-        output << ' ' unless parslet == parslets.last
+      def str(str)
+        output.print "\"#{str.inspect[1..-2]}\""
       end
-      output << ')'
-    end
+      def re(match)
+        output.print match.inspect
+      end
 
-    def repetition(min, max, parslet)
-      parslet.accept(self)
-      output << "{#{min}, #{max}}"
-    end
+      def entity(name, ctx, block)
+        context.deferred(name, [ctx, block])
 
-    def alternative(alternatives)
-      alternatives.each do |parslet|
+        output.print "(#{context.mangle_name(name)})"
+      end
+      def named(name, parslet)
         parslet.accept(self)
-        output << " / " unless parslet == alternatives.last
+      end
+
+      def sequence(parslets)
+        output.print '('
+        parslets.each do |parslet|
+          parslet.accept(self)
+          output.print ' ' unless parslet == parslets.last
+        end
+        output.print ')'
+      end
+      def repetition(min, max, parslet)
+        parslet.accept(self)
+        output.print "#{min}*#{max}"
+      end
+      def alternative(alternatives)
+        alternatives.each do |parslet|
+          parslet.accept(self)
+          output.print " | " unless parslet == alternatives.last
+        end
+      end
+
+      def lookahead(positive, bound_parslet)
+        output.print (positive ? '&' : '!')
+        bound_parslet.accept(self)
+      end
+
+      def reset
+        @output.string.tap {
+          @output = StringIO.new
+        }
       end
     end
+  end
 
-    def lookahead(positive, bound_parslet)
-      output << (positive ? '&' : '!')
-      bound_parslet.accept(self)
+  class PrettyPrinter
+    attr_reader :visitor
+    def initialize(visitor_klass)
+      @visitor = visitor_klass.new(self)
     end
 
-    def re(match)
-      output << match.inspect
-    end
-    
-    def rules 
-      @output = ''
+    def pretty_print(name, parslet)
+      output = "grammar #{name}\n"
+      
+      output << "  rule root\n"
+      parslet.accept(visitor)
+      output << "    " << visitor.reset << "\n"
+      output << "  end\n"
+      
       seen = Set.new
       loop do
-        remaining = @open.keys - seen.to_a
-        break if remaining.empty?
-        
-        name = remaining.first
-        context, block = @open[name]
+        break if @todo.empty?
+      
+        name, (context, block) = @todo.shift
+        next if seen.include?(name)
         
         seen << name
         
-        output << "  rule #{name}\n"
-        output << "    "
-        context.instance_eval(&block).accept(self)
-        output << "\n"
+        output << "  rule #{mangle_name name}\n"
+        context.instance_eval(&block).
+          accept(visitor)
+        output << "    " << visitor.reset << "\n"
         output << "  end\n"
       end
+      
+      output << "end\n"
+    end
     
-      output
+    def deferred(name, content)
+      @todo ||= []
+      @todo << [name, content]
+    end
+
+    def mangle_name(str)
+      str.to_s.sub(/\?$/, '_p')
     end
   end
-  
-  # Exports this parser as a string in Treetop lingo. The resulting Treetop
-  # grammar will not have any actions. 
-  #
-  def to_treetop
-    visitor = GrammarPrintVisitor.new
-    root.accept(visitor)
 
-    "grammar Test\n" << 
-    "  rule root\n" <<
-    "    " << visitor.output << "\n" <<
-    "  end\n" <<
-      visitor.rules << 
-    "end\n"
+  
+  def to_citrus
+    PrettyPrinter.new(Citrus::Visitor).
+      pretty_print(self.class.name, root)
   end
 end
 
