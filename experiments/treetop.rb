@@ -13,5 +13,3 @@ if !result
   puts parser.failure_line
   puts parser.failure_column
 end
-
-p result

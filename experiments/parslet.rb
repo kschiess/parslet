@@ -279,5 +279,5 @@ class AnsiSmalltalk < Parslet::Parser
   end
 end
 
-p AnsiSmalltalk.new.parse(
+AnsiSmalltalk.new.parse(
   File.read('test.st'))
