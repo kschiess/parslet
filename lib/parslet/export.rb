@@ -9,53 +9,59 @@ class Parslet::Parser
       attr_reader :context, :output
       def initialize(context)
         @context = context
-        @output = StringIO.new
       end
       
       def str(str)
-        output.print "\"#{str.inspect[1..-2]}\""
+        "\"#{str.inspect[1..-2]}\""
       end
       def re(match)
-        output.print match.inspect
+        match.inspect
       end
 
       def entity(name, ctx, block)
         context.deferred(name, [ctx, block])
 
-        output.print "(#{context.mangle_name(name)})"
+        "(#{context.mangle_name(name)})"
       end
       def named(name, parslet)
         parslet.accept(self)
       end
 
       def sequence(parslets)
-        output.print '('
-        parslets.each do |parslet|
-          parslet.accept(self)
-          output.print ' ' unless parslet == parslets.last
-        end
-        output.print ')'
+        '(' <<
+        parslets.
+          map { |el| el.accept(self) }.
+          join(' ') <<
+        ')'
       end
       def repetition(min, max, parslet)
-        parslet.accept(self)
-        output.print "#{min}*#{max}"
+        parslet.accept(self) << "#{min}*#{max}"
       end
       def alternative(alternatives)
-        alternatives.each do |parslet|
-          parslet.accept(self)
-          output.print " | " unless parslet == alternatives.last
-        end
+        '(' <<
+        alternatives.
+          map { |el| el.accept(self) }.
+          join(' | ') <<
+        ')'
       end
 
       def lookahead(positive, bound_parslet)
-        output.print (positive ? '&' : '!')
+        (positive ? '&' : '!') <<
         bound_parslet.accept(self)
       end
+    end
 
-      def reset
-        @output.string.tap {
-          @output = StringIO.new
-        }
+    class Treetop < Citrus
+      def repetition(min, max, parslet)
+        parslet.accept(self) << "#{min}..#{max}"
+      end
+
+      def alternative(alternatives)
+        '(' <<
+        alternatives.
+          map { |el| el.accept(self) }.
+          join(' / ') <<
+        ')'
       end
     end
   end
@@ -97,11 +103,8 @@ class Parslet::Parser
     # Formats a rule in either dialect. 
     #
     def rule(name, parslet)
-      visitor.reset
-      parslet.accept(visitor)
-      
       "  rule #{mangle_name name}\n" << 
-      "    " << visitor.reset << "\n" <<
+      "    " << parslet.accept(visitor) << "\n" <<
       "  end\n"
     end
     
@@ -136,6 +139,23 @@ class Parslet::Parser
   #
   def to_citrus
     PrettyPrinter.new(Visitors::Citrus).
+      pretty_print(self.class.name, root)
+  end
+
+  # Exports the current parser instance as a string in the Treetop dialect. 
+  #
+  # Example: 
+  #
+  #   require 'parslet/export'
+  #   class MyParser < Parslet::Parser
+  #     root(:expression)
+  #     rule(:expression) { str('foo') }
+  #   end
+  #   
+  #   MyParser.new.to_treetop # => a treetop grammar as a string
+  #
+  def to_treetop
+    PrettyPrinter.new(Visitors::Treetop).
       pretty_print(self.class.name, root)
   end
 end
