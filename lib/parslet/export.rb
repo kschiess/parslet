@@ -4,8 +4,8 @@ require 'set'
 require 'parslet/atoms/visitor'
 
 class Parslet::Parser
-  module Citrus
-    class Visitor
+  module Visitors # :nodoc:
+    class Citrus # :nodoc:
       attr_reader :context, :output
       def initialize(context)
         @context = context
@@ -60,52 +60,82 @@ class Parslet::Parser
     end
   end
 
-  class PrettyPrinter
+  # A helper class that formats Citrus and Treetop grammars as a string. 
+  #
+  class PrettyPrinter # :nodoc:
     attr_reader :visitor
     def initialize(visitor_klass)
       @visitor = visitor_klass.new(self)
     end
 
-    def pretty_print(name, parslet)
+    # Pretty prints the given parslet using the visitor that has been
+    # configured in initialize. Returns the string representation of the
+    # Citrus or Treetop grammar.
+    #
+    def pretty_print(name, parslet) # :nodoc:
       output = "grammar #{name}\n"
       
-      output << "  rule root\n"
-      parslet.accept(visitor)
-      output << "    " << visitor.reset << "\n"
-      output << "  end\n"
+      output << rule('root', parslet)
       
       seen = Set.new
       loop do
+        # @todo is constantly filled by the visitor (see #deferred). We 
+        # keep going until it is empty.
         break if @todo.empty?
-      
         name, (context, block) = @todo.shift
+
+        # Track what rules we've already seen. This breaks loops.
         next if seen.include?(name)
-        
         seen << name
-        
-        output << "  rule #{mangle_name name}\n"
-        context.instance_eval(&block).
-          accept(visitor)
-        output << "    " << visitor.reset << "\n"
-        output << "  end\n"
+
+        output << rule(name, context.instance_eval(&block))
       end
       
       output << "end\n"
     end
     
-    def deferred(name, content)
+    # Formats a rule in either dialect. 
+    #
+    def rule(name, parslet)
+      visitor.reset
+      parslet.accept(visitor)
+      
+      "  rule #{mangle_name name}\n" << 
+      "    " << visitor.reset << "\n" <<
+      "  end\n"
+    end
+    
+    # Whenever the visitor encounters an rule in a parslet, it defers the
+    # pretty printing of the rule by calling this method. 
+    #
+    def deferred(name, content) # :nodoc:
       @todo ||= []
       @todo << [name, content]
     end
 
-    def mangle_name(str)
+    # Mangles names so that Citrus and Treetop can live with it. This mostly
+    # transforms some of the things that Ruby allows into other patterns. If
+    # there is collision, we will not detect it for now. 
+    #
+    def mangle_name(str) # :nodoc:
       str.to_s.sub(/\?$/, '_p')
     end
   end
 
-  
+  # Exports the current parser instance as a string in the Citrus dialect. 
+  #
+  # Example: 
+  #
+  #   require 'parslet/export'
+  #   class MyParser < Parslet::Parser
+  #     root(:expression)
+  #     rule(:expression) { str('foo') }
+  #   end
+  #   
+  #   MyParser.new.to_citrus # => a citrus grammar as a string
+  #
   def to_citrus
-    PrettyPrinter.new(Citrus::Visitor).
+    PrettyPrinter.new(Visitors::Citrus).
       pretty_print(self.class.name, root)
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Parslet::Parser do
+describe Parslet::Parser, "exporting to other lingos" do
   class MiniLisp < Parslet::Parser
     root :expression
     rule(:expression) {
