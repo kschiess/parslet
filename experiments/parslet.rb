@@ -1,8 +1,5 @@
-
 $:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
-
-require 'parslet/export'
 
 # A smalltalk grammar from https://github.com/rkh/Reak (R. Konstantin Haase)
 #
@@ -282,10 +279,5 @@ class AnsiSmalltalk < Parslet::Parser
   end
 end
 
-instance = AnsiSmalltalk.new
-[['citrus', :to_citrus], 
- ['tt',    :to_treetop]].each do |ext, msg|
-  File.open("ansi_smalltalk.#{ext}", 'w') do |f|
-    f.write instance.send(msg)
-  end
-end
+p AnsiSmalltalk.new.parse(
+  File.read('test.st'))

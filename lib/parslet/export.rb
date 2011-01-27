@@ -15,7 +15,7 @@ class Parslet::Parser
         "\"#{str.inspect[1..-2]}\""
       end
       def re(match)
-        match.inspect
+        match.to_s
       end
 
       def entity(name, ctx, block)

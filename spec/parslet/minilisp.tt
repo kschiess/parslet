@@ -12,18 +12,18 @@ grammar MiniLisp
     ((expression) / (identifier) / (float) / (integer) / (string))0..
   end
   rule space
-    "\\s"1..
+    \s1..
   end
   rule identifier
-    (("[a-zA-Z=*]" "[a-zA-Z=*_]"0..) (space_p))
+    (([a-zA-Z=*] [a-zA-Z=*_]0..) (space_p))
   end
   rule float
-    (((integer) (("." "[0-9]"1..) / ("e" "[0-9]"1..))) (space_p))
+    (((integer) (("." [0-9]1..) / ("e" [0-9]1..))) (space_p))
   end
   rule integer
-    ((("+" / "-")0..1 "[0-9]"1..) (space_p))
+    ((("+" / "-")0..1 [0-9]1..) (space_p))
   end
   rule string
-    ("\"" (("\\" ".") / (!"\"" "."))0.. "\"" (space_p))
+    ("\"" (("\\" .) / (!"\"" .))0.. "\"" (space_p))
   end
 end
