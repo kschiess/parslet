@@ -308,7 +308,8 @@ private
   end
 
   # Appends 'at line ... char ...' to the string given. Use +pos+ to override
-  # the position of the +source+.
+  # the position of the +source+. This method returns an object that can 
+  # be turned into a string using #to_s.
   #
   def format_cause(source, str, pos=nil)
     real_pos = (pos||source.pos)
