@@ -12,6 +12,7 @@ module Parslet::Atoms
     OUTER      = (prec+=1)    # printing is done here.
   end
   
+  require 'parslet/atoms/context'
   require 'parslet/atoms/base'
   require 'parslet/atoms/named'
   require 'parslet/atoms/lookahead'

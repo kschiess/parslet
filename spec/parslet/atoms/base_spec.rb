@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Parslet::Atoms::Base do
   let(:parslet) { Parslet::Atoms::Base.new }
-  let(:context) { Parslet::Atoms::Base::Context.new }
+  let(:context) { Parslet::Atoms::Context.new }
 
   describe "<- #try(io)" do
     it "should raise NotImplementedError" do

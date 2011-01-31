@@ -12,7 +12,7 @@ describe Parslet do
   extend Parslet
 
   def src(str); Parslet::Source.new str; end
-  let(:context) { Parslet::Atoms::Base::Context.new }
+  let(:context) { Parslet::Atoms::Context.new }
   
   describe "match('[abc]')" do
     attr_reader :parslet
