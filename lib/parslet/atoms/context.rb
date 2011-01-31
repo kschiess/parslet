@@ -36,10 +36,10 @@ module Parslet::Atoms
   
   private 
     def lookup(obj, pos)
-      @cache[obj.object_id][pos] 
+      @cache[pos][obj] 
     end
     def set(obj, pos, val)
-      @cache[obj.object_id][pos] = val
+      @cache[pos][obj] = val
     end
   end
 end
