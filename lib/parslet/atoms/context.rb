@@ -29,8 +29,11 @@ module Parslet::Atoms
 
       # the condition in unless has returned true, so entry is not nil.
       result, advance = entry
-  
-      source.read(advance)
+
+      # The data we're skipping here has been read before. (since it is in 
+      # the cache) PLUS the actual contents are not interesting anymore since
+      # we know obj matches at beg. So skip reading.
+      source.pos = beg + advance
       return result
     end  
   
