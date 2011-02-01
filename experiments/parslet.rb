@@ -1,4 +1,4 @@
-$:.unshift File.dirname(__FILE__) + "/../lib"
+# $:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
 
 # A smalltalk grammar from https://github.com/rkh/Reak (R. Konstantin Haase)
@@ -280,4 +280,4 @@ class AnsiSmalltalk < Parslet::Parser
 end
 
 AnsiSmalltalk.new.parse(
-  File.read('test.st'))
+  File.read(ARGV.first || 'test.st'))
