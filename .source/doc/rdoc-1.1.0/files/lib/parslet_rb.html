@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>parslet.rb</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen" />
+    <script src="../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            parslet.rb
+        </h1>
+        <ul class="files">
+            <li>lib/parslet.rb</li>
+            <li>Last modified: 2011-02-01 07:23:53 +0100</li>
+        </ul>
+    </div>
+
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+A simple parser generator library. Typical usage would look like this:
+</p>
+<pre>
+  require 'parslet'
+
+  class MyParser &lt; Parslet::Parser
+    rule(:a) { str('a').repeat }
+    root(:a)
+  end
+
+  pp MyParser.new.parse('aaaa')   # =&gt; 'aaaa'
+  pp MyParser.new.parse('bbbb')   # =&gt; Parslet::Atoms::ParseFailed:
+                                  #    Don't know what to do with bbbb at line 1 char 1.
+</pre>
+<p>
+The simple DSL allows you to define grammars in PEG-style. This kind of
+grammar construction does away with the ambiguities that usually comes with
+parsers; instead, it allows you to construct grammars that are easier to
+debug, since less magic is involved.
+</p>
+<p>
+<a href="../../classes/Parslet.html">Parslet</a> is typically used in
+stages:
+</p>
+<ul>
+<li>Parsing the input string; this yields an intermediary tree, see <a
+href="../../classes/Parslet.html#M000131">Parslet.any</a>, <a
+href="../../classes/Parslet.html#M000129">Parslet.match</a>, <a
+href="../../classes/Parslet.html#M000130">Parslet.str</a>, <a
+href="../../classes/Parslet/ClassMethods.html#M000128">Parslet::ClassMethods#rule</a>
+and <a
+href="../../classes/Parslet/ClassMethods.html#M000127">Parslet::ClassMethods#root</a>.
+
+</li>
+<li>Transformation of the tree into something useful to you, see <a
+href="../../classes/Parslet/Transform.html">Parslet::Transform</a>, <a
+href="../../classes/Parslet.html#M000134">Parslet.simple</a>, <a
+href="../../classes/Parslet.html#M000133">Parslet.sequence</a> and <a
+href="../../classes/Parslet.html#M000135">Parslet.subtree</a>.
+
+</li>
+</ul>
+<p>
+The first stage is traditionally intermingled with the second stage; output
+from the second stage is usually called the &#8216;Abstract Syntax
+Tree&#8217; or AST.
+</p>
+<p>
+The stages are completely decoupled; You can change your grammar around and
+use the second stage to isolate the rest of your code from the changes
+you&#8217;ve effected.
+</p>
+<h2>Further reading</h2>
+<p>
+All parslet atoms are subclasses of <a
+href="../../classes/Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>. You
+might want to look at all of those: <a
+href="../../classes/Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>, <a
+href="../../classes/Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>, <a
+href="../../classes/Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>,
+<a
+href="../../classes/Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>,
+<a
+href="../../classes/Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>.
+</p>
+<h2>When things go wrong</h2>
+<p>
+A parse that fails will raise <a
+href="../../classes/Parslet/ParseFailed.html">Parslet::ParseFailed</a>. A
+detailed explanation of what went wrong can be obtained from the parslet
+involved or the root of the parser instance.
+</p>
+
+    </div>
+    
+
+    
+    <div class="sectiontitle">Required Files</div>
+    <ul>
+        
+        <li>parslet/source</li>
+        
+        <li>parslet/error_tree</li>
+        
+        <li>parslet/atoms</li>
+        
+        <li>parslet/pattern</li>
+        
+        <li>parslet/pattern/binding</li>
+        
+        <li>parslet/transform</li>
+        
+        <li>parslet/parser</li>
+        
+    </ul>
+    
+
+    
+    
+
+    
+    
+
+    
+
+    
+
+    
+    <div class="sectiontitle">Classes and Modules</div>
+    <ul>
+        
+        <li><span class="type">MODULE</span> <a href="../../classes/Parslet.html">Parslet</a></li>
+        
+    </ul>
+    
+
+    
+
+    
+
+    
+</div>
+    </div>
+  </body>
+</html>
