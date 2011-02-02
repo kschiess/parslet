@@ -43,10 +43,11 @@ SYNOPSIS
 
 COMPATIBILITY
 
-This library should work with both ruby 1.8 and ruby 1.9.
+This library should work with most rubies. I've tested it with MRI 1.8, 1.9, 
+rbx-head, jruby. Please report as a bug if you encounter issues.
 
 STATUS 
 
-one dot oh.
+At version 1.1 - Good basic functionality and lots of plans for extension.
 
 (c) 2010 Kaspar Schiess

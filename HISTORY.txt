@@ -1,4 +1,4 @@
-= 1.1.0 / ???
+= 1.1.0 / 2Feb2011
   
   + Uses return (fail/success), cached line counts, memoizing of parse results 
     and other tricks internally for at least an order of magnitude increase 
@@ -9,6 +9,13 @@
     
   + If you require 'parslet/atoms/visitor', you'll get an accept method on
     all known Parslet::Atoms.
+    
+  + If you require 'parslet/export', you can call #to_citrus and #to_treetop
+    to produce string versions of your grammar in those dialects.
+  
+  + Requiring 'parslet/convenience' will given you a parse_with_debug on 
+    your Parslet::Parser class. This prints some diagnostics on parse failure. 
+    (Thanks to Florian Hanke)
         
 = 1.0.1 / 17Jan2011
 
