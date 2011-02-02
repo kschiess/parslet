@@ -47,6 +47,16 @@ describe Parslet::Atoms::Base do
       end
     end
   end
+  context "when not all input is consumed" do
+    let(:parslet) { Parslet.str('foo') }
+    it "should raise with a proper error message" do
+      begin
+        parslet.parse('foobar')
+      rescue Parslet::ParseFailed => ex
+        ex.message.should == "Don't know what to do with bar at line 1 char 4."
+      end
+    end 
+  end
   context "when a match succeeds" do
     context "when there is an error from a previous run" do
       before(:each) do

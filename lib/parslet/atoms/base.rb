@@ -297,7 +297,7 @@ private
   def parse_failed(cause)
     @last_cause = cause
     raise Parslet::ParseFailed,
-      @last_cause
+      @last_cause.to_s
   end
   
   class Cause < Struct.new(:message, :source, :pos)

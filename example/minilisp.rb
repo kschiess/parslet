@@ -5,12 +5,13 @@ $:.unshift '../lib'
 
 require 'pp'
 require 'parslet'
+require 'parslet/convenience'
 
 module MiniLisp
   class Parser < Parslet::Parser
     root :expression
     rule(:expression) {
-      space? >> str('(') >> space? >> body >> str(')')
+      space? >> str('(') >> space? >> body >> str(')') >> space?
     }
     
     rule(:body) {
@@ -77,24 +78,17 @@ end
 parser = MiniLisp::Parser.new
 transform = MiniLisp::Transform.new
 
-# Parse stage
-begin
-  result = parser.parse %Q{
-    (define test (lambda ()
-      (begin
-        (display "something")
-        (display 1)
-        (display 3.08))))
-    (test)
-  }
-rescue Parslet::ParseFailed => failure
-  puts failure
-  puts parser.root.error_tree if parser.root.cause
-  exit
-end
+result = parser.parse_with_debug %Q{
+  (define test (lambda ()
+    (begin
+      (display "something")
+      (display 1)
+      (display 3.08))))
+  (test)
+}
 
 # Transform the result
-pp transform.do(result)
+pp transform.do(result) if result
 
 # Thereby reducing it to the earlier problem: 
 # http://github.com/kschiess/toylisp
