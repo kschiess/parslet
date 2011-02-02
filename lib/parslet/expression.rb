@@ -1,14 +1,14 @@
 
 # Allows specifying rules as strings using the exact same grammar that treetop
-# does, minus the actions. This is on one hand a good example of a fully fledged
-# parser and on the other hand might even turn out really useful. 
+# does, minus the actions. This is on one hand a good example of a fully
+# fledged parser and on the other hand might even turn out really useful. 
 #
 # This can be viewed as an extension to parslet and might even be hosted in
 # its own gem one fine day. 
 # 
 # NOT FINISHED & EXPERIMENTAL
 #
-class Parslet::Expression # :nodoc:
+class Parslet::Expression
   include Parslet
   
   autoload :Treetop, 'parslet/expression/treetop'

@@ -4,8 +4,8 @@ require 'set'
 require 'parslet/atoms/visitor'
 
 class Parslet::Parser
-  module Visitors # :nodoc:
-    class Citrus # :nodoc:
+  module Visitors
+    class Citrus
       attr_reader :context, :output
       def initialize(context)
         @context = context
