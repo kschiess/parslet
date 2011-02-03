@@ -72,4 +72,12 @@ module Parslet::Atoms
       visitor.re(match)
     end
   end
+  
+  class Predicate
+    # Call back visitors #re method. See parslet/export for an example. 
+    #
+    def accept(visitor)
+      visitor.predicate(parslet, predicate)
+    end
+  end
 end

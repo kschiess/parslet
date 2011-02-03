@@ -1,3 +1,8 @@
+= 1.2.0 / ???
+
+  + EXPERIMENTAL Positive predicates that can decide if the parse continues
+    based on the output of a parse subtree.
+
 = 1.1.0 / 2Feb2011
   
   + Uses return (fail/success), cached line counts, memoizing of parse results 
