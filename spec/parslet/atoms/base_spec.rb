@@ -47,6 +47,16 @@ describe Parslet::Atoms::Base do
       end
     end
   end
+  
+  context "when the parse fails, the exception" do
+    it "should contain a string" do
+      begin
+        Parslet.str('foo').parse('bar')
+      rescue Parslet::ParseFailed => ex
+        ex.message.should be_kind_of(String)
+      end
+    end 
+  end
   context "when not all input is consumed" do
     let(:parslet) { Parslet.str('foo') }
     it "should raise with a proper error message" do

@@ -33,7 +33,7 @@ class Parslet::Atoms::Base
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
     if value.error?
-      raise Parslet::ParseFailed, value.message
+      parse_failed(value.message)
     end
     
     # assert: value is a success answer
@@ -85,7 +85,8 @@ class Parslet::Atoms::Base
   # behaviour. 
   #
   def try(source, context)
-    raise NotImplementedError, "Atoms::Base doesn't have behaviour, please implement #try(io)."
+    raise NotImplementedError, \
+      "Atoms::Base doesn't have behaviour, please implement #try(source, context)."
   end
 
   # Construct a new atom that repeats the current atom min times at least and

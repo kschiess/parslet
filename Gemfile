@@ -10,5 +10,6 @@ group :development do
   gem 'sdoc'
   
   gem 'guard'
+  gem 'guard-rspec'
   gem 'growl'
 end
