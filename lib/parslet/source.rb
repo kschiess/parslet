@@ -99,6 +99,8 @@ class Parslet::Source
 private
 
   def scan_for_line_endings(start_pos, buf)
+    return unless buf
+    return unless buf.index("\n")
     cur = -1
     
     # If we have already read part or all of buf, we already know about
