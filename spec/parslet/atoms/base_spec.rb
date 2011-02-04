@@ -47,6 +47,15 @@ describe Parslet::Atoms::Base do
       end
     end
   end
+  describe "<- #flatten_repetition" do
+    def unnamed(obj)
+      parslet.flatten_repetition(obj, false)
+    end
+    
+    it "should give subtrees precedence" do
+      unnamed([[{:a=>"a"}, {:m=>"m"}], {:a=>"a"}]).should == [{:a=>"a"}]
+    end 
+  end
   
   context "when the parse fails, the exception" do
     it "should contain a string" do
