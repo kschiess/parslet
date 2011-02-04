@@ -8,19 +8,19 @@ require 'parslet'
 require 'parslet/convenience'
 
 class ALanguage < Parslet::Parser
-  root(:expressions)
+  root(:lines)
   
-  rule(:expressions) { (line >> eol).repeat(1) | line }
-  rule(:line) { space? >> an_expression.as(:exp).repeat }
-  rule(:an_expression) { str('a').as(:a) >> space? }
+  rule(:lines) { line.repeat }
+  rule(:line) { spaces >> expression.repeat >> newline }
+  rule(:newline) { str("\n") >> str("\r").maybe }
   
-  rule(:eol) { space? >> match["\n\r"].repeat(1) >> space? }
+  rule(:expression) { (str('a').as(:a) >> spaces).as(:exp) }
   
-  rule(:space?) { space.repeat }
-  rule(:space) { multiline_comment.as(:multi) | line_comment.as(:line) | str(' ') }
-
-  rule(:line_comment) { str('//') >> (match["\n\r"].absnt? >> any).repeat }
-  rule(:multiline_comment) { str('/*') >> (str('*/').absnt? >> any).repeat >> str('*/') }
+  rule(:spaces) { space.repeat }
+  rule(:space) { multiline_comment | line_comment | str(' ') }
+  
+  rule(:line_comment) { (str('//') >> (newline.absnt? >> any).repeat).as(:line) }
+  rule(:multiline_comment) { (str('/*') >> (str('*/').absnt? >> any).repeat >> str('*/')).as(:multi) }
 end
 
 code = %q(
@@ -33,5 +33,3 @@ code = %q(
 )
 
 pp ALanguage.new.parse_with_debug(code)
-
-
