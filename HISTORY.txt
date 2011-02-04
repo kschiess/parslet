@@ -1,3 +1,7 @@
+= 1.1.1 / 4Feb2011
+
+  ! FIX: Line counting was broken by performance optimisations. 
+
 = 1.1.0 / 2Feb2011
   
   + Uses return (fail/success), cached line counts, memoizing of parse results 

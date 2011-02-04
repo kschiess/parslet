@@ -103,17 +103,16 @@ private
     
     # If we have already read part or all of buf, we already know about
     # line ends in that portion. remove it and correct cur (search index)
-    if last_line_end = @line_ends.last
-      if start_pos < last_line_end
-        # Let's not search the range from start_pos to last_line_end again.
-        cur = last_line_end - start_pos -1
-      end
+    if @last_line_end && start_pos < @last_line_end
+      # Let's not search the range from start_pos to last_line_end again.
+      cur = @last_line_end - start_pos -1
     end
     
     # Scan the string for line endings; store the positions of all endings
     # in @line_ends. 
     while buf && cur = buf.index("\n", cur+1)
-      @line_ends << (start_pos + cur+1)
+      @last_line_end = (start_pos + cur+1)
+      @line_ends << @last_line_end
     end 
   end
 end
