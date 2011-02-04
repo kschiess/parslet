@@ -84,7 +84,6 @@ result = parser.parse_with_debug %Q{
       (display "something")
       (display 1)
       (display 3.08))))
-  (test)
 }
 
 # Transform the result
