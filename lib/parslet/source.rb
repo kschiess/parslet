@@ -21,7 +21,6 @@ class Parslet::Source
     # but probably make a scan to that position neccessary.
     @line_ends = []
     @line_ends.extend RangeSearch
-    @eof_reached_once = false
   end
   
   def read(n)
@@ -100,13 +99,21 @@ class Parslet::Source
 private
 
   def scan_for_line_endings(start_pos, buf)
+    cur = -1
+    
+    # If we have already read part or all of buf, we already know about
+    # line ends in that portion. remove it and correct cur (search index)
+    if last_line_end = @line_ends.last
+      if start_pos < last_line_end
+        # Let's not search the range from start_pos to last_line_end again.
+        cur = last_line_end - start_pos -1
+      end
+    end
+    
     # Scan the string for line endings; store the positions of all endings
     # in @line_ends. 
-    cur = -1
     while buf && cur = buf.index("\n", cur+1)
       @line_ends << (start_pos + cur+1)
     end 
-    
-    @eof_reached_once = true
   end
 end

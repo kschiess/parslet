@@ -102,7 +102,8 @@ describe Parslet::Source do
       end
     end
     context "reading char by char, storing the results" do
-      let(:results) {
+      attr_reader :results
+      before(:each) { 
         @results = {}
         while not source.eof?
           pos = source.pos
@@ -127,6 +128,14 @@ describe Parslet::Source do
           source.line_and_column.should == result
         end
       end
+      it "should give the same results when reading" do
+        cur = source.pos = 0
+        while not source.eof?
+          source.line_and_column.should == results[cur]
+          cur += 1
+          source.read(1)
+        end
+      end 
     end
   end
   describe "<- #line_ends" do

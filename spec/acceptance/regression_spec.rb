@@ -105,4 +105,49 @@ describe "Regressions from real examples" do
       end
     end
   end
+
+  class ALanguage < Parslet::Parser
+    root(:expressions)
+
+    rule(:expressions) { (line >> eol).repeat(1) | line }
+    rule(:line) { space? >> an_expression.as(:exp).repeat }
+    rule(:an_expression) { str('a').as(:a) >> space? }
+
+    rule(:eol) { space? >> match["\n\r"].repeat(1) >> space? }
+
+    rule(:space?) { space.repeat }
+    rule(:space) { multiline_comment.as(:multi) | line_comment.as(:line) | str(' ') }
+
+    rule(:line_comment) { str('//') >> (match["\n\r"].absnt? >> any).repeat }
+    rule(:multiline_comment) { str('/*') >> (str('*/').absnt? >> any).repeat >> str('*/') }
+  end
+  describe ALanguage do
+    def remove_indent(s)
+      s.to_s.lines.map { |l| l.chomp.strip }.join("\n")
+    end
+    
+    it "should count lines correctly" do
+      begin
+        subject.parse('
+          a 
+          a a a 
+          aaa // ff
+          /* 
+          a
+          */
+          b
+        ')
+      rescue => ex
+      end
+      remove_indent(subject.root.error_tree).should == remove_indent(%q(
+        `- Unknown error in (LINE EOL){1, } / LINE
+           |- Failed to match sequence (LINE EOL) at line 8 char 11.
+           |  `- Failed to match sequence (SPACE? [\n\r]{1, }) at line 8 char 11.
+           |     `- Expected at least 1 of [\n\r] at line 8 char 11.
+           |        `- Failed to match [\n\r] at line 8 char 11.
+           `- Unknown error in SPACE? exp:AN_EXPRESSION{0, }
+              `- Failed to match sequence (a:'a' SPACE?) at line 8 char 11.
+                 `- Expected "a", but got "b" at line 8 char 11.).strip)
+    end 
+  end
 end
