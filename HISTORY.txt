@@ -1,6 +1,8 @@
 = 1.1.1 / 4Feb2011
 
   ! FIX: Line counting was broken by performance optimisations. 
+  
+  + Squeezed out another few drops of performance. 
 
 = 1.1.0 / 2Feb2011
   
