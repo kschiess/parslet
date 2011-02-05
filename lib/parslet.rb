@@ -164,6 +164,8 @@ module Parslet
   # Returns an atom matching any character. It acts like the '.' (dot)
   # character in regular expressions.
   #
+  # Example: 
+  #
   #   any.parse('a')    # => 'a'
   #
   def any
