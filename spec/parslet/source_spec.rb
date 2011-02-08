@@ -75,10 +75,6 @@ describe Parslet::Source do
     context "after reading everything" do
       before(:each) { source.read(10000) }
 
-      it "should contain all line ends" do
-        source.line_ends.should == [101, 202]
-      end 
-      
       context "when seeking to 9" do
         before(:each) { source.pos = 9 }
         it { should == [1, 10] }
@@ -136,14 +132,6 @@ describe Parslet::Source do
           source.read(1)
         end
       end 
-    end
-  end
-  describe "<- #line_ends" do
-    subject { source.line_ends }
-    context "after reading 101 chars" do
-      before(:each) { source.read(101) }
-      
-      it { should == [101] }
     end
   end
 end
