@@ -24,12 +24,23 @@ describe Parslet::Source::Range do
       range.should == "bc"
     end 
   end
-  describe "==" do
+  
+  describe "<- #==" do
     let(:buffer) { Parslet::Source::Buffer.new(10, "abcdef") }
     let(:range) { described_class.new(11, 2, buffer) }
     
     it "should allow direct string comparison" do
       range.should == 'bc'
+    end 
+  end
+  describe "<- #match" do
+    let(:buffer) { Parslet::Source::Buffer.new(10, "abcdef") }
+    let(:range) { described_class.new(11, 4, buffer) }
+    
+    it "should allow direct string comparison" do
+      md = range.match(/bc/)
+      md.should be_kind_of(MatchData)
+      md[0].should == 'bc'
     end 
   end
   

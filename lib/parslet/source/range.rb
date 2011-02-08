@@ -24,6 +24,10 @@ class Parslet::Source
       to_s == other
     end
     
+    def match(regexp)
+      to_s.match(regexp)
+    end
+    
   private
     def min(a, b)
       a > b ? b : a
