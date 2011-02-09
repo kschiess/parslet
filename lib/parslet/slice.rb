@@ -31,9 +31,16 @@ class Parslet::Slice
     end
   end
   
-  def to_str
-    fail 'to_str?'
+  # Match regular expressions. 
+  # 
+  def match(regexp)
+    str.match(regexp)
   end
+  
+  def to_str
+    str
+  end
+  alias to_s to_str
   
   def inspect
     "slice(#{str}, #{ofs})"

@@ -26,10 +26,18 @@ describe Parslet::Slice do
       end
     end
     describe "matching" do
-      it "should match as a string would" 
+      it "should match as a string would" do
+        slice.should match(/bar/)
+        slice.should match(/foo/)
+        
+        md = slice.match(/f(o)o/)
+        md.captures.first.should == 'o'
+      end
     end
     describe "offset" do
-      it "should return the associated offset" 
+      it "should return the associated offset" do
+        slice.ofs.should == 40
+      end
     end
   end
 end
