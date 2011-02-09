@@ -54,5 +54,16 @@ describe Parslet::Slice do
         as.should == 'a'
       end
     end
+    describe "satisfies? test" do
+      it "should answer true if offset/length is within the slice" do
+        slice.satisfies?(40, 5).should == true
+        slice.satisfies?(41, 1).should == true
+        slice.satisfies?(45, 1).should == true
+      end 
+      it "should answer false otherwise" do
+        slice.satisfies?(39, 3).should == false
+        slice.satisfies?(40, 10).should == false
+      end 
+    end
   end
 end

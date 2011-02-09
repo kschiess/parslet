@@ -52,6 +52,13 @@ class Parslet::Slice
     end
   end
   
+  # True if this slice can satisfy an original input request to the 
+  # range ofs, len.
+  #
+  def satisfies?(ofs, len)
+    ofs >= offset && (ofs-offset+len-1)<str.size
+  end
+  
   def to_str
     str
   end
