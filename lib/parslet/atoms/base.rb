@@ -194,9 +194,12 @@ class Parslet::Atoms::Base
   end
   
   def flatten_sequence(list) # :nodoc:
-    list.compact.inject('') { |r, e|        # and then merge flat elements
+    foldl(list.compact) { |r, e|        # and then merge flat elements
       merge_fold(r, e)
     }
+  end
+  def foldl(list, &block)
+    list[1..-1].inject(list.first, &block)
   end
   def merge_fold(l, r) # :nodoc:
     # equal pairs: merge. 
@@ -212,8 +215,8 @@ class Parslet::Atoms::Base
     # unequal pairs: hoist to same level. 
     
     # special case: If one of them is a string, the other is more important 
-    return l if r.class == String
-    return r if l.class == String
+    return l if r.respond_to? :to_str
+    return r if l.respond_to? :to_str
     
     # otherwise just create an array for one of them to live in 
     return l + [r] if r.class == Hash

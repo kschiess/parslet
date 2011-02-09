@@ -327,7 +327,7 @@ describe Parslet do
     end
     
     context "(str('a') >> str('ignore') >> str('b')) (no .as(...))" do
-      it "should return an empty subtree" do
+      it "should return simply the original string" do
         (str('a') >> str('ignore') >> str('b')).
           parse('aignoreb').should == 'aignoreb'
       end 

@@ -26,7 +26,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
 
     # Failures: 
     return error(source, @error_msgs[:premature]) unless s && s.size==str.size
-    return error(source, @error_msgs[:failed]+s.inspect, error_pos) 
+    return error(source, @error_msgs[:failed]+s.str.inspect, error_pos) 
   end
   
   def to_s_inner(prec) # :nodoc:
