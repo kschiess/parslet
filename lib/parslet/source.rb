@@ -1,7 +1,6 @@
 
 require 'stringio'
 
-require 'parslet/source/range'
 require 'parslet/source/line_cache'
 
 # Wraps the input IO to parslet. The interface defined by this class is 
