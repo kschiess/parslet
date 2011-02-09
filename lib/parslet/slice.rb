@@ -66,8 +66,10 @@ class Parslet::Slice
     str.size
   end
   def +(other)
-    raise Parslet::InvalidSliceOperation, "Cannot concat slices that aren't adjacent." \
-      if offset+size != other.offset
+    raise Parslet::InvalidSliceOperation, 
+      "Cannot concat slices that aren't adjacent."+
+      " (#{self.inspect} + #{other.inspect})" \
+        if offset+size != other.offset
        
     # If both slices stem from the same bigger buffer, we can reslice that 
     # buffer to obtain a lean result. 
@@ -84,7 +86,7 @@ class Parslet::Slice
   alias to_s to_str
   
   def inspect
-    "slice(#{str}, #{offset})"
+    "slice(#{str.inspect}, #{offset})"
   end
 end
 

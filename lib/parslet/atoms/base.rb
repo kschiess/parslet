@@ -192,14 +192,19 @@ class Parslet::Atoms::Base
     
     fail "BUG: Unknown tag #{tag.inspect}."
   end
+
+  # Lisp style fold left where the first element builds the basis for 
+  # an inject. 
+  #
+  def foldl(list, &block)
+    return '' if list.empty?
+    list[1..-1].inject(list.first, &block)
+  end
   
   def flatten_sequence(list) # :nodoc:
     foldl(list.compact) { |r, e|        # and then merge flat elements
       merge_fold(r, e)
     }
-  end
-  def foldl(list, &block)
-    list[1..-1].inject(list.first, &block)
   end
   def merge_fold(l, r) # :nodoc:
     # equal pairs: merge. 
@@ -244,7 +249,7 @@ class Parslet::Atoms::Base
     return [] if named && list.empty?
             
     # If there are only strings, concatenate them and return that. 
-    list.inject('') { |s,e| s<<e }
+    foldl(list) { |s,e| s+e }
   end
 
   def self.precedence(prec) # :nodoc:
