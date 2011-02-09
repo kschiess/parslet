@@ -56,28 +56,6 @@ private
   # Number of buffers to keep 
   BUFFER_CACHE_SIZE = 3
   
-  class Buffer < Struct.new(:start, :buffer)
-    # Returns true if the range buf_offset..(buf_offset+length) is included in
-    # the range rq_offset..(rq_offset+rq_length).
-    #
-    def satisfies?(offset, length)
-      start <= offset &&
-        (offset-start+length) < buffer.size
-    end
-    
-    def size
-      return 0 unless buffer
-      buffer.size
-    end
-    
-    # Produces a range from the buffer. The range returned is completely 
-    # contained within this buffer. 
-    #
-    def range(offset, length)
-      Range.new(offset, length, self)
-    end
-  end
-
   # Reads and returns a piece of the input that contains length chars starting
   # at offset. 
   #

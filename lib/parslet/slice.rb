@@ -14,10 +14,11 @@
 # in theory keep buffer copies and allocations down. 
 #
 class Parslet::Slice
-  attr_reader :str, :ofs
+  attr_reader :str, :offset
+  attr_reader :parent
   
   def initialize(string, offset, parent=nil)
-    @str, @ofs = string, offset
+    @str, @offset = string, offset
     @parent = parent
   end
   
@@ -25,7 +26,7 @@ class Parslet::Slice
   #
   def == other
     if other.instance_of?(Parslet::Slice)
-      self.ofs == other.ofs && self.str == other.str
+      self.offset == other.offset && self.str == other.str
     else
       str == other
     end
@@ -37,12 +38,26 @@ class Parslet::Slice
     str.match(regexp)
   end
   
+  # Reslicing
+  #
+  def slice(start, length)
+    # NOTE: At a later stage, we might not want to create huge trees of slices. 
+    # The fact that the root of the tree creates slices that link to it makes
+    # the tree already rather flat. 
+    
+    if parent
+      parent.slice(offset - parent.offset, length)
+    else
+      Parslet::Slice.new(str.slice(start, length), offset+start, self)
+    end
+  end
+  
   def to_str
     str
   end
   alias to_s to_str
   
   def inspect
-    "slice(#{str}, #{ofs})"
+    "slice(#{str}, #{offset})"
   end
 end

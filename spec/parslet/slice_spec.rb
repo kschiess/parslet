@@ -36,7 +36,22 @@ describe Parslet::Slice do
     end
     describe "offset" do
       it "should return the associated offset" do
-        slice.ofs.should == 40
+        slice.offset.should == 40
+      end
+    end
+    describe "slices" do
+      it "should reslice its parent if available" do
+        small = slice.slice(1,3)
+        small.should == 'oob'
+        small.parent.should == slice
+        
+        flexmock(small.parent).should_receive(:slice).with(1,1).once
+        small.slice(0,1)
+      end
+      it "should return slices that have a correct offset" do
+        as = slice.slice(4,1)
+        as.offset.should == 44
+        as.should == 'a'
       end
     end
   end
