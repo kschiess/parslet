@@ -26,10 +26,10 @@ class Parslet::Source
   # Reads n chars from the input and returns a Range instance. 
   #
   def read(n)
-    range = read_from_cache(@virtual_position, n)
-    @virtual_position += range.size
+    slice = read_from_cache(@virtual_position, n)
+    @virtual_position += slice.size
     
-    range
+    slice
   end
   
   def eof?

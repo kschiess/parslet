@@ -65,7 +65,19 @@ class Parslet::Slice
   def size
     str.size
   end
-  
+  def +(other)
+    raise Parslet::InvalidSliceOperation, "Cannot concat slices that aren't adjacent." \
+      if offset+size != other.offset
+       
+    # If both slices stem from the same bigger buffer, we can reslice that 
+    # buffer to obtain a lean result. 
+    if parent && parent == other.parent
+      return parent.abs_slice(offset, size+other.size)
+    end
+    
+    self.class.new(str + other.str, offset)
+  end
+    
   def to_str
     str
   end
@@ -74,4 +86,10 @@ class Parslet::Slice
   def inspect
     "slice(#{str}, #{offset})"
   end
+end
+
+# Raised when trying to do an operation on slices that cannot succeed, like 
+# adding non-adjacent slices. 
+#
+class Parslet::InvalidSliceOperation < StandardError
 end

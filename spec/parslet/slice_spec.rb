@@ -78,6 +78,26 @@ describe Parslet::Slice do
         subject { slice.size }
         it { should == 6 } 
       end
+      describe "<- #+(other)" do
+        it "should return a slice that represents the extended range" do
+          other = described_class.new('foobar', 46)
+          (slice + other).should eq(described_class.new('foobarfoobar', 40))
+        end
+        it "should fail when adding slices that aren't adjacent" do
+          other = described_class.new('foobar', 100)
+          lambda { slice + other 
+            }.should raise_error(Parslet::InvalidSliceOperation)
+        end
+        context "when slices stem from a bigger buffer" do
+          let(:buffer) { described_class.new('foobarfoobar', 10) }
+          let!(:slice1) { buffer.slice(0,3) }
+          let!(:slice2) { buffer.slice(3,3) }
+          it "should reslice instead of concatenating" do
+            flexmock(buffer).should_receive(:abs_slice).with(10,6).once
+            slice1 + slice2
+          end
+        end  
+      end
     end
   end
 end
