@@ -26,7 +26,7 @@ class Parslet::Source
   # Reads n chars from the input and returns a Range instance. 
   #
   def read(n)
-    range = read_range(@virtual_position, n)
+    range = read_from_cache(@virtual_position, n)
     @virtual_position += range.size
     
     range
@@ -59,31 +59,30 @@ private
   # Reads and returns a piece of the input that contains length chars starting
   # at offset. 
   #
-  def read_range(offset, length)
+  def read_from_cache(offset, length)
     # Do we already have a buffer that contains the given range?
     # Return that. 
-    buffer = @slices.find { |slice| 
-      buffer.satisfies?(offset, length) }
-    return buffer.absolute_slice(offset, length) if buffer
+    slice = @slices.find { |slice| 
+      slice.satisfies?(offset, length) }
+    return slice.abs_slice(offset, length) if slice
     
     # Read a new buffer: Can the demand be satisfied by sequentially reading
     # from the current position?
     needed = offset-@io.pos+length
     if @io.pos <= offset && needed<MIN_READ_SIZE
-      # read the buffer
-      buffer = physical_read(needed)
-    
-      # return the range
-      return buffer.range(offset, length)
+      # read the slice
+      slice = read_slice(needed)
+      return slice.abs_slice(offset, length)
     end
     
     # Otherwise seek and read enough so that we can satisfy the demand. 
     @io.pos = offset
-    buffer = physical_read(length)
-    return buffer.range(offset, length)
+
+    slice = read_slice(needed)
+    return slice.abs_slice(offset, length)
   end
     
-  def physical_read(needed)
+  def read_slice(needed)
     start = @io.pos
     request = [MIN_READ_SIZE, needed].max
     buf = @io.read(request)
@@ -92,16 +91,19 @@ private
     if !buf || buf.size<request
       @eof_position = @io.pos
     end
-    
-    buffer = Buffer.new(start, buf)
-    
+
     # cache line ends
     @line_cache.scan_for_line_endings(start, buf)
     
-    # cache the buffer
-    @buffers << buffer
-    @buffer.shift if @buffers.size > BUFFER_CACHE_SIZE
+    slice = Parslet::Slice.new(buf || '', start)
     
-    buffer
+    # Don't cache empty slices.
+    return slice unless buf
+    
+    # cache the buffer (and eject old entries)
+    @slices << slice
+    @slices.shift if @slices.size > BUFFER_CACHE_SIZE
+    
+    slice
   end
 end

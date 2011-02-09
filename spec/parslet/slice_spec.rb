@@ -25,15 +25,6 @@ describe Parslet::Slice do
         'foobar'.should == slice
       end
     end
-    describe "matching" do
-      it "should match as a string would" do
-        slice.should match(/bar/)
-        slice.should match(/foo/)
-        
-        md = slice.match(/f(o)o/)
-        md.captures.first.should == 'o'
-      end
-    end
     describe "offset" do
       it "should return the associated offset" do
         slice.offset.should == 40
@@ -72,6 +63,21 @@ describe Parslet::Slice do
         slice.satisfies?(39, 3).should == false
         slice.satisfies?(40, 10).should == false
       end 
+    end
+    describe "string methods" do
+      describe "matching" do
+        it "should match as a string would" do
+          slice.should match(/bar/)
+          slice.should match(/foo/)
+
+          md = slice.match(/f(o)o/)
+          md.captures.first.should == 'o'
+        end
+      end
+      describe "<- #size" do
+        subject { slice.size }
+        it { should == 6 } 
+      end
     end
   end
 end

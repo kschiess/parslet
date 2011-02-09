@@ -62,6 +62,10 @@ class Parslet::Slice
     ofs >= offset && (ofs-offset+len-1)<str.size
   end
   
+  def size
+    str.size
+  end
+  
   def to_str
     str
   end
