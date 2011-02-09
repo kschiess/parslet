@@ -51,6 +51,9 @@ class Parslet::Slice
       Parslet::Slice.new(str.slice(start, length), offset+start, self)
     end
   end
+  def abs_slice(start, length)
+    slice(start-offset, length)
+  end
   
   # True if this slice can satisfy an original input request to the 
   # range ofs, len.

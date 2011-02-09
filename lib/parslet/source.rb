@@ -20,7 +20,7 @@ class Parslet::Source
     @line_cache = LineCache.new
     
     # Stores an array of <offset, buffer> tuples. 
-    @buffers = []
+    @slices = []
   end
   
   # Reads n chars from the input and returns a Range instance. 
@@ -53,7 +53,7 @@ class Parslet::Source
 private
   # Minimal size of a single read
   MIN_READ_SIZE = 500
-  # Number of buffers to keep 
+  # Number of slices to keep 
   BUFFER_CACHE_SIZE = 3
   
   # Reads and returns a piece of the input that contains length chars starting
@@ -62,9 +62,9 @@ private
   def read_range(offset, length)
     # Do we already have a buffer that contains the given range?
     # Return that. 
-    buffer = @buffers.find { |buffer| 
+    buffer = @slices.find { |slice| 
       buffer.satisfies?(offset, length) }
-    return buffer.range(offset, length) if buffer
+    return buffer.absolute_slice(offset, length) if buffer
     
     # Read a new buffer: Can the demand be satisfied by sequentially reading
     # from the current position?
