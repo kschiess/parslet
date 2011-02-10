@@ -83,8 +83,8 @@ class Parslet::Expression::Treetop
     rule(:seq => sequence(:s))        { Parslet::Atoms::Sequence.new(*s) }
     rule(:unwrap => simple(:u))       { u }
     rule(:maybe => simple(:m))        { |d| d[:m].maybe }
-    rule(:string => simple(:s))       { Parslet::Atoms::Str.new(s.to_s) }
-    rule(:match => simple(:m))        { Parslet::Atoms::Re.new(m.to_s) }
+    rule(:string => simple(:s))       { Parslet::Atoms::Str.new(s) }
+    rule(:match => simple(:m))        { Parslet::Atoms::Re.new(m) }
     rule(:any => simple(:a))          { Parslet::Atoms::Re.new('.') }
   end
   

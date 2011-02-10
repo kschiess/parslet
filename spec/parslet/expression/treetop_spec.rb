@@ -44,7 +44,7 @@ describe Parslet::Expression::Treetop do
         it { should parse(input) }
         context "string representation" do
           subject { exp(parslet.to_s) }
-          it { should parse(input) }
+          it { should parse(input, :trace => true) }
         end
       end
     end

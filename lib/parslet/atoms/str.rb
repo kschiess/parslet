@@ -9,7 +9,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
   def initialize(str)
     super()
 
-    @str = str
+    @str = str.to_s
     @error_msgs = {
       :premature  => "Premature end of input", 
       :failed     => "Expected #{str.inspect}, but got "

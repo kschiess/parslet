@@ -12,7 +12,7 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
   def initialize(match) # :nodoc:
     super()
 
-    @match = match
+    @match = match.to_s
     @re    = Regexp.new(match, Regexp::MULTILINE)
     @error_msgs = {
       :premature  => "Premature end of input", 
