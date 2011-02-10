@@ -5,17 +5,6 @@ require 'parslet'
 describe Parslet::Expression::Treetop do
   include Parslet
 
-  RSpec::Matchers.define :accept do |string|
-    match do |parslet|
-      begin
-        parslet.parse(string)
-        true
-      rescue Parslet::ParseFailed
-        false
-      end
-    end
-  end
-  
   describe "positive samples" do
     [ # pattern             # input
       "'abc'",              'abc', 
@@ -52,10 +41,10 @@ describe Parslet::Expression::Treetop do
       context "exp(#{pattern.inspect})" do
         let(:parslet) { exp(pattern) }
         subject { parslet }
-        it { should accept(input) }
+        it { should parse(input) }
         context "string representation" do
           subject { exp(parslet.to_s) }
-          it { should accept(input) }
+          it { should parse(input) }
         end
       end
     end
@@ -78,7 +67,7 @@ describe Parslet::Expression::Treetop do
     ].each_slice(2) do |pattern, input|
       context "exp(#{pattern.inspect})" do
         subject { exp(pattern) }
-        it { should_not accept(input) }
+        it { should_not parse(input) }
       end
     end
   end

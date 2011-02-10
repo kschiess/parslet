@@ -81,9 +81,6 @@ class Parslet::Slice
   end
     
   # Conversion operators -----------------------------------------------------
-  def to_i
-    str.to_i
-  end
   def to_str
     str
   end
@@ -91,6 +88,15 @@ class Parslet::Slice
   
   def to_slice
     self
+  end
+  def to_sym
+    str.to_sym
+  end
+  def to_i
+    str.to_i
+  end
+  def to_f
+    str.to_f
   end
   
   # Inspection & Debugging ---------------------------------------------------

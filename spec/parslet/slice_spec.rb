@@ -110,6 +110,16 @@ describe Parslet::Slice do
           slice.to_slice.should eq(slice)
         end 
       end
+      describe "<- #to_sym" do
+        it "should return :foobar" do
+          slice.to_sym.should == :foobar
+        end 
+      end
+      describe "<- #to_f" do
+        it "should return a float" do
+          Float(described_class.new('1.345', 11)).should == 1.345
+        end 
+      end
     end
   end
 end
