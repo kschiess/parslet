@@ -52,9 +52,9 @@ class Parslet::Source
   
 private
   # Minimal size of a single read
-  MIN_READ_SIZE = 500
+  MIN_READ_SIZE = 10 * 1024
   # Number of slices to keep 
-  BUFFER_CACHE_SIZE = 3
+  BUFFER_CACHE_SIZE = 10
   
   # Reads and returns a piece of the input that contains length chars starting
   # at offset. 
