@@ -98,11 +98,6 @@ describe Parslet::Slice do
           end
         end  
       end
-      describe "cast to Integer" do
-        it "should cast to integer as a string would" do
-          Integer(described_class.new('1234', 40)).should == 1234 
-        end 
-      end
     end
     describe "conversion" do
       describe "<- #to_slice" do
@@ -115,9 +110,22 @@ describe Parslet::Slice do
           slice.to_sym.should == :foobar
         end 
       end
-      describe "<- #to_f" do
+      describe "cast to Float" do
         it "should return a float" do
           Float(described_class.new('1.345', 11)).should == 1.345
+        end 
+      end
+      describe "cast to Integer" do
+        it "should cast to integer as a string would" do
+          s = described_class.new('1234', 40)
+          Integer(s).should == 1234
+          s.to_i.should == 1234
+        end 
+        it "should fail when Integer would fail on a string" do
+          lambda { Integer(slice) }.should raise_error
+        end 
+        it "should turn into zero when a string would" do
+          slice.to_i.should == 0
         end 
       end
     end
