@@ -201,13 +201,15 @@ class Parslet::Atoms::Base
     list[1..-1].inject(list.first, &block)
   end
   
+  # Flatten results from a sequence of parslets. 
+  #
   def flatten_sequence(list) # :nodoc:
     foldl(list.compact) { |r, e|        # and then merge flat elements
       merge_fold(r, e)
     }
   end
   def merge_fold(l, r) # :nodoc:
-    # equal pairs: merge. 
+    # equal pairs: merge. ----------------------------------------------------
     if l.class == r.class
       if l.is_a?(Hash)
         warn_about_duplicate_keys(l, r)
@@ -217,9 +219,18 @@ class Parslet::Atoms::Base
       end
     end
     
-    # unequal pairs: hoist to same level. 
+    # unequal pairs: hoist to same level. ------------------------------------
     
-    # special case: If one of them is a string, the other is more important 
+    # Maybe classes are not equal, but both are stringlike?
+    if l.respond_to?(:to_str) && r.respond_to?(:to_str)
+      # if we're merging a String with a Slice, the slice wins. 
+      return r if r.respond_to? :to_slice
+      return l if l.respond_to? :to_slice
+      
+      fail "NOTREACHED: What other stringlike classes are there?"
+    end
+    
+    # special case: If one of them is a string/slice, the other is more important 
     return l if r.respond_to? :to_str
     return r if l.respond_to? :to_str
     
@@ -230,6 +241,11 @@ class Parslet::Atoms::Base
     fail "Unhandled case when foldr'ing sequence."
   end
 
+  # Flatten results from a repetition of a single parslet. named indicates
+  # whether the user has named the result or not. If the user has named
+  # the results, we want to leave an empty list alone - otherwise it is 
+  # turned into an empty string. 
+  #
   def flatten_repetition(list, named) # :nodoc:
     if list.any? { |e| e.instance_of?(Hash) }
       # If keyed subtrees are in the array, we'll want to discard all 

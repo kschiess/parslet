@@ -80,11 +80,20 @@ class Parslet::Slice
     self.class.new(str + other.str, offset)
   end
     
+  # Conversion operators -----------------------------------------------------
+  def to_i
+    str.to_i
+  end
   def to_str
     str
   end
   alias to_s to_str
   
+  def to_slice
+    self
+  end
+  
+  # Inspection & Debugging ---------------------------------------------------
   def inspect
     "slice(#{str.inspect}, #{offset})"
   end

@@ -98,6 +98,18 @@ describe Parslet::Slice do
           end
         end  
       end
+      describe "cast to Integer" do
+        it "should cast to integer as a string would" do
+          Integer(described_class.new('1234', 40)).should == 1234 
+        end 
+      end
+    end
+    describe "conversion" do
+      describe "<- #to_slice" do
+        it "should return self" do
+          slice.to_slice.should eq(slice)
+        end 
+      end
     end
   end
 end
