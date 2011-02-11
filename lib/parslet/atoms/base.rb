@@ -328,7 +328,12 @@ private
   class Cause < Struct.new(:message, :source, :pos)
     def to_s
       line, column = source.line_and_column(pos)
-      message + " at line #{line} char #{column}."
+      # Allow message to be a list of objects. Join them here, since we now
+      # really need it. 
+      Array(message).map { |o| 
+        o.respond_to? :to_slice ? 
+          o.str : 
+          o.to_s }.join + " at line #{line} char #{column}."
     end
   end
 

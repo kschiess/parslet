@@ -17,6 +17,9 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
   end
   
   def try(source, context) # :nodoc:
+    # NOTE: Even though it doesn't look that way, this is the hotspot, the
+    # contents of parslets inner loop. Changes here affect parslets speed 
+    # enormously.
     error_pos = source.pos
     s = source.read(str.size)
 
@@ -26,7 +29,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
 
     # Failures: 
     return error(source, @error_msgs[:premature]) unless s && s.size==str.size
-    return error(source, @error_msgs[:failed]+s.str.inspect, error_pos) 
+    return error(source, [@error_msgs[:failed], s], error_pos) 
   end
   
   def to_s_inner(prec) # :nodoc:
