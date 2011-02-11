@@ -1,4 +1,4 @@
-RSpec::Matchers.define(:parse) do |input, opts={}|
+RSpec::Matchers.define(:parse) do |input, opts|
   chain(:as) { |as| @as = as }
 
   match do |parser|
@@ -6,7 +6,7 @@ RSpec::Matchers.define(:parse) do |input, opts={}|
       @result = parser.parse(input)
       @as == @result or @as.nil?
     rescue Parslet::ParseFailed
-      @trace = parser.error_tree.ascii_tree if opts[:trace]
+      @trace = parser.error_tree.ascii_tree if opts && opts[:trace]
       false
     end
   end

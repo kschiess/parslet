@@ -13,7 +13,7 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     super()
 
     @match = match.to_s
-    @re    = Regexp.new(match, Regexp::MULTILINE)
+    @re    = Regexp.new(self.match, Regexp::MULTILINE)
     @error_msgs = {
       :premature  => "Premature end of input", 
       :failed     => "Failed to match #{match.inspect[1..-2]}"
