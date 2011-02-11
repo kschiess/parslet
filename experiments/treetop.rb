@@ -6,7 +6,7 @@ require 'ansi_smalltalk'
 
 
 parser = AnsiSmalltalkParser.new
-result = parser.parse(File.read("test.st"))
+result = parser.parse(File.read(ARGV.first || "test.st"))
 
 if !result
   puts parser.failure_reason
