@@ -268,6 +268,8 @@ class Parslet::Atoms::Base
     foldl(list) { |s,e| s+e }
   end
 
+  # Debug printing - in Treetop syntax. 
+  #
   def self.precedence(prec) # :nodoc:
     define_method(:precedence) { prec }
   end
@@ -331,8 +333,8 @@ private
       # Allow message to be a list of objects. Join them here, since we now
       # really need it. 
       Array(message).map { |o| 
-        o.respond_to? :to_slice ? 
-          o.str : 
+        o.respond_to?(:to_slice) ? 
+          o.str.inspect : 
           o.to_s }.join + " at line #{line} char #{column}."
     end
   end
