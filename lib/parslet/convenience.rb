@@ -1,4 +1,4 @@
-class Parslet::Parser
+class Parslet::Atoms::Base
   
   # Packages the common idiom
   #    
@@ -6,7 +6,7 @@ class Parslet::Parser
   #      tree = parser.parse('something')
   #    rescue Parslet::ParseFailed => error
   #      puts error
-  #      puts parser.root.error_tree
+  #      puts parser.error_tree
   #    end
   #
   # into a convenient method.
@@ -27,7 +27,7 @@ class Parslet::Parser
     parse str
   rescue Parslet::ParseFailed => error
     puts error
-    puts root.error_tree
+    puts error_tree
   end
 
 end

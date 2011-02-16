@@ -139,7 +139,7 @@ describe "Regressions from real examples" do
         ')
       rescue => ex
       end
-      remove_indent(subject.root.error_tree).should == remove_indent(%q(
+      remove_indent(subject.error_tree).should == remove_indent(%q(
         `- Unknown error in (LINE EOL){1, } / LINE
            |- Failed to match sequence (LINE EOL) at line 8 char 11.
            |  `- Failed to match sequence (SPACE? [\n\r]{1, }) at line 8 char 11.

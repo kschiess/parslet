@@ -52,5 +52,5 @@ begin
   p sanitizer.apply(parser.parse(ARGV[0]))
 rescue Parslet::ParseFailed => error
   puts error
-  puts parser.root.error_tree
+  puts parser.error_tree
 end
