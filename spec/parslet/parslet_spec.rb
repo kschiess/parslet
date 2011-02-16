@@ -12,18 +12,6 @@ describe Parslet do
       end
     end 
   end
-  describe "<- .root" do
-    let(:root_parslet) { flexmock() }
-    root :root_parslet
-    
-    it "should have defined a 'parse' method in the current context" do
-      root_parslet.should_receive(:parse).with('snaf').once
-      parse('snaf')
-    end 
-    it "should have defined a 'root' method, returning the root" do
-      root.should == root_parslet
-    end 
-  end
   describe "<- .rule" do
     # Rules define methods. This can be easily tested by defining them right 
     # here. 

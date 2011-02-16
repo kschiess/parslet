@@ -5,7 +5,7 @@
 module Parslet::Atoms
   class Base
     def accept(visitor)
-      raise NotImplementedError, "No visit method on #{self.class.name}."
+      raise NotImplementedError, "No #accept method on #{self.class.name}."
     end
   end
   

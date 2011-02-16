@@ -68,34 +68,6 @@ module Parslet
   end
   
   module ClassMethods
-    # Define the parsers #root function. This is the place where you start 
-    # parsing; if you have a rule for 'file' that describes what should be 
-    # in a file, this would be your root declaration: 
-    #
-    #   class Parser
-    #     root :file
-    #     rule(:file) { ... }
-    #   end
-    #
-    # #root declares a 'parse' function that works just like the parse 
-    # function that you can call on a simple parslet, taking a string as input
-    # and producing parse output. 
-    #
-    # In a way, #root is a shorthand for: 
-    #
-    #   def parse(str)
-    #     your_parser_root.parse(str)
-    #   end
-    #
-    def root(name)
-      define_method(:root) do
-        self.send(name)
-      end
-      define_method(:parse) do |str|
-        root.parse(str)
-      end
-    end
-    
     # Define an entity for the parser. This generates a method of the same
     # name that can be used as part of other patterns. Those methods can be
     # freely mixed in your parser class with real ruby methods.
