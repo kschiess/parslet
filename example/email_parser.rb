@@ -35,7 +35,7 @@ class EmailSanitizer < Parslet::Transform
   rule(:word => simple(:word)) { word }
 
   rule(:username => sequence(:username)) { username.join + "@" }
-  rule(:username => simple(:username)) { username + "@" }
+  rule(:username => simple(:username)) { username.to_s + "@" }
 
   rule(:email => sequence(:email)) { email.join }
 end

@@ -6,9 +6,7 @@ $:.unshift '../lib'
 require 'pp'
 require 'parslet'
 
-module XML
-  include Parslet
-
+class XML < Parslet::Parser
   root :document
   
   rule(:document) {
@@ -35,8 +33,7 @@ module XML
 end
 
 def check(xml)
-  include XML
-  r=parse(xml)
+  r = XML.new.parse(xml)
 
   # We'll validate the tree by reducing valid pairs of tags into simply the
   # string "verified". If the transformation ends on a string, then the
