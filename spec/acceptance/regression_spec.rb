@@ -150,4 +150,6 @@ describe "Regressions from real examples" do
                  `- Expected "a", but got "b" at line 8 char 11.).strip)
     end 
   end
+
+  # TODO insert a test for pattern match binding comparison
 end
