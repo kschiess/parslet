@@ -2,8 +2,9 @@ RSpec::Matchers.define(:parse) do |input, opts|
   match do |parser|
     begin
       @result = parser.parse(input)
-      @block ? @block.call(@result)
-             : (@as == @result || @as.nil?)
+      @block ? 
+        @block.call(@result) : 
+        (@as == @result || @as.nil?)
     rescue Parslet::ParseFailed
       @trace = parser.error_tree.ascii_tree if opts && opts[:trace]
       false
@@ -16,11 +17,13 @@ RSpec::Matchers.define(:parse) do |input, opts|
       " with #{is.inspect} to meet block conditions, but it didn't"
     else
       "expected " << 
-        (@as  ? "output of parsing #{input.inspect}"<<
-                " with #{is.inspect} to equal #{@as.inspect}, but was #{@result.inspect}" 
-              : "#{is.inspect} to be able to parse #{input.inspect}") << 
-        (@trace ? "\n"+@trace 
-                : '')
+        (@as ? 
+          "output of parsing #{input.inspect}"<<
+          " with #{is.inspect} to equal #{@as.inspect}, but was #{@result.inspect}" : 
+          "#{is.inspect} to be able to parse #{input.inspect}") << 
+        (@trace ? 
+          "\n"+@trace : 
+          '')
     end
   end
 
@@ -29,9 +32,11 @@ RSpec::Matchers.define(:parse) do |input, opts|
       "expected output of parsing #{input.inspect} with #{is.inspect} not to meet block conditions, but it did"
     else
       "expected " << 
-        (@as  ? "output of parsing #{input.inspect}"<<
-                " with #{is.inspect} not to equal #{@as.inspect}" 
-              : "#{is.inspect} to not parse #{input.inspect}, but it did")
+        (@as ? 
+          "output of parsing #{input.inspect}"<<
+          " with #{is.inspect} not to equal #{@as.inspect}" :
+          
+          "#{is.inspect} to not parse #{input.inspect}, but it did")
     end
   end
 
