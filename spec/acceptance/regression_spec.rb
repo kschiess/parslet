@@ -151,5 +151,20 @@ describe "Regressions from real examples" do
     end 
   end
 
-  # TODO insert a test for pattern match binding comparison
+  class BLanguage < Parslet::Parser
+    root :expression
+    rule(:expression) { b.as(:one) >> b.as(:two) }
+    rule(:b) { str('b') }
+  end
+  describe BLanguage do
+    it "should parse 'bb'" do
+      subject.should parse('bb').as(:one => 'b', :two => 'b')
+    end 
+    it "should transform with binding constraint" do
+      transform = Parslet::Transform.new do |t|
+        t.rule(:one => simple(:b), :two => simple(:b)) { :ok }
+      end
+      transform.apply(subject.parse('bb')).should == :ok
+    end 
+  end
 end
