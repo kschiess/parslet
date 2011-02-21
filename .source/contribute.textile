@@ -11,6 +11,14 @@ h2. Contact
 
 Join us on IRC in #parslet. 
 
+Discussion and patches (or the odd cry for 'Help! How can I parse X?') should
+go to our mailing list at
+"ruby.parslet@librelist.com":mailto:ruby.parslet@librelist.com. Just write a
+short message to that address and "librelist":http://librelist.com will
+subscribe you. NNTP/web interface can be had through
+"gmane.org":http://dir.gmane.org/gmane.comp.lang.ruby.parslet:
+<code>gmane.comp.lang.ruby.parslet</code>.
+
 h2. Bugs 
 
 Log in to github and open a bug ticket

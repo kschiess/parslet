@@ -2,7 +2,7 @@ body { font-size: 17px; font-family: Helvetica; background-color: white; }
 
 a { color: black; }
 
-.main_menu { font-size: 1.2em; margin-bottom: 1cm; }
+.main_menu { font-size: 1.2em; width: 50em; margin-bottom: 1cm; }
 .main_menu ul { display: inline-block; list-style-type: none; font-size: 1.33em; margin-left: -8em; }
 .main_menu ul:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 * html .main_menu ul { height: 1px; }
