@@ -64,8 +64,43 @@ describe Parslet::Atoms::Transform do
       end
       it "should transform a positive lookahead into a negative lookahead" do
         apply(
-          str('foo').absnt? >> str('foo')
+          # The order of the sequence gets reversed as well...
+          str('foo') >> str('foo').absnt?
         ).should parse('oof')
+      end 
+    end
+    context "entity" do
+      class ModifyAll
+        def visit_entity(name, context, block)
+          super(name, context, block)
+        end
+      end
+      it "should lazily produce a transformed grammar" do
+        block = proc { str('bar') }
+        apply(
+          Parslet::Atoms::Entity.new(:foo, self, block)
+        ).should parse('rab')
+      end 
+    end
+    context "repetition" do
+      class ModifyAll
+        def visit_repetition(min, max, parslet)
+          super(min+1, max, parslet)
+        end
+      end
+      it "should increase min by one" do
+        apply(str('a').repeat(1)).should_not parse('a')
+        apply(str('a').repeat(1)).should parse('aa')
+      end 
+    end
+    context "named" do
+      class ModifyAll
+        def visit_named(name, parslet)
+          super(:bar, parslet)
+        end
+      end
+      it "should change name to :bar" do
+        apply(str('a').as(:foo)).should parse('a').as(:bar => 'a')
       end 
     end
   end

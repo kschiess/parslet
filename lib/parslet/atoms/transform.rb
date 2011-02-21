@@ -13,7 +13,7 @@ class Parslet::Atoms::Transform
   end
   
   def visit_sequence(parslets)
-    parslets[1..-1].inject(parslets[0]) { |a,p| a >> p }
+    parslets[1..-1].inject(parslets[0]) { |a,p| a >> p.accept(self) }
   end
   
   def visit_re(match)
@@ -21,6 +21,25 @@ class Parslet::Atoms::Transform
   end
   
   def visit_alternative(parslets)
-    parslets[1..-1].inject(parslets[0]) { |a,p| a | p }
+    parslets[1..-1].inject(parslets[0]) { |a,p| a | p.accept(self) }
+  end
+  
+  def visit_lookahead(positive, parslet)
+    Parslet::Atoms::Lookahead.new(positive, parslet.accept(self))
+  end
+  
+  # TODO: at least roll context and block into one lambda.
+  def visit_entity(name, context, block)
+    transformer = self
+    transformed_block = proc { context.instance_eval(&block).accept(transformer) }
+    Parslet::Atoms::Entity.new(name, context, transformed_block)
+  end
+  
+  def visit_named(name, parslet)
+    parslet.accept(self).as(name)
+  end
+  
+  def visit_repetition(min, max, parslet)
+    parslet.accept(self).repeat(min, max)
   end
 end
