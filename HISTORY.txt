@@ -1,4 +1,7 @@
 = 1.2.0 / ???
+  
+  + Visitors now should have methods that all begin with 'visit_*'. #str 
+    becomes #visit_str.
 
   + Parslet::Parser is now also a grammar atom, it can be composed freely with
     other atoms. (str('f') >> MiniLispParser.new >> str('b'))

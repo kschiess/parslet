@@ -13,7 +13,7 @@ module Parslet::Atoms
     # Call back visitors #str method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.str(str)
+      visitor.visit_str(str)
     end
   end
   
@@ -21,7 +21,7 @@ module Parslet::Atoms
     # Call back visitors #entity method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.entity(name, context, block)
+      visitor.visit_entity(name, context, block)
     end
   end
   
@@ -29,7 +29,7 @@ module Parslet::Atoms
     # Call back visitors #named method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.named(name, parslet)
+      visitor.visit_named(name, parslet)
     end
   end
   
@@ -37,7 +37,7 @@ module Parslet::Atoms
     # Call back visitors #sequence method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.sequence(parslets)
+      visitor.visit_sequence(parslets)
     end
   end
   
@@ -45,7 +45,7 @@ module Parslet::Atoms
     # Call back visitors #repetition method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.repetition(min, max, parslet)
+      visitor.visit_repetition(min, max, parslet)
     end
   end
   
@@ -53,7 +53,7 @@ module Parslet::Atoms
     # Call back visitors #alternative method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.alternative(alternatives)
+      visitor.visit_alternative(alternatives)
     end
   end
   
@@ -61,7 +61,7 @@ module Parslet::Atoms
     # Call back visitors #lookahead method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.lookahead(positive, bound_parslet)
+      visitor.visit_lookahead(positive, bound_parslet)
     end
   end
   
@@ -69,7 +69,7 @@ module Parslet::Atoms
     # Call back visitors #re method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.re(match)
+      visitor.visit_re(match)
     end
   end
 end

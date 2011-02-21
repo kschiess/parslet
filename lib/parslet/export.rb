@@ -11,33 +11,33 @@ class Parslet::Parser
         @context = context
       end
       
-      def str(str)
+      def visit_str(str)
         "\"#{str.inspect[1..-2]}\""
       end
-      def re(match)
+      def visit_re(match)
         match.to_s
       end
 
-      def entity(name, ctx, block)
+      def visit_entity(name, ctx, block)
         context.deferred(name, [ctx, block])
 
         "(#{context.mangle_name(name)})"
       end
-      def named(name, parslet)
+      def visit_named(name, parslet)
         parslet.accept(self)
       end
 
-      def sequence(parslets)
+      def visit_sequence(parslets)
         '(' <<
         parslets.
           map { |el| el.accept(self) }.
           join(' ') <<
         ')'
       end
-      def repetition(min, max, parslet)
+      def visit_repetition(min, max, parslet)
         parslet.accept(self) << "#{min}*#{max}"
       end
-      def alternative(alternatives)
+      def visit_alternative(alternatives)
         '(' <<
         alternatives.
           map { |el| el.accept(self) }.
@@ -45,18 +45,18 @@ class Parslet::Parser
         ')'
       end
 
-      def lookahead(positive, bound_parslet)
+      def visit_lookahead(positive, bound_parslet)
         (positive ? '&' : '!') <<
         bound_parslet.accept(self)
       end
     end
 
     class Treetop < Citrus
-      def repetition(min, max, parslet)
+      def visit_repetition(min, max, parslet)
         parslet.accept(self) << "#{min}..#{max}"
       end
 
-      def alternative(alternatives)
+      def visit_alternative(alternatives)
         '(' <<
         alternatives.
           map { |el| el.accept(self) }.
