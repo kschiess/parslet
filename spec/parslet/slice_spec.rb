@@ -18,12 +18,26 @@ describe Parslet::Slice do
         slice.should == other
         other.should == slice
       end 
+      it "should be equal to other slices (offset is irrelevant for comparison)" do
+        other = described_class.new('foobar', 41)
+        slice.should == other
+        other.should == slice
+      end 
       it "should be equal to a string with the same content" do
         slice.should == 'foobar'
       end
-      it "should be equal with the string on the left side" do
+      it "should be equal to a string (inversed operands)" do
         'foobar'.should == slice
-      end
+      end 
+      it "should not be equal to a string" do
+        slice.should_not equal('foobar')
+      end 
+      it "should not be eql to a string" do
+        slice.should_not eql('foobar')
+      end 
+      it "should not hash to the same number" do
+        slice.hash.should_not == 'foobar'.hash
+      end 
     end
     describe "offset" do
       it "should return the associated offset" do

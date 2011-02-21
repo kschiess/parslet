@@ -25,11 +25,7 @@ class Parslet::Slice
   # Compares slices to other slices or strings. 
   #
   def == other
-    if other.instance_of?(Parslet::Slice)
-      self.offset == other.offset && self.str == other.str
-    else
-      str == other
-    end
+    str == other
   end
   
   # Match regular expressions. 
@@ -66,13 +62,18 @@ class Parslet::Slice
     str.size
   end
   def +(other)
+    raise ArgumentError, 
+      "Cannot concat something other than a slice to a slice." \
+        unless other.respond_to?(:to_slice)
+          
     raise Parslet::InvalidSliceOperation, 
       "Cannot concat slices that aren't adjacent."+
       " (#{self.inspect} + #{other.inspect})" \
         if offset+size != other.offset
        
     # If both slices stem from the same bigger buffer, we can reslice that 
-    # buffer to obtain a lean result. 
+    # buffer to (probably) avoid a buffer copy, as long as the strings are
+    # not modified. 
     if parent && parent == other.parent
       return parent.abs_slice(offset, size+other.size)
     end
