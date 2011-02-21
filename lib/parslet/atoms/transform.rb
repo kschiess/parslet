@@ -15,4 +15,12 @@ class Parslet::Atoms::Transform
   def visit_sequence(parslets)
     parslets[1..-1].inject(parslets[0]) { |a,p| a >> p }
   end
+  
+  def visit_re(match)
+    Parslet.match(match)
+  end
+  
+  def visit_alternative(parslets)
+    parslets[1..-1].inject(parslets[0]) { |a,p| a | p }
+  end
 end
