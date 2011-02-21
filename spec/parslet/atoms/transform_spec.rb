@@ -5,10 +5,6 @@ require 'parslet/atoms/transform'
 describe Parslet::Atoms::Transform do
   include Parslet
   
-  context "when used directly" do
-    it "should transform all inputs onto itself"  
-  end
-  
   class ModifyAll < Parslet::Atoms::Transform; end
   describe ModifyAll do
     subject { ModifyAll.new }
@@ -58,6 +54,18 @@ describe Parslet::Atoms::Transform do
           str('foobar').as(:whole) |
           str('foo').as(:foo) >> str('bar').as(:bar)
         ).should parse('foobar').as(:foo => 'foo', :bar => 'bar')
+      end 
+    end
+    context "lookahead" do
+      class ModifyAll
+        def visit_lookahead(positive, parslet)
+          super(!positive, parslet)
+        end
+      end
+      it "should transform a positive lookahead into a negative lookahead" do
+        apply(
+          str('foo').absnt? >> str('foo')
+        ).should parse('oof')
       end 
     end
   end
