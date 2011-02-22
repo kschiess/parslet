@@ -1,4 +1,11 @@
 
+# An exploration of two ideas: 
+#   a) Constructing a whole parser inline, without the artificial class around
+#      it. 
+# and:
+#   b) Constructing non-greedy or non-blind parsers by transforming the 
+#      grammar.
+
 $:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
 include Parslet
