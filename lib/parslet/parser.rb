@@ -12,6 +12,21 @@
 #   pp MyParser.new.parse('bbbb')   # => Parslet::Atoms::ParseFailed: 
 #                                   #    Don't know what to do with bbbb at line 1 char 1.
 #
+# Parslet::Parser is also a grammar atom. This means that you can mix full 
+# fledged parsers freely with small parts of a different parser. 
+#
+# Example: 
+#   class ParserA < Parslet::Parser
+#     root :aaa
+#     rule(:aaa) { str('a').repeat(3,3) }
+#   end
+#   class ParserB < Parslet::Parser
+#     root :expression
+#     rule(:expression) { str('b') >> ParserA.new >> str('b') }
+#   end
+#
+# In the above example, ParserB would parse something like 'baaab'. 
+#
 class Parslet::Parser < Parslet::Atoms::Base
   include Parslet
 
