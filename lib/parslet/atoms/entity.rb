@@ -9,12 +9,11 @@
 # using the structuring method Parslet.rule.
 #
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
-  attr_reader :name, :context, :block
-  def initialize(name, context, block) # :nodoc:
+  attr_reader :name, :block
+  def initialize(name, &block) # :nodoc:
     super()
     
     @name = name
-    @context = context
     @block = block
   end
 
@@ -23,7 +22,7 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
   end
   
   def parslet
-    @parslet ||= context.instance_eval(&block).tap { |p| 
+    @parslet ||= @block.call.tap { |p| 
       raise_not_implemented unless p
     }
   end

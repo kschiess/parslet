@@ -28,11 +28,10 @@ class Parslet::Atoms::Transform
     Parslet::Atoms::Lookahead.new(positive, parslet.accept(self))
   end
   
-  # TODO: at least roll context and block into one lambda.
-  def visit_entity(name, context, block)
+  def visit_entity(name, block)
     transformer = self
-    transformed_block = proc { context.instance_eval(&block).accept(transformer) }
-    Parslet::Atoms::Entity.new(name, context, transformed_block)
+    transformed_block = proc { block.call.accept(transformer) }
+    Parslet::Atoms::Entity.new(name, &transformed_block)
   end
   
   def visit_named(name, parslet)

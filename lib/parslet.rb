@@ -96,8 +96,14 @@ module Parslet
     def rule(name, &definition)
       define_method(name) do
         @rules ||= {}     # <name, rule> memoization
-        @rules[name] or
-          (@rules[name] = Atoms::Entity.new(name, self, definition))
+        return @rules[name] if @rules.has_key?(name)
+        
+        # Capture the self of the parser class along with the definition.
+        definition_closure = proc {
+          self.instance_eval(&definition)
+        }
+        
+        @rules[name] = Atoms::Entity.new(name, &definition_closure)
       end
     end
   end

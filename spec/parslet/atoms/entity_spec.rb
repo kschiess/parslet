@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Parslet::Atoms::Entity do
   context "when constructed with str('bar') inside" do
-    let(:named) { Parslet::Atoms::Entity.new('name', self, proc { Parslet.str('bar') }) }
+    let(:named) { Parslet::Atoms::Entity.new('name', &proc { Parslet.str('bar') }) }
 
     it "should parse 'bar' without raising exceptions" do
       named.parse('bar')
@@ -20,7 +20,7 @@ describe Parslet::Atoms::Entity do
     end
   end
   context "when constructed with empty block" do
-    let(:entity) { Parslet::Atoms::Entity.new('name', self, proc { }) }
+    let(:entity) { Parslet::Atoms::Entity.new('name', &proc { }) }
     
     it "should raise NotImplementedError" do
       lambda {

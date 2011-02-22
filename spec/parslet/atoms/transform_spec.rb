@@ -71,14 +71,14 @@ describe Parslet::Atoms::Transform do
     end
     context "entity" do
       class ModifyAll
-        def visit_entity(name, context, block)
-          super(name, context, block)
+        def visit_entity(name, block)
+          super(name, block)
         end
       end
       it "should lazily produce a transformed grammar" do
         block = proc { str('bar') }
         apply(
-          Parslet::Atoms::Entity.new(:foo, self, block)
+          Parslet::Atoms::Entity.new(:foo, &block)
         ).should parse('rab')
       end 
     end

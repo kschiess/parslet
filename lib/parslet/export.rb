@@ -18,8 +18,8 @@ class Parslet::Parser
         match.to_s
       end
 
-      def visit_entity(name, ctx, block)
-        context.deferred(name, [ctx, block])
+      def visit_entity(name, block)
+        context.deferred(name, block)
 
         "(#{context.mangle_name(name)})"
       end
@@ -88,13 +88,13 @@ class Parslet::Parser
         # @todo is constantly filled by the visitor (see #deferred). We 
         # keep going until it is empty.
         break if @todo.empty?
-        name, (context, block) = @todo.shift
+        name, block = @todo.shift
 
         # Track what rules we've already seen. This breaks loops.
         next if seen.include?(name)
         seen << name
 
-        output << rule(name, context.instance_eval(&block))
+        output << rule(name, block.call)
       end
       
       output << "end\n"

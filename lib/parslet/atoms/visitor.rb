@@ -21,7 +21,7 @@ module Parslet::Atoms
     # Call back visitors #entity method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.visit_entity(name, context, block)
+      visitor.visit_entity(name, block)
     end
   end
   
