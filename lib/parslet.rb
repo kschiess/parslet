@@ -64,6 +64,14 @@ module Parslet
   #     puts parslet.error_tree
   #   end
   #
+  # Alternatively, you can just require 'parslet/convenience' and call 
+  # the method #parse_with_debug instead of #parse. This method will never 
+  # raise and print error trees to stdout.
+  #
+  # Example: 
+  #   require 'parslet/convenience'
+  #   parslet.parse_with_debug(str)
+  #
   class ParseFailed < StandardError
   end
   
