@@ -3,10 +3,7 @@
 
 $:.unshift '../lib'
 
-require 'pp'
-require 'parslet'
-include Parslet
-
+# cut here -------------------------------------------------------------------
 require 'parslet'
 include Parslet
 
@@ -19,15 +16,12 @@ parser =  str('"') >>
           str('"')
   
 # Parse the string and capture parts of the interpretation (:string above)        
-tree = parser.parse(%Q{
-  "This is a \\"String\\" in which you can escape stuff"
-}.strip)
+tree = parser.parse('"This is a \\"String\\" in which you can escape stuff"')
 
 tree # => {:string=>"This is a \\\"String\\\" in which you can escape stuff"}
 
 # Here's how you can grab results from that tree:
 
-# 1)
 transform = Parslet::Transform.new do
   rule(:string => simple(:x)) { 
     puts "String contents: #{x}" }
