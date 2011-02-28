@@ -1,0 +1,8 @@
+[{:exp=>{:a=>slice("a", 3)}},
+ {:line=>slice("// line comment", 7)},
+ {:exp=>{:a=>slice("a", 25)}},
+ {:exp=>{:a=>slice("a", 27)}},
+ {:exp=>[{:a=>slice("a", 29)}, {:line=>slice("// line comment", 31)}]},
+ {:exp=>[{:a=>slice("a", 49)}, {:multi=>slice("/* inline comment */", 51)}]},
+ {:exp=>{:a=>slice("a", 72)}},
+ {:multi=>slice("/* multiline\n  comment */", 77)}]

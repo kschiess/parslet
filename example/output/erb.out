@@ -1,0 +1,7 @@
+{:text=>[{:text=>slice("The value of x is ", 0)}, {:expression=>{:ruby=>slice(" x ", 21)}}, {:text=>slice(".", 26)}]}
+{:text=>[{:code=>{:ruby=>slice(" 1 + 2 ", 2)}}]}
+{:text=>[{:comment=>{:ruby=>slice(" commented ", 3)}}]}
+The not printed result of "a = 2".
+The not printed non-evaluated comment "a = 1", see the value of a below.
+The nicely printed result.
+The value of a is 2, and b is 3.

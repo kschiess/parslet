@@ -1,0 +1,8 @@
+[:define,
+ :test,
+ [:lambda,
+  [],
+  [:begin,
+   [:display, slice("something", 54)],
+   [:display, 1],
+   [:display, 3.08]]]]
