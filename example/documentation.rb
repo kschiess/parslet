@@ -1,7 +1,8 @@
 # A small example that shows a really small parser and what happens on parser
 # errors. 
 
-$:.unshift '../lib'
+$: << 'lib'
+$: << '../lib'
 
 require 'pp'
 require 'parslet'

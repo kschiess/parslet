@@ -2,7 +2,8 @@
 
 # Example contributed by Hal Brodigan (postmodern). Thanks!
 
-$:.unshift '../lib'
+$: << 'lib'
+$: << '../lib'
 require 'parslet'
 
 class EmailParser < Parslet::Parser
@@ -45,11 +46,11 @@ sanitizer = EmailSanitizer.new
 
 unless ARGV[0]
   STDERR.puts "usage: #{$0} \"EMAIL_ADDR\""
-  exit -1
+  STDOUT.puts "since you haven't specified any EMAIL_ADDR, for testing purposes we're using a.b.c.d@gmail.com"
 end
 
 begin
-  p sanitizer.apply(parser.parse(ARGV[0]))
+  p sanitizer.apply(parser.parse(ARGV[0] || 'a.b.c.d@gmail.com'))
 rescue Parslet::ParseFailed => error
   puts error
   puts parser.error_tree

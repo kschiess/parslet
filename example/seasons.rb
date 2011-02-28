@@ -1,4 +1,6 @@
-$:.unshift '../lib/'
+$: << 'lib'
+$: << '../lib'
+
 require 'parslet'
 require 'pp'
 

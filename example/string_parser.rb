@@ -4,7 +4,10 @@
 
 require 'pp'
 
-$:.unshift '../lib/'
+$: << 'lib'
+$: << '../lib'
+$: << 'example'
+
 require 'parslet'
 
 include Parslet
@@ -50,8 +53,10 @@ class LiteralsParser < Parslet::Parser
   root :literals
 end
 
-parsetree = LiteralsParser.new.parse(
-  File.read('simple.lit'))
+file = File.exist?('simple.lit') ? File.read('simple.lit')\
+                                 : File.read('example/simple.lit')
+
+parsetree = LiteralsParser.new.parse(file)
   
 class Lit < Struct.new(:text)
   def to_s

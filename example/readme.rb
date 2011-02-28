@@ -1,7 +1,8 @@
 # The example from the readme. With this, I am making sure that the readme 
 # 'works'. Is this too messy?
 
-$:.unshift '../lib'
+$: << 'lib'
+$: << '../lib'
 
 # cut here -------------------------------------------------------------------
 require 'parslet'

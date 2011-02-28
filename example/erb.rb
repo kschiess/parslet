@@ -1,4 +1,6 @@
-$:.unshift File.dirname(__FILE__) + "/../lib"
+$: << 'lib'
+$: << '../lib'
+
 require 'parslet'
 
 class ErbParser < Parslet::Parser

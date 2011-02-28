@@ -6,7 +6,8 @@
 #
 # See http://tools.ietf.org/html/rfc3986#appendix-A for more information.
 
-$:.unshift '../lib'
+$: << 'lib'
+$: << '../lib'
 
 require 'pp'
 require 'parslet'

@@ -1,7 +1,8 @@
 # A small example on how to parse common types of comments. The example
 # started out with parser code from Stephen Waits. 
 
-$:.unshift '../lib'
+$: << 'lib'
+$: << '../lib'
 
 require 'pp'
 require 'parslet'
