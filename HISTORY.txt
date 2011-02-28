@@ -6,8 +6,6 @@
   + No strings, only slices are returned as part of the parser result. 
     Parslet::Slice is almost a string class, but one that remembers the 
     source offset. This has also bought us a slight speedup.
-
-  + Deprecated #absnt? and #prsnt? in favor of #absent? and #present?.
     
   + require 'parslet/convenience' now brings #parse_with_debug to all parslets.
   
