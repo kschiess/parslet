@@ -63,6 +63,9 @@ improvements. (Robert Kosek)
 
 h2. Thanks for all the fish -- Contributions
 
+* *Josep M. Bach* ("txus":http://www.txustice.me/) for minding the small 
+  things that make a big difference.
+
 * *Matthew Draper* ("matthewd":http://matthewd.net/) for bothering with my 
   broken CSS.
 
