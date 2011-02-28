@@ -61,7 +61,7 @@ describe Parslet::Atoms do
     end 
   end
   describe Parslet::Atoms::Lookahead do
-    let(:parslet) { str('a').absnt? }
+    let(:parslet) { str('a').absent? }
     it "should call back visitor" do
       visitor.should_receive(:visit_lookahead).with(false, Parslet::Atoms::Base).once
       

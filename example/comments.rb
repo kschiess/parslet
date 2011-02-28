@@ -19,8 +19,8 @@ class ALanguage < Parslet::Parser
   rule(:spaces) { space.repeat }
   rule(:space) { multiline_comment | line_comment | str(' ') }
   
-  rule(:line_comment) { (str('//') >> (newline.absnt? >> any).repeat).as(:line) }
-  rule(:multiline_comment) { (str('/*') >> (str('*/').absnt? >> any).repeat >> str('*/')).as(:multi) }
+  rule(:line_comment) { (str('//') >> (newline.absent? >> any).repeat).as(:line) }
+  rule(:multiline_comment) { (str('/*') >> (str('*/').absent? >> any).repeat >> str('*/')).as(:multi) }
 end
 
 code = %q(

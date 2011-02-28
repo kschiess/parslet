@@ -17,7 +17,7 @@ a =  str('a').repeat >> str('aa')
 # S = E2 | E1 S 
 
 def this(name, &block); return Parslet::Atoms::Entity.new(name, &block) end
-def epsilon; any.absnt? end 
+def epsilon; any.absent? end 
 
 # Traditional repetition will try as long as the pattern can be matched and 
 # then give up. This is greedy and blind. 

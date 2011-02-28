@@ -45,7 +45,7 @@ module MiniLisp
     rule(:string) {
       str('"') >> (
         str('\\') >> any |
-        str('"').absnt? >> any 
+        str('"').absent? >> any 
       ).repeat.as(:string) >> str('"') >> space?
     }
   end
