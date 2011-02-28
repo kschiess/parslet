@@ -140,22 +140,26 @@ class Parslet::Atoms::Base
   # 
   # Example: 
   #   # Only proceed the parse if 'a' is absent.
-  #   str('a').absnt?
+  #   str('a').absent?
   #
-  def absnt?
+  def absent?
     Parslet::Atoms::Lookahead.new(self, false)
   end
+
+  alias_method :absnt?, :absent?
 
   # Tests for presence of a parslet atom in the input stream without consuming
   # it. 
   # 
   # Example: 
   #   # Only proceed the parse if 'a' is present.
-  #   str('a').prsnt?
+  #   str('a').present?
   #
-  def prsnt?
+  def present?
     Parslet::Atoms::Lookahead.new(self, true)
   end
+
+  alias_method :prsnt?, :present?
 
   # Marks a parslet atom as important for the tree output. This must be used 
   # to achieve meaningful output from the #parse method. 
