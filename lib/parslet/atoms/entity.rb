@@ -18,7 +18,7 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
   end
 
   def try(source, context) # :nodoc:
-    parslet.apply(source, context)
+    parslet.apply(source, context, true)
   end
   
   def parslet

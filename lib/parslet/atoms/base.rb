@@ -63,12 +63,16 @@ class Parslet::Atoms::Base
   # Calls the #try method of this parslet. In case of a parse error, apply
   # leaves the source in the state it was before the attempt. 
   #+++
-  def apply(source, context) # :nodoc:
+  def apply(source, context, memoize = false) # :nodoc:
     old_pos = source.pos
     
-    result = context.cache(self, source) {
-      try(source, context)
-    }
+    if memoize
+      result = context.cache(self, source) {
+        try(source, context)
+      }
+    else
+      result = try(source, context)
+    end
     
     # This has just succeeded, so last_cause must be empty
     unless result.error?
