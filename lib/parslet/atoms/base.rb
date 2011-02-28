@@ -140,10 +140,16 @@ class Parslet::Atoms::Base
   # 
   # Example: 
   #   # Only proceed the parse if 'a' is absent.
-  #   str('a').absnt?
+  #   str('a').absent?
   #
-  def absnt?
+  def absent?
     Parslet::Atoms::Lookahead.new(self, false)
+  end
+
+  # Deprecated method. Replaced with #absent?
+  def absnt?
+    Parslet.deprecate("absnt?", "absent?", '2.0')
+    absent?
   end
 
   # Tests for presence of a parslet atom in the input stream without consuming
@@ -151,10 +157,16 @@ class Parslet::Atoms::Base
   # 
   # Example: 
   #   # Only proceed the parse if 'a' is present.
-  #   str('a').prsnt?
+  #   str('a').present?
   #
-  def prsnt?
+  def present?
     Parslet::Atoms::Lookahead.new(self, true)
+  end
+
+  # Deprecated method. Replaced with #present?
+  def prsnt?
+    Parslet.deprecate("prsnt?", "present?", '2.0')
+    present?
   end
 
   # Marks a parslet atom as important for the tree output. This must be used 
