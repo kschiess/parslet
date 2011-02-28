@@ -14,6 +14,8 @@
   + Visitors now should have methods that all begin with 'visit_*'. #str 
     becomes #visit_str.
 
+  + Added Parslet.deprecate to deprecate methods.
+
   + Parslet::Atoms::Entity now takes only a block argument instead of context
     and block. 
 
