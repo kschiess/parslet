@@ -2,8 +2,7 @@
 
 # Example contributed by Hal Brodigan (postmodern). Thanks!
 
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
 
 class EmailParser < Parslet::Parser

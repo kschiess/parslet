@@ -1,5 +1,6 @@
-$: << 'lib'
-$: << '../lib'
+# Example that demonstrates how a simple erb-like parser could be constructed. 
+
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'parslet'
 

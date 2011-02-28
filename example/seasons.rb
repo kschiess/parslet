@@ -1,5 +1,4 @@
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'parslet'
 require 'pp'

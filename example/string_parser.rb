@@ -4,10 +4,7 @@
 
 require 'pp'
 
-$: << 'lib'
-$: << '../lib'
-$: << 'example'
-
+$:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
 
 include Parslet
@@ -53,8 +50,8 @@ class LiteralsParser < Parslet::Parser
   root :literals
 end
 
-file = File.exist?('simple.lit') ? File.read('simple.lit')\
-                                 : File.read('example/simple.lit')
+input_name = File.join(File.dirname(__FILE__), 'simple.lit')
+file = File.read(input_name)
 
 parsetree = LiteralsParser.new.parse(file)
   

@@ -1,8 +1,7 @@
 # Reproduces [1] using parslet. 
 # [1] http://thingsaaronmade.com/blog/a-quick-intro-to-writing-a-parser-using-treetop.html
 
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'pp'
 require 'parslet'

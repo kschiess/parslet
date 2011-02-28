@@ -6,8 +6,7 @@
 #   b) Constructing non-greedy or non-blind parsers by transforming the 
 #      grammar.
 
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'parslet'
 include Parslet

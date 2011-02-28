@@ -1,8 +1,7 @@
 # A small example on how to parse common types of comments. The example
 # started out with parser code from Stephen Waits. 
 
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'pp'
 require 'parslet'

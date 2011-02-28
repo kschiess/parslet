@@ -6,8 +6,7 @@
 #
 # See http://tools.ietf.org/html/rfc3986#appendix-A for more information.
 
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'pp'
 require 'parslet'

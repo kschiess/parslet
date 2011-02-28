@@ -2,8 +2,7 @@
 # uses '.as(:name)' to construct a tree that can reliably be matched
 # afterwards. 
 
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'pp'
 require 'parslet'

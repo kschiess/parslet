@@ -1,8 +1,7 @@
 # The example from the readme. With this, I am making sure that the readme 
 # 'works'. Is this too messy?
 
-$: << 'lib'
-$: << '../lib'
+$:.unshift File.dirname(__FILE__) + "/../lib"
 
 # cut here -------------------------------------------------------------------
 require 'parslet'
