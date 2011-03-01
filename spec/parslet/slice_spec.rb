@@ -43,16 +43,43 @@ describe Parslet::Slice do
       it "should return the associated offset" do
         slice.offset.should == 40
       end
+      it "should fail to return a line and column" do
+        lambda {
+          slice.line_and_column
+        }.should raise_error(ArgumentError)
+      end 
+      
+      context "when constructed with a source" do
+        before(:each) { 
+          flexmock(slice, :source => flexmock(:source).
+            tap { |sm| sm.
+              should_receive(:line_and_column).
+              with(40).
+              and_return([13, 14]) }) 
+        }
+        it "should return proper line and column" do
+          slice.line_and_column.should == [13, 14]
+        end
+      end
     end
     describe "slices" do
       describe "<- #slice(start, length)" do
-        it "should reslice its parent if available" do
-          small = slice.slice(1,3)
-          small.should == 'oob'
-          small.parent.should == slice
+        context "when a common parent is available" do
+          before(:each) { 
+            flexmock(slice, :source => :correct_parent)
+          }
+          let(:small) { slice.slice(1,3) }
+          
+          it "should copy the parents source" do
+            small.source.should == :correct_parent
+          end
+          it "should reslice its parent if available" do
+            small.should == 'oob'
+            small.parent.should == slice
 
-          flexmock(small.parent).should_receive(:slice).with(1,1).once
-          small.slice(0,1)
+            flexmock(small.parent).should_receive(:slice).with(1,1).once
+            small.slice(0,1)
+          end
         end
         it "should return slices that have a correct offset" do
           as = slice.slice(4,1)
@@ -93,6 +120,7 @@ describe Parslet::Slice do
         it { should == 6 } 
       end
       describe "<- #+(other)" do
+        it "should check that sources are compatible" 
         it "should return a slice that represents the extended range" do
           other = described_class.new('foobar', 46)
           (slice + other).should eq(described_class.new('foobarfoobar', 40))

@@ -16,9 +16,11 @@
 class Parslet::Slice
   attr_reader :str, :offset
   attr_reader :parent
+  attr_reader :source
   
-  def initialize(string, offset, parent=nil)
+  def initialize(string, offset, source=nil, parent=nil)
     @str, @offset = string, offset
+    @source = source
     @parent = parent
   end
   
@@ -44,7 +46,7 @@ class Parslet::Slice
     if parent
       parent.slice(offset - parent.offset, length)
     else
-      Parslet::Slice.new(str.slice(start, length), offset+start, self)
+      self.class.new(str.slice(start, length), offset+start, source, self)
     end
   end
   def abs_slice(start, length)
@@ -67,7 +69,7 @@ class Parslet::Slice
         unless other.respond_to?(:to_slice)
           
     raise Parslet::InvalidSliceOperation, 
-      "Cannot concat slices that aren't adjacent."+
+      "Cannot join slices that aren't adjacent."+
       " (#{self.inspect} + #{other.inspect})" \
         if offset+size != other.offset
        
@@ -78,8 +80,18 @@ class Parslet::Slice
       return parent.abs_slice(offset, size+other.size)
     end
     
-    self.class.new(str + other.str, offset)
+    self.class.new(str + other.str, offset, source)
   end
+  
+  # Returns a <line, column> tuple referring to the original input. 
+  #
+  def line_and_column
+    raise ArgumentError, "No source was given, cannot infer line and column." \
+      unless source
+        
+    source.line_and_column(self.offset)
+  end
+
     
   # Conversion operators -----------------------------------------------------
   def to_str

@@ -95,7 +95,7 @@ private
     # cache line ends
     @line_cache.scan_for_line_endings(start, buf)
     
-    slice = Parslet::Slice.new(buf || '', start)
+    slice = Parslet::Slice.new(buf || '', start, self)
     
     # Don't cache empty slices.
     return slice unless buf
