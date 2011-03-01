@@ -143,5 +143,15 @@ describe Parslet::Slice do
         end 
       end
     end
+    describe "inspection and string conversion" do
+      describe "#inspect" do
+        subject { slice.inspect }
+        it { should == '"foobar"@40' }
+      end
+      describe "#to_s" do
+        subject { slice.to_s }
+        it { should == 'foobar' }
+      end
+    end
   end
 end

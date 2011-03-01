@@ -105,7 +105,7 @@ class Parslet::Slice
   
   # Inspection & Debugging ---------------------------------------------------
   def inspect
-    "slice(#{str.inspect}, #{offset})"
+    str.inspect << "@#{offset}"
   end
 end
 

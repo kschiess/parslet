@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'open3'
 
-describe "Regression examples from example/ directory" do
+describe "Regression on" do
   Dir["example/*.rb"].each do |example|
     context example do
       # Generates a product path for a given example file. 

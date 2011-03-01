@@ -1,8 +1,8 @@
-                  (): {:l=>slice("(", 0), :m=>nil, :r=>slice(")", 1)} (1 parens)
+                  (): {:l=>"("@0, :m=>nil, :r=>")"@1} (1 parens)
 
-                (()): {:l=>slice("(", 0), :m=>{:l=>slice("(", 1), :m=>nil, :r=>slice(")", 2)}, :r=>slice(")", 3)} (2 parens)
+                (()): {:l=>"("@0, :m=>{:l=>"("@1, :m=>nil, :r=>")"@2}, :r=>")"@3} (2 parens)
 
-          ((((())))): {:l=>slice("(", 0), :m=>{:l=>slice("(", 1), :m=>{:l=>slice("(", 2), :m=>{:l=>slice("(", 3), :m=>{:l=>slice("(", 4), :m=>nil, :r=>slice(")", 5)}, :r=>slice(")", 6)}, :r=>slice(")", 7)}, :r=>slice(")", 8)}, :r=>slice(")", 9)} (5 parens)
+          ((((())))): {:l=>"("@0, :m=>{:l=>"("@1, :m=>{:l=>"("@2, :m=>{:l=>"("@3, :m=>{:l=>"("@4, :m=>nil, :r=>")"@5}, :r=>")"@6}, :r=>")"@7}, :r=>")"@8}, :r=>")"@9} (5 parens)
 
                ((()): Failed to match sequence (l:'(' m:(BALANCED?)) at line 1 char 6.
 
