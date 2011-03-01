@@ -1,12 +1,17 @@
-
 require "rubygems"
 require "rake/rdoctask"
 require 'rspec/core/rake_task'
 require "rake/gempackagetask"
 
-
-desc "Run all examples"
+desc "Run all tests: Exhaustive."
 RSpec::Core::RakeTask.new
+
+namespace :spec do
+  desc "Only run unit tests: Fast. "
+  RSpec::Core::RakeTask.new(:unit) do |task|
+    task.pattern = "spec/parslet/**/*_spec.rb"
+  end
+end
 
 task :default => :spec
 
@@ -27,10 +32,11 @@ desc 'Clear out RDoc'
 task :clean => [:clobber_rdoc, :clobber_package]
 
 # This task actually builds the gem. 
+task :gem => :spec
 spec = eval(File.read('parslet.gemspec'))
+
 desc "Generate the gem package."
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
-task :gem => :spec
