@@ -72,6 +72,9 @@ class Parslet::Slice
       "Cannot join slices that aren't adjacent."+
       " (#{self.inspect} + #{other.inspect})" \
         if offset+size != other.offset
+          
+    raise Parslet::InvalidSliceOperation, "Not from the same source." \
+      if source != other.source
        
     # If both slices stem from the same bigger buffer, we can reslice that 
     # buffer to (probably) avoid a buffer copy, as long as the strings are

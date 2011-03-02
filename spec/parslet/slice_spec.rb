@@ -120,7 +120,14 @@ describe Parslet::Slice do
         it { should == 6 } 
       end
       describe "<- #+(other)" do
-        it "should check that sources are compatible" 
+        it "should check that sources are compatible" do
+          a = slice.slice(0,1)
+          b = slice.slice(1,2)
+          flexmock(b, :source => :incompatible)
+          lambda {
+            a + b
+          }.should raise_error(Parslet::InvalidSliceOperation)
+        end 
         it "should return a slice that represents the extended range" do
           other = described_class.new('foobar', 46)
           (slice + other).should eq(described_class.new('foobarfoobar', 40))
