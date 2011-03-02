@@ -3,6 +3,7 @@
 #
 class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
+  include Parslet::Atoms::DSL
   
   # Internally, all parsing functions return either an instance of Fail 
   # or an instance of Success. 
@@ -87,84 +88,6 @@ class Parslet::Atoms::Base
   def try(source, context)
     raise NotImplementedError, \
       "Atoms::Base doesn't have behaviour, please implement #try(source, context)."
-  end
-
-  # Construct a new atom that repeats the current atom min times at least and
-  # at most max times. max can be nil to indicate that no maximum is present. 
-  #
-  # Example: 
-  #   # match any number of 'a's
-  #   str('a').repeat     
-  #
-  #   # match between 1 and 3 'a's
-  #   str('a').repeat(1,3)
-  #
-  def repeat(min=0, max=nil)
-    Parslet::Atoms::Repetition.new(self, min, max)
-  end
-  
-  # Returns a new parslet atom that is only maybe present in the input. This
-  # is synonymous to calling #repeat(0,1). Generated tree value will be 
-  # either nil (if atom is not present in the input) or the matched subtree. 
-  #
-  # Example: 
-  #   str('foo').maybe
-  #
-  def maybe
-    Parslet::Atoms::Repetition.new(self, 0, 1, :maybe)
-  end
-
-  # Chains two parslet atoms together as a sequence. 
-  #
-  # Example: 
-  #   str('a') >> str('b')
-  #
-  def >>(parslet)
-    Parslet::Atoms::Sequence.new(self, parslet)
-  end
-
-  # Chains two parslet atoms together to express alternation. A match will
-  # always be attempted with the parslet on the left side first. If it doesn't
-  # match, the right side will be tried. 
-  #
-  # Example:
-  #   # matches either 'a' OR 'b'
-  #   str('a') | str('b')
-  #
-  def |(parslet)
-    Parslet::Atoms::Alternative.new(self, parslet)
-  end
-  
-  # Tests for absence of a parslet atom in the input stream without consuming
-  # it. 
-  # 
-  # Example: 
-  #   # Only proceed the parse if 'a' is absent.
-  #   str('a').absnt?
-  #
-  def absnt?
-    Parslet::Atoms::Lookahead.new(self, false)
-  end
-
-  # Tests for presence of a parslet atom in the input stream without consuming
-  # it. 
-  # 
-  # Example: 
-  #   # Only proceed the parse if 'a' is present.
-  #   str('a').prsnt?
-  #
-  def prsnt?
-    Parslet::Atoms::Lookahead.new(self, true)
-  end
-
-  # Marks a parslet atom as important for the tree output. This must be used 
-  # to achieve meaningful output from the #parse method. 
-  #
-  # Example:
-  #   str('a').as(:b) # will produce {:b => 'a'}
-  #
-  def as(name)
-    Parslet::Atoms::Named.new(self, name)
   end
 
   # Takes a mixed value coming out of a parslet and converts it to a return
@@ -298,7 +221,7 @@ class Parslet::Atoms::Base
 
   # Error tree returns what went wrong here plus what went wrong inside 
   # subexpressions as a tree. The error stored for this node will be equal
-  # with #cause. 
+  # to #cause. 
   #
   def error_tree
     Parslet::ErrorTree.new(self)
@@ -327,6 +250,9 @@ private
       @last_cause.to_s
   end
   
+  # An internal class that allows delaying the construction of error messages
+  # (as strings) until we really need to print them. 
+  #
   class Cause < Struct.new(:message, :source, :pos)
     def to_s
       line, column = source.line_and_column(pos)
