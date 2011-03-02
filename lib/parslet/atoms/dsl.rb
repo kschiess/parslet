@@ -1,3 +1,14 @@
+
+# A mixin module that defines operations that can be called on any subclass
+# of Parslet::Atoms::Base. These operations make parslets atoms chainable and 
+# allow combination of parslet atoms to form bigger parsers.
+#
+# Example: 
+#
+#   str('foo') >> str('bar')
+#   str('f').repeat
+#   any.absent?               # also called The Epsilon
+#
 module Parslet::Atoms::DSL
   # Construct a new atom that repeats the current atom min times at least and
   # at most max times. max can be nil to indicate that no maximum is present. 

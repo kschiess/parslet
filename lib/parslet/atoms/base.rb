@@ -1,6 +1,8 @@
 # Base class for all parslets, handles orchestration of calls and implements
 # a lot of the operator and chaining methods.
 #
+# Also see Parslet::Atoms::DSL chaining parslet atoms together.
+#
 class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
   include Parslet::Atoms::DSL

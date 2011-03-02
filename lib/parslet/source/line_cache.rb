@@ -59,7 +59,7 @@ class Parslet::Source
   #     [10, 20, 30]
   #     # would describe [0, 10], (10, 20], (20, 30]
   #
-  module RangeSearch
+  module RangeSearch # :nodoc: 
     # Scans the array for the first number that is > than bound. Returns the 
     # index of that number. 
     #

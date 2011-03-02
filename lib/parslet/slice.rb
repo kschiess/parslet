@@ -166,7 +166,7 @@ class Parslet::Slice
 end
 
 # Raised when trying to do an operation on slices that cannot succeed, like 
-# adding non-adjacent slices. 
+# adding non-adjacent slices. See Parslet::Slice.
 #
 class Parslet::InvalidSliceOperation < StandardError
 end
