@@ -101,11 +101,11 @@ class HereDocs < Parslet::Parser
   # a doc_line is either the stop tag followed by nothing 
   # or just any kind of line.
   rule(:doc_line) { 
-    (end_tag.absnt? >> gobble_eol).repeat >> end_tag
+    (end_tag.absent? >> gobble_eol).repeat >> end_tag
   }
   rule(:end_tag) { tag.matches(:tag) >> space? >> eol }
   # eats anything until an end of line is found
-  rule(:gobble_eol) { (eol.absnt? >> any).repeat >> eol }
+  rule(:gobble_eol) { (eol.absent? >> any).repeat >> eol }
 
   rule(:eol) { match['\n\r'].repeat(1) }
   rule(:space?) { str(' ').repeat }

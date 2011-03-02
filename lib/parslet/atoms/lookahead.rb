@@ -2,7 +2,7 @@
 #
 # Example: 
 #
-#   str('foo').prsnt?   # matches when the input contains 'foo', but leaves it
+#   str('foo').present? # matches when the input contains 'foo', but leaves it
 #
 class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
   attr_reader :positive

@@ -5,7 +5,7 @@ $:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
 
 class ErbParser < Parslet::Parser
-  rule(:ruby) { (str('%>').absnt? >> any).repeat.as(:ruby) }
+  rule(:ruby) { (str('%>').absent? >> any).repeat.as(:ruby) }
   
   rule(:expression) { (str('=') >> ruby).as(:expression) }
   rule(:comment) { (str('#') >> ruby).as(:comment) }
@@ -13,7 +13,7 @@ class ErbParser < Parslet::Parser
   rule(:erb) { expression | comment | code }
   
   rule(:erb_with_tags) { str('<%') >> erb >> str('%>') }
-  rule(:text) { (str('<%').absnt? >> any).repeat(1) }
+  rule(:text) { (str('<%').absent? >> any).repeat(1) }
   
   rule(:text_with_ruby) { (text.as(:text) | erb_with_tags).repeat.as(:text) }
   root(:text_with_ruby)

@@ -21,7 +21,7 @@ class XML < Parslet::Parser
     
     parslet = str('<')
     parslet = parslet >> str('/') if close
-    parslet = parslet >> (str('>').absnt? >> match("[a-zA-Z]")).repeat(1).as(:name)
+    parslet = parslet >> (str('>').absent? >> match("[a-zA-Z]")).repeat(1).as(:name)
     parslet = parslet >> str('>')
     
     parslet

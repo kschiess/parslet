@@ -23,7 +23,7 @@ describe "Regressions from real examples" do
       str('"') >> 
       (
         str('\\') >> any |
-        str('"').absnt? >> any
+        str('"').absent? >> any
       ).repeat.as(:string) >>
       str('"') >> space?
     end
@@ -118,8 +118,8 @@ describe "Regressions from real examples" do
     rule(:space?) { space.repeat }
     rule(:space) { multiline_comment.as(:multi) | line_comment.as(:line) | str(' ') }
 
-    rule(:line_comment) { str('//') >> (match["\n\r"].absnt? >> any).repeat }
-    rule(:multiline_comment) { str('/*') >> (str('*/').absnt? >> any).repeat >> str('*/') }
+    rule(:line_comment) { str('//') >> (match["\n\r"].absent? >> any).repeat }
+    rule(:multiline_comment) { str('/*') >> (str('*/').absent? >> any).repeat >> str('*/') }
   end
   describe ALanguage do
     def remove_indent(s)

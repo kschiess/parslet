@@ -1,3 +1,8 @@
+= 2.0 / ?? (future release changes, like a reminder to self)
+  
+  - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
+    the win. 
+
 = 1.2.0 / ???
   
   + Parslet::Parser is now also a grammar atom, it can be composed freely with

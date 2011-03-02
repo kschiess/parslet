@@ -33,7 +33,7 @@ class Parslet::Expression::Treetop
     rule(:char_class) {
       (str('[') >>
         (str('\\') >> any |
-        str(']').absnt? >> any).repeat(1) >>
+        str(']').absent? >> any).repeat(1) >>
       str(']')).as(:match) >> space?
     }
     
@@ -45,7 +45,7 @@ class Parslet::Expression::Treetop
       str('\'') >> 
       (
         (str('\\') >> any) |
-        (str("'").absnt? >> any)
+        (str("'").absent? >> any)
       ).repeat.as(:string) >> 
       str('\'') >> space?
     }

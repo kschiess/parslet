@@ -26,7 +26,7 @@ class LiteralsParser < Parslet::Parser
     str('"') >> 
     (
       (str('\\') >> any) |
-      (str('"').absnt? >> any)
+      (str('"').absent? >> any)
     ).repeat.as(:string) >> 
     str('"')
   end

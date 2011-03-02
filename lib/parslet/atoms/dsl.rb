@@ -50,9 +50,9 @@ module Parslet::Atoms::DSL
   # 
   # Example: 
   #   # Only proceed the parse if 'a' is absent.
-  #   str('a').absnt?
+  #   str('a').absent?
   #
-  def absnt?
+  def absent?
     Parslet::Atoms::Lookahead.new(self, false)
   end
 
@@ -61,11 +61,19 @@ module Parslet::Atoms::DSL
   # 
   # Example: 
   #   # Only proceed the parse if 'a' is present.
-  #   str('a').prsnt?
+  #   str('a').present?
   #
-  def prsnt?
+  def present?
     Parslet::Atoms::Lookahead.new(self, true)
   end
+  
+  # Alias for present? that will disappear in 2.0 (deprecated)
+  #
+  alias prsnt? present?
+
+  # Alias for absent? that will disappear in 2.0 (deprecated)
+  #
+  alias absnt? absent?
 
   # Marks a parslet atom as important for the tree output. This must be used 
   # to achieve meaningful output from the #parse method. 

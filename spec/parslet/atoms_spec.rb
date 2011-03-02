@@ -173,10 +173,10 @@ describe Parslet do
       parslet.inspect.should == "'foo' / 'bar'"
     end 
   end
-  describe "str('foo').prsnt? (positive lookahead)" do
+  describe "str('foo').present? (positive lookahead)" do
     attr_reader :parslet
     before(:each) do
-      @parslet = str('foo').prsnt?
+      @parslet = str('foo').present?
     end
     
     it "should inspect as &'foo'" do
@@ -203,10 +203,10 @@ describe Parslet do
       end 
     end
   end
-  describe "str('foo').absnt? (negative lookahead)" do
+  describe "str('foo').absent? (negative lookahead)" do
     attr_reader :parslet
     before(:each) do
-      @parslet = str('foo').absnt?
+      @parslet = str('foo').absent?
     end
     
     it "should inspect as !'foo'" do
@@ -232,7 +232,7 @@ describe Parslet do
     attr_reader :parslet
     before(:each) do
       # repeat will always succeed, since it has a minimum of 0. It will not
-      # modify input position in that case. absnt? will, depending on
+      # modify input position in that case. absent? will, depending on
       # implementation, match as much as possible and call its inner element
       # again. This leads to an infinite loop. This example tests for the 
       # absence of that loop. 
@@ -350,9 +350,9 @@ describe Parslet do
         parslet.parse('ab').should == { :a => 'b' }
       end  
     end
-    context "str('a').absnt?" do
+    context "str('a').absent?" do
       it "should return something in merge, even though it is nil" do
-        (str('a').absnt? >> str('b').as(:b)).
+        (str('a').absent? >> str('b').as(:b)).
           parse('b').should == {:b => 'b'}
       end
     end

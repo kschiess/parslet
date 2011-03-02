@@ -38,7 +38,7 @@ describe Parslet::Parser, "exporting to other lingos" do
     rule(:string) {
       str('"') >> (
         str('\\') >> any |
-        str('"').absnt? >> any 
+        str('"').absent? >> any 
       ).repeat.as(:string) >> str('"') >> space?
     }
   end

@@ -11,7 +11,7 @@ include Parslet
 parser =  str('"') >> 
           (
             str('\\') >> any |
-            str('"').absnt? >> any
+            str('"').absent? >> any
           ).repeat.as(:string) >> 
           str('"')
   
