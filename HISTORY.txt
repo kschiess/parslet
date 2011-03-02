@@ -13,6 +13,11 @@
     source offset. This has also bought us a slight speedup.
     
   + require 'parslet/convenience' now brings #parse_with_debug to all parslets.
+    This is a consequence of the above change. 
+  
+  + Deprecates prsnt? and absnt? in favor of the more readable absent? and
+    prsnt?. Uses 3 bytes more RAM. The old variants will exist until we release
+    2.0. 
   
   INTERNALLY
   
