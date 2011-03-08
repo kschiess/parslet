@@ -16,7 +16,7 @@ parser =  str('"') >>
           str('"')
 
 result = parser.parse %Q("this is a valid string") 
-result # => {:string=>"this is a valid string"}
+result # => {:string=>"this is a valid string"@1}
 {% endhighlight %}
 
 A small Ruby library for constructing parsers in the

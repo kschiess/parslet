@@ -31,7 +31,7 @@ end
 p Mini.new.parse("132432")
 {% endhighlight %}
 
-Running this example will print "132432". Congratulations! You just have
+Running this example will print "132432@0". Congratulations! You just have
 written your first parser. Running it on the input '<code>puts(1)</code>' will
 not work yet. Let's see what happens in case of a failure:
 
@@ -136,13 +136,15 @@ throw nice explanations of what went wrong when a parse failure is
 encountered. Running the code on '<code>1++2</code>' for example outputs:
 
 {% highlight bash %} 
-Parsing 1 ++ 2: Don't know what to do with ++ 2 at line 1 char 3.
-`- Unknown error in SUM | INTEGER
-   |- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 4.
-   |  `- Unknown error in [0-9]{1, } SPACE?
-   |     `- Failed to match \\s at line 1 char 4.
-   `- Unknown error in [0-9]{1, } SPACE?
-      `- Failed to match \\s at line 1 char 4.
+Parsing 1++2: Don't know what to do with ++2 at line 1 char 2.
+`- Unknown error in SUM / INTEGER
+   |- Failed to match sequence (INTEGER OPERATOR) at line 1 char 3.
+   |  `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
+   |     `- Expected at least 1 of [0-9] at line 1 char 3.
+   |        `- Failed to match [0-9] at line 1 char 3.
+   `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
+      `- Expected at least 1 of [0-9] at line 1 char 3.
+         `- Failed to match [0-9] at line 1 char 3.
 {% endhighlight %}
 
 This is what parslet calls an <code>#error_tree</code>. Not only the output of
@@ -160,8 +162,13 @@ succeeds? It turns out, not much:
 
 {% highlight bash %} 
 * ruby 002.rb 
-Parsing 1 + 2 + 3: "1 + 2 + 3"
+Parsing 1 + 2 + 3: "1 + 2 + 3"@0
 {% endhighlight %}
+
+The only notable difference between input and output is that the output has an
+extra '@0' appended to it. This is related to line number tracking and will be
+explained later on (or you can skip ahead and look up
+<code>Parslet::Slice</code>).
 
 The code we now have parses the input successfully, but doesn't do much else. 
 Parslet hasn't got its own opinion on what to do with your input. By default, 
@@ -170,13 +177,12 @@ structuring its output:
 
 {% highlight ruby%} 
 # Without structure: just strings.
-str('ooo').parse('ooo')                           # => 'ooo'
-str('o').repeat.parse('ooo')                      # => 'ooo'
+str('ooo').parse('ooo')                           # => "ooo"@0
+str('o').repeat.parse('ooo')                      # => "ooo"@0
 
 # Added structure: .as(...)
-str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"}
-str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  
-    # => {:ex2b=>[{:ex2a=>"o"}, {:ex2a=>"o"}, {:ex2a=>"o"}]}
+str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"@0}
+str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  # => {:ex2b=>[{:ex2a=>"o"@0}, {:ex2a=>"o"@1}, {:ex2a=>"o"@2}]}
 {% endhighlight %}
 
 You get to name things the way you want! This is also free. Seriously: parslet
@@ -192,11 +198,11 @@ disappears. Parslet assumes that _what you don't name is unimportant_.
 parser =  str('a').as(:a) >> str(' ').maybe >> 
           str('+').as(:o) >> str(' ').maybe >> 
           str('b').as(:b)
-parser.parse('a + b') # => {:a=>"a", :o=>"+", :b=>"b"}
+parser.parse('a + b') # => {:b=>"b"@4, :o=>"+"@2, :a=>"a"@0}
 {% endhighlight%}
 
-Think of this like using a highlighter on your input: What is there not to like
-about neon yellow?
+Think of this like using a highlighter on your input: What is there not to
+like about neon yellow?
 
 h2. Making the parser complete
 
@@ -229,16 +235,18 @@ end
 {% endhighlight %}
 
 That's really all there is to it -- our language is a really simple language. 
-When fed with a string like '<code>puts(1+2+3, 45)</code>, our parser outputs
+When fed with a string like '<code>puts(1 + 2 + 3, 45)</code>, our parser outputs
 the following: 
 
 {% highlight ruby %} 
 # Ruby 1.9 hash syntax for easier reading
 {
-  funcall: 'puts', 
+  funcall: 'puts'@0, 
   arglist: [
-    {arg: {left: '1', op: '+ ', right: {left: '2', op: '+ ', right: '3'}}}, 
-    {arg: '45'}
+    {arg: {
+      left: '1'@5, op: '+ '@7, right: {
+        left: '2'@9, op: '+ '@11, right: '3'@13}}}, 
+    {arg: '45'@16}
   ]
 }
 {% endhighlight %}
