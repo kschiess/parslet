@@ -70,14 +70,17 @@ class Parslet::Atoms::Base
     old_pos = source.pos
     
     result = context.cache(self, source) {
+      p [:try, self, source.pos]
       try(source, context)
     }
     
     # This has just succeeded, so last_cause must be empty
     unless result.error?
+      p [:success, self, result.result]
       @last_cause = nil 
       return result
     end
+    p [:rollback, self]
     
     # We only reach this point if the parse has failed. Rewind the input.
     source.pos = old_pos
@@ -228,8 +231,6 @@ class Parslet::Atoms::Base
   def error_tree
     Parslet::ErrorTree.new(self)
   end
-private
-
   # Produces an instance of Success and returns it. 
   #
   def success(result)
@@ -242,6 +243,8 @@ private
     @last_cause = format_cause(source, str, pos)
     Fail.new(@last_cause)
   end
+
+private
 
   # Signals to the outside that the parse has failed. Use this in conjunction
   # with #format_cause for nice error messages. 

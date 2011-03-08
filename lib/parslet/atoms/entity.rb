@@ -18,7 +18,9 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
   end
 
   def try(source, context) # :nodoc:
-    parslet.apply(source, context)
+    context.stack(self, source, name) do
+      parslet.apply(source, context)
+    end
   end
   
   def parslet
@@ -32,7 +34,7 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
   end
 
   def error_tree # :nodoc:
-    parslet.error_tree
+    @error_tree ||= parslet.error_tree
   end
   
 private 
