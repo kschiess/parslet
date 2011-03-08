@@ -40,7 +40,9 @@ RSpec::Matchers.define(:parse) do |input, opts|
     end
   end
 
-  def as(expected_output = nil, &block)
+  # NOTE: This has a nodoc tag since the rdoc parser puts this into 
+  # Object, a thing I would never allow. 
+  def as(expected_output = nil, &block) # :nodoc: 
     @as = expected_output
     @block = block
     self
