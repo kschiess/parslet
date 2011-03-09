@@ -7,7 +7,7 @@
 #     root(:a)        
 #   end
 #        
-#   pp MyParser.new.parse('aaaa')   # => 'aaaa'
+#   pp MyParser.new.parse('aaaa')   # => 'aaaa'@0
 #   pp MyParser.new.parse('bbbb')   # => Parslet::Atoms::ParseFailed: 
 #                                   #    Don't know what to do with bbbb at line 1 char 1.
 #
