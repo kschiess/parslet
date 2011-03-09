@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::DSL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Module</span> 
+            Parslet::Atoms::DSL 
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/parslet/atoms/dsl_rb.html">lib/parslet/atoms/dsl.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+A mixin module that defines operations that can be called on any subclass
+of <a href="Base.html">Parslet::Atoms::Base</a>. These operations make
+parslets atoms chainable and allow combination of parslet atoms to form
+bigger parsers.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  str('foo') &gt;&gt; str('bar')
+  str('f').repeat
+  any.absent?               # also called The Epsilon
+</pre>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>#</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000031">>></a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>A</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000035">absent?</a>,</li>
+                
+                <li><a href="#M000038">absnt?</a>,</li>
+                
+                <li><a href="#M000039">as</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>M</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000030">maybe</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>P</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000036">present?</a>,</li>
+                
+                <li><a href="#M000037">prsnt?</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>R</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000029">repeat</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>#</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000034">|</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000031">
+                    
+                    <a name="M000031"></a><b>&gt;&gt;</b>(parslet)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Chains two parslet atoms together as a sequence.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  str('a') &gt;&gt; str('b')
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000031_source')" id="l_M000031_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/dsl.rb#L43" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000031_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/dsl.rb, line 43</span>
+43:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&gt;&gt;</span>(<span class="ruby-identifier">parslet</span>)
+44:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Sequence</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">parslet</span>)
+45:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000035">
+                    
+                    <a name="M000035"></a><b>absent?</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Tests for absence of a parslet atom in the input stream without consuming
+it.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  # Only proceed the parse if 'a' is absent.
+  str('a').absent?
+</pre>
+
+                </div>
+                
+                
+                <div class="aka">
+                    This method is also aliased as
+                    
+                    <a href="DSL.html#M000038">absnt?</a>
+                    
+                </div>
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000035_source')" id="l_M000035_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/dsl.rb#L66" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000035_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/dsl.rb, line 66</span>
+66:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">absent?</span>
+67:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Lookahead</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">false</span>)
+68:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000038">
+                    
+                    <a name="M000038"></a><b>absnt?</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Alias for <a href="DSL.html#M000035">absent?</a>
+</p>
+
+                </div>
+                
+                
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000039">
+                    
+                    <a name="M000039"></a><b>as</b>(name)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Marks a parslet atom as important for the tree output. This must be used to
+achieve meaningful output from the parse method.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  str('a').as(:b) # will produce {:b =&gt; 'a'}
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000039_source')" id="l_M000039_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/dsl.rb#L95" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000039_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/dsl.rb, line 95</span>
+95:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">as</span>(<span class="ruby-identifier">name</span>)
+96:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Named</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">name</span>)
+97:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000030">
+                    
+                    <a name="M000030"></a><b>maybe</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Returns a new parslet atom that is only maybe present in the input. This is
+synonymous to calling <a href="DSL.html#M000029">repeat</a>(0,1). Generated
+tree value will be either nil (if atom is not present in the input) or the
+matched subtree.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  str('foo').maybe
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000030_source')" id="l_M000030_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/dsl.rb#L34" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000030_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/dsl.rb, line 34</span>
+34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">maybe</span>
+35:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Repetition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-identifier">:maybe</span>)
+36:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000036">
+                    
+                    <a name="M000036"></a><b>present?</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Tests for presence of a parslet atom in the input stream without consuming
+it.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  # Only proceed the parse if 'a' is present.
+  str('a').present?
+</pre>
+
+                </div>
+                
+                
+                <div class="aka">
+                    This method is also aliased as
+                    
+                    <a href="DSL.html#M000037">prsnt?</a>
+                    
+                </div>
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000036_source')" id="l_M000036_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/dsl.rb#L77" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000036_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/dsl.rb, line 77</span>
+77:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">present?</span>
+78:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Lookahead</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-keyword kw">true</span>)
+79:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000037">
+                    
+                    <a name="M000037"></a><b>prsnt?</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Alias for <a href="DSL.html#M000036">present?</a>
+</p>
+
+                </div>
+                
+                
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000029">
+                    
+                    <a name="M000029"></a><b>repeat</b>(min=0, max=nil)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Construct a new atom that repeats the current atom min times at least and
+at most max times. max can be nil to indicate that no maximum is present.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  # match any number of 'a's
+  str('a').repeat
+
+  # match between 1 and 3 'a's
+  str('a').repeat(1,3)
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000029_source')" id="l_M000029_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/dsl.rb#L23" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000029_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/dsl.rb, line 23</span>
+23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">repeat</span>(<span class="ruby-identifier">min</span>=<span class="ruby-value">0</span>, <span class="ruby-identifier">max</span>=<span class="ruby-keyword kw">nil</span>)
+24:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Repetition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>)
+25:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000034">
+                    
+                    <a name="M000034"></a><b>|</b>(parslet)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Chains two parslet atoms together to express alternation. A match will
+always be attempted with the parslet on the left side first. If it
+doesn&#8217;t match, the right side will be tried.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  # matches either 'a' OR 'b'
+  str('a') | str('b')
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000034_source')" id="l_M000034_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/dsl.rb#L55" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000034_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/dsl.rb, line 55</span>
+55:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">|</span>(<span class="ruby-identifier">parslet</span>)
+56:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Alternative</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">parslet</span>)
+57:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

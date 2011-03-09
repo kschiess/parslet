@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::Re</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Atoms::Re 
+            
+                <span class="parent">&lt; 
+                    
+                    <a href="Base.html">Parslet::Atoms::Base</a>
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/parslet/atoms/re_rb.html">lib/parslet/atoms/re.rb</a></li>
+            
+            <li><a href="../../../files/lib/parslet/atoms/visitor_rb.html">lib/parslet/atoms/visitor.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+Matches a special kind of regular expression that only ever matches one
+character at a time. Useful members of this family are: <tt>character
+ranges, \w, \d, \r, \n, ...</tt>
+</p>
+<p>
+Example:
+</p>
+<pre>
+  match('[a-z]')  # matches a-z
+  match('\s')     # like regexps: matches space characters
+</pre>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>A</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000088">accept</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="sectiontitle">Attributes</div>
+    <table border='0' cellpadding='5'>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>match</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>re</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+    </table>
+    
+
+    
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000088">
+                    
+                    <a name="M000088"></a><b>accept</b>(visitor)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Call back visitors <a href="Re.html#re">re</a> method. See parslet/export
+for an example.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000088_source')" id="l_M000088_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/atoms/visitor.rb#L71" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000088_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/visitor.rb, line 71</span>
+71:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">accept</span>(<span class="ruby-identifier">visitor</span>)
+72:       <span class="ruby-identifier">visitor</span>.<span class="ruby-identifier">visit_re</span>(<span class="ruby-identifier">match</span>)
+73:     <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

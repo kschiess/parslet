@@ -32,6 +32,6 @@ of parslet. Especially:
   metaprogramming. Besides, Florian Hanke also explains how to create an ERB
   parser in just a few lines!
  
-"*rdoc Class Documentation*":doc/rdoc-1.1.0/index.html
+"*rdoc Class Documentation*":doc/rdoc-1.2.0/index.html
 
 The rdoc documentation will help you with the nitty gritty.

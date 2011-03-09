@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::Base</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Atoms::Base 
+            
+                <span class="parent">&lt; 
+                    
+                    Object
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/parslet/atoms/base_rb.html">lib/parslet/atoms/base.rb</a></li>
+            
+            <li><a href="../../../files/lib/parslet/atoms/visitor_rb.html">lib/parslet/atoms/visitor.rb</a></li>
+            
+            <li><a href="../../../files/lib/parslet/convenience_rb.html">lib/parslet/convenience.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+<a href="Base.html">Base</a> class for all parslets, handles orchestration
+of calls and implements a lot of the operator and chaining methods.
+</p>
+<p>
+Also see <a href="DSL.html">Parslet::Atoms::DSL</a> chaining parslet atoms
+together.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>A</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000080">accept</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>E</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000024">error_tree</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>F</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000011">foldl</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>P</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000004">parse</a>,</li>
+                
+                <li><a href="#M000089">parse_with_debug</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>T</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000007">try</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+    <div class="sectiontitle">Included Modules</div>
+    <ul>
+        
+        <li>
+            
+            <a href="../../Parslet.html">Parslet</a>
+            
+            START:includes
+        </li>
+        
+        <li>
+            
+            <a href="../../Parslet.html">Parslet</a>
+            
+            START:includes
+        </li>
+        
+    </ul>
+    
+
+    
+
+    
+    <div class="sectiontitle">Classes and Modules</div>
+    <ul>
+        
+        <li><span class="type">CLASS</span> <a href="Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+        
+        <li><span class="type">CLASS</span> <a href="Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+        
+        <li><span class="type">CLASS</span> <a href="Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+        
+    </ul>
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000080">
+                    
+                    <a name="M000080"></a><b>accept</b>(visitor)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000080_source')" id="l_M000080_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/atoms/visitor.rb#L7" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000080_source" class="dyn-source">
+                        <pre>   <span class="ruby-comment cmt"># File lib/parslet/atoms/visitor.rb, line 7</span>
+7:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">accept</span>(<span class="ruby-identifier">visitor</span>)
+8:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-node">&quot;No #accept method on #{self.class.name}.&quot;</span>
+9:     <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000024">
+                    
+                    <a name="M000024"></a><b>error_tree</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Error tree returns what went wrong here plus what went wrong inside
+subexpressions as a tree. The error stored for this node will be equal to
+cause.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000024_source')" id="l_M000024_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L228" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000024_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 228</span>
+228:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">error_tree</span>
+229:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ErrorTree</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>)
+230:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000011">
+                    
+                    <a name="M000011"></a><b>foldl</b>(list, &amp;block)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Lisp style fold left where the first element builds the basis for an
+inject.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000011_source')" id="l_M000011_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L124" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000011_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 124</span>
+124:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">foldl</span>(<span class="ruby-identifier">list</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+125:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">''</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">empty?</span>
+126:     <span class="ruby-identifier">list</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">inject</span>(<span class="ruby-identifier">list</span>.<span class="ruby-identifier">first</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+127:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000004">
+                    
+                    <a name="M000004"></a><b>parse</b>(io)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Given a string or an IO object, this will attempt a parse of its contents
+and return a result. If the parse fails, a <a
+href="../ParseFailed.html">Parslet::ParseFailed</a> exception will be
+thrown.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000004_source')" id="l_M000004_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L28" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000004_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 28</span>
+28:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">io</span>)
+29:     <span class="ruby-identifier">source</span> = <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Source</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">io</span>)
+30:     <span class="ruby-identifier">context</span> = <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Context</span>.<span class="ruby-identifier">new</span>
+31:     
+32:     <span class="ruby-identifier">result</span> = <span class="ruby-keyword kw">nil</span>
+33:     <span class="ruby-identifier">value</span> = <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">source</span>, <span class="ruby-identifier">context</span>)
+34:     
+35:     <span class="ruby-comment cmt"># If we didn't succeed the parse, raise an exception for the user. </span>
+36:     <span class="ruby-comment cmt"># Stack trace will be off, but the error tree should explain the reason</span>
+37:     <span class="ruby-comment cmt"># it failed.</span>
+38:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">error?</span>
+39:       <span class="ruby-identifier">parse_failed</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">message</span>)
+40:     <span class="ruby-keyword kw">end</span>
+41:     
+42:     <span class="ruby-comment cmt"># assert: value is a success answer</span>
+43:     
+44:     <span class="ruby-comment cmt"># If we haven't consumed the input, then the pattern doesn't match. Try</span>
+45:     <span class="ruby-comment cmt"># to provide a good error message (even asking down below)</span>
+46:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">eof?</span>
+47:       <span class="ruby-comment cmt"># Do we know why we stopped matching input? If yes, that's a good</span>
+48:       <span class="ruby-comment cmt"># error to fail with. Otherwise just report that we cannot consume the</span>
+49:       <span class="ruby-comment cmt"># input.</span>
+50:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">cause</span> 
+51:         <span class="ruby-comment cmt"># Don't garnish the real cause; but the exception is different anyway.</span>
+52:         <span class="ruby-identifier">raise</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ParseFailed</span>, 
+53:           <span class="ruby-node">&quot;Unconsumed input, maybe because of this: #{cause}&quot;</span>
+54:       <span class="ruby-keyword kw">else</span>
+55:         <span class="ruby-identifier">old_pos</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span>
+56:         <span class="ruby-identifier">parse_failed</span>(
+57:           <span class="ruby-identifier">format_cause</span>(<span class="ruby-identifier">source</span>, 
+58:             <span class="ruby-node">&quot;Don't know what to do with #{source.read(100)}&quot;</span>, <span class="ruby-identifier">old_pos</span>))
+59:       <span class="ruby-keyword kw">end</span>
+60:     <span class="ruby-keyword kw">end</span>
+61:     
+62:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">flatten</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">result</span>)
+63:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000089">
+                    
+                    <a name="M000089"></a><b>parse_with_debug</b>(str)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Packages the common idiom
+</p>
+<pre>
+   begin
+     tree = parser.parse('something')
+   rescue Parslet::ParseFailed =&gt; error
+     puts error
+     puts parser.error_tree
+   end
+</pre>
+<p>
+into a convenient method.
+</p>
+<p>
+Usage:
+</p>
+<pre>
+  require 'parslet'
+  require 'parslet/convenience'
+
+  class FooParser &lt; Parslet::Parser
+    rule(:foo) { str('foo') }
+    root(:foo)
+  end
+
+  FooParser.new.parse_with_debug('bar')
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000089_source')" id="l_M000089_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/d1ba7d51cc6f0962d8ce0e1b0ecbec3f78264c7f/lib/parslet/convenience.rb#L26" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000089_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/convenience.rb, line 26</span>
+26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_with_debug</span> <span class="ruby-identifier">str</span>
+27:     <span class="ruby-identifier">parse</span> <span class="ruby-identifier">str</span>
+28:   <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ParseFailed</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">error</span>
+29:     <span class="ruby-identifier">puts</span> <span class="ruby-identifier">error</span>
+30:     <span class="ruby-identifier">puts</span> <span class="ruby-identifier">error_tree</span>
+31:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000007">
+                    
+                    <a name="M000007"></a><b>try</b>(source, context)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Override this in your <a href="Base.html">Atoms::Base</a> subclasses to
+implement parsing behaviour.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000007_source')" id="l_M000007_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L90" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000007_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 90</span>
+90:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try</span>(<span class="ruby-identifier">source</span>, <span class="ruby-identifier">context</span>)
+91:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, \
+92:       <span class="ruby-value str">&quot;Atoms::Base doesn't have behaviour, please implement #try(source, context).&quot;</span>
+93:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

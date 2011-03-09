@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::Context</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Atoms::Context 
+            
+                <span class="parent">&lt; 
+                    
+                    Object
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/parslet/atoms/context_rb.html">lib/parslet/atoms/context.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+Helper class that implements a transient cache that maps position and
+parslet object to results. This is used for memoization in the packrat
+style.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>C</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000016">cache</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>N</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000015">new</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Class Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000015">
+                    
+                    <a name="M000015"></a><b>new</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000015_source')" id="l_M000015_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/1093d921157ba346a98a40a7e0d6c2b01e3726e1/lib/parslet/atoms/context.rb#L7" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000015_source" class="dyn-source">
+                        <pre>   <span class="ruby-comment cmt"># File lib/parslet/atoms/context.rb, line 7</span>
+7:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>
+8:       <span class="ruby-ivar">@cache</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>, <span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = {} }
+9:     <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000016">
+                    
+                    <a name="M000016"></a><b>cache</b>(obj, source, &amp;block)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Caches a parse answer for obj at source.pos. Applying the same parslet at
+one position of input always yields the same result, unless the input has
+changed.
+</p>
+<p>
+We need the entire source here so we can ask for how many characters were
+consumed by a successful parse. Imitation of such a parse must advance the
+input pos by the same amount of bytes.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000016_source')" id="l_M000016_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/1093d921157ba346a98a40a7e0d6c2b01e3726e1/lib/parslet/atoms/context.rb#L19" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000016_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/context.rb, line 19</span>
+19:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cache</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">source</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+20:       <span class="ruby-identifier">beg</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span>
+21:         
+22:       <span class="ruby-comment cmt"># Not in cache yet? Return early.</span>
+23:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">entry</span> = <span class="ruby-identifier">lookup</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">beg</span>)
+24:         <span class="ruby-identifier">result</span> = <span class="ruby-keyword kw">yield</span>
+25:     
+26:         <span class="ruby-identifier">set</span> <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">beg</span>, [<span class="ruby-identifier">result</span>, <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span><span class="ruby-operator">-</span><span class="ruby-identifier">beg</span>]
+27:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">result</span>
+28:       <span class="ruby-keyword kw">end</span>
+29: 
+30:       <span class="ruby-comment cmt"># the condition in unless has returned true, so entry is not nil.</span>
+31:       <span class="ruby-identifier">result</span>, <span class="ruby-identifier">advance</span> = <span class="ruby-identifier">entry</span>
+32: 
+33:       <span class="ruby-comment cmt"># The data we're skipping here has been read before. (since it is in </span>
+34:       <span class="ruby-comment cmt"># the cache) PLUS the actual contents are not interesting anymore since</span>
+35:       <span class="ruby-comment cmt"># we know obj matches at beg. So skip reading.</span>
+36:       <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span> = <span class="ruby-identifier">beg</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">advance</span>
+37:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">result</span>
+38:     <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

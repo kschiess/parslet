@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::Base::Cause</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Atoms::Base::Cause 
+            
+                <span class="parent">&lt; 
+                    
+                    Struct.new(:message, :source, :pos)
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../../files/lib/parslet/atoms/base_rb.html">lib/parslet/atoms/base.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+An internal class that allows delaying the construction of error messages
+(as strings) until we really need to print them.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>T</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000028">to_s</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000028">
+                    
+                    <a name="M000028"></a><b>to_s</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000028_source')" id="l_M000028_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L259" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000028_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 259</span>
+259:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+260:       <span class="ruby-identifier">line</span>, <span class="ruby-identifier">column</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">line_and_column</span>(<span class="ruby-identifier">pos</span>)
+261:       <span class="ruby-comment cmt"># Allow message to be a list of objects. Join them here, since we now</span>
+262:       <span class="ruby-comment cmt"># really need it. </span>
+263:       <span class="ruby-constant">Array</span>(<span class="ruby-identifier">message</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span> 
+264:         <span class="ruby-identifier">o</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:to_slice</span>) <span class="ruby-operator">?</span> 
+265:           <span class="ruby-identifier">o</span>.<span class="ruby-identifier">str</span>.<span class="ruby-identifier">inspect</span> <span class="ruby-operator">:</span> 
+266:           <span class="ruby-identifier">o</span>.<span class="ruby-identifier">to_s</span> }.<span class="ruby-identifier">join</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; at line #{line} char #{column}.&quot;</span>
+267:     <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Slice</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen" />
+    <script src="../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Slice 
+            
+                <span class="parent">&lt; 
+                    
+                    Object
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../files/lib/parslet/slice_rb.html">lib/parslet/slice.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+A slice is a small part from the parse input. A slice mainly behaves like
+any other string, except that it remembers where it came from (offset in
+original input).
+</p>
+<p>
+Some slices also know what parent slice they are a small part of. This
+allows the slice to be concatenated to other slices from the same buffer by
+reslicing it against that original buffer.
+</p>
+<p>
+Why the complexity? Slices allow retaining offset information. This will
+allow to assign line and column to each small bit of output from the
+parslet parser. Also, while we keep that information, we might as well try
+to do something useful with it. Reslicing the same buffers should in theory
+keep buffer copies and allocations down.
+</p>
+<h2>Extracting line and column</h2>
+<p>
+Using the <a href="Slice.html#M000134">line_and_column</a> method, you can
+extract the line and column in the original input where this slice starts.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  slice.line_and_column # =&gt; [1, 13]
+  slice.offset          # =&gt; 12
+</pre>
+<h2>Likeness to strings</h2>
+<p>
+<a href="Slice.html">Parslet::Slice</a> behaves in many ways like a Ruby
+String. This likeness however is not complete - many of the myriad of
+operations String supports are not yet in <a href="Slice.html">Slice</a>.
+You can always extract the internal string instance by calling <a
+href="Slice.html#M000136">to_s</a>.
+</p>
+<p>
+These omissions are somewhat intentional. Rather than maintaining a full
+delegation, we opt for a partial emulation that gets the job done.
+</p>
+<p>
+Note also that there are some things that work with strings that will never
+work when using slices. For instance, you cannot concatenate slices that
+aren&#8217;t from the same source or that don&#8217;t join up:
+</p>
+<p>
+Example:
+</p>
+<pre>
+  big_slice = 'abcdef'
+  a = big_slice.slice(0, 2)   # =&gt; &quot;ab&quot;@0
+  b = big_slice.slice(4, 2)   # =&gt; &quot;ef&quot;@4
+
+  a + b # raises Parslet::InvalidSliceOperation
+</pre>
+<p>
+This avoids creating slices with impossible offsets or that are
+discontinous.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>#</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000133">+</a>,</li>
+                
+                <li><a href="#M000127">==</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>A</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000130">abs_slice</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>I</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000146">inspect</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>L</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000134">line_and_column</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>M</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000128">match</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>N</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000126">new</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>S</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000131">satisfies?</a>,</li>
+                
+                <li><a href="#M000132">size</a>,</li>
+                
+                <li><a href="#M000129">slice</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>T</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000145">to_f</a>,</li>
+                
+                <li><a href="#M000144">to_i</a>,</li>
+                
+                <li><a href="#M000143">to_int</a>,</li>
+                
+                <li><a href="#M000136">to_s</a>,</li>
+                
+                <li><a href="#M000137">to_slice</a>,</li>
+                
+                <li><a href="#M000135">to_str</a>,</li>
+                
+                <li><a href="#M000142">to_sym</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="sectiontitle">Attributes</div>
+    <table border='0' cellpadding='5'>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>str</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>offset</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>parent</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>source</td>
+            <td class='attr-desc'></td>
+        </tr>
+        
+    </table>
+    
+
+    
+            <div class="sectiontitle">Class Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000126">
+                    
+                    <a name="M000126"></a><b>new</b>(string, offset, source=nil, parent=nil)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000126_source')" id="l_M000126_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L54" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000126_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 54</span>
+54:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">string</span>, <span class="ruby-identifier">offset</span>, <span class="ruby-identifier">source</span>=<span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">parent</span>=<span class="ruby-keyword kw">nil</span>)
+55:     <span class="ruby-ivar">@str</span>, <span class="ruby-ivar">@offset</span> = <span class="ruby-identifier">string</span>, <span class="ruby-identifier">offset</span>
+56:     <span class="ruby-ivar">@source</span> = <span class="ruby-identifier">source</span>
+57:     <span class="ruby-ivar">@parent</span> = <span class="ruby-identifier">parent</span>
+58:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000133">
+                    
+                    <a name="M000133"></a><b>+</b>(other)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000133_source')" id="l_M000133_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L105" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000133_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 105</span>
+105:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">+</span>(<span class="ruby-identifier">other</span>)
+106:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, 
+107:       <span class="ruby-value str">&quot;Cannot concat something other than a slice to a slice.&quot;</span> \
+108:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:to_slice</span>)
+109:           
+110:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidSliceOperation</span>, 
+111:       <span class="ruby-value str">&quot;Cannot join slices that aren't adjacent.&quot;</span><span class="ruby-operator">+</span>
+112:       <span class="ruby-node">&quot; (#{self.inspect} + #{other.inspect})&quot;</span> \
+113:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">offset</span><span class="ruby-operator">+</span><span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">offset</span>
+114:           
+115:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidSliceOperation</span>, <span class="ruby-value str">&quot;Not from the same source.&quot;</span> \
+116:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">source</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">source</span>
+117:        
+118:     <span class="ruby-comment cmt"># If both slices stem from the same bigger buffer, we can reslice that </span>
+119:     <span class="ruby-comment cmt"># buffer to (probably) avoid a buffer copy, as long as the strings are</span>
+120:     <span class="ruby-comment cmt"># not modified. </span>
+121:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">parent</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">parent</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">parent</span>
+122:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">abs_slice</span>(<span class="ruby-identifier">offset</span>, <span class="ruby-identifier">size</span><span class="ruby-operator">+</span><span class="ruby-identifier">other</span>.<span class="ruby-identifier">size</span>)
+123:     <span class="ruby-keyword kw">end</span>
+124:     
+125:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">str</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">str</span>, <span class="ruby-identifier">offset</span>, <span class="ruby-identifier">source</span>)
+126:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000127">
+                    
+                    <a name="M000127"></a><b>==</b>(other)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Compares slices to other slices or strings.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000127_source')" id="l_M000127_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L62" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000127_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 62</span>
+62:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">other</span>
+63:     <span class="ruby-identifier">str</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">other</span>
+64:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000130">
+                    
+                    <a name="M000130"></a><b>abs_slice</b>(start, length)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Returns a slice that starts at file offset start and that has length
+characters in it.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000130_source')" id="l_M000130_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L91" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000130_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 91</span>
+91:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">abs_slice</span>(<span class="ruby-identifier">start</span>, <span class="ruby-identifier">length</span>)
+92:     <span class="ruby-identifier">slice</span>(<span class="ruby-identifier">start</span><span class="ruby-operator">-</span><span class="ruby-identifier">offset</span>, <span class="ruby-identifier">length</span>)
+93:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000146">
+                    
+                    <a name="M000146"></a><b>inspect</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Prints the slice as <tt>&quot;string&quot;@offset</tt>.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000146_source')" id="l_M000146_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L163" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000146_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 163</span>
+163:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inspect</span>
+164:     <span class="ruby-identifier">str</span>.<span class="ruby-identifier">inspect</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;@#{offset}&quot;</span>
+165:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000134">
+                    
+                    <a name="M000134"></a><b>line_and_column</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Returns a <line, column> tuple referring to the original input.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000134_source')" id="l_M000134_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L130" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000134_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 130</span>
+130:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_and_column</span>
+131:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;No source was given, cannot infer line and column.&quot;</span> \
+132:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">source</span>
+133:         
+134:     <span class="ruby-identifier">source</span>.<span class="ruby-identifier">line_and_column</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">offset</span>)
+135:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000128">
+                    
+                    <a name="M000128"></a><b>match</b>(regexp)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Match regular expressions.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000128_source')" id="l_M000128_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L68" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000128_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 68</span>
+68:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">match</span>(<span class="ruby-identifier">regexp</span>)
+69:     <span class="ruby-identifier">str</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">regexp</span>)
+70:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000131">
+                    
+                    <a name="M000131"></a><b>satisfies?</b>(ofs, len)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+True if this slice can satisfy an original input request to the range ofs,
+len.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000131_source')" id="l_M000131_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L98" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000131_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 98</span>
+ 98:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">satisfies?</span>(<span class="ruby-identifier">ofs</span>, <span class="ruby-identifier">len</span>)
+ 99:     <span class="ruby-identifier">ofs</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">offset</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">ofs</span><span class="ruby-operator">-</span><span class="ruby-identifier">offset</span><span class="ruby-operator">+</span><span class="ruby-identifier">len</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)<span class="ruby-operator">&lt;</span><span class="ruby-identifier">str</span>.<span class="ruby-identifier">size</span>
+100:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000132">
+                    
+                    <a name="M000132"></a><b>size</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000132_source')" id="l_M000132_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L102" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000132_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 102</span>
+102:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">size</span>
+103:     <span class="ruby-identifier">str</span>.<span class="ruby-identifier">size</span>
+104:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000129">
+                    
+                    <a name="M000129"></a><b>slice</b>(start, length)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Returns a slice that starts at offset start and that has length characters.
+Whenever possible, return parts of the parent buffer that this slice was
+cut out of.
+</p>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000129_source')" id="l_M000129_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L76" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000129_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 76</span>
+76:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">slice</span>(<span class="ruby-identifier">start</span>, <span class="ruby-identifier">length</span>)
+77:     <span class="ruby-comment cmt"># NOTE: At a later stage, we might not want to create huge trees of slices. </span>
+78:     <span class="ruby-comment cmt"># The fact that the root of the tree creates slices that link to it makes</span>
+79:     <span class="ruby-comment cmt"># the tree already rather flat. </span>
+80:     
+81:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">parent</span>
+82:       <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-identifier">offset</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">offset</span>, <span class="ruby-identifier">length</span>)
+83:     <span class="ruby-keyword kw">else</span>
+84:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">str</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-identifier">start</span>, <span class="ruby-identifier">length</span>), <span class="ruby-identifier">offset</span><span class="ruby-operator">+</span><span class="ruby-identifier">start</span>, <span class="ruby-identifier">source</span>, <span class="ruby-keyword kw">self</span>)
+85:     <span class="ruby-keyword kw">end</span>
+86:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000145">
+                    
+                    <a name="M000145"></a><b>to_f</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000145_source')" id="l_M000145_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L156" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000145_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 156</span>
+156:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_f</span>
+157:     <span class="ruby-identifier">str</span>.<span class="ruby-identifier">to_f</span>
+158:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000144">
+                    
+                    <a name="M000144"></a><b>to_i</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000144_source')" id="l_M000144_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L153" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000144_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 153</span>
+153:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_i</span>
+154:     <span class="ruby-identifier">str</span>.<span class="ruby-identifier">to_i</span>
+155:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000143">
+                    
+                    <a name="M000143"></a><b>to_int</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000143_source')" id="l_M000143_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L150" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000143_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 150</span>
+150:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_int</span>
+151:     <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">str</span>)
+152:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000136">
+                    
+                    <a name="M000136"></a><b>to_s</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Alias for <a href="Slice.html#M000135">to_str</a>
+</p>
+
+                </div>
+                
+                
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000137">
+                    
+                    <a name="M000137"></a><b>to_slice</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000137_source')" id="l_M000137_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L144" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000137_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 144</span>
+144:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_slice</span>
+145:     <span class="ruby-keyword kw">self</span>
+146:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000135">
+                    
+                    <a name="M000135"></a><b>to_str</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Conversion operators
+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;
+</p>
+
+                </div>
+                
+                
+                <div class="aka">
+                    This method is also aliased as
+                    
+                    <a href="Slice.html#M000136">to_s</a>
+                    
+                </div>
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000135_source')" id="l_M000135_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L139" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000135_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 139</span>
+139:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_str</span>
+140:     <span class="ruby-identifier">str</span>
+141:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000142">
+                    
+                    <a name="M000142"></a><b>to_sym</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000142_source')" id="l_M000142_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/slice.rb#L147" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000142_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/slice.rb, line 147</span>
+147:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_sym</span>
+148:     <span class="ruby-identifier">str</span>.<span class="ruby-identifier">to_sym</span>
+149:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>slice.rb</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            slice.rb
+        </h1>
+        <ul class="files">
+            <li>lib/parslet/slice.rb</li>
+            <li>Last modified: 2011-03-02 17:16:49 +0100</li>
+        </ul>
+    </div>
+
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+A slice is a small part from the parse input. A slice mainly behaves like
+any other string, except that it remembers where it came from (offset in
+original input).
+</p>
+<p>
+Some slices also know what parent slice they are a small part of. This
+allows the slice to be concatenated to other slices from the same buffer by
+reslicing it against that original buffer.
+</p>
+<p>
+Why the complexity? Slices allow retaining offset information. This will
+allow to assign line and column to each small bit of output from the
+parslet parser. Also, while we keep that information, we might as well try
+to do something useful with it. Reslicing the same buffers should in theory
+keep buffer copies and allocations down.
+</p>
+<h2>Extracting line and column</h2>
+<p>
+Using the line_and_column method, you can extract the line and column in
+the original input where this slice starts.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  slice.line_and_column # =&gt; [1, 13]
+  slice.offset          # =&gt; 12
+</pre>
+<h2>Likeness to strings</h2>
+<p>
+<a href="../../../classes/Parslet/Slice.html">Parslet::Slice</a> behaves in
+many ways like a Ruby String. This likeness however is not complete - many
+of the myriad of operations String supports are not yet in Slice. You can
+always extract the internal string instance by calling to_s.
+</p>
+<p>
+These omissions are somewhat intentional. Rather than maintaining a full
+delegation, we opt for a partial emulation that gets the job done.
+</p>
+<p>
+Note also that there are some things that work with strings that will never
+work when using slices. For instance, you cannot concatenate slices that
+aren&#8217;t from the same source or that don&#8217;t join up:
+</p>
+<p>
+Example:
+</p>
+<pre>
+  big_slice = 'abcdef'
+  a = big_slice.slice(0, 2)   # =&gt; &quot;ab&quot;@0
+  b = big_slice.slice(4, 2)   # =&gt; &quot;ef&quot;@4
+
+  a + b # raises Parslet::InvalidSliceOperation
+</pre>
+<p>
+This avoids creating slices with impossible offsets or that are
+discontinous.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+    </div>
+  </body>
+</html>
