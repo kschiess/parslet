@@ -27,35 +27,13 @@
       <div class="content">
         <h1>Tricks for common situations</h1>
         <h2>Matching <span class="caps">EOF</span> (End Of File)</h2>
-        <p>The best and simplest way of doing this is: Don&#8217;t. Parslet will raise
-        <code>Parslet::ParseFailed</code> if your input cannot be completely consumed
-        by the grammar. So the best way of matching <span class="caps">EOF</span> is to implicitly match it
-        by not having a failed parse.</p>
-        <div class="highlight"><pre><code class="ruby"> 
-        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span>
-        </code></pre>
-        </div><p>The above sample looks like it might match a bunch of &#8217;a&#8217;s, but really it
-        matches those &#8217;a&#8217;s and the end of input. With parslet, all you have to do
-        is think of <em>matching all legal input</em>. <span class="caps">EOF</span> has no representation and cannot
-        be matched.</p>
-        <p>The common case of matching lines ended by a newline would then look like this:</p>
-        <div class="highlight"><pre><code class="ruby"> 
-        <span class="n">rule</span><span class="p">(</span><span class="ss">:line</span><span class="p">)</span>     <span class="p">{</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="p">}</span>
-        <span class="n">rule</span><span class="p">(</span><span class="ss">:eol</span><span class="p">)</span>      <span class="p">{</span> <span class="n">match</span><span class="o">[</span><span class="s1">&#39;\n\r&#39;</span><span class="o">].</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
-        
-        <span class="n">rule</span><span class="p">(</span><span class="ss">:eol_line</span><span class="p">)</span> <span class="p">{</span> <span class="n">line</span> <span class="o">&gt;&gt;</span> <span class="n">eol</span><span class="p">}</span>
-        <span class="n">rule</span><span class="p">(</span><span class="ss">:document</span><span class="p">)</span> <span class="p">{</span> <span class="n">eol_line</span><span class="o">.</span><span class="n">repeat</span> <span class="o">&gt;&gt;</span> <span class="n">line</span><span class="o">.</span><span class="n">maybe</span> <span class="p">}</span>
-        </code></pre>
-        </div>
-        <p>This allows for a document containing only <code>eol_line</code>s, one that
-        has any number of <code>eol_line</code>s and then an extra lone
-        <code>line</code>, or a completely empty document.</p>
-        <p>And just to show that there is always (at least) two ways to answer a question, 
-        here&#8217;s something that also works:</p>
+        <p>Ahh Sir, you&#8217;ll be needin what us parsers call <em>epsilon</em>:</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">rule</span><span class="p">(</span><span class="ss">:eof</span><span class="p">)</span> <span class="p">{</span> <span class="n">any</span><span class="o">.</span><span class="n">absnt?</span> <span class="p">}</span>
         </code></pre>
-        </div><h2>Matching Strings Case Insensitive</h2>
+        </div><p>Of course, most of us don&#8217;t use this at all, since any parser has <span class="caps">EOF</span> as
+        implicit last input.</p>
+        <h2>Matching Strings Case Insensitive</h2>
         <p>Parslet is fully hackable: You can use code to create parsers easily. Here&#8217;s
         how I would match a string in case insensitive manner:</p>
         <div class="highlight"><pre><code class="ruby"> 
@@ -131,6 +109,27 @@
         </code></pre>
         </div><p>These error reports are probably the fastest way to know exactly where you
         went wrong (or where your input is wrong, which is aequivalent).</p>
+        <p>And since this is such a common idiom, we provide you with a shortcut: to
+        get the above, just:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="nb">require</span> <span class="s1">&#39;parslet/convenience&#39;</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">parse_with_debug</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
+        </code></pre>
+        </div><h2>Line numbers from parser output</h2>
+        <p>A traditional parser would parse and then perform several checking phases,
+        like for example verifying all type constraints are respected in the input.
+        During this checking phase, you will most likely want to report screens full
+        of type errors back to the user (&#8216;cause that&#8217;s what types are for, right?).
+        Now where did that &#8216;int&#8217; come from?</p>
+        <p>Parslet gives you slices (Parslet::Slice) of input as part of your tree. These
+        are essentially strings with line numbers. Here&#8217;s how to print that error
+        message:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="c1"># assume that type == &quot;int&quot;@0 - a piece from your parser output</span>
+        <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">line_and_column</span>
+        <span class="nb">puts</span> <span class="s2">&quot;Sorry. Can&#39;t have </span><span class="si">#{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> at </span><span class="si">#{</span><span class="n">line</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="n">col</span><span class="si">}</span><span class="s2">!&quot;</span>
+        </code></pre>
+        </div>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>

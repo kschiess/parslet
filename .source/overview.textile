@@ -29,9 +29,10 @@ well:
 (a _lexer_ ) to transform the input text into tokens (_tokenizing_ ). They
 then check if your stream of tokens has a corresponding tree that conforms to
 the grammar. Most of these parsers allow grammars that are ambiguous and will
-provide a mechanism for resolving these. These are the earliest parser
-generators and the most widely used (_yacc_, _bison_, ...) -- chances are,
-you'll have more than one of these libraries installed on your system. 
+provide a mechanism for resolving the arising ambiguities. These are the
+earliest parser generators and the most widely used (_yacc_, _bison_, ...) --
+chances are, you'll have more than one of these libraries installed on your
+system.
 
 *PEG or packrat parsers* Parsers in this class are based on a slightly more
 modern algorithm, which translates what one does when writing a parser by hand
@@ -51,8 +52,7 @@ choice is good, but there should be visible attributes distinguishing the
 choices.
 
 Parslet is not like the others, in fact it is radically different on some
-key elements. This is what made it amusing to write and what drives us to 
-maintain it. 
+key elements. 
 
 h2. Writing a language
 

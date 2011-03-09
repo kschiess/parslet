@@ -243,9 +243,9 @@
         above tree would look like as a graphic:</p>
         <p><img src="imgs/ast.png" alt="" /></p>
         <h2>Where to go from here: An Interpreter</h2>
-        <p>As nice as the format above is for printing and looking at &#8211; it may be difficult
-        at times to get the information out of it again. Let&#8217;s look at how to transform
-        the tree:</p>
+        <p>As nice as the format above is for printing and looking at &#8211; it may be
+        difficult at times to get the information out of it again. Let&#8217;s look at how
+        to transform the tree:</p>
         <div class="highlight"><pre><code class="ruby"> 
         <span class="k">class</span> <span class="nc">SimpleTransform</span> <span class="o">&lt;</span> <span class="no">Parslet</span><span class="o">::</span><span class="no">Transform</span>
           <span class="n">rule</span><span class="p">(</span><span class="n">funcall</span><span class="p">:</span> <span class="s1">&#39;puts&#39;</span><span class="p">,</span> <span class="n">arglist</span><span class="p">:</span> <span class="n">sequence</span><span class="p">(</span><span class="ss">:args</span><span class="p">))</span> <span class="p">{</span>

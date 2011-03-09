@@ -3,7 +3,7 @@ layout: default
 title: Install
 ---
 
-Parslet is at version _1.1.1_. 
+Parslet is at version _1.2.0_. 
 
 *Rubygems*
 
@@ -14,7 +14,7 @@ gem install parslet
 *Bundler*
 
 {% highlight bash %} 
-gem 'parslet', '~> 1.1'
+gem 'parslet', '~> 1.2'
 {% endhighlight %}
 
 or if you want to track the edge: 

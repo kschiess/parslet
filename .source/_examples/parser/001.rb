@@ -18,7 +18,7 @@ include Parslet
   "str('a').maybe.as(:a)", '', 
 ].each_slice(2) do |parslet, input|
   if input
-    printf("%-40s %-40s\n", parslet, eval(parslet).parse(input).inspect)
+    printf("%-35s %-40s\n", parslet, eval(parslet).parse(input).inspect)
   else
     puts
     printf("# %s\n", parslet)

@@ -63,7 +63,7 @@ all derive from <code>Parslet::Atoms::Base</code> and have essentially just
 one method you can call: <code>#parse</code>. So this works: 
 
 {% highlight ruby %} 
-str('foobar').parse('foobar') # => 'foobar'
+str('foobar').parse('foobar') # => 'foobar'@0
 {% endhighlight %}
 
 The atoms are small parsers that can recognize languages and throw errors, just
@@ -219,8 +219,8 @@ abstract syntax tree for you. The method <code>#as(name)</code> allows you
 to specify exactly how you want your tree to look like: 
 
 {% highlight ruby %} 
-str('foo').parse('foo')             # => 'foo'
-str('foo').as(:bar).parse('foo')    # => {:bar => 'foo'}
+str('foo').parse('foo')             # => 'foo'@0
+str('foo').as(:bar).parse('foo')    # => {:bar => 'foo'@0}
 {% endhighlight %}
 
 So you think: <code>#as(name)</code> allows me to create a hash, big deal.
@@ -233,19 +233,19 @@ tree (assuming a successful parse) on the right:
 
 {% highlight ruby %} 
 # Normal strings just map to strings
-str('a').repeat                          "aaa"                                   
+str('a').repeat                     "aaa"@0                                 
 
 # Arrays capture repetition of non-strings
-str('a').repeat.as(:b)                   {:b=>"aaa"}                             
-str('a').as(:b).repeat                   [{:b=>"a"}, {:b=>"a"}, {:b=>"a"}]       
+str('a').repeat.as(:b)              {:b=>"aaa"@0}                           
+str('a').as(:b).repeat              [{:b=>"a"@0}, {:b=>"a"@1}, {:b=>"a"@2}] 
 
 # Subtrees get merged - unlabeled strings discarded
-str('a').as(:a) >> str('b').as(:b)       {:a=>"a", :b=>"b"}                      
-str('a') >> str('b').as(:b) >> str('c')  {:b=>"b"}                               
+str('a').as(:a) >> str('b').as(:b)  {:a=>"a"@0, :b=>"b"@1}                  
+str('a') >> str('b').as(:b) >> str('c') {:b=>"b"@1}                             
 
 # #maybe will return nil, not the empty array
-str('a').maybe.as(:a)                    {:a=>"a"}                               
-str('a').maybe.as(:a)                    {:a=>nil}                               
+str('a').maybe.as(:a)               {:a=>"a"@0}                             
+str('a').maybe.as(:a)               {:a=>nil}
 {% endhighlight %}
 
 h2. And more
