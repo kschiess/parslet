@@ -40,3 +40,11 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
+desc "Prints LOC stats"
+task :stat do
+  %w(lib spec example).each do |dir|
+    loc = %x(find #{dir} -name "*.rb" | xargs wc -l | grep 'total').split.first.to_i
+    printf("%20s %d\n", dir, loc)
+  end
+end
+
