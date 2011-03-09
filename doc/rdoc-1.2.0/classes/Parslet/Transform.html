@@ -69,9 +69,9 @@ Example:
 <p>
 A tree transform (<a href="Transform.html">Parslet::Transform</a>) is
 defined by a set of rules. Each rule can be defined by calling <a
-href="Transform.html#M000151">rule</a> with the pattern as argument. The
+href="Transform.html#M000146">rule</a> with the pattern as argument. The
 block given will be called every time the rule matches somewhere in the
-tree given to <a href="Transform.html#M000155">apply</a>. It is passed a
+tree given to <a href="Transform.html#M000154">apply</a>. It is passed a
 Hash containing all the variable bindings of this pattern match.
 </p>
 <p>
@@ -157,7 +157,7 @@ as follows:
         <dd>
             <ul>
                 
-                <li><a href="#M000155">apply</a></li>
+                <li><a href="#M000154">apply</a></li>
                 
             </ul>
         </dd>
@@ -166,9 +166,9 @@ as follows:
         <dd>
             <ul>
                 
-                <li><a href="#M000154">rule</a>,</li>
+                <li><a href="#M000153">rule</a>,</li>
                 
-                <li><a href="#M000151">rule</a></li>
+                <li><a href="#M000146">rule</a></li>
                 
             </ul>
         </dd>
@@ -209,9 +209,9 @@ as follows:
             <div class="sectiontitle">Class Public methods</div>
             
             <div class="method">
-                <div class="title" id="M000151">
+                <div class="title" id="M000146">
                     
-                    <a name="M000151"></a><b>rule</b>(expression, &amp;block)
+                    <a name="M000146"></a><b>rule</b>(expression, &amp;block)
                     
                 </div>
                 
@@ -227,12 +227,12 @@ Define a rule for the transform subclass.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000151_source')" id="l_M000151_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000146_source')" id="l_M000146_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/5b46a2741f3762e563d7e6a1661048059594f40c/lib/parslet/transform.rb#L99" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000151_source" class="dyn-source">
+                    <div id="M000146_source" class="dyn-source">
                         <pre>     <span class="ruby-comment cmt"># File lib/parslet/transform.rb, line 99</span>
  99:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rule</span>(<span class="ruby-identifier">expression</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
 100:       <span class="ruby-ivar">@__transform_rules</span> <span class="ruby-operator">||=</span> []
@@ -246,9 +246,9 @@ Define a rule for the transform subclass.
             <div class="sectiontitle">Instance Public methods</div>
             
             <div class="method">
-                <div class="title" id="M000155">
+                <div class="title" id="M000154">
                     
-                    <a name="M000155"></a><b>apply</b>(obj)
+                    <a name="M000154"></a><b>apply</b>(obj)
                     
                 </div>
                 
@@ -267,12 +267,12 @@ resulting object will be returned.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000155_source')" id="l_M000155_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000154_source')" id="l_M000154_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/5b46a2741f3762e563d7e6a1661048059594f40c/lib/parslet/transform.rb#L136" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000155_source" class="dyn-source">
+                    <div id="M000154_source" class="dyn-source">
                         <pre>     <span class="ruby-comment cmt"># File lib/parslet/transform.rb, line 136</span>
 136:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">obj</span>)
 137:     <span class="ruby-identifier">transform_elt</span>(
@@ -292,9 +292,9 @@ resulting object will be returned.
             </div>
             
             <div class="method">
-                <div class="title" id="M000154">
+                <div class="title" id="M000153">
                     
-                    <a name="M000154"></a><b>rule</b>(expression, &amp;block)
+                    <a name="M000153"></a><b>rule</b>(expression, &amp;block)
                     
                 </div>
                 
@@ -319,12 +319,12 @@ composed of two parts:
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000154_source')" id="l_M000154_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000153_source')" id="l_M000153_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/5b46a2741f3762e563d7e6a1661048059594f40c/lib/parslet/transform.rb#L125" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000154_source" class="dyn-source">
+                    <div id="M000153_source" class="dyn-source">
                         <pre>     <span class="ruby-comment cmt"># File lib/parslet/transform.rb, line 125</span>
 125:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rule</span>(<span class="ruby-identifier">expression</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
 126:     <span class="ruby-ivar">@rules</span> <span class="ruby-operator">&lt;&lt;</span> [

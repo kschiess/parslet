@@ -74,7 +74,7 @@ together.
         <dd>
             <ul>
                 
-                <li><a href="#M000024">error_tree</a></li>
+                <li><a href="#M000033">error_tree</a></li>
                 
             </ul>
         </dd>
@@ -83,7 +83,7 @@ together.
         <dd>
             <ul>
                 
-                <li><a href="#M000011">foldl</a></li>
+                <li><a href="#M000018">foldl</a></li>
                 
             </ul>
         </dd>
@@ -92,9 +92,9 @@ together.
         <dd>
             <ul>
                 
-                <li><a href="#M000004">parse</a>,</li>
+                <li><a href="#M000007">parse</a>,</li>
                 
-                <li><a href="#M000089">parse_with_debug</a></li>
+                <li><a href="#M000086">parse_with_debug</a></li>
                 
             </ul>
         </dd>
@@ -103,7 +103,7 @@ together.
         <dd>
             <ul>
                 
-                <li><a href="#M000007">try</a></li>
+                <li><a href="#M000016">try</a></li>
                 
             </ul>
         </dd>
@@ -182,9 +182,9 @@ together.
             </div>
             
             <div class="method">
-                <div class="title" id="M000024">
+                <div class="title" id="M000033">
                     
-                    <a name="M000024"></a><b>error_tree</b>()
+                    <a name="M000033"></a><b>error_tree</b>()
                     
                 </div>
                 
@@ -202,12 +202,12 @@ cause.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000024_source')" id="l_M000024_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000033_source')" id="l_M000033_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L228" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000024_source" class="dyn-source">
+                    <div id="M000033_source" class="dyn-source">
                         <pre>     <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 228</span>
 228:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">error_tree</span>
 229:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ErrorTree</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>)
@@ -218,9 +218,9 @@ cause.
             </div>
             
             <div class="method">
-                <div class="title" id="M000011">
+                <div class="title" id="M000018">
                     
-                    <a name="M000011"></a><b>foldl</b>(list, &amp;block)
+                    <a name="M000018"></a><b>foldl</b>(list, &amp;block)
                     
                 </div>
                 
@@ -237,12 +237,12 @@ inject.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000011_source')" id="l_M000011_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000018_source')" id="l_M000018_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L124" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000011_source" class="dyn-source">
+                    <div id="M000018_source" class="dyn-source">
                         <pre>     <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 124</span>
 124:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">foldl</span>(<span class="ruby-identifier">list</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
 125:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">''</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">empty?</span>
@@ -254,9 +254,9 @@ inject.
             </div>
             
             <div class="method">
-                <div class="title" id="M000004">
+                <div class="title" id="M000007">
                     
-                    <a name="M000004"></a><b>parse</b>(io)
+                    <a name="M000007"></a><b>parse</b>(io)
                     
                 </div>
                 
@@ -275,12 +275,12 @@ thrown.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000004_source')" id="l_M000004_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000007_source')" id="l_M000007_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L28" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000004_source" class="dyn-source">
+                    <div id="M000007_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 28</span>
 28:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">io</span>)
 29:     <span class="ruby-identifier">source</span> = <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Source</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">io</span>)
@@ -324,9 +324,9 @@ thrown.
             </div>
             
             <div class="method">
-                <div class="title" id="M000089">
+                <div class="title" id="M000086">
                     
-                    <a name="M000089"></a><b>parse_with_debug</b>(str)
+                    <a name="M000086"></a><b>parse_with_debug</b>(str)
                     
                 </div>
                 
@@ -367,12 +367,12 @@ Usage:
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000089_source')" id="l_M000089_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000086_source')" id="l_M000086_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/d1ba7d51cc6f0962d8ce0e1b0ecbec3f78264c7f/lib/parslet/convenience.rb#L26" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000089_source" class="dyn-source">
+                    <div id="M000086_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/convenience.rb, line 26</span>
 26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_with_debug</span> <span class="ruby-identifier">str</span>
 27:     <span class="ruby-identifier">parse</span> <span class="ruby-identifier">str</span>
@@ -386,9 +386,9 @@ Usage:
             </div>
             
             <div class="method">
-                <div class="title" id="M000007">
+                <div class="title" id="M000016">
                     
-                    <a name="M000007"></a><b>try</b>(source, context)
+                    <a name="M000016"></a><b>try</b>(source, context)
                     
                 </div>
                 
@@ -405,12 +405,12 @@ implement parsing behaviour.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000007_source')" id="l_M000007_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000016_source')" id="l_M000016_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/6b5c33a2da95e7d43644e6af3c74f02a11f86596/lib/parslet/atoms/base.rb#L90" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000007_source" class="dyn-source">
+                    <div id="M000016_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/base.rb, line 90</span>
 90:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">try</span>(<span class="ruby-identifier">source</span>, <span class="ruby-identifier">context</span>)
 91:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, \

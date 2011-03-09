@@ -75,7 +75,7 @@ NOT FINISHED &amp; EXPERIMENTAL
         <dd>
             <ul>
                 
-                <li><a href="#M000116">parse</a></li>
+                <li><a href="#M000112">parse</a></li>
                 
             </ul>
         </dd>
@@ -84,9 +84,9 @@ NOT FINISHED &amp; EXPERIMENTAL
         <dd>
             <ul>
                 
-                <li><a href="#M000117">to_parslet</a>,</li>
+                <li><a href="#M000113">to_parslet</a>,</li>
                 
-                <li><a href="#M000115">transform</a></li>
+                <li><a href="#M000111">transform</a></li>
                 
             </ul>
         </dd>
@@ -172,9 +172,9 @@ Example:
             <div class="sectiontitle">Instance Public methods</div>
             
             <div class="method">
-                <div class="title" id="M000116">
+                <div class="title" id="M000112">
                     
-                    <a name="M000116"></a><b>parse</b>(str)
+                    <a name="M000112"></a><b>parse</b>(str)
                     
                 </div>
                 
@@ -190,12 +190,12 @@ Parses the string and returns a parse tree.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000116_source')" id="l_M000116_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000112_source')" id="l_M000112_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/d8727a0bb5782acf983f3e74bc71eee3f271a2fa/lib/parslet/expression.rb#L43" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000116_source" class="dyn-source">
+                    <div id="M000112_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/expression.rb, line 43</span>
 43:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">str</span>)
 44:     <span class="ruby-identifier">parser</span> = <span class="ruby-constant">Treetop</span><span class="ruby-operator">::</span><span class="ruby-constant">Parser</span>.<span class="ruby-identifier">new</span>
@@ -207,9 +207,9 @@ Parses the string and returns a parse tree.
             </div>
             
             <div class="method">
-                <div class="title" id="M000117">
+                <div class="title" id="M000113">
                     
-                    <a name="M000117"></a><b>to_parslet</b>()
+                    <a name="M000113"></a><b>to_parslet</b>()
                     
                 </div>
                 
@@ -225,12 +225,12 @@ Turns this expression into a parslet.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000117_source')" id="l_M000117_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000113_source')" id="l_M000113_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/d8727a0bb5782acf983f3e74bc71eee3f271a2fa/lib/parslet/expression.rb#L50" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000117_source" class="dyn-source">
+                    <div id="M000113_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/expression.rb, line 50</span>
 50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_parslet</span>
 51:     <span class="ruby-ivar">@parslet</span>
@@ -241,9 +241,9 @@ Turns this expression into a parslet.
             </div>
             
             <div class="method">
-                <div class="title" id="M000115">
+                <div class="title" id="M000111">
                     
-                    <a name="M000115"></a><b>transform</b>(tree)
+                    <a name="M000111"></a><b>transform</b>(tree)
                     
                 </div>
                 
@@ -259,12 +259,12 @@ Transforms the parse tree into a parslet expression.
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000115_source')" id="l_M000115_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000111_source')" id="l_M000111_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/d8727a0bb5782acf983f3e74bc71eee3f271a2fa/lib/parslet/expression.rb#L31" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000115_source" class="dyn-source">
+                    <div id="M000111_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/expression.rb, line 31</span>
 31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">transform</span>(<span class="ruby-identifier">tree</span>)
 32:     <span class="ruby-identifier">transform</span> = <span class="ruby-constant">Treetop</span><span class="ruby-operator">::</span><span class="ruby-constant">Transform</span>.<span class="ruby-identifier">new</span>

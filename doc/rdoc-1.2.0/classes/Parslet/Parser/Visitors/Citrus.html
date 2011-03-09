@@ -49,7 +49,7 @@
         <dd>
             <ul>
                 
-                <li><a href="#M000093">new</a></li>
+                <li><a href="#M000097">new</a></li>
                 
             </ul>
         </dd>
@@ -60,19 +60,19 @@
                 
                 <li><a href="#M000104">visit_alternative</a>,</li>
                 
-                <li><a href="#M000096">visit_entity</a>,</li>
+                <li><a href="#M000100">visit_entity</a>,</li>
                 
                 <li><a href="#M000105">visit_lookahead</a>,</li>
                 
-                <li><a href="#M000097">visit_named</a>,</li>
+                <li><a href="#M000101">visit_named</a>,</li>
                 
-                <li><a href="#M000095">visit_re</a>,</li>
+                <li><a href="#M000099">visit_re</a>,</li>
                 
-                <li><a href="#M000099">visit_repetition</a>,</li>
+                <li><a href="#M000103">visit_repetition</a>,</li>
                 
-                <li><a href="#M000098">visit_sequence</a>,</li>
+                <li><a href="#M000102">visit_sequence</a>,</li>
                 
-                <li><a href="#M000094">visit_str</a></li>
+                <li><a href="#M000098">visit_str</a></li>
                 
             </ul>
         </dd>
@@ -115,9 +115,9 @@
             <div class="sectiontitle">Class Public methods</div>
             
             <div class="method">
-                <div class="title" id="M000093">
+                <div class="title" id="M000097">
                     
-                    <a name="M000093"></a><b>new</b>(context)
+                    <a name="M000097"></a><b>new</b>(context)
                     
                 </div>
                 
@@ -126,12 +126,12 @@
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000093_source')" id="l_M000093_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000097_source')" id="l_M000097_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L10" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000093_source" class="dyn-source">
+                    <div id="M000097_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 10</span>
 10:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">context</span>)
 11:         <span class="ruby-ivar">@context</span> = <span class="ruby-identifier">context</span>
@@ -175,9 +175,9 @@
             </div>
             
             <div class="method">
-                <div class="title" id="M000096">
+                <div class="title" id="M000100">
                     
-                    <a name="M000096"></a><b>visit_entity</b>(name, block)
+                    <a name="M000100"></a><b>visit_entity</b>(name, block)
                     
                 </div>
                 
@@ -186,12 +186,12 @@
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000096_source')" id="l_M000096_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000100_source')" id="l_M000100_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L21" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000096_source" class="dyn-source">
+                    <div id="M000100_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 21</span>
 21:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_entity</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>)
 22:         <span class="ruby-identifier">context</span>.<span class="ruby-identifier">deferred</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>)
@@ -232,9 +232,9 @@
             </div>
             
             <div class="method">
-                <div class="title" id="M000097">
+                <div class="title" id="M000101">
                     
-                    <a name="M000097"></a><b>visit_named</b>(name, parslet)
+                    <a name="M000101"></a><b>visit_named</b>(name, parslet)
                     
                 </div>
                 
@@ -243,12 +243,12 @@
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000097_source')" id="l_M000097_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000101_source')" id="l_M000101_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L26" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000097_source" class="dyn-source">
+                    <div id="M000101_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 26</span>
 26:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_named</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">parslet</span>)
 27:         <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>)
@@ -259,36 +259,9 @@
             </div>
             
             <div class="method">
-                <div class="title" id="M000095">
-                    
-                    <a name="M000095"></a><b>visit_re</b>(match)
-                    
-                </div>
-                
-                
-                
-                
-                <div class="sourcecode">
-                    <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000095_source')" id="l_M000095_source">show</a>
-                        
-                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L17" target="_blank" class="github_url">on GitHub</a>
-                        
-                    </p>
-                    <div id="M000095_source" class="dyn-source">
-                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 17</span>
-17:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_re</span>(<span class="ruby-identifier">match</span>)
-18:         <span class="ruby-identifier">match</span>.<span class="ruby-identifier">to_s</span>
-19:       <span class="ruby-keyword kw">end</span></pre>
-                    </div>
-                </div>
-                
-            </div>
-            
-            <div class="method">
                 <div class="title" id="M000099">
                     
-                    <a name="M000099"></a><b>visit_repetition</b>(min, max, parslet)
+                    <a name="M000099"></a><b>visit_re</b>(match)
                     
                 </div>
                 
@@ -299,10 +272,37 @@
                     <p class="source-link">
                         Source: <a href="javascript:toggleSource('M000099_source')" id="l_M000099_source">show</a>
                         
-                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L37" target="_blank" class="github_url">on GitHub</a>
+                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L17" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
                     <div id="M000099_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 17</span>
+17:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_re</span>(<span class="ruby-identifier">match</span>)
+18:         <span class="ruby-identifier">match</span>.<span class="ruby-identifier">to_s</span>
+19:       <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000103">
+                    
+                    <a name="M000103"></a><b>visit_repetition</b>(min, max, parslet)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000103_source')" id="l_M000103_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L37" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000103_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 37</span>
 37:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_repetition</span>(<span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">parslet</span>)
 38:         <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{min}*#{max}&quot;</span>
@@ -313,9 +313,9 @@
             </div>
             
             <div class="method">
-                <div class="title" id="M000098">
+                <div class="title" id="M000102">
                     
-                    <a name="M000098"></a><b>visit_sequence</b>(parslets)
+                    <a name="M000102"></a><b>visit_sequence</b>(parslets)
                     
                 </div>
                 
@@ -324,12 +324,12 @@
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000098_source')" id="l_M000098_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000102_source')" id="l_M000102_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L30" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000098_source" class="dyn-source">
+                    <div id="M000102_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 30</span>
 30:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_sequence</span>(<span class="ruby-identifier">parslets</span>)
 31:         <span class="ruby-value str">'('</span> <span class="ruby-operator">&lt;&lt;</span>
@@ -344,9 +344,9 @@
             </div>
             
             <div class="method">
-                <div class="title" id="M000094">
+                <div class="title" id="M000098">
                     
-                    <a name="M000094"></a><b>visit_str</b>(str)
+                    <a name="M000098"></a><b>visit_str</b>(str)
                     
                 </div>
                 
@@ -355,12 +355,12 @@
                 
                 <div class="sourcecode">
                     <p class="source-link">
-                        Source: <a href="javascript:toggleSource('M000094_source')" id="l_M000094_source">show</a>
+                        Source: <a href="javascript:toggleSource('M000098_source')" id="l_M000098_source">show</a>
                         
                         | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L14" target="_blank" class="github_url">on GitHub</a>
                         
                     </p>
-                    <div id="M000094_source" class="dyn-source">
+                    <div id="M000098_source" class="dyn-source">
                         <pre>    <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 14</span>
 14:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_str</span>(<span class="ruby-identifier">str</span>)
 15:         <span class="ruby-node">&quot;\&quot;#{str.inspect[1..-2]}\&quot;&quot;</span>

@@ -19,7 +19,7 @@
         </h1>
         <ul class="files">
             <li>lib/parslet.rb</li>
-            <li>Last modified: 2011-02-28 19:53:50 +0100</li>
+            <li>Last modified: 2011-03-09 08:11:40 +0100</li>
         </ul>
     </div>
 
@@ -38,7 +38,7 @@ A simple parser generator library. Typical usage would look like this:
     root(:a)
   end
 
-  pp MyParser.new.parse('aaaa')   # =&gt; 'aaaa'
+  pp MyParser.new.parse('aaaa')   # =&gt; 'aaaa'@0
   pp MyParser.new.parse('bbbb')   # =&gt; Parslet::Atoms::ParseFailed:
                                   #    Don't know what to do with bbbb at line 1 char 1.
 </pre>
