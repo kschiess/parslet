@@ -77,15 +77,12 @@ describe Parslet::Slice do
             small.should == 'oob'
             small.parent.should == slice
 
-            flexmock(small.parent).should_receive(:slice).with(1,1).once
-            small.slice(0,1)
-          end
-          it "should reslice its parent if available" do
-            small.should == 'oob'
-            small.parent.should == slice
-
-            flexmock(small.parent).should_receive(:slice).with(3,1).once
-            small.slice(2,1)
+            # Mocks parent.slice to return its arguments as a tuple
+            flexmock(small.parent).should_receive(:slice).and_return { |*args| args }
+            
+            small.slice(0,1).should == [1, 1]
+            small.slice(2,1).should == [3, 1]
+            small.slice(1,2).should == [2, 2]
           end
         end
         it "should return slices that have a correct offset" do
