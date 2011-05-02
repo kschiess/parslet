@@ -84,6 +84,13 @@ describe Parslet::Slice do
             small.slice(2,1).should == [3, 1]
             small.slice(1,2).should == [2, 2]
           end
+          it "should reslice correctly (regression from issue 34)" do
+            buffer = described_class.new('"foo"', 0)
+            foo = buffer.slice(0, buffer.size)
+            foo.should == %("foo")
+
+            foo.slice(1, 3).should == 'foo'
+          end 
         end
         it "should return slices that have a correct offset" do
           as = slice.slice(4,1)
