@@ -153,11 +153,26 @@ class Parslet::Transform
     self.class.rules + @rules
   end
   
+  # Executes the block on the bindings obtained by #match, if such a match
+  # can be made. Contains the logic that will switch to instance variables
+  # depending on the arity of the block. 
+  #
+  def call_on_match(bindings, block)
+    if block
+      if block.arity == 1
+        return instance_exec(bindings, &block)
+      else
+        context = Pattern::Context.new(bindings)
+        return context.instance_eval(&block)
+      end
+    end
+  end
+  
   def transform_elt(elt) # :nodoc: 
     rules.each do |pattern, block|
       if bindings=pattern.match(elt)
         # Produces transformed value
-        return pattern.call_on_match(bindings, block)
+        return call_on_match(bindings, block)
       end
     end
     

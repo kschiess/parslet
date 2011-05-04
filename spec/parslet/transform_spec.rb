@@ -76,6 +76,83 @@ describe Parslet::Transform do
       transform.apply('a').should == A.new('a')
     end 
   end
+  describe "rule context" do
+    describe "dsl construction" do
+      let(:transform) { Parslet::Transform.new do
+          @iv = 'b'
+          def add_instance_variable(s) s + @iv; end
+          rule(simple(:x)) {|d| add_instance_variable(d[:x]) }
+        end 
+      }
+
+      it "should have access to instance variables and methods" do
+        transform.apply('a').should == 'ab'
+      end 
+    end
+    describe "class construction" do
+      class UltraMagnus < Parslet::Transform 
+        def initialize(iv)
+          @iv = iv
+          super()
+        end
+        def add_instance_variable(s) s + @iv; end
+        rule(simple(:x)) {|d| add_instance_variable(d[:x]) }
+      end
+      let(:transform) { UltraMagnus.new('b') }
+
+      it "should have access to instance variables and methods" do
+        transform.apply('a').should == 'ab'
+      end 
+    end
+  end
+  
+  describe "<- #call_on_match" do
+    let(:bindings) { { :x => 'y' } }
+    context "when given a block of arity 1" do
+      it "should call the block" do
+        called = false
+        transform.call_on_match(bindings, lambda do |dict|
+          called = true
+        end)
+        
+        called.should == true
+      end 
+      it "should yield the bindings" do
+        b = bindings
+        transform.call_on_match(bindings, lambda do |dict|
+          dict.should == b
+        end)
+      end
+      it "should execute in the current context"  do
+        foo = 'test'
+        transform.call_on_match(bindings, lambda do |dict|
+          foo.should == 'test'
+        end)
+      end
+    end
+    context "when given a block of arity 0" do
+      it "should call the block" do
+        called = false
+        transform.call_on_match(bindings, proc do 
+          called = true
+        end)
+        
+        called.should == true
+      end 
+      it "should have bindings as local variables" do
+        transform.call_on_match(bindings, proc do
+          x.should == 'y'
+        end)
+      end
+      it "should execute in its own context" do
+        @foo = 'test'
+        transform.call_on_match(bindings, proc do
+          @foo.should_not == 'test'
+        end)
+      end
+    end
+  end
+  
   
   context "various transformations (regression)" do
     context "hashes" do
