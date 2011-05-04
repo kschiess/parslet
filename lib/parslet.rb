@@ -215,6 +215,7 @@ module Parslet
   autoload :Expression, 'parslet/expression'
 end
 
+require 'parslet/compatibility'
 require 'parslet/slice'
 require 'parslet/source'
 require 'parslet/error_tree'
