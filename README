@@ -41,8 +41,9 @@ SYNOPSIS
 
 COMPATIBILITY
 
-This library should work with most rubies. I've tested it with MRI 1.8, 1.9, 
-rbx-head, jruby. Please report as a bug if you encounter issues.
+This library should work with most rubies. I've tested it with MRI 1.8 
+(except 1.8.6), 1.9, rbx-head, jruby. Please report as a bug if you encounter 
+issues.
 
 STATUS 
 
