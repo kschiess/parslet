@@ -63,6 +63,9 @@ improvements. (Robert Kosek)
 
 h2. Thanks for all the fish -- Contributions
 
+* *John Mettraux* ("jmettraux":http://jmettraux.wordpress.com/) for the really
+  nice JSON example.
+
 * *Josep M. Bach* ("txus":http://www.txustice.me/) for minding the small 
   things that make a big difference.
 
