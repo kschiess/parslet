@@ -67,6 +67,8 @@ Cool, isn't it? To recap: parslet intentionally spits out deep nested hashes,
 because it also gives you the tool to work with those. Turning the intermediary
 trees into something useful is really easy. 
 
+h2. 
+
 h2. Working with Captures
 
 What is this <code>simple(symbol)</code> business all about, you might ask.
@@ -238,6 +240,40 @@ whatever that was. This means that it can capture and access local variables
 just fine. Access to the bindings (called <code>dictionary</code> here) is 
 more clumsy, but hey, you can't have your cake and eat it too, I guess. Even 
 though that is a pity. 
+
+h2. A word on patterns
+
+Given the PORO hash
+
+{% highlight ruby %} 
+{ 
+  :dog => 'terrier', 
+  :cat => 'suit' }
+{% endhighlight %}
+
+one might assume that the following rule matches <code>:dog</code> and
+replaces it by <code>'foo'</code>:
+
+{% highlight ruby %} 
+rule(:dog => 'terrier') { 'foo' }
+{% endhighlight %}
+
+This is frankly impossible. How would <code>'foo'</code> live besides
+<code>:cat => 'suit'</code> inside the hash? It cannot. This is why hashes are
+either matched completely, cats n' all, or not at all. 
+
+Transformations are there for one thing: Getting out of the hash/array/slice
+mess parslet creates (on purpose) into the realm of your own beautifully
+crafted AST classes. Such an
+"AST":http://en.wikipedia.org/wiki/Abstract_syntax_tree nodes will generally
+correspond 1:1 to hashes inside your intermediary tree. 
+
+If transformations get you into a mess, remember this simple truth: They have
+been designed for the above purpose. Abusing them is fun (and almost all the
+examples in the project do so) but the mess you get when you do is all yours.
+
+If you are really desperate, try to look at the example in "Get Started":get-started.html or at the parser in the sample project
+"wt":https://github.com/kschiess/wt. Imitating them would be a good first step. And if all else fails, we're there for you, see the 'Contact' section in "Contribute":contribute.html.
 
 h2. Summary
 

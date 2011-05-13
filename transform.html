@@ -80,6 +80,7 @@
         </div><p>Cool, isn&#8217;t it? To recap: parslet intentionally spits out deep nested hashes, 
         because it also gives you the tool to work with those. Turning the intermediary
         trees into something useful is really easy.</p>
+        <h2></h2>
         <h2>Working with Captures</h2>
         <p>What is this <code>simple(symbol)</code> business all about, you might ask.
         Glad you do.</p>
@@ -210,6 +211,31 @@
         just fine. Access to the bindings (called <code>dictionary</code> here) is 
         more clumsy, but hey, you can&#8217;t have your cake and eat it too, I guess. Even 
         though that is a pity.</p>
+        <h2>A word on patterns</h2>
+        <p>Given the <span class="caps">PORO</span> hash</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="p">{</span> 
+          <span class="ss">:dog</span> <span class="o">=&gt;</span> <span class="s1">&#39;terrier&#39;</span><span class="p">,</span> 
+          <span class="ss">:cat</span> <span class="o">=&gt;</span> <span class="s1">&#39;suit&#39;</span> <span class="p">}</span>
+        </code></pre>
+        </div><p>one might assume that the following rule matches <code>:dog</code> and
+        replaces it by <code>'foo'</code>:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:dog</span> <span class="o">=&gt;</span> <span class="s1">&#39;terrier&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
+        </code></pre>
+        </div><p>This is frankly impossible. How would <code>'foo'</code> live besides
+        <code>:cat =&gt; 'suit'</code> inside the hash? It cannot. This is why hashes are
+        either matched completely, cats n&#8217; all, or not at all.</p>
+        <p>Transformations are there for one thing: Getting out of the hash/array/slice
+        mess parslet creates (on purpose) into the realm of your own beautifully
+        crafted <span class="caps">AST</span> classes. Such an
+        <a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree"><span class="caps">AST</span></a> nodes will generally
+        correspond 1:1 to hashes inside your intermediary tree.</p>
+        <p>If transformations get you into a mess, remember this simple truth: They have
+        been designed for the above purpose. Abusing them is fun (and almost all the
+        examples in the project do so) but the mess you get when you do is all yours.</p>
+        <p>If you are really desperate, try to look at the example in <a href="get-started.html">Get Started</a> or at the parser in the sample project
+        <a href="https://github.com/kschiess/wt">wt</a>. Imitating them would be a good first step. And if all else fails, we&#8217;re there for you, see the &#8216;Contact&#8217; section in <a href="contribute.html">Contribute</a>.</p>
         <h2>Summary</h2>
         <p>This concludes this (three part) introduction to parslet and leaves you with a
         good knowledge of most tricky parts. If you are missing some detail, maybe
