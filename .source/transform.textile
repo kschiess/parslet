@@ -264,7 +264,7 @@ either matched completely, cats n' all, or not at all.
 
 Transformations are there for one thing: Getting out of the hash/array/slice
 mess parslet creates (on purpose) into the realm of your own beautifully
-crafted AST classes. Such an
+crafted AST classes. Such
 "AST":http://en.wikipedia.org/wiki/Abstract_syntax_tree nodes will generally
 correspond 1:1 to hashes inside your intermediary tree. 
 
