@@ -26,10 +26,16 @@ class Parslet::Pattern
   end
 
   # Decides if the given subtree matches this pattern. Returns the bindings
-  # made on a successful match or nil if the match fails. 
+  # made on a successful match or nil if the match fails. If you specify 
+  # bindings to be a hash, the mappings in it will be treated like bindings
+  # made during an attempted match. 
   #
-  def match(subtree)
-    bindings = {}
+  # Example: 
+  #
+  #   Pattern.new('a').match('a', :foo => 'bar') # => { :foo => 'bar' }
+  #
+  def match(subtree, bindings=nil)
+    bindings = bindings && bindings.dup || Hash.new
     return bindings if element_match(subtree, @pattern, bindings)
   end
 

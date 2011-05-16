@@ -95,6 +95,30 @@ describe Parslet::Pattern do
     end
   end
   describe "<- #match" do
+    context "injecting bindings" do
+      let(:pattern) { p(simple(:x)) }
+      
+      it "should not modify the original bindings hash" do
+        h = {}
+        b=pattern.match('a', h)
+        h.size.should == 0
+        b.size.should == 1
+      end
+      it "should return nil when no match succeeds" do
+        pattern.match([], :foo => :bar).should be_nil
+      end
+      context "when matching simple(:x) against 'a'" do
+        let(:bindings) { pattern.match(t('a'), :foo => :bar) }
+        
+        before(:each) { bindings.should_not be_nil }
+        it "should return the injected bindings" do
+          bindings[:foo].should == :bar
+        end
+        it "should return the new bindings" do  
+          bindings[:x].should == 'a'
+        end
+      end
+    end
     context "simple strings" do
       let(:exp) { 'aaaa' }
 
