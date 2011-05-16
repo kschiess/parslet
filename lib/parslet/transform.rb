@@ -89,6 +89,8 @@ class Parslet::Transform
   # FIXME: Maybe only part of it? Or maybe only include into constructor
   # context?
   include Parslet   
+  
+  autoload :Context, 'parslet/transform/context'
 
   class << self
     # FIXME: Only do this for subclasses?
@@ -146,6 +148,31 @@ class Parslet::Transform
     )
   end
   
+  # Executes the block on the bindings obtained by Pattern#match, if such a match
+  # can be made. Depending on the arity of the given block, it is called in 
+  # one of two environments: the current one or a clean toplevel environment.
+  #
+  # If you would like the current environment preserved, please use the 
+  # arity 1 variant of the block. Alternatively, you can inject a context object
+  # and call methods on it (think :ctx => self).
+  #
+  # Example:
+  #   # the local variable a is simulated
+  #   t.call_on_match(:a => :b) { a } 
+  #   # no change of environment here
+  #   t.call_on_match(:a => :b) { |d| d[:a] }
+  #
+  def call_on_match(bindings, block)
+    if block
+      if block.arity == 1
+        return block.call(bindings)
+      else
+        context = Context.new(bindings)
+        return context.instance_eval(&block)
+      end
+    end
+  end
+  
   # Allow easy access to all rules, the ones defined in the instance and the 
   # ones predefined in a subclass definition. 
   #
@@ -157,7 +184,7 @@ class Parslet::Transform
     rules.each do |pattern, block|
       if bindings=pattern.match(elt)
         # Produces transformed value
-        return pattern.call_on_match(bindings, block)
+        return call_on_match(bindings, block)
       end
     end
     

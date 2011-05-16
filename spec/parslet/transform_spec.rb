@@ -76,6 +76,51 @@ describe Parslet::Transform do
       transform.apply('a').should == A.new('a')
     end 
   end
+  describe "<- #call_on_match" do
+    let(:bindings) { { :foo => 'test' } }
+    context "when given a block of arity 1" do
+      it "should call the block" do
+        called = false
+        transform.call_on_match(bindings, lambda do |dict|
+          called = true
+        end)
+        
+        called.should == true
+      end 
+      it "should yield the bindings" do
+        transform.call_on_match(bindings, lambda do |dict|
+          dict.should == bindings
+        end)
+      end
+      it "should execute in the current context"  do
+        foo = 'test'
+        transform.call_on_match(bindings, lambda do |dict|
+          foo.should == 'test'
+        end)
+      end
+    end
+    context "when given a block of arity 0" do
+      it "should call the block" do
+        called = false
+        transform.call_on_match(bindings, proc do 
+          called = true
+        end)
+        
+        called.should == true
+      end 
+      it "should have bindings as local variables" do
+        transform.call_on_match(bindings, proc do
+          foo.should == 'test'
+        end)
+      end
+      it "should execute in its own context" do
+        @foo = 'test'
+        transform.call_on_match(bindings, proc do
+          @foo.should_not == 'test'
+        end)
+      end
+    end
+  end
   
   context "various transformations (regression)" do
     context "hashes" do

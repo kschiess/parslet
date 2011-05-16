@@ -18,9 +18,7 @@
 # Note that Parslet::Pattern only matches at a given subtree; it wont try 
 # to match recursively. To do that, please use Parslet::Transform. 
 #
-class Parslet::Pattern
-  autoload :Context, 'parslet/pattern/context'
-  
+class Parslet::Pattern  
   def initialize(pattern)
     @pattern = pattern
   end
@@ -37,24 +35,6 @@ class Parslet::Pattern
   def match(subtree, bindings=nil)
     bindings = bindings && bindings.dup || Hash.new
     return bindings if element_match(subtree, @pattern, bindings)
-  end
-
-  # Executes the block on the bindings obtained by #match, if such a match
-  # can be made. Contains the logic that will switch to instance variables
-  # depending on the arity of the block. 
-  #
-  #---
-  # TODO This method should be in Transform. 
-  #
-  def call_on_match(bindings, block)
-    if block
-      if block.arity == 1
-        return block.call(bindings)
-      else
-        context = Context.new(bindings)
-        return context.instance_eval(&block)
-      end
-    end
   end
   
   # Returns true if the tree element given by +tree+ matches the expression

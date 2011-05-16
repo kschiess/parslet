@@ -10,7 +10,7 @@ require 'blankslate'
 #     a # => :b
 #   end
 #
-class Parslet::Pattern::Context < BlankSlate # :nodoc:
+class Parslet::Transform::Context < BlankSlate # :nodoc:
   def initialize(bindings)
     @bindings = bindings
   end
