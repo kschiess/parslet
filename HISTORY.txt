@@ -5,7 +5,8 @@
     
 = 1.3.0 / ???
 
-  Next bigger release, features not clear yet. Probably heredoc-parsing. 
+  + Transform#apply can now be called with a hash as second argument. This 
+    provides bindings and a way to inject context.
     
 = 1.2.1 / ???
 

@@ -132,12 +132,13 @@ describe Parslet::Transform do
   end
   
   context "when not using the bindings as hash, but as local variables" do
-    before(:each) do
-      transform.rule(simple(:x)) { A.new(x) }
-    end
-    
     it "should access the variables" do
+      transform.rule(simple(:x)) { A.new(x) }
       transform.apply('a').should == A.new('a')
-    end 
+    end
+    it "should allow context as local variable" do
+      transform.rule(simple(:x)) { foo }
+      transform.apply('a', :foo => 'bar').should == 'bar'
+    end
   end
 end

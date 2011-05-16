@@ -85,6 +85,32 @@ require 'parslet/pattern'
 #   end
 #   transform.apply(tree)
 #
+# = Execution context
+#
+# The execution context of action blocks differs depending on the arity of 
+# said blocks. This can be confusing. It is however somewhat intentional. You 
+# should not create fat Transform descendants containing a lot of helper methods, 
+# instead keep your AST class construction in global scope or make it available
+# through a factory. The following piece of code illustrates usage of global
+# scope: 
+#
+#   transform = Parslet::Transform.new do
+#     rule(...) { AstNode.new(a_variable) }
+#     rule(...) { Ast.node(a_variable) } # modules are nice
+#   end
+#   transform.apply(tree)
+#
+# And here's how you would use a class builder (a factory):
+#
+#   transform = Parslet::Transform.new do
+#     rule(...) { builder.add_node(a_variable) }
+#     rule(...) { |d| d[:builder].add_node(d[:a_variable]) }
+#   end
+#   transform.apply(tree, :builder => Builder.new)
+#
+# As you can see, Transform allows you to inject local context for your rule
+# action blocks to use. 
+#
 class Parslet::Transform
   # FIXME: Maybe only part of it? Or maybe only include into constructor
   # context?
@@ -135,16 +161,17 @@ class Parslet::Transform
   # or a simple parslet. Transformation will proceed down the tree, replacing
   # parts/all of it with new objects. The resulting object will be returned. 
   #
-  def apply(obj)
+  def apply(obj, context=nil)
     transform_elt(
       case obj
         when Hash
-          recurse_hash(obj)
+          recurse_hash(obj, context)
         when Array
-          recurse_array(obj)
+          recurse_array(obj, context)
       else
         obj
-      end
+      end, 
+      context
     )
   end
   
@@ -180,9 +207,9 @@ class Parslet::Transform
     self.class.rules + @rules
   end
   
-  def transform_elt(elt) # :nodoc: 
+  def transform_elt(elt, context) # :nodoc: 
     rules.each do |pattern, block|
-      if bindings=pattern.match(elt)
+      if bindings=pattern.match(elt, context)
         # Produces transformed value
         return call_on_match(bindings, block)
       end
@@ -191,13 +218,13 @@ class Parslet::Transform
     # No rule matched - element is not transformed
     return elt
   end
-  def recurse_hash(hsh) # :nodoc: 
+  def recurse_hash(hsh, ctx) # :nodoc: 
     hsh.inject({}) do |new_hsh, (k,v)|
-      new_hsh[k] = apply(v)
+      new_hsh[k] = apply(v, ctx)
       new_hsh
     end
   end
-  def recurse_array(ary) # :nodoc: 
-    ary.map { |elt| apply(elt) }
+  def recurse_array(ary, ctx) # :nodoc: 
+    ary.map { |elt| apply(elt, ctx) }
   end
 end
