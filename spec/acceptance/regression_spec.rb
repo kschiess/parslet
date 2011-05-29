@@ -1,3 +1,5 @@
+# Encoding: UTF-8
+
 require File.dirname(__FILE__) + '/../spec_helper'
 
 require 'parslet'
@@ -165,6 +167,17 @@ describe "Regressions from real examples" do
         t.rule(:one => simple(:b), :two => simple(:b)) { :ok }
       end
       transform.apply(subject.parse('bb')).should == :ok
+    end 
+  end
+
+  class UnicodeLanguage < Parslet::Parser
+    root :gobble
+    rule(:gobble) { any.repeat }
+  end
+  describe UnicodeLanguage do
+    it "should parse UTF-8 strings" do
+      subject.should parse('éèäöü').as('éèäöü')
+      subject.should parse('RubyKaigi2009のテーマは、「変わる／変える」です。 前回の').as('RubyKaigi2009のテーマは、「変わる／変える」です。 前回の')
     end 
   end
 end
