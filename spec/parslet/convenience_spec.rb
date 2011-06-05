@@ -33,6 +33,11 @@ describe 'parslet/convenience' do
         
         parser.parse_with_debug('incorrect')
       end
+      it "should puts once for the error on unconsumed input" do
+        parser.should_receive(:puts).once
+
+        parser.parse_with_debug('foobar')
+      end 
     end
     
     it "should work for all parslets" do

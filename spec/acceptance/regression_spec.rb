@@ -204,4 +204,16 @@ describe "Regressions from real examples" do
       subject.should parse(string)
     end 
   end
+
+  class TwoCharLanguage < Parslet::Parser
+    root :twochar
+    rule(:twochar) { any >> str('2') }
+  end
+  describe TwoCharLanguage do
+    it "should raise UnconsumedInput" do
+      expect {
+        subject.parse('123')
+      }.to raise_error(Parslet::UnconsumedInput)
+    end 
+  end
 end

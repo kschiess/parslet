@@ -25,6 +25,8 @@ class Parslet::Atoms::Base
   #
   def parse_with_debug str
     parse str
+  rescue Parslet::UnconsumedInput => error
+    puts error
   rescue Parslet::ParseFailed => error
     puts error
     puts error_tree
