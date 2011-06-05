@@ -180,4 +180,28 @@ describe "Regressions from real examples" do
       subject.should parse('RubyKaigi2009のテーマは、「変わる／変える」です。 前回の').as('RubyKaigi2009のテーマは、「変わる／変える」です。 前回の')
     end 
   end
+  
+  class UnicodeSentenceLanguage < Parslet::Parser
+    rule(:sentence) { (match('[^。]').repeat(1) >> str("。")).as(:sentence) }
+    rule(:sentences) { sentence.repeat }
+    root(:sentences)
+  end
+  describe UnicodeSentenceLanguage, :ruby => 1.9 do
+    let(:string) {
+      "RubyKaigi2009のテーマは、「変わる／変える」です。 前回の" +
+      "RubyKaigi2008のテーマであった「多様性」の言葉の通り、 " +
+      "2008年はRubyそのものに関しても、またRubyの活躍する舞台に関しても、 " +
+      "ますます多様化が進みつつあります。RubyKaigi2008は、そのような " +
+      "Rubyの生態系をあらためて認識する場となりました。 しかし、" +
+      "こうした多様化が進む中、異なる者同士が単純に距離を 置いたままでは、" +
+      "その違いを認識したところであまり意味がありません。 異なる実装、" +
+      "異なる思想、異なる背景といった、様々な多様性を理解しつつ、 " +
+      "すり合わせるべきものをすり合わせ、変えていくべきところを " +
+      "変えていくことが、豊かな未来へとつながる道に違いありません。"
+    }
+    
+    it "should parse sentences" do
+      subject.should parse(string)
+    end 
+  end
 end
