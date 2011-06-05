@@ -9,6 +9,9 @@
     
 = 1.2.1 / 6Jun2011
 
+  ! FIX: Input at the end of a parse raises Parslet::UnconsumedInput. (see
+    issue 18)
+
   ! FIX: Unicode parsing should now work as expected. (see issue 38)
   
   ! FIX: Slice#slice returned wrong bits at times (see issue 36).
