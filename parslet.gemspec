@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = 'parslet'
-  s.version = '1.2.0'
+  s.version = '1.2.1'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['Kaspar Schiess']
-  s.date = '2011-02-04'
+  s.date = '2011-06-05'
   s.email = 'kaspar.schiess@absurd.li'
   s.extra_rdoc_files = ['README']
   s.files = %w(Gemfile HISTORY.txt LICENSE Rakefile README) + Dir.glob("{lib,example}/**/*")

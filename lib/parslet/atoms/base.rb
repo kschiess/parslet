@@ -48,14 +48,16 @@ class Parslet::Atoms::Base
       # error to fail with. Otherwise just report that we cannot consume the
       # input.
       if cause 
-        # Don't garnish the real cause; but the exception is different anyway.
-        raise Parslet::ParseFailed, 
+        # We're not using #parse_failed here, since it assigns to @last_cause.
+        # Still: We'll raise this differently, since the real cause is different.
+        raise Parslet::UnconsumedInput, 
           "Unconsumed input, maybe because of this: #{cause}"
       else
         old_pos = source.pos
         parse_failed(
           format_cause(source, 
-            "Don't know what to do with #{source.read(100)}", old_pos))
+            "Don't know what to do with #{source.read(100)}", old_pos), 
+          Parslet::UnconsumedInput)
       end
     end
     
@@ -246,9 +248,9 @@ private
   # Signals to the outside that the parse has failed. Use this in conjunction
   # with #format_cause for nice error messages. 
   #
-  def parse_failed(cause)
+  def parse_failed(cause, exception_klass=Parslet::ParseFailed)
     @last_cause = cause
-    raise Parslet::ParseFailed,
+    raise exception_klass,
       @last_cause.to_s
   end
   

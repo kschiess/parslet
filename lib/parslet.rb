@@ -75,6 +75,14 @@ module Parslet
   class ParseFailed < StandardError
   end
   
+  # Raised when the parse operation didn't consume all of its input. In this
+  # case, it makes only limited sense to look at the error tree. Maybe the
+  # parser worked just fine, but didn't account for the characters at the tail
+  # of the input?
+  #
+  class UnconsumedInput < ParseFailed
+  end
+  
   module ClassMethods
     # Define an entity for the parser. This generates a method of the same
     # name that can be used as part of other patterns. Those methods can be

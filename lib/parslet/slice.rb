@@ -48,13 +48,11 @@
 #
 class Parslet::Slice
   attr_reader :str, :offset
-  attr_reader :parent
   attr_reader :source
 
-  def initialize(string, offset, source=nil, parent=nil)
+  def initialize(string, offset, source=nil)
     @str, @offset = string, offset
     @source = source
-    @parent = parent
   end
 
   # Compares slices to other slices or strings.
@@ -69,60 +67,18 @@ class Parslet::Slice
     str.match(regexp)
   end
 
-  # Returns a slice that starts at offset start and that has length characters.
-  # Whenever possible, return parts of the parent buffer that this slice was
-  # cut out of.
+  # Returns the slices size in characters.
   #
-  def slice(start, length)
-    # NOTE: At a later stage, we might not want to create huge trees of slices.
-    # The fact that the root of the tree creates slices that link to it makes
-    # the tree already rather flat.
-
-    if parent
-      parent.slice(offset - parent.offset + start, length)
-    else
-      self.class.new(str.slice(start, length), offset+start, source, self)
-    end
-  end
-
-  # Returns a slice that starts at file offset start and that has length
-  # characters in it.
-  #
-  def abs_slice(start, length)
-    slice(start-offset, length)
-  end
-
-  # True if this slice can satisfy an original input request to the
-  # range ofs, len.
-  #
-  def satisfies?(ofs, len)
-    ofs >= offset && (ofs-offset+len-1)<str.size
-  end
-
   def size
     str.size
   end
+  
+  # Concatenate two slices; it is assumed that the second slice begins 
+  # where the first one ends. The offset of the resulting slice is the same
+  # as the one of this slice. 
+  #
   def +(other)
-    raise ArgumentError,
-      "Cannot concat something other than a slice to a slice." \
-        unless other.respond_to?(:to_slice)
-
-    raise Parslet::InvalidSliceOperation,
-      "Cannot join slices that aren't adjacent."+
-      " (#{self.inspect} + #{other.inspect})" \
-        if offset+size != other.offset
-
-    raise Parslet::InvalidSliceOperation, "Not from the same source." \
-      if source != other.source
-
-    # If both slices stem from the same bigger buffer, we can reslice that
-    # buffer to (probably) avoid a buffer copy, as long as the strings are
-    # not modified.
-    if parent && parent == other.parent
-      return parent.abs_slice(offset, size+other.size)
-    end
-
-    self.class.new(str + other.str, offset, source)
+    self.class.new(str + other.to_s, offset, source)
   end
 
   # Returns a <line, column> tuple referring to the original input.
