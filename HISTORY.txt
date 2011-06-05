@@ -7,8 +7,10 @@
 
   Next bigger release, features not clear yet. Probably heredoc-parsing. 
     
-= 1.2.1 / ???
+= 1.2.1 / 6Jun2011
 
+  ! FIX: Unicode parsing should now work as expected. (see issue 38)
+  
   ! FIX: Slice#slice returned wrong bits at times (see issue 36).
 
 = 1.2.0 / 4Feb2011

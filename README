@@ -5,10 +5,10 @@ Parslet makes developing complex parsers easy. It does so by
 * providing the best <b>error reporting</b> possible
 * <b>not generating</b> reams of code for you to debug
 
-Parslet takes the long way around to make <b>your job</b> easier. It allows for
-incremental language construction. Often, you start out small, implementing
-the atoms of your language first; _parslet_ takes pride in making this
-possible. 
+Parslet takes the long way around to make <b>your job</b> easier. It allows
+for incremental language construction. Often, you start out small,
+implementing the atoms of your language first; _parslet_ takes pride in making
+this possible.
 
 Eager to try this out? Please see the associated web site:
 http://kschiess.github.com/parslet
@@ -45,8 +45,11 @@ This library should work with most rubies. I've tested it with MRI 1.8
 (except 1.8.6), 1.9, rbx-head, jruby. Please report as a bug if you encounter 
 issues.
 
+Note that due to Ruby 1.8 internals, Unicode parsing is not supported on that 
+version. 
+
 STATUS 
 
-At version 1.1 - Good basic functionality and lots of plans for extension.
+At version 1.2.1 - See HISTORY.txt for changes.
 
 (c) 2010 Kaspar Schiess
