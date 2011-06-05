@@ -11,7 +11,7 @@ describe "Regression on" do
           gsub('example/','example/output/')
       end
       
-      it "runs successfully" do
+      it "runs successfully", :ruby => 1.9 do
         stdin, stdout, stderr = Open3.popen3("ruby #{example}")
         
         handle_map = {
