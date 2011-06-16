@@ -3,16 +3,6 @@
 # any other string, except that it remembers where it came from (offset in
 # original input).
 #
-# Some slices also know what parent slice they are a small part of. This
-# allows the slice to be concatenated to other slices from the same buffer by
-# reslicing it against that original buffer.
-#
-# Why the complexity? Slices allow retaining offset information. This will
-# allow to assign line and column to each small bit of output from the parslet
-# parser. Also, while we keep that information, we might as well try to do
-# something useful with it. Reslicing the same buffers should in theory keep
-# buffer copies and allocations down.
-#
 # == Extracting line and column
 #
 # Using the #line_and_column method, you can extract the line and column in
@@ -32,27 +22,16 @@
 # These omissions are somewhat intentional. Rather than maintaining a full
 # delegation, we opt for a partial emulation that gets the job done.
 #
-# Note also that there are some things that work with strings that will never
-# work when using slices. For instance, you cannot concatenate slices that
-# aren't from the same source or that don't join up:
-#
-# Example:
-#   big_slice = 'abcdef'
-#   a = big_slice.slice(0, 2)   # => "ab"@0
-#   b = big_slice.slice(4, 2)   # => "ef"@4
-#
-#   a + b # raises Parslet::InvalidSliceOperation
-#
-# This avoids creating slices with impossible offsets or that are
-# discontinous.
-#
 class Parslet::Slice
   attr_reader :str, :offset
-  attr_reader :source
+  attr_reader :line_cache
 
-  def initialize(string, offset, source=nil)
+  # Construct a slice using a string, an offset and an optional line cache. 
+  # The line cache should be able to answer to the #line_and_column message. 
+  #
+  def initialize(string, offset, line_cache=nil)
     @str, @offset = string, offset
-    @source = source
+    @line_cache = line_cache
   end
 
   # Compares slices to other slices or strings.
@@ -78,16 +57,16 @@ class Parslet::Slice
   # as the one of this slice. 
   #
   def +(other)
-    self.class.new(str + other.to_s, offset, source)
+    self.class.new(str + other.to_s, offset, line_cache)
   end
 
   # Returns a <line, column> tuple referring to the original input.
   #
   def line_and_column
-    raise ArgumentError, "No source was given, cannot infer line and column." \
-      unless source
+    raise ArgumentError, "No line cache was given, cannot infer line and column." \
+      unless line_cache
 
-    source.line_and_column(self.offset)
+    line_cache.line_and_column(self.offset)
   end
 
 

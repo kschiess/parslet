@@ -46,13 +46,9 @@ describe Parslet::Slice do
       end 
       
       context "when constructed with a source" do
-        before(:each) { 
-          flexmock(slice, :source => flexmock(:source).
-            tap { |sm| sm.
-              should_receive(:line_and_column).
-              with(40).
-              and_return([13, 14]) }) 
-        }
+        let(:slice) { described_class.new(
+          'foobar', 40,  
+          flexmock(:cache, :line_and_column => [13, 14])) }
         it "should return proper line and column" do
           slice.line_and_column.should == [13, 14]
         end
@@ -121,6 +117,17 @@ describe Parslet::Slice do
       describe "#to_s" do
         subject { slice.to_s }
         it { should == 'foobar' }
+      end
+    end
+    describe "serializability" do
+      it "should serialize" do
+        Marshal.dump(slice)
+      end
+      context "when storing a line cache" do
+        let(:slice) { described_class.new('foobar', 40, Parslet::Source::LineCache.new()) }
+        it "should serialize" do
+          Marshal.dump(slice)
+        end
       end
     end
   end

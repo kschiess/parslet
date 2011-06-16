@@ -51,7 +51,7 @@ private
     # cache line ends
     @line_cache.scan_for_line_endings(start, buf)
     
-    Parslet::Slice.new(buf || '', start, self)
+    Parslet::Slice.new(buf || '', start, @line_cache)
   end
   
   if RUBY_VERSION !~ /^1.9/
@@ -62,7 +62,7 @@ private
       # cache line ends
       @line_cache.scan_for_line_endings(start, buf)
 
-      Parslet::Slice.new(buf || '', start, self)
+      Parslet::Slice.new(buf || '', start, @line_cache)
     end
   end
 end
