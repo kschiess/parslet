@@ -31,6 +31,12 @@ of parslet. Especially:
   explains quite a few things on how parsers work and on parser
   metaprogramming. Besides, Florian Hanke also explains how to create an ERB
   parser in just a few lines!
+  
+* "Parslet and
+  JSON":http://jmettraux.wordpress.com/2011/05/11/parslet-and-json/ shows how
+  to construct a JSON parser in a few lines.
+  "John":http://jmettraux.wordpress.com/about/ does a great job of explaining
+  how parslet ties back in with railroad diagrams.
  
 "*rdoc Class Documentation*":doc/rdoc-1.2.0/index.html
 
