@@ -97,6 +97,10 @@ class Parslet::Atoms::Base
   # Takes a mixed value coming out of a parslet and converts it to a return
   # value for the user by dropping things and merging hashes. 
   #
+  # Named is set to true if this result will be embedded in a Hash result from 
+  # naming something using <code>.as(...)</code>. It changes the folding 
+  # semantics of repetition.
+  #
   def flatten(value, named=false) # :nodoc:
     # Passes through everything that isn't an array of things
     return value unless value.instance_of? Array
