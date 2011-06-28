@@ -70,7 +70,6 @@ class Parslet::Source
       left = 0
       right = size - 1 
 
-      n = 10
       loop do
         mid = left + (right - left) / 2
 
