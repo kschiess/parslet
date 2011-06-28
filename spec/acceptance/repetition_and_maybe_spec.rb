@@ -28,7 +28,7 @@ describe "Tree output" do
       
       # The other way around: Contents would be tagged, but nil result isn't
       (str('a') >> str('b')).as(:f).maybe     => '',
-      (str('a') >> str('b')).as(:f).repeat    => '',
+      (str('a') >> str('b')).as(:f).repeat    => ''
     )
   end
   
