@@ -61,6 +61,10 @@ the various aspects of a parser.
 A variant of Chris Pound's word generator written in Ruby, with some
 improvements. (Robert Kosek)
 
+"*versionub*":https://github.com/meh/versionub
+
+A semantic version parser. (meh)
+
 h2. Thanks for all the fish -- Contributions
 
 * *meh* ("meh":http://meh.paranoid.pk/) for taking a real close look. 
