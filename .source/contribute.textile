@@ -63,6 +63,8 @@ improvements. (Robert Kosek)
 
 h2. Thanks for all the fish -- Contributions
 
+* *meh* (meh:http://meh.paranoid.pk/) for taking a real close look. 
+
 * *John Mettraux* ("jmettraux":http://jmettraux.wordpress.com/) for the really
   nice JSON example.
 
