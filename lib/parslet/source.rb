@@ -20,8 +20,7 @@ class Parslet::Source
   # Reads n chars from the input and returns a Range instance. 
   #
   def read(n)
-    raise ArgumentError, "Cannot read <= 1 characters at a time." \
-      if n < 1
+    raise ArgumentError, "Cannot read < 1 characters at a time." if n < 1
     read_slice(n)
   end
   
