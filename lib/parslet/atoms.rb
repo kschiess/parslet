@@ -26,5 +26,6 @@ module Parslet::Atoms
   require 'parslet/atoms/re'
   require 'parslet/atoms/str'
   require 'parslet/atoms/entity'
+  require 'parslet/atoms/rule'
 end
 

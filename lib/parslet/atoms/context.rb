@@ -4,6 +4,10 @@ module Parslet::Atoms
   # style. 
   #
   class Context
+    class LR < Struct.new(:detected)
+      def error?; false end
+    end
+
     def initialize
       @cache = Hash.new { |h, k| h[k] = {} }
     end
@@ -18,13 +22,20 @@ module Parslet::Atoms
     #
     def cache(obj, source, &block)
       beg = source.pos
-        
+
       # Not in cache yet? Return early.
       unless entry = lookup(obj, beg)
+        lr = LR.new
+        memo = [lr, beg]
+        set obj, beg, memo
         result = yield
-    
-        set obj, beg, [result, source.pos-beg]
-        return result
+        memo[0] = result
+        memo[1] = source.pos - beg
+        if lr.detected && !result.error?
+          return grow_lr(obj, source, beg, memo, nil, &block)
+        else
+          return result
+        end
       end
 
       # the condition in unless has returned true, so entry is not nil.
@@ -34,12 +45,34 @@ module Parslet::Atoms
       # the cache) PLUS the actual contents are not interesting anymore since
       # we know obj matches at beg. So skip reading.
       source.pos = beg + advance
+
+      if result.is_a?(LR)
+        result.detected = true
+        # FIXME this is a quick hack, need to find out a
+        return obj.error(source, 'left recursion detected')
+      end
+
       return result
     end  
   
-  private 
+  private
+    def grow_lr(obj, source, beg, memo, h, &block)
+      loop do
+        source.pos = beg
+        ans = block.call
+        if ans.error? || source.pos <= (memo[1] + beg)
+          break
+        end
+        memo[0] = ans
+        memo[1] = source.pos - beg
+      end
+
+      source.pos = memo[1] + beg
+      memo[0]
+    end
+
     def lookup(obj, pos)
-      @cache[pos][obj] 
+      @cache[pos][obj]
     end
     def set(obj, pos, val)
       @cache[pos][obj] = val
