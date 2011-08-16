@@ -233,19 +233,19 @@ class Parslet::Atoms::Base
     Parslet::ErrorTree.new(self)
   end
 
-  # Produces an instance of Fail and returns it. 
-  #
-  def error(source, str, pos=nil)
-    @last_cause = format_cause(source, str, pos)
-    Fail.new(@last_cause)
-  end
-
 private
 
   # Produces an instance of Success and returns it. 
   #
   def success(result)
     Success.new(result)
+  end
+
+  # Produces an instance of Fail and returns it. 
+  #
+  def error(source, str, pos=nil)
+    @last_cause = format_cause(source, str, pos)
+    Fail.new(@last_cause)
   end
 
   # Signals to the outside that the parse has failed. Use this in conjunction
