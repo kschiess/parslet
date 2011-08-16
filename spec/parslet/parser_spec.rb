@@ -7,12 +7,6 @@ describe Parslet::Parser do
     root(:foo)
   end
   
-  class ExpParser < Parslet::Parser
-    rule(:num) { match('[0-9]') }
-    rule(:exp) { exp >> str('+') >> num | num }
-    root(:exp)
-  end
-  
   describe "<- .root" do
     parser = Class.new(Parslet::Parser)
     parser.root :root_parslet
@@ -35,8 +29,27 @@ describe Parslet::Parser do
     end
   end
   context 'left recursion' do
-    let(:parser) { ExpParser.new }
-    it 'should parse left recursion sum expression' do
+    it 'should parse direct left recursion' do
+      parserClass = Class.new(Parslet::Parser)
+      parserClass.root :exp
+      parserClass.rule(:num) { match('[0-9]') }
+      parserClass.rule(:exp) { exp >> str('+') >> num | num }
+      
+      parser = parserClass.new
+      
+      parser.parse('1+2').should == '1+2'
+      parser.parse('1+2+3').should == '1+2+3'
+      parser.parse('1+2+3+4').should == '1+2+3+4'
+    end
+
+    it 'should parse indirect left recursion' do
+      parserClass = Class.new(Parslet::Parser)
+      parserClass.root :exp
+      parserClass.rule(:callback_exp) { exp }
+      parserClass.rule(:num) { match('[0-9]') }
+      parserClass.rule(:exp) { callback_exp >> str('+') >> num | num }
+
+      parser = parserClass.new
       parser.parse('1+2').should == '1+2'
       parser.parse('1+2+3').should == '1+2+3'
       parser.parse('1+2+3+4').should == '1+2+3+4'
