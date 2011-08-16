@@ -15,7 +15,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
   end
 
   # Update/fetch parsed entry at a given position in source
-  # Eval rule body from a given position in source and cache the result
+  # Eval rule body at a given position in source and cache the result
   class Position < Struct.new(:pos, :source, :context, :rule)
     def entry=(entry)
       context.set rule, pos, entry
