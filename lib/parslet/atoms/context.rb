@@ -4,8 +4,14 @@ module Parslet::Atoms
   # style. 
   #
   class Context
+    attr_accessor :lr_stack
     def initialize
       @cache = Hash.new { |h, k| h[k] = {} }
+      @heads = {}
+    end
+
+    def heads
+      @heads
     end
 
     def lookup(obj, pos)
