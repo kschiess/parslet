@@ -117,7 +117,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
       # during a seed-growing iteration
       if self.head.eval?(self.rule)
         self.head.exclude_eval_rule!(self.rule)
-        self.eval_rule_body_with_lr_support
+        self.entry = self.eval_rule_body
       end
       self.entry
     end
