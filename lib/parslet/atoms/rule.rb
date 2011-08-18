@@ -15,19 +15,12 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     end
   end
 
-  class LR < Struct.new(:rule, :seed, :head, :next)
-    class Error < RuntimeError; end
-
+  class LR < Struct.new(:seed, :rule, :head, :next)
     def head_rule?(rule)
       self.head && self.head.rule == rule
     end
 
-    def error?
-      !self.head.nil?
-    end
-
     def answer
-      raise Error.new('left recursion detected') if seed.nil?
       seed
     end
 
@@ -50,6 +43,9 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     end
     def eval?(rule)
       eval_rules.include?(rule)
+    end
+    def exclude_eval_rule!(rule)
+      eval_rules.delete(rule)
     end
   end
 
@@ -85,21 +81,15 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     include Context
 
     def apply_rule
-      self.recall || self.eval_rule_body_with_lr_support
+      recall
+      self.entry || eval_rule_body_with_lr_support
     end
 
     # Eval rule body with LR supported by
     # placing a LR flag before eval rule body
     # and growing LR seed after detected LR
     def eval_rule_body_with_lr_support
-      lr = LR.new(rule)
-      push_into_lr_stack(lr)
-      self.entry = MemoEntry.new lr, self.pos
-      self.entry = eval_rule_body
-      pop_lr_stack
-      if lr.head_rule?(rule) && !self.entry.error?
-        grow_lr(lr.head)
-      end
+      with_lr_flag { self.entry = eval_rule_body }
       self.entry
     end
 
@@ -109,28 +99,44 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
       MemoEntry.new(answer, source.pos)
     end
 
+    private
+    def rewind
+      source.pos = self.pos
+    end
+
+    def fail(message)
+      MemoEntry.new(rule.error(source, message), source.pos)
+    end
+
     def recall
       # if not growing a seed parse, just return what is stored
       # in the memo table
       return self.entry if self.head.nil?
       # do not evaluate any rule that is not involved in this
       # left recursion
+      # question: why self.entry.nil?
       if self.entry.nil? && !self.head.involved?(self.rule)
-        raise LR::Error.new('not involved rule')
+        return fail('not involved in head left recursion')
       end
-      
+
       # allow involved rules to be evaluated, but only once
       # during a seed-growing iteration
       if self.head.eval?(self.rule)
-        self.head.eval_rules.delete(self.rule)
+        self.head.exclude_eval_rule!(self.rule)
         self.eval_rule_body_with_lr_support
       end
       self.entry
     end
 
-    private
-    def rewind
-      source.pos = self.pos
+    def with_lr_flag
+      lr = LR.new(rule.error(source, 'left recursion detected'), self.rule)
+      push_into_lr_stack(lr)
+      self.entry = MemoEntry.new lr, self.pos
+      yield
+      pop_lr_stack
+
+      return if self.entry.error?
+      grow_lr(lr.head) if lr.head_rule?(rule)
     end
 
     # Tries to grow the parse of rule at given position
@@ -153,7 +159,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     entry = position.apply_rule
     source.pos = entry.pos
     entry.result(context.lr_stack)
-  rescue LR::Error => e
-    error(source, e.message)
   end
+
+  public :error
 end
