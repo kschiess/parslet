@@ -4,10 +4,33 @@ module Parslet::Atoms
   # style. 
   #
   class Context
-    attr_accessor :lr_stack
+    
+    class LRStack < Struct.new(:lrs)
+      def push(lr)
+        lrs.unshift(lr)
+      end
+
+      def pop
+        lrs.shift
+      end
+
+      def mark_involved_lrs(head)
+        lrs.each do |lr|
+          if lr.head != head
+            head.mark_involved(lr)
+          else
+            return
+          end
+        end
+      end
+    end
+
+    attr_reader :lr_stack
+
     def initialize
       @cache = Hash.new { |h, k| h[k] = {} }
       @heads = {}
+      @lr_stack = LRStack.new([])
     end
 
     def heads

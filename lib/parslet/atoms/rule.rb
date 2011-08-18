@@ -4,46 +4,42 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     def error?
       self.answer.error?
     end
+  end
 
-    def result(lr_stack)
-      if self.answer.is_a?(LR)
-        self.answer.setup_lr(lr_stack)
-        self.answer.answer
-      else
-        self.answer
+  class LREntry < Struct.new(:lr, :pos, :context)
+    def answer
+      self.lr.ensure_head do |head|
+        context.lr_stack.mark_involved_lrs(head)
       end
+      self.lr.seed
     end
   end
 
-  class LR < Struct.new(:seed, :rule, :head, :next)
+  class LR < Struct.new(:seed, :rule, :head)
     def head_rule?(rule)
       self.head && self.head.rule == rule
     end
 
-    def answer
-      seed
+    def ensure_head(&block)
+      yield(self.head ||= Head.new(rule, [], []))
     end
 
-    def setup_lr(lr_stack)
-      if self.head.nil?
-        self.head = Head.new(rule, [], [])
-      end
-      s = lr_stack
-      while(s.head != self.head) do
-        s.head = self.head
-        self.head.involved_rules.push s.rule
-        s = s.next
-      end
-    end
   end
 
   class Head < Struct.new(:rule, :involved_rules, :eval_rules)
     def involved?(rule)
       self.rule == rule || self.involved_rules.include?(rule)
     end
+
+    def mark_involved(lr)
+      lr.head = self
+      self.involved_rules.push lr.rule
+    end
+
     def eval?(rule)
       eval_rules.include?(rule)
     end
+
     def exclude_eval_rule!(rule)
       eval_rules.delete(rule)
     end
@@ -70,19 +66,17 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
       end
 
       def push_into_lr_stack(lr)
-        lr.next = context.lr_stack
-        context.lr_stack = lr
+        context.lr_stack.push(lr)
       end
 
       def pop_lr_stack
-        context.lr_stack = context.lr_stack.next
+        context.lr_stack.pop
       end
     end
     include Context
 
     def apply_rule
-      recall
-      self.entry || eval_rule_body_with_lr_support
+      recall || eval_rule_body_with_lr_support
     end
 
     # Eval rule body with LR supported by
@@ -131,7 +125,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     def with_lr_flag
       lr = LR.new(rule.error(source, 'left recursion detected'), self.rule)
       push_into_lr_stack(lr)
-      self.entry = MemoEntry.new lr, self.pos
+      self.entry = LREntry.new lr, self.pos, context
       yield
       pop_lr_stack
 
@@ -158,7 +152,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     position = Position.new(source.pos, source, context, self)
     entry = position.apply_rule
     source.pos = entry.pos
-    entry.result(context.lr_stack)
+    entry.answer
   end
 
   public :error
