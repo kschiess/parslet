@@ -1,16 +1,16 @@
 
 class Parslet::Atoms::Rule < Parslet::Atoms::Entity
-  class MemoEntry < Struct.new(:ans, :pos)
+  class MemoEntry < Struct.new(:answer, :pos)
     def error?
-      self.ans.error?
+      self.answer.error?
     end
 
     def result(lr_stack)
-      if self.ans.is_a?(LR)
-        self.ans.setup_lr(lr_stack)
-        self.ans.ans
+      if self.answer.is_a?(LR)
+        self.answer.setup_lr(lr_stack)
+        self.answer.answer
       else
-        self.ans
+        self.answer
       end
     end
   end
@@ -18,15 +18,15 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
   class LR < Struct.new(:rule, :seed, :head, :next)
     class Error < RuntimeError; end
 
-    def detected?
-      !self.head.nil?
+    def head_rule?(rule)
+      self.head && self.head.rule == rule
     end
 
     def error?
-      detected?
+      !self.head.nil?
     end
 
-    def ans
+    def answer
       raise Error.new('left recursion detected') if seed.nil?
       seed
     end
@@ -48,7 +48,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
     def involved?(rule)
       self.rule == rule || self.involved_rules.include?(rule)
     end
-    def evaluated?(rule)
+    def eval?(rule)
       eval_rules.include?(rule)
     end
   end
@@ -92,35 +92,18 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
       lr = LR.new(rule)
       push_into_lr_stack(lr)
       self.entry = MemoEntry.new lr, self.pos
-      eval_result = eval_rule_body
+      self.entry = eval_rule_body
       pop_lr_stack
-      self.entry.pos = eval_result.pos
-      if lr.detected?
-        lr.seed = eval_result.ans
-        lr_answer
-      else
-        self.entry = eval_result
+      if lr.head_rule?(rule) && !self.entry.error?
+        grow_lr(lr.head)
       end
       self.entry
     end
 
-    def lr_answer
-      h = self.entry.ans.head
-      if h.rule != rule
-        self.entry.ans = self.entry.ans.seed
-      else
-        self.entry.ans = self.entry.ans.seed
-        unless self.entry.error?
-          grow_lr(h)
-        end
-        self.entry
-      end
-    end
-
     def eval_rule_body
       rewind
-      ans = rule.eval_rule_body(source, context)
-      MemoEntry.new(ans, source.pos)
+      answer = rule.eval_rule_body(source, context)
+      MemoEntry.new(answer, source.pos)
     end
 
     def recall
@@ -135,7 +118,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
       
       # allow involved rules to be evaluated, but only once
       # during a seed-growing iteration
-      if self.head.evaluated?(self.rule)
+      if self.head.eval?(self.rule)
         self.head.eval_rules.delete(self.rule)
         self.eval_rule_body_with_lr_support
       end
