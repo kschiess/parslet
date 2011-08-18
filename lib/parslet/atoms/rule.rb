@@ -56,30 +56,33 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
   # Update/fetch parsed entry at a given position in source
   # Eval rule body at a given position in source and cache the result
   class Position < Struct.new(:pos, :source, :context, :rule)
-    def entry=(entry)
-      context.set rule, pos, entry
-    end
+    module Context
+      def entry=(entry)
+        context.set rule, pos, entry
+      end
 
-    def entry
-      context.lookup(rule, pos)
-    end
+      def entry
+        context.lookup(rule, pos)
+      end
 
-    def head
-      context.heads[pos]
-    end
+      def head
+        context.heads[pos]
+      end
 
-    def head=(h)
-      context.heads[pos] = h
-    end
+      def head=(h)
+        context.heads[pos] = h
+      end
 
-    def push_into_lr_stack(lr)
-      lr.next = context.lr_stack
-      context.lr_stack = lr
-    end
+      def push_into_lr_stack(lr)
+        lr.next = context.lr_stack
+        context.lr_stack = lr
+      end
 
-    def pop_lr_stack
-      context.lr_stack = context.lr_stack.next
+      def pop_lr_stack
+        context.lr_stack = context.lr_stack.next
+      end
     end
+    include Context
 
     def apply_rule
       self.recall || self.eval_rule_body_with_lr_support
