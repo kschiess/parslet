@@ -19,35 +19,35 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
   end
 
   class LR < Struct.new(:seed, :rule, :head)
-    def head_rule?(rule)
-      self.head && self.head.rule == rule
+    class Head < Struct.new(:rule, :involved_rules, :eval_rules)
+      def involved?(rule)
+        self.rule == rule || self.involved_rules.include?(rule)
+      end
+
+      def mark_involved(lr)
+        lr.head = self
+        self.involved_rules.push lr.rule
+      end
+
+      def eval?(rule)
+        eval_rules.include?(rule)
+      end
+
+      def exclude_eval_rule!(rule)
+        eval_rules.delete(rule)
+      end
+
+      def reset_eval_rules
+        self.eval_rules = self.involved_rules.dup
+      end
+    end
+
+    def detected?
+      self.head != nil
     end
 
     def ensure_head(&block)
       yield(self.head ||= Head.new(rule, [], []))
-    end
-  end
-
-  class Head < Struct.new(:rule, :involved_rules, :eval_rules)
-    def involved?(rule)
-      self.rule == rule || self.involved_rules.include?(rule)
-    end
-
-    def mark_involved(lr)
-      lr.head = self
-      self.involved_rules.push lr.rule
-    end
-
-    def eval?(rule)
-      eval_rules.include?(rule)
-    end
-
-    def exclude_eval_rule!(rule)
-      eval_rules.delete(rule)
-    end
-
-    def reset_eval_rules
-      self.eval_rules = self.involved_rules.dup
     end
   end
 
@@ -107,7 +107,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
         self.entry = LREntry.new lr, self.pos, context
         yield
         pop_lr_stack
-        if !self.entry.error? && lr.head_rule?(rule)
+        if !self.entry.error? && lr.detected?
           grow_lr(lr.head)
         end
         self.entry
