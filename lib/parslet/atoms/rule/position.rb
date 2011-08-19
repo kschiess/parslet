@@ -36,7 +36,7 @@ class Parslet::Atoms::Rule::Position < Struct.new(:pos, :source, :context, :rule
       self.head != nil
     end
 
-    def setup(lr_stack)
+    def setup_for_re_eval_involved_rules(lr_stack)
       self.head ||= Head.new(rule, [], [])
       lr_stack.top_down do |lr|
         return if lr.head == self.head
@@ -70,12 +70,12 @@ class Parslet::Atoms::Rule::Position < Struct.new(:pos, :source, :context, :rule
 
   include Context
 
-  # Eval rule body with LR supported by
-  # placing a LR flag before eval rule body
-  # and growing LR seed after detected LR
   def apply_rule
     result = recall
     if result.nil?
+      # Eval rule body with LR supported by
+      # placing a LR flag before eval rule body
+      # and growing LR seed after detected LR
       lr = LR.new(fail('left recursion detected'), self.rule, self.pos)
       lr_stack.push(lr)
       self.entry = lr
@@ -86,7 +86,11 @@ class Parslet::Atoms::Rule::Position < Struct.new(:pos, :source, :context, :rule
       end
       result = self.entry
     elsif result.is_a?(LR)
-      result.setup(lr_stack)
+      # Find out all involved lrs in stack
+      # Collect rules of involved lrs
+      # And set head of involved lrs for re-eval
+      # rules in recall process
+      result.setup_for_re_eval_involved_rules(lr_stack)
     end
     source.pos = result.pos
     result.answer
@@ -119,14 +123,10 @@ class Parslet::Atoms::Rule::Position < Struct.new(:pos, :source, :context, :rule
     loop do
       h.reset_eval_rules
       entry = eval_rule_body
-      break if entry.error? || entry.pos <= self.entry.pos
+      break if entry.error? || no_progress?(entry)
       self.entry = entry
     end
     self.head = nil
-  end
-
-  def fail(message)
-    MemoEntry.new(rule.error(source, message), self.pos)
   end
 
   def eval_rule_body
@@ -134,4 +134,13 @@ class Parslet::Atoms::Rule::Position < Struct.new(:pos, :source, :context, :rule
     answer = rule.eval_rule_body(source, context)
     MemoEntry.new(answer, source.pos)
   end
+
+  def no_progress?(entry)
+    entry.pos <= self.entry.pos
+  end
+
+  def fail(message)
+    MemoEntry.new(rule.error(source, message), self.pos)
+  end
+
 end
