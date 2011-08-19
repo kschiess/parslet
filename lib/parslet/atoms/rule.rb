@@ -8,25 +8,19 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
 
   class LREntry < Struct.new(:lr, :pos, :context)
     def answer
-      setup_lr
+      self.lr.setup(context.lr_stack)
       self.lr.seed
-    end
-    def setup_lr
-      self.lr.ensure_head do |head|
-        context.lr_stack.mark_involved_lrs(head)
-      end
     end
   end
 
+  # A LR is info holder for left recursion
+  #   seed: the last left recursion exp parse result
+  #   rule: the rule starting left recursion
+  #   head: when left recursion detected, head holds info to re-eval involved rules
   class LR < Struct.new(:seed, :rule, :head)
     class Head < Struct.new(:rule, :involved_rules, :eval_rules)
       def involved?(rule)
         self.rule == rule || self.involved_rules.include?(rule)
-      end
-
-      def mark_involved(lr)
-        lr.head = self
-        self.involved_rules.push lr.rule
       end
 
       def eval?(rule)
@@ -46,8 +40,12 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
       self.head != nil
     end
 
-    def ensure_head(&block)
-      yield(self.head ||= Head.new(rule, [], []))
+    def setup(lr_stack)
+      self.head ||= Head.new(rule, [], [])
+      lr_stack.select_top { |lr| lr.head != self.head }.each do |lr|
+        lr.head = self.head
+        self.head.involved_rules.push lr.rule
+      end
     end
   end
 
@@ -102,7 +100,7 @@ class Parslet::Atoms::Rule < Parslet::Atoms::Entity
       end
 
       def with_lr_flag
-        lr = LR.new(rule.error(source, 'left recursion detected'), self.rule)
+        lr = LR.new(fail('left recursion detected'), self.rule)
         push_into_lr_stack(lr)
         self.entry = LREntry.new lr, self.pos, context
         yield

@@ -14,12 +14,12 @@ module Parslet::Atoms
         lrs.shift
       end
 
-      def mark_involved_lrs(head)
-        lrs.each do |lr|
-          if lr.head != head
-            head.mark_involved(lr)
+      def select_top(&block)
+        lrs.inject([]) do |r, lr|
+          if block.call(lr)
+            r << lr
           else
-            return
+            return r
           end
         end
       end
