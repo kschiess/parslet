@@ -14,14 +14,8 @@ module Parslet::Atoms
         lrs.shift
       end
 
-      def select_top(&block)
-        lrs.inject([]) do |r, lr|
-          if block.call(lr)
-            r << lr
-          else
-            return r
-          end
-        end
+      def top_down(&block)
+        lrs.each(&block)
       end
     end
 
