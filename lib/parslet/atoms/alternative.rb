@@ -27,8 +27,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   # all here. This reduces the number of objects created.
   #+++
   def |(parslet) # :nodoc:
-    @alternatives << parslet
-    self
+    self.class.new(*@alternatives + [parslet])
   end
   
   def try(source, context) # :nodoc:
