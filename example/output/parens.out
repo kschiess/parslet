@@ -4,5 +4,5 @@
 
           ((((())))): {:l=>"("@0, :m=>{:l=>"("@1, :m=>{:l=>"("@2, :m=>{:l=>"("@3, :m=>{:l=>"("@4, :m=>nil, :r=>")"@5}, :r=>")"@6}, :r=>")"@7}, :r=>")"@8}, :r=>")"@9} (5 parens)
 
-               ((()): Failed to match sequence (l:'(' m:(BALANCED?)) at line 1 char 6.
+               ((()): Failed to match sequence (l:'(' m:(BALANCED?) r:')') at line 1 char 6.
 

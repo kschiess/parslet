@@ -132,9 +132,6 @@ describe Parslet do
     it "should parse 'foobar'" do
       parslet.parse('foobar')
     end
-    it "should return self for chaining" do
-      (parslet >> str('baz')).should == parslet
-    end 
     it "should inspect as ('foo' 'bar')" do
       parslet.inspect.should == "'foo' 'bar'"
     end 
@@ -166,9 +163,6 @@ describe Parslet do
     it "should accept 'bar'" do
       parslet.parse('bar')
     end
-    it "should return self for chaining" do
-      (parslet | str('baz')).should == parslet
-    end 
     it "should inspect as ('foo' / 'bar')" do
       parslet.inspect.should == "'foo' / 'bar'"
     end 

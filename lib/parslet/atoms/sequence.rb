@@ -16,8 +16,7 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   end
   
   def >>(parslet) # :nodoc:
-    @parslets << parslet
-    self
+    self.class.new(*@parslets, parslet)
   end
   
   def try(source, context) # :nodoc:

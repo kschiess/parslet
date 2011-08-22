@@ -6,18 +6,20 @@ describe Parslet::Atoms::Alternative do
   describe '| shortcut' do
     let(:alternative) { str('a') | str('b') }
     
-    context "when chained" do
-      let!(:chained1) { alternative | str('c') }
-      let!(:chained2) { alternative | str('d') }
+    context "when chained with different atoms" do
+      before(:each) { 
+        # Chain something else to the alternative parslet. If it modifies the
+        # parslet atom in place, we'll notice: 
+        
+        alternative | str('d')
+      }
+      let!(:chained) { alternative | str('c') }
+      
       
       it "is side-effect free" do
-        chained1.should parse('c')
-        chained1.should parse('a')
-        chained1.should_not parse('d')
-        
-        chained2.should parse('d')
-        chained2.should_not parse('c')
-        chained2.should parse('a')
+        chained.should parse('c')
+        chained.should parse('a')
+        chained.should_not parse('d')
       end 
     end
   end
