@@ -48,6 +48,9 @@ issues.
 Note that due to Ruby 1.8 internals, Unicode parsing is not supported on that 
 version. 
 
+On Mac OS X Lion, ruby-1.8.7-p352 has been known to segfault. Use
+ruby-1.8.7-p334 for better results.
+
 STATUS 
 
 At version 1.2.1 - See HISTORY.txt for changes.
