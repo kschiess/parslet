@@ -1,7 +1,8 @@
-require "rubygems"
-require "rake/rdoctask"
+require 'rdoc/task'
+require 'sdoc'
+
 require 'rspec/core/rake_task'
-require "rake/gempackagetask"
+require "rubygems/package_task"
 
 desc "Run all tests: Exhaustive."
 RSpec::Core::RakeTask.new
@@ -15,10 +16,8 @@ end
 
 task :default => :spec
 
-require 'sdoc'
-
 # Generate documentation
-Rake::RDocTask.new do |rdoc|
+RDoc::Task.new do |rdoc|
   rdoc.title    = "parslet - construction of parsers made easy"
   rdoc.options << '--line-numbers'
   rdoc.options << '--fmt' << 'shtml' # explictly set shtml generator
@@ -36,7 +35,7 @@ task :gem => :spec
 spec = eval(File.read('parslet.gemspec'))
 
 desc "Generate the gem package."
-Rake::GemPackageTask.new(spec) do |pkg|
+Gem::PackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 

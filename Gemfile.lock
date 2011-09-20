@@ -22,7 +22,7 @@ GEM
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.6.0)
     sanitize (2.0.3)
-      nokogiri (>= 1.4.4, < 1.6)
+      nokogiri (< 1.6, >= 1.4.4)
     sdoc (0.3.11)
       json (>= 1.1.3)
       rdoc (~> 3)
@@ -39,5 +39,6 @@ DEPENDENCIES
   guard
   guard-rspec
   rake
+  rdoc
   rspec
   sdoc

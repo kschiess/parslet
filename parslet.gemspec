@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = 'parslet'
-  s.version = '1.2.1'
+  s.version = '1.2.2'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['Kaspar Schiess']
@@ -20,5 +20,6 @@ Gem::Specification.new do |s|
   
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'flexmock'
+  s.add_development_dependency 'rdoc'
   s.add_development_dependency 'sdoc'
 end
