@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Module: Parslet::Atoms::DSL</title>
+
+  <link rel="stylesheet" href="../../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="module">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../../index.html">Home</a>
+          <a href="../../index.html#classes">Classes</a>
+          <a href="../../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../../lib/parslet/atoms/dsl_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet/atoms/dsl.rb">lib/parslet/atoms/dsl.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-i-3E-3E">#>></a></li>
+          
+          <li><a href="#method-i-absent-3F">#absent?</a></li>
+          
+          <li><a href="#method-i-absnt-3F">#absnt?</a></li>
+          
+          <li><a href="#method-i-as">#as</a></li>
+          
+          <li><a href="#method-i-maybe">#maybe</a></li>
+          
+          <li><a href="#method-i-present-3F">#present?</a></li>
+          
+          <li><a href="#method-i-prsnt-3F">#prsnt?</a></li>
+          
+          <li><a href="#method-i-repeat">#repeat</a></li>
+          
+          <li><a href="#method-i-7C">#|</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../../README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../../Parslet.html">Parslet</a></li>
+        
+          <li><a href="../../Parslet/Atoms.html">Parslet::Atoms</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a></li>
+        
+          <li><a href="../../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a></li>
+        
+          <li><a href="../../Parslet/Atoms/Transform.html">Parslet::Atoms::Transform</a></li>
+        
+          <li><a href="../../Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+        
+          <li><a href="../../Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+        
+          <li><a href="../../Parslet/Expression.html">Parslet::Expression</a></li>
+        
+          <li><a href="../../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a></li>
+        
+          <li><a href="../../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+        
+          <li><a href="../../Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+        
+          <li><a href="../../Parslet/Parser.html">Parslet::Parser</a></li>
+        
+          <li><a href="../../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+        
+          <li><a href="../../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a></li>
+        
+          <li><a href="../../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a></li>
+        
+          <li><a href="../../Parslet/Pattern.html">Parslet::Pattern</a></li>
+        
+          <li><a href="../../Parslet/Slice.html">Parslet::Slice</a></li>
+        
+          <li><a href="../../Parslet/Source.html">Parslet::Source</a></li>
+        
+          <li><a href="../../Parslet/Transform.html">Parslet::Transform</a></li>
+        
+          <li><a href="../../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="module">Parslet::Atoms::DSL</h1>
+
+    <div id="description" class="description">
+      
+<p>A mixin module that defines operations that can be called on any subclass
+of <a href="Base.html">Parslet::Atoms::Base</a>. These operations make
+parslets atoms chainable and  allow combination of parslet atoms to form
+bigger parsers.</p>
+
+<p>Example:</p>
+
+<pre>str('foo') &gt;&gt; str('bar')
+str('f').repeat
+any.absent?               # also called The Epsilon</pre>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="3E-3E-method" class="method-detail ">
+          <a name="method-i-3E-3E"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">&gt;&gt;</span><span
+              class="method-args">(parslet)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Chains two parslet atoms together as a sequence.</p>
+
+<p>Example:</p>
+
+<pre>str('a') &gt;&gt; str('b')</pre>
+            
+
+            
+            <div class="method-source-code" id="3E-3E-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/atoms/dsl.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">&gt;&gt;</span>(<span class="ruby-identifier">parslet</span>)
+  <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Sequence</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">parslet</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- 3E-3E-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- 3E-3E-method -->
+
+      
+        <div id="absent-3F-method" class="method-detail ">
+          <a name="method-i-absent-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">absent?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Tests for absence of a parslet atom in the input stream without consuming
+it.</p>
+
+<p>Example:</p>
+
+<pre># Only proceed the parse if 'a' is absent.
+str('a').absent?</pre>
+            
+
+            
+            <div class="method-source-code" id="absent-3F-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/atoms/dsl.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">absent?</span>
+  <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Lookahead</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-keyword">false</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- absent-3F-source -->
+            
+          </div>
+
+          
+          <div class="aliases">
+            Also aliased as: <a href="DSL.html#method-i-absnt-3F">absnt?</a>
+          </div>
+          
+
+          
+        </div><!-- absent-3F-method -->
+
+      
+        <div id="absnt-3F-method" class="method-detail method-alias">
+          <a name="method-i-absnt-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">absnt?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Alias for absent? that will disappear in 2.0 (deprecated)</p>
+            
+
+            
+          </div>
+
+          
+
+          
+          <div class="aliases">
+            Alias for: <a href="DSL.html#method-i-absent-3F">absent?</a>
+          </div>
+          
+        </div><!-- absnt-3F-method -->
+
+      
+        <div id="as-method" class="method-detail ">
+          <a name="method-i-as"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">as</span><span
+              class="method-args">(name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Marks a parslet atom as important for the tree output. This must be used 
+to achieve meaningful output from the parse method.</p>
+
+<p>Example:</p>
+
+<pre>str('a').as(:b) # will produce {:b =&gt; 'a'}</pre>
+            
+
+            
+            <div class="method-source-code" id="as-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/atoms/dsl.rb, line 95</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">as</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Named</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">name</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- as-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- as-method -->
+
+      
+        <div id="maybe-method" class="method-detail ">
+          <a name="method-i-maybe"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">maybe</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns a new parslet atom that is only maybe present in the input. This is
+synonymous to calling <a href="DSL.html#method-i-repeat">repeat</a>(0,1).
+Generated tree value will be  either nil (if atom is not present in the
+input) or the matched subtree.</p>
+
+<p>Example:</p>
+
+<pre>str('foo').maybe</pre>
+            
+
+            
+            <div class="method-source-code" id="maybe-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/atoms/dsl.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">maybe</span>
+  <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Repetition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-value">:maybe</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- maybe-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- maybe-method -->
+
+      
+        <div id="present-3F-method" class="method-detail ">
+          <a name="method-i-present-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">present?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Tests for presence of a parslet atom in the input stream without consuming
+it.</p>
+
+<p>Example:</p>
+
+<pre># Only proceed the parse if 'a' is present.
+str('a').present?</pre>
+            
+
+            
+            <div class="method-source-code" id="present-3F-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/atoms/dsl.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">present?</span>
+  <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Lookahead</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-keyword">true</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- present-3F-source -->
+            
+          </div>
+
+          
+          <div class="aliases">
+            Also aliased as: <a href="DSL.html#method-i-prsnt-3F">prsnt?</a>
+          </div>
+          
+
+          
+        </div><!-- present-3F-method -->
+
+      
+        <div id="prsnt-3F-method" class="method-detail method-alias">
+          <a name="method-i-prsnt-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">prsnt?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Alias for present? that will disappear in 2.0 (deprecated)</p>
+            
+
+            
+          </div>
+
+          
+
+          
+          <div class="aliases">
+            Alias for: <a href="DSL.html#method-i-present-3F">present?</a>
+          </div>
+          
+        </div><!-- prsnt-3F-method -->
+
+      
+        <div id="repeat-method" class="method-detail ">
+          <a name="method-i-repeat"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">repeat</span><span
+              class="method-args">(min=0, max=nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Construct a new atom that repeats the current atom min times at least and
+at most max times. max can be nil to indicate that no maximum is present.</p>
+
+<p>Example:</p>
+
+<pre># match any number of 'a's
+str('a').repeat     
+
+# match between 1 and 3 'a's
+str('a').repeat(1,3)</pre>
+            
+
+            
+            <div class="method-source-code" id="repeat-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/atoms/dsl.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">repeat</span>(<span class="ruby-identifier">min</span>=<span class="ruby-value">0</span>, <span class="ruby-identifier">max</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Repetition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- repeat-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- repeat-method -->
+
+      
+        <div id="7C-method" class="method-detail ">
+          <a name="method-i-7C"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">|</span><span
+              class="method-args">(parslet)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Chains two parslet atoms together to express alternation. A match will
+always be attempted with the parslet on the left side first. If it doesn’t
+match, the right side will be tried.</p>
+
+<p>Example:</p>
+
+<pre># matches either 'a' OR 'b'
+str('a') | str('b')</pre>
+            
+
+            
+            <div class="method-source-code" id="7C-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/atoms/dsl.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">|</span>(<span class="ruby-identifier">parslet</span>)
+  <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Alternative</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">parslet</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- 7C-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- 7C-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

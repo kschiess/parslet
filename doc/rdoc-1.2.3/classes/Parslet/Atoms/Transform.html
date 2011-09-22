@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Atoms::Transform</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../css/main.css" type="text/css" media="screen" />
+    <script src="../../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Atoms::Transform 
+            
+                <span class="parent">&lt; 
+                    
+                    Object
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../../files/lib/parslet/atoms/transform_rb.html">lib/parslet/atoms/transform.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+A helper class that allows transforming one grammar into another. You can
+use this class as a base class:
+</p>
+<p>
+Example:
+</p>
+<pre>
+  class MyTransform &lt; Parslet::Atoms::Transform
+    def visit_str(str)
+      # mangle string here
+      super(str)
+    end
+  end
+</pre>
+<p>
+Note that all the methods in a <a href="Transform.html">Transform</a> must
+return parser atoms. The quickest way to do so is to call super with your
+own arguments. This will just create the same kind of atom that was just
+visited.
+</p>
+<p>
+In essence, this base class performs what is called an &#8216;identity
+transform&#8217; with one small caveat: It returns a brand new grammar
+composed of brand new parser atoms. This is like a deep clone of your
+grammar.
+</p>
+<p>
+But nothing stops you from doing something that is far from a deep clone.
+You can totally transform the language your grammar accepts. Or maybe turn
+all repetitions into non-greedy ones? Go wild.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>A</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000071">apply</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>V</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000078">visit_alternative</a>,</li>
+                
+                <li><a href="#M000080">visit_entity</a>,</li>
+                
+                <li><a href="#M000079">visit_lookahead</a>,</li>
+                
+                <li><a href="#M000087">visit_named</a>,</li>
+                
+                <li><a href="#M000077">visit_re</a>,</li>
+                
+                <li><a href="#M000088">visit_repetition</a>,</li>
+                
+                <li><a href="#M000076">visit_sequence</a>,</li>
+                
+                <li><a href="#M000072">visit_str</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000071">
+                    
+                    <a name="M000071"></a><b>apply</b>(grammar)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Applies a transformation to a grammar and returns a new grammar that is the
+result of the transform.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  Parslet::Atoms::Transform.new.apply(my_grammar) # =&gt; deep clone of my_grammar
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000071_source')" id="l_M000071_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L34" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000071_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 34</span>
+34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">grammar</span>)
+35:     <span class="ruby-identifier">grammar</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>)
+36:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000078">
+                    
+                    <a name="M000078"></a><b>visit_alternative</b>(parslets)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000078_source')" id="l_M000078_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L50" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000078_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 50</span>
+50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_alternative</span>(<span class="ruby-identifier">parslets</span>)
+51:     <span class="ruby-identifier">parslets</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">inject</span>(<span class="ruby-identifier">parslets</span>[<span class="ruby-value">0</span>]) { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>,<span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span> <span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>) }
+52:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000080">
+                    
+                    <a name="M000080"></a><b>visit_entity</b>(name, block)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000080_source')" id="l_M000080_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L58" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000080_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 58</span>
+58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_entity</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>)
+59:     <span class="ruby-comment cmt"># NOTE: This is kinda tricky. We return a new entity that keeps a reference</span>
+60:     <span class="ruby-comment cmt"># to the transformer around. Once somebody accesses the parslet in that</span>
+61:     <span class="ruby-comment cmt"># entity, the original block will produce the original parslet, and then</span>
+62:     <span class="ruby-comment cmt"># we transform that then and there. Its lazy and futuristic!</span>
+63:     <span class="ruby-identifier">transformer</span> = <span class="ruby-keyword kw">self</span>
+64:     <span class="ruby-identifier">transformed_block</span> = <span class="ruby-identifier">proc</span> { <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-identifier">transformer</span>) }
+65:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Entity</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">transformed_block</span>)
+66:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000079">
+                    
+                    <a name="M000079"></a><b>visit_lookahead</b>(positive, parslet)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000079_source')" id="l_M000079_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L54" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000079_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 54</span>
+54:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_lookahead</span>(<span class="ruby-identifier">positive</span>, <span class="ruby-identifier">parslet</span>)
+55:     <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Lookahead</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">positive</span>, <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>))
+56:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000087">
+                    
+                    <a name="M000087"></a><b>visit_named</b>(name, parslet)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000087_source')" id="l_M000087_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L68" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000087_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 68</span>
+68:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_named</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">parslet</span>)
+69:     <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>).<span class="ruby-identifier">as</span>(<span class="ruby-identifier">name</span>)
+70:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000077">
+                    
+                    <a name="M000077"></a><b>visit_re</b>(match)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000077_source')" id="l_M000077_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L46" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000077_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 46</span>
+46:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_re</span>(<span class="ruby-identifier">match</span>)
+47:     <span class="ruby-constant">Parslet</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">match</span>)
+48:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000088">
+                    
+                    <a name="M000088"></a><b>visit_repetition</b>(min, max, parslet)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000088_source')" id="l_M000088_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L72" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000088_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 72</span>
+72:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_repetition</span>(<span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">parslet</span>)
+73:     <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>).<span class="ruby-identifier">repeat</span>(<span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>)
+74:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000076">
+                    
+                    <a name="M000076"></a><b>visit_sequence</b>(parslets)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000076_source')" id="l_M000076_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L42" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000076_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 42</span>
+42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_sequence</span>(<span class="ruby-identifier">parslets</span>)
+43:     <span class="ruby-identifier">parslets</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">inject</span>(<span class="ruby-identifier">parslets</span>[<span class="ruby-value">0</span>]) { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span>,<span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span> <span class="ruby-operator">&gt;&gt;</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword kw">self</span>) }
+44:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000072">
+                    
+                    <a name="M000072"></a><b>visit_str</b>(str)
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000072_source')" id="l_M000072_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/46525cea2d6e2adc987f7e4d19d438b4dc83086b/lib/parslet/atoms/transform.rb#L38" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000072_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/atoms/transform.rb, line 38</span>
+38:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">visit_str</span>(<span class="ruby-identifier">str</span>)
+39:     <span class="ruby-constant">Parslet</span>.<span class="ruby-identifier">str</span>(<span class="ruby-identifier">str</span>)
+40:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Parslet::Source</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../lib/parslet/source/line_cache_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet/source/line_cache.rb">lib/parslet/source/line_cache.rb</a></li>
+          
+            <li><a href="../lib/parslet/source_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet/source.rb">lib/parslet/source.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link">Object</p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-eof-3F">#eof?</a></li>
+          
+          <li><a href="#method-i-line_and_column">#line_and_column</a></li>
+          
+          <li><a href="#method-i-pos">#pos</a></li>
+          
+          <li><a href="#method-i-pos-3D">#pos=</a></li>
+          
+          <li><a href="#method-i-read">#read</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Parslet.html">Parslet</a></li>
+        
+          <li><a href="../Parslet/Atoms.html">Parslet::Atoms</a></li>
+        
+          <li><a href="../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+        
+          <li><a href="../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a></li>
+        
+          <li><a href="../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a></li>
+        
+          <li><a href="../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a></li>
+        
+          <li><a href="../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a></li>
+        
+          <li><a href="../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a></li>
+        
+          <li><a href="../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a></li>
+        
+          <li><a href="../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a></li>
+        
+          <li><a href="../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a></li>
+        
+          <li><a href="../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a></li>
+        
+          <li><a href="../Parslet/Atoms/Transform.html">Parslet::Atoms::Transform</a></li>
+        
+          <li><a href="../Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+        
+          <li><a href="../Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+        
+          <li><a href="../Parslet/Expression.html">Parslet::Expression</a></li>
+        
+          <li><a href="../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a></li>
+        
+          <li><a href="../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+        
+          <li><a href="../Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+        
+          <li><a href="../Parslet/Parser.html">Parslet::Parser</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a></li>
+        
+          <li><a href="../Parslet/Pattern.html">Parslet::Pattern</a></li>
+        
+          <li><a href="../Parslet/Slice.html">Parslet::Slice</a></li>
+        
+          <li><a href="../Parslet/Source.html">Parslet::Source</a></li>
+        
+          <li><a href="../Parslet/Transform.html">Parslet::Transform</a></li>
+        
+          <li><a href="../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Parslet::Source</h1>
+
+    <div id="description" class="description">
+      
+<p>Wraps the input IO to parslet. The interface defined by this class is 
+smaller than what IO offers, but enhances it with a column and line  method
+for the current position.</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(io)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/source.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">io</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">io</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:to_str</span>
+    <span class="ruby-identifier">io</span> = <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">io</span>)
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-ivar">@io</span> = <span class="ruby-identifier">io</span>
+  <span class="ruby-ivar">@line_cache</span> = <span class="ruby-constant">LineCache</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="eof-3F-method" class="method-detail ">
+          <a name="method-i-eof-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">eof?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="eof-3F-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/source.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">eof?</span>
+  <span class="ruby-ivar">@io</span>.<span class="ruby-identifier">eof?</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- eof-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- eof-3F-method -->
+
+      
+        <div id="line_and_column-method" class="method-detail ">
+          <a name="method-i-line_and_column"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">line_and_column</span><span
+              class="method-args">(position=nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns a &lt;line, column&gt; tuple for the given position. If no position
+is given, line/column information is returned for the current position
+given by <a href="Source.html#method-i-pos">pos</a>.</p>
+            
+
+            
+            <div class="method-source-code" id="line_and_column-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/source.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">line_and_column</span>(<span class="ruby-identifier">position</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@line_cache</span>.<span class="ruby-identifier">line_and_column</span>(<span class="ruby-identifier">position</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pos</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- line_and_column-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- line_and_column-method -->
+
+      
+        <div id="pos-method" class="method-detail ">
+          <a name="method-i-pos"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">pos</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="pos-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/source.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pos</span>
+  <span class="ruby-ivar">@io</span>.<span class="ruby-identifier">pos</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- pos-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- pos-method -->
+
+      
+        <div id="pos-3D-method" class="method-detail ">
+          <a name="method-i-pos-3D"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">pos=</span><span
+              class="method-args">(new_pos)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="pos-3D-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/source.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pos=</span>(<span class="ruby-identifier">new_pos</span>)
+  <span class="ruby-ivar">@io</span>.<span class="ruby-identifier">pos</span> = <span class="ruby-identifier">new_pos</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- pos-3D-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- pos-3D-method -->
+
+      
+        <div id="read-method" class="method-detail ">
+          <a name="method-i-read"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">read</span><span
+              class="method-args">(n)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Reads n chars from the input and returns a Range instance.</p>
+            
+
+            
+            <div class="method-source-code" id="read-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/source.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read</span>(<span class="ruby-identifier">n</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;Cannot read &lt; 1 characters at a time.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">n</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>
+  <span class="ruby-identifier">read_slice</span>(<span class="ruby-identifier">n</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- read-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- read-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

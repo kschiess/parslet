@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Module: Parslet</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="module">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./lib/parslet_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet.rb">lib/parslet.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+
+      
+
+      
+      <!-- Namespace Contents -->
+      <div id="namespace-list-section" class="section">
+        <h3 class="section-header">Namespace</h3>
+        <ul class="link-list">
+          
+          <li><span class="type">MODULE</span> <a href="Parslet/Atoms.html">Parslet::Atoms</a></li>
+          
+          <li><span class="type">MODULE</span> <a href="Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/Expression.html">Parslet::Expression</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/Parser.html">Parslet::Parser</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/Pattern.html">Parslet::Pattern</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/Slice.html">Parslet::Slice</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/Source.html">Parslet::Source</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/Transform.html">Parslet::Transform</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-any">::any</a></li>
+          
+          <li><a href="#method-c-match">::match</a></li>
+          
+          <li><a href="#method-c-sequence">::sequence</a></li>
+          
+          <li><a href="#method-c-simple">::simple</a></li>
+          
+          <li><a href="#method-c-str">::str</a></li>
+          
+          <li><a href="#method-c-subtree">::subtree</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Parslet.html">Parslet</a></li>
+        
+          <li><a href="./Parslet/Atoms.html">Parslet::Atoms</a></li>
+        
+          <li><a href="./Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a></li>
+        
+          <li><a href="./Parslet/Atoms/Base.html">Parslet::Atoms::Base</a></li>
+        
+          <li><a href="./Parslet/Atoms/Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+        
+          <li><a href="./Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+        
+          <li><a href="./Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+        
+          <li><a href="./Parslet/Atoms/Context.html">Parslet::Atoms::Context</a></li>
+        
+          <li><a href="./Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a></li>
+        
+          <li><a href="./Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a></li>
+        
+          <li><a href="./Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a></li>
+        
+          <li><a href="./Parslet/Atoms/Named.html">Parslet::Atoms::Named</a></li>
+        
+          <li><a href="./Parslet/Atoms/Re.html">Parslet::Atoms::Re</a></li>
+        
+          <li><a href="./Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a></li>
+        
+          <li><a href="./Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a></li>
+        
+          <li><a href="./Parslet/Atoms/Str.html">Parslet::Atoms::Str</a></li>
+        
+          <li><a href="./Parslet/Atoms/Transform.html">Parslet::Atoms::Transform</a></li>
+        
+          <li><a href="./Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+        
+          <li><a href="./Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+        
+          <li><a href="./Parslet/Expression.html">Parslet::Expression</a></li>
+        
+          <li><a href="./Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a></li>
+        
+          <li><a href="./Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+        
+          <li><a href="./Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+        
+          <li><a href="./Parslet/Parser.html">Parslet::Parser</a></li>
+        
+          <li><a href="./Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+        
+          <li><a href="./Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a></li>
+        
+          <li><a href="./Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a></li>
+        
+          <li><a href="./Parslet/Pattern.html">Parslet::Pattern</a></li>
+        
+          <li><a href="./Parslet/Slice.html">Parslet::Slice</a></li>
+        
+          <li><a href="./Parslet/Source.html">Parslet::Source</a></li>
+        
+          <li><a href="./Parslet/Transform.html">Parslet::Transform</a></li>
+        
+          <li><a href="./Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="module">Parslet</h1>
+
+    <div id="description" class="description">
+      
+<p>A simple parser generator library. Typical usage would look like this:</p>
+
+<pre>require 'parslet'
+
+class MyParser &lt; Parslet::Parser
+  rule(:a) { str('a').repeat }
+  root(:a)        
+end
+
+pp MyParser.new.parse('aaaa')   # =&gt; 'aaaa'@0
+pp MyParser.new.parse('bbbb')   # =&gt; Parslet::Atoms::ParseFailed: 
+                                #    Don't know what to do with bbbb at line 1 char 1.</pre>
+
+<p>The simple DSL allows you to define grammars in PEG-style. This kind of
+grammar construction does away with the ambiguities that usually comes with
+parsers; instead, it allows you to construct grammars that are easier to
+debug, since less magic is involved.</p>
+
+<p><a href="Parslet.html">Parslet</a> is typically used in stages:</p>
+<ul><li>
+<p>Parsing the input string; this yields an intermediary tree, see <a
+href="Parslet.html#method-c-any">Parslet.any</a>, <a
+href="Parslet.html#method-c-match">Parslet.match</a>, <a
+href="Parslet.html#method-c-str">Parslet.str</a>, <a
+href="Parslet/ClassMethods.html#method-i-rule">Parslet::ClassMethods#rule</a>
+and Parslet::ClassMethods#root.</p>
+</li><li>
+<p>Transformation of the tree into something useful to you, see <a
+href="Parslet/Transform.html">Parslet::Transform</a>, <a
+href="Parslet.html#method-c-simple">Parslet.simple</a>, <a
+href="Parslet.html#method-c-sequence">Parslet.sequence</a> and <a
+href="Parslet.html#method-c-subtree">Parslet.subtree</a>.</p>
+</li></ul>
+
+<p>The first stage is traditionally intermingled with the second stage; output
+from the second stage is usually called the ‘Abstract Syntax Tree’ or AST.</p>
+
+<p>The stages are completely decoupled; You can change your grammar around and
+use the second stage to isolate the rest of your code from the changes
+you’ve effected.</p>
+
+<h2>Further reading</h2>
+
+<p>All parslet atoms are subclasses of <a
+href="Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>. You might want to
+look at all of those: <a
+href="Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>, <a
+href="Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>, <a
+href="Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>, <a
+href="Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>, <a
+href="Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>.</p>
+
+<h2>When things go wrong</h2>
+
+<p>A parse that fails will raise <a
+href="Parslet/ParseFailed.html">Parslet::ParseFailed</a>. A detailed
+explanation of what went wrong can be obtained from the parslet involved or
+the root of the parser instance.</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="any-method" class="method-detail ">
+          <a name="method-c-any"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">any</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns an atom matching any character. It acts like the ‘.’ (dot)
+character in regular expressions.</p>
+
+<p>Example:</p>
+
+<pre>any.parse('a')    # =&gt; 'a'</pre>
+            
+
+            
+            <div class="method-source-code" id="any-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet.rb, line 165</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">any</span>
+  <span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Re</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'.'</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- any-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- any-method -->
+
+      
+        <div id="match-method" class="method-detail ">
+          <a name="method-c-match"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">match</span><span
+              class="method-args">(str=nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns an atom matching a character class. All regular expressions can be
+used, as long as they match only a single character at a time.</p>
+
+<p>Example:</p>
+
+<pre>match('[ab]')     # will match either 'a' or 'b'
+match('[\n\s]')   # will match newlines and spaces</pre>
+
+<p>There is also another (convenience) form of this method:</p>
+
+<pre>match['a-z']      # synonymous to match('[a-z]')
+match['\n']       # synonymous to match('[\n]')</pre>
+            
+
+            
+            <div class="method-source-code" id="match-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">match</span>(<span class="ruby-identifier">str</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">DelayedMatchConstructor</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">str</span>
+  
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Re</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- match-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- match-method -->
+
+      
+        <div id="sequence-method" class="method-detail ">
+          <a name="method-c-sequence"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">sequence</span><span
+              class="method-args">(symbol)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns a placeholder for a tree transformation that will only match a 
+sequence of elements. The <tt>symbol</tt> you specify will be the key for
+the  matched sequence in the returned dictionary.</p>
+
+<p>Example:</p>
+
+<pre># This would match a body element that contains several declarations.
+{ :body =&gt; sequence(:declarations) }</pre>
+
+<p>The above example would match :body =&gt; [‘a’, ‘b’], but not :body =&gt;
+‘a’.</p>
+            
+
+            
+            <div class="method-source-code" id="sequence-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet.rb, line 193</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sequence</span>(<span class="ruby-identifier">symbol</span>)
+  <span class="ruby-constant">Pattern</span><span class="ruby-operator">::</span><span class="ruby-constant">SequenceBind</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">symbol</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- sequence-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- sequence-method -->
+
+      
+        <div id="simple-method" class="method-detail ">
+          <a name="method-c-simple"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">simple</span><span
+              class="method-args">(symbol)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns a placeholder for a tree transformation that will only match 
+simple elements. This matches everything that sequence doesn’t match.</p>
+
+<p>Example:</p>
+
+<pre># Matches a single header. 
+{ :header =&gt; simple(:header) }</pre>
+            
+
+            
+            <div class="method-source-code" id="simple-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet.rb, line 206</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">simple</span>(<span class="ruby-identifier">symbol</span>)
+  <span class="ruby-constant">Pattern</span><span class="ruby-operator">::</span><span class="ruby-constant">SimpleBind</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">symbol</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- simple-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- simple-method -->
+
+      
+        <div id="str-method" class="method-detail ">
+          <a name="method-c-str"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">str</span><span
+              class="method-args">(str)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns an atom matching the <tt>str</tt> given.</p>
+
+<p>Example:</p>
+
+<pre>str('class')      # will match 'class'</pre>
+            
+
+            
+            <div class="method-source-code" id="str-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet.rb, line 153</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">str</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Str</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- str-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- str-method -->
+
+      
+        <div id="subtree-method" class="method-detail ">
+          <a name="method-c-subtree"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">subtree</span><span
+              class="method-args">(symbol)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns a placeholder for tree transformation patterns that will match  any
+kind of subtree.</p>
+
+<p>Example:</p>
+
+<pre>{ :expression =&gt; subtree(:exp) }</pre>
+            
+
+            
+            <div class="method-source-code" id="subtree-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet.rb, line 218</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subtree</span>(<span class="ruby-identifier">symbol</span>)
+  <span class="ruby-constant">Pattern</span><span class="ruby-operator">::</span><span class="ruby-constant">SubtreeBind</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">symbol</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- subtree-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- subtree-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

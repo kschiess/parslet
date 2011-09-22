@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>File: slice.rb [parslet - construction of parsers made easy]</title>
+
+  <link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet" />
+
+  <script src="../../js/jquery.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../../js/thickbox-compressed.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../../js/quicksearch.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../../js/darkfish.js" type="text/javascript"
+    charset="utf-8"></script>
+</head>
+
+<body class="file file-popup">
+  <div id="metadata">
+    <dl>
+      <dt class="modified-date">Last Modified</dt>
+      <dd class="modified-date">2011-06-16 13:39:07 +0200</dd>
+
+      
+      <dt class="requires">Requires</dt>
+      <dd class="requires">
+        <ul>
+        
+        </ul>
+      </dd>
+      
+
+      
+    </dl>
+  </div>
+
+  <div id="documentation">
+    
+    <div class="description">
+      <h2>Description</h2>
+      
+<p>A slice is a small part from the parse input. A slice mainly behaves like
+any other string, except that it remembers where it came from (offset in
+original input).</p>
+
+<h2>Extracting line and column</h2>
+
+<p>Using the line_and_column method, you can extract the line and column in
+the original input where this slice starts.</p>
+
+<p>Example:</p>
+
+<pre>slice.line_and_column # =&gt; [1, 13]
+slice.offset          # =&gt; 12</pre>
+
+<h2>Likeness to strings</h2>
+
+<p><a href="../../Parslet/Slice.html">Parslet::Slice</a> behaves in many ways
+like a Ruby String. This likeness however is not complete - many of the
+myriad of operations String supports are not yet in Slice. You can always
+extract the internal string instance by calling to_s.</p>
+
+<p>These omissions are somewhat intentional. Rather than maintaining a full
+delegation, we opt for a partial emulation that gets the job done.</p>
+
+    </div>
+    
+  </div>
+</body>
+</html>
+

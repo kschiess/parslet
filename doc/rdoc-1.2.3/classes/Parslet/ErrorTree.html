@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::ErrorTree</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen" />
+    <script src="../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::ErrorTree 
+            
+                <span class="parent">&lt; 
+                    
+                    Object
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../files/lib/parslet/error_tree_rb.html">lib/parslet/error_tree.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+A tree structure that contains parse error messages. This can be used to
+give the user a detailed report on what went wrong during a parse.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>A</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000096">ascii_tree</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>C</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000095">cause</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>N</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000094">nodes</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>T</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000105">to_s</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="sectiontitle">Attributes</div>
+    <table border='0' cellpadding='5'>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>parslet</td>
+            <td class='attr-desc'><p>
+The parslet that caused the error stored here.
+</p></td>
+        </tr>
+        
+        <tr valign='top'>
+            <td class='attr-rw'>
+                [R]
+            </td>
+            <td class='attr-name'>children</td>
+            <td class='attr-desc'><p>
+All errors that were encountered when parsing part of this
+<tt>parslet</tt>.
+</p></td>
+        </tr>
+        
+    </table>
+    
+
+    
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000096">
+                    
+                    <a name="M000096"></a><b>ascii_tree</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Returns an ascii tree representation of the causes of this node and its
+children.
+</p>
+
+                </div>
+                
+                
+                <div class="aka">
+                    This method is also aliased as
+                    
+                    <a href="ErrorTree.html#M000105">to_s</a>
+                    
+                </div>
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000096_source')" id="l_M000096_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/26e8db21515ff0bcc35b634b6da26002ae0d2c4f/lib/parslet/error_tree.rb#L27" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000096_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/error_tree.rb, line 27</span>
+27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ascii_tree</span>
+28:     <span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">tap</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">io</span><span class="ruby-operator">|</span> 
+29:       <span class="ruby-identifier">recursive_ascii_tree</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">io</span>, [<span class="ruby-keyword kw">true</span>]) }.
+30:       <span class="ruby-identifier">string</span>
+31:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000095">
+                    
+                    <a name="M000095"></a><b>cause</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000095_source')" id="l_M000095_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/26e8db21515ff0bcc35b634b6da26002ae0d2c4f/lib/parslet/error_tree.rb#L20" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000095_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/error_tree.rb, line 20</span>
+20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cause</span>
+21:     <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">cause</span> <span class="ruby-operator">||</span> <span class="ruby-node">&quot;Unknown error in #{parslet.inspect}&quot;</span>
+22:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000094">
+                    
+                    <a name="M000094"></a><b>nodes</b>()
+                    
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000094_source')" id="l_M000094_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/26e8db21515ff0bcc35b634b6da26002ae0d2c4f/lib/parslet/error_tree.rb#L16" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000094_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/error_tree.rb, line 16</span>
+16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">nodes</span>
+17:     <span class="ruby-value">1</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">children</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">sum</span>, <span class="ruby-identifier">node</span><span class="ruby-operator">|</span> <span class="ruby-identifier">sum</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">nodes</span> }
+18:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000105">
+                    
+                    <a name="M000105"></a><b>to_s</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Alias for <a href="ErrorTree.html#M000096">ascii_tree</a>
+</p>
+
+                </div>
+                
+                
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

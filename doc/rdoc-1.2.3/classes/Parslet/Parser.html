@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Parslet::Parser</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen" />
+    <script src="../../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            <span class="type">Class</span> 
+            Parslet::Parser 
+            
+                <span class="parent">&lt; 
+                    
+                    <a href="Atoms/Base.html">Parslet::Atoms::Base</a>
+                    
+                </span>
+            
+        </h1>
+        <ul class="files">
+            
+            <li><a href="../../files/lib/parslet/export_rb.html">lib/parslet/export.rb</a></li>
+            
+            <li><a href="../../files/lib/parslet/parser_rb.html">lib/parslet/parser.rb</a></li>
+            
+        </ul>
+    </div>
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+The base class for all your parsers. Use as follows:
+</p>
+<pre>
+  require 'parslet'
+
+  class MyParser &lt; Parslet::Parser
+    rule(:a) { str('a').repeat }
+    root(:a)
+  end
+
+  pp MyParser.new.parse('aaaa')   # =&gt; 'aaaa'
+  pp MyParser.new.parse('bbbb')   # =&gt; Parslet::Atoms::ParseFailed:
+                                  #    Don't know what to do with bbbb at line 1 char 1.
+</pre>
+<p>
+<a href="Parser.html">Parslet::Parser</a> is also a grammar atom. This
+means that you can mix full fledged parsers freely with small parts of a
+different parser.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  class ParserA &lt; Parslet::Parser
+    root :aaa
+    rule(:aaa) { str('a').repeat(3,3) }
+  end
+  class ParserB &lt; Parslet::Parser
+    root :expression
+    rule(:expression) { str('b') &gt;&gt; ParserA.new &gt;&gt; str('b') }
+  end
+</pre>
+<p>
+In the above example, ParserB would parse something like
+&#8216;baaab&#8217;.
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+    <div class="sectiontitle">Methods</div>
+    <dl class="methods">
+    
+        <dt>R</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000114">root</a></li>
+                
+            </ul>
+        </dd>
+    
+        <dt>T</dt>
+        <dd>
+            <ul>
+                
+                <li><a href="#M000108">to_citrus</a>,</li>
+                
+                <li><a href="#M000109">to_treetop</a></li>
+                
+            </ul>
+        </dd>
+    
+    </dl>
+    
+
+    
+    <div class="sectiontitle">Included Modules</div>
+    <ul>
+        
+        <li>
+            
+            <a href="../Parslet.html">Parslet</a>
+            
+            START:includes
+        </li>
+        
+    </ul>
+    
+
+    
+
+    
+    <div class="sectiontitle">Classes and Modules</div>
+    <ul>
+        
+        <li><span class="type">MODULE</span> <a href="Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+        
+        <li><span class="type">CLASS</span> <a href="Parser/PrettyPrinter.html">Parslet::Parser::PrettyPrinter</a></li>
+        
+    </ul>
+    
+
+    
+
+    
+
+    
+            <div class="sectiontitle">Class Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000114">
+                    
+                    <a name="M000114"></a><b>root</b>(name)
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Define the parsers <a href="Parser.html#M000114">root</a> function. This is
+the place where you start parsing; if you have a rule for
+&#8216;file&#8217; that describes what should be in a file, this would be
+your root declaration:
+</p>
+<pre>
+  class Parser
+    root :file
+    rule(:file) { ... }
+  end
+</pre>
+<p>
+<a href="Parser.html#M000114">root</a> declares a &#8216;parse&#8217;
+function that works just like the parse function that you can call on a
+simple parslet, taking a string as input and producing parse output.
+</p>
+<p>
+In a way, <a href="Parser.html#M000114">root</a> is a shorthand for:
+</p>
+<pre>
+  def parse(str)
+    your_parser_root.parse(str)
+  end
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000114_source')" id="l_M000114_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/725a5843bb424f90735998c3d021b2a59f2d5d64/lib/parslet/parser.rb#L53" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000114_source" class="dyn-source">
+                        <pre>    <span class="ruby-comment cmt"># File lib/parslet/parser.rb, line 53</span>
+53:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">root</span>(<span class="ruby-identifier">name</span>)
+54:       <span class="ruby-identifier">define_method</span>(<span class="ruby-identifier">:root</span>) <span class="ruby-keyword kw">do</span>
+55:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">name</span>)
+56:       <span class="ruby-keyword kw">end</span>
+57:     <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="sectiontitle">Instance Public methods</div>
+            
+            <div class="method">
+                <div class="title" id="M000108">
+                    
+                    <a name="M000108"></a><b>to_citrus</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Exports the current parser instance as a string in the Citrus dialect.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  require 'parslet/export'
+  class MyParser &lt; Parslet::Parser
+    root(:expression)
+    rule(:expression) { str('foo') }
+  end
+
+  MyParser.new.to_citrus # =&gt; a citrus grammar as a string
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000108_source')" id="l_M000108_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L140" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000108_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 140</span>
+140:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_citrus</span>
+141:     <span class="ruby-constant">PrettyPrinter</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Visitors</span><span class="ruby-operator">::</span><span class="ruby-constant">Citrus</span>).
+142:       <span class="ruby-identifier">pretty_print</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">root</span>)
+143:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="method">
+                <div class="title" id="M000109">
+                    
+                    <a name="M000109"></a><b>to_treetop</b>()
+                    
+                </div>
+                
+                <div class="description">
+                  <p>
+Exports the current parser instance as a string in the Treetop dialect.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  require 'parslet/export'
+  class MyParser &lt; Parslet::Parser
+    root(:expression)
+    rule(:expression) { str('foo') }
+  end
+
+  MyParser.new.to_treetop # =&gt; a treetop grammar as a string
+</pre>
+
+                </div>
+                
+                
+                
+                
+                <div class="sourcecode">
+                    <p class="source-link">
+                        Source: <a href="javascript:toggleSource('M000109_source')" id="l_M000109_source">show</a>
+                        
+                        | <a href="http://github.com/kschiess/parslet/blob/b3259a438aaad810ce1f150eb9a97541b06e06cf/lib/parslet/export.rb#L157" target="_blank" class="github_url">on GitHub</a>
+                        
+                    </p>
+                    <div id="M000109_source" class="dyn-source">
+                        <pre>     <span class="ruby-comment cmt"># File lib/parslet/export.rb, line 157</span>
+157:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_treetop</span>
+158:     <span class="ruby-constant">PrettyPrinter</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Visitors</span><span class="ruby-operator">::</span><span class="ruby-constant">Treetop</span>).
+159:       <span class="ruby-identifier">pretty_print</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">root</span>)
+160:   <span class="ruby-keyword kw">end</span></pre>
+                    </div>
+                </div>
+                
+            </div>
+            
+</div>
+    </div>
+  </body>
+</html>    

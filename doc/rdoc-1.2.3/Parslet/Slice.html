@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Parslet::Slice</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../lib/parslet/slice_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet/slice.rb">lib/parslet/slice.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link">Object</p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-2B">#+</a></li>
+          
+          <li><a href="#method-i-3D-3D">#==</a></li>
+          
+          <li><a href="#method-i-inspect">#inspect</a></li>
+          
+          <li><a href="#method-i-line_and_column">#line_and_column</a></li>
+          
+          <li><a href="#method-i-match">#match</a></li>
+          
+          <li><a href="#method-i-size">#size</a></li>
+          
+          <li><a href="#method-i-to_f">#to_f</a></li>
+          
+          <li><a href="#method-i-to_i">#to_i</a></li>
+          
+          <li><a href="#method-i-to_int">#to_int</a></li>
+          
+          <li><a href="#method-i-to_s">#to_s</a></li>
+          
+          <li><a href="#method-i-to_slice">#to_slice</a></li>
+          
+          <li><a href="#method-i-to_str">#to_str</a></li>
+          
+          <li><a href="#method-i-to_sym">#to_sym</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Parslet.html">Parslet</a></li>
+        
+          <li><a href="../Parslet/Atoms.html">Parslet::Atoms</a></li>
+        
+          <li><a href="../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+        
+          <li><a href="../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a></li>
+        
+          <li><a href="../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a></li>
+        
+          <li><a href="../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a></li>
+        
+          <li><a href="../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a></li>
+        
+          <li><a href="../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a></li>
+        
+          <li><a href="../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a></li>
+        
+          <li><a href="../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a></li>
+        
+          <li><a href="../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a></li>
+        
+          <li><a href="../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a></li>
+        
+          <li><a href="../Parslet/Atoms/Transform.html">Parslet::Atoms::Transform</a></li>
+        
+          <li><a href="../Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+        
+          <li><a href="../Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+        
+          <li><a href="../Parslet/Expression.html">Parslet::Expression</a></li>
+        
+          <li><a href="../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a></li>
+        
+          <li><a href="../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+        
+          <li><a href="../Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+        
+          <li><a href="../Parslet/Parser.html">Parslet::Parser</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a></li>
+        
+          <li><a href="../Parslet/Pattern.html">Parslet::Pattern</a></li>
+        
+          <li><a href="../Parslet/Slice.html">Parslet::Slice</a></li>
+        
+          <li><a href="../Parslet/Source.html">Parslet::Source</a></li>
+        
+          <li><a href="../Parslet/Transform.html">Parslet::Transform</a></li>
+        
+          <li><a href="../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Parslet::Slice</h1>
+
+    <div id="description" class="description">
+      
+<p>A slice is a small part from the parse input. A slice mainly behaves like
+any other string, except that it remembers where it came from (offset in
+original input).</p>
+
+<h2>Extracting line and column</h2>
+
+<p>Using the <a href="Slice.html#method-i-line_and_column">line_and_column</a>
+method, you can extract the line and column in the original input where
+this slice starts.</p>
+
+<p>Example:</p>
+
+<pre>slice.line_and_column # =&gt; [1, 13]
+slice.offset          # =&gt; 12</pre>
+
+<h2>Likeness to strings</h2>
+
+<p><a href="Slice.html">Parslet::Slice</a> behaves in many ways like a Ruby
+String. This likeness however is not complete - many of the myriad of
+operations String supports are not yet in <a href="Slice.html">Slice</a>.
+You can always extract the internal string instance by calling <a
+href="Slice.html#method-i-to_s">to_s</a>.</p>
+
+<p>These omissions are somewhat intentional. Rather than maintaining a full
+delegation, we opt for a partial emulation that gets the job done.</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="line_cache-attribute-method" class="method-detail">
+          <a name="line_cache"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">line_cache</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="offset-attribute-method" class="method-detail">
+          <a name="offset"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">offset</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="str-attribute-method" class="method-detail">
+          <a name="str"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">str</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(string, offset, line_cache=nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Construct a slice using a string, an offset and an optional line cache. 
+The line cache should be able to answer to the <a
+href="Slice.html#method-i-line_and_column">line_and_column</a> message.</p>
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">string</span>, <span class="ruby-identifier">offset</span>, <span class="ruby-identifier">line_cache</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@str</span>, <span class="ruby-ivar">@offset</span> = <span class="ruby-identifier">string</span>, <span class="ruby-identifier">offset</span>
+  <span class="ruby-ivar">@line_cache</span> = <span class="ruby-identifier">line_cache</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="2B-method" class="method-detail ">
+          <a name="method-i-2B"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">+</span><span
+              class="method-args">(other)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Concatenate two slices; it is assumed that the second slice begins  where
+the first one ends. The offset of the resulting slice is the same as the
+one of this slice.</p>
+            
+
+            
+            <div class="method-source-code" id="2B-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">+</span>(<span class="ruby-identifier">other</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">str</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">offset</span>, <span class="ruby-identifier">line_cache</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- 2B-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- 2B-method -->
+
+      
+        <div id="3D-3D-method" class="method-detail ">
+          <a name="method-i-3D-3D"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">==</span><span
+              class="method-args">(other)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Compares slices to other slices or strings.</p>
+            
+
+            
+            <div class="method-source-code" id="3D-3D-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">other</span>
+  <span class="ruby-identifier">str</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">other</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- 3D-3D-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- 3D-3D-method -->
+
+      
+        <div id="inspect-method" class="method-detail ">
+          <a name="method-i-inspect"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">inspect</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Prints the slice as <tt>&quot;string&quot;@offset</tt>.</p>
+            
+
+            
+            <div class="method-source-code" id="inspect-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">inspect</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">inspect</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;@#{offset}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- inspect-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- inspect-method -->
+
+      
+        <div id="line_and_column-method" class="method-detail ">
+          <a name="method-i-line_and_column"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">line_and_column</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns a &lt;line, column&gt; tuple referring to the original input.</p>
+            
+
+            
+            <div class="method-source-code" id="line_and_column-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">line_and_column</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;No line cache was given, cannot infer line and column.&quot;</span>        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">line_cache</span>
+
+  <span class="ruby-identifier">line_cache</span>.<span class="ruby-identifier">line_and_column</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">offset</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- line_and_column-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- line_and_column-method -->
+
+      
+        <div id="match-method" class="method-detail ">
+          <a name="method-i-match"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">match</span><span
+              class="method-args">(regexp)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Match regular expressions.</p>
+            
+
+            
+            <div class="method-source-code" id="match-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">match</span>(<span class="ruby-identifier">regexp</span>)
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">regexp</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- match-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- match-method -->
+
+      
+        <div id="size-method" class="method-detail ">
+          <a name="method-i-size"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">size</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns the slices size in characters.</p>
+            
+
+            
+            <div class="method-source-code" id="size-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 51</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">size</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">size</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- size-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- size-method -->
+
+      
+        <div id="to_f-method" class="method-detail ">
+          <a name="method-i-to_f"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_f</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="to_f-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_f</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">to_f</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_f-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_f-method -->
+
+      
+        <div id="to_i-method" class="method-detail ">
+          <a name="method-i-to_i"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_i</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="to_i-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 88</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_i-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_i-method -->
+
+      
+        <div id="to_int-method" class="method-detail ">
+          <a name="method-i-to_int"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_int</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="to_int-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_int</span>
+  <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_int-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_int-method -->
+
+      
+        <div id="to_s-method" class="method-detail method-alias">
+          <a name="method-i-to_s"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_s</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+          </div>
+
+          
+
+          
+          <div class="aliases">
+            Alias for: <a href="Slice.html#method-i-to_str">to_str</a>
+          </div>
+          
+        </div><!-- to_s-method -->
+
+      
+        <div id="to_slice-method" class="method-detail ">
+          <a name="method-i-to_slice"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_slice</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="to_slice-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 79</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_slice</span>
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_slice-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_slice-method -->
+
+      
+        <div id="to_str-method" class="method-detail ">
+          <a name="method-i-to_str"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_str</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Conversion operators —————————————————–</p>
+            
+
+            
+            <div class="method-source-code" id="to_str-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_str</span>
+  <span class="ruby-identifier">str</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_str-source -->
+            
+          </div>
+
+          
+          <div class="aliases">
+            Also aliased as: <a href="Slice.html#method-i-to_s">to_s</a>
+          </div>
+          
+
+          
+        </div><!-- to_str-method -->
+
+      
+        <div id="to_sym-method" class="method-detail ">
+          <a name="method-i-to_sym"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_sym</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="to_sym-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/slice.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_sym</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">to_sym</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_sym-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_sym-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

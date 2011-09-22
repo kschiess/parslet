@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>parslet - construction of parsers made easy</title>
+
+  <link type="text/css" media="screen" href="rdoc.css" rel="stylesheet" />
+
+  <script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body class="indexpage">
+
+  
+  <h1>parslet - construction of parsers made easy</h1>
+
+  
+  <div id="main">
+    
+<p>INTRODUCTION</p>
+
+<p><a href="Parslet.html">Parslet</a> makes developing complex parsers easy.
+It does so by</p>
+<ul><li>
+<p>providing the best error reporting possible</p>
+</li><li>
+<p>not generating reams of code for you to debug</p>
+</li></ul>
+
+<p><a href="Parslet.html">Parslet</a> takes the long way around to make your
+job easier. It allows for incremental language construction. Often, you
+start out small, implementing the atoms of your language first;
+<em>parslet</em> takes pride in making this possible.</p>
+
+<p>Eager to try this out? Please see the associated web site: <a
+href="http://kschiess.github.com/parslet">kschiess.github.com/parslet</a></p>
+
+<p>SYNOPSIS</p>
+
+<pre>require 'parslet'
+include Parslet
+
+# Constructs a parser using a Parser Expression Grammar like DSL: 
+parser =  str('&quot;') &gt;&gt; 
+          (
+            str('\\') &gt;&gt; any |
+            str('&quot;').absnt? &gt;&gt; any
+          ).repeat.as(:string) &gt;&gt; 
+          str('&quot;')
+
+# Parse the string and capture parts of the interpretation (:string above)        
+tree = parser.parse('&quot;This is a \\&quot;String\\&quot; in which you can escape stuff&quot;')
+
+tree # =&gt; {:string=&gt;&quot;This is a \\\&quot;String\\\&quot; in which you can escape stuff&quot;}
+
+# Here's how you can grab results from that tree:
+
+transform = Parslet::Transform.new do
+  rule(:string =&gt; simple(:x)) { 
+    puts &quot;String contents: #{x}&quot; }
+end
+transform.apply(tree)</pre>
+
+<p>COMPATIBILITY</p>
+
+<p>This library should work with most rubies. I’ve tested it with MRI 1.8 
+(except 1.8.6), 1.9, rbx-head, jruby. Please report as a bug if you
+encounter  issues.</p>
+
+<p>Note that due to Ruby 1.8 internals, Unicode parsing is not supported on
+that  version.</p>
+
+<p>On Mac OS X Lion, ruby-1.8.7-p352 has been known to segfault. Use
+ruby-1.8.7-p334 for better results.</p>
+
+<p>STATUS</p>
+
+<p>At version 1.2.3 - See HISTORY.txt for changes.</p>
+
+<p>© 2010 Kaspar Schiess</p>
+
+  </div>
+  
+
+  
+  
+  <h2>Files</h2>
+  <ul>
+    
+      <li class="file"><a href="README.html">README</a></li>
+    
+  </ul>
+  
+
+  <h2 id="classes">Classes/Modules</h2>
+  <ul>
+    
+    <li class="module"><a href="Parslet.html">Parslet</a></li>
+    
+    <li class="module"><a href="Parslet/Atoms.html">Parslet::Atoms</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Base.html">Parslet::Atoms::Base</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Context.html">Parslet::Atoms::Context</a></li>
+    
+    <li class="module"><a href="Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Named.html">Parslet::Atoms::Named</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Re.html">Parslet::Atoms::Re</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Str.html">Parslet::Atoms::Str</a></li>
+    
+    <li class="class"><a href="Parslet/Atoms/Transform.html">Parslet::Atoms::Transform</a></li>
+    
+    <li class="module"><a href="Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+    
+    <li class="class"><a href="Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+    
+    <li class="class"><a href="Parslet/Expression.html">Parslet::Expression</a></li>
+    
+    <li class="class"><a href="Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a></li>
+    
+    <li class="class"><a href="Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+    
+    <li class="class"><a href="Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+    
+    <li class="class"><a href="Parslet/Parser.html">Parslet::Parser</a></li>
+    
+    <li class="module"><a href="Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+    
+    <li class="class"><a href="Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a></li>
+    
+    <li class="class"><a href="Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a></li>
+    
+    <li class="class"><a href="Parslet/Pattern.html">Parslet::Pattern</a></li>
+    
+    <li class="class"><a href="Parslet/Slice.html">Parslet::Slice</a></li>
+    
+    <li class="class"><a href="Parslet/Source.html">Parslet::Source</a></li>
+    
+    <li class="class"><a href="Parslet/Transform.html">Parslet::Transform</a></li>
+    
+    <li class="class"><a href="Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+    
+  </ul>
+
+  <h2 id="methods">Methods</h2>
+  <ul>
+    
+      <li><a href="Parslet.html#method-c-any">::any &mdash; Parslet</a></li>
+    
+      <li><a href="Parslet.html#method-c-match">::match &mdash; Parslet</a></li>
+    
+      <li><a href="Parslet/Atoms/Str.html#method-c-new">::new &mdash; Parslet::Atoms::Str</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-c-new">::new &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Source.html#method-c-new">::new &mdash; Parslet::Source</a></li>
+    
+      <li><a href="Parslet/Pattern.html#method-c-new">::new &mdash; Parslet::Pattern</a></li>
+    
+      <li><a href="Parslet/Atoms/Sequence.html#method-c-new">::new &mdash; Parslet::Atoms::Sequence</a></li>
+    
+      <li><a href="Parslet/Atoms/Repetition.html#method-c-new">::new &mdash; Parslet::Atoms::Repetition</a></li>
+    
+      <li><a href="Parslet/Atoms/Context.html#method-c-new">::new &mdash; Parslet::Atoms::Context</a></li>
+    
+      <li><a href="Parslet/Expression.html#method-c-new">::new &mdash; Parslet::Expression</a></li>
+    
+      <li><a href="Parslet/Atoms/Alternative.html#method-c-new">::new &mdash; Parslet::Atoms::Alternative</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-c-new">::new &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Parser.html#method-c-root">::root &mdash; Parslet::Parser</a></li>
+    
+      <li><a href="Parslet/Transform.html#method-c-rule">::rule &mdash; Parslet::Transform</a></li>
+    
+      <li><a href="Parslet.html#method-c-sequence">::sequence &mdash; Parslet</a></li>
+    
+      <li><a href="Parslet.html#method-c-simple">::simple &mdash; Parslet</a></li>
+    
+      <li><a href="Parslet.html#method-c-str">::str &mdash; Parslet</a></li>
+    
+      <li><a href="Parslet.html#method-c-subtree">::subtree &mdash; Parslet</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-2B">#+ &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-3D-3D">#== &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-3E-3E">#>> &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-absent-3F">#absent? &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-absnt-3F">#absnt? &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/Atoms/Entity.html#method-i-accept">#accept &mdash; Parslet::Atoms::Entity</a></li>
+    
+      <li><a href="Parslet/Atoms/Str.html#method-i-accept">#accept &mdash; Parslet::Atoms::Str</a></li>
+    
+      <li><a href="Parslet/Atoms/Alternative.html#method-i-accept">#accept &mdash; Parslet::Atoms::Alternative</a></li>
+    
+      <li><a href="Parslet/Atoms/Lookahead.html#method-i-accept">#accept &mdash; Parslet::Atoms::Lookahead</a></li>
+    
+      <li><a href="Parslet/Atoms/Sequence.html#method-i-accept">#accept &mdash; Parslet::Atoms::Sequence</a></li>
+    
+      <li><a href="Parslet/Atoms/Base.html#method-i-accept">#accept &mdash; Parslet::Atoms::Base</a></li>
+    
+      <li><a href="Parslet/Atoms/Repetition.html#method-i-accept">#accept &mdash; Parslet::Atoms::Repetition</a></li>
+    
+      <li><a href="Parslet/Atoms/Re.html#method-i-accept">#accept &mdash; Parslet::Atoms::Re</a></li>
+    
+      <li><a href="Parslet/Atoms/Named.html#method-i-accept">#accept &mdash; Parslet::Atoms::Named</a></li>
+    
+      <li><a href="Parslet/Transform.html#method-i-apply">#apply &mdash; Parslet::Transform</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-apply">#apply &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-as">#as &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/ErrorTree.html#method-i-ascii_tree">#ascii_tree &mdash; Parslet::ErrorTree</a></li>
+    
+      <li><a href="Parslet/Atoms/Context.html#method-i-cache">#cache &mdash; Parslet::Atoms::Context</a></li>
+    
+      <li><a href="Parslet/Transform.html#method-i-call_on_match">#call_on_match &mdash; Parslet::Transform</a></li>
+    
+      <li><a href="Parslet/ErrorTree.html#method-i-cause">#cause &mdash; Parslet::ErrorTree</a></li>
+    
+      <li><a href="Parslet/Pattern.html#method-i-element_match">#element_match &mdash; Parslet::Pattern</a></li>
+    
+      <li><a href="Parslet/Pattern.html#method-i-element_match_hash">#element_match_hash &mdash; Parslet::Pattern</a></li>
+    
+      <li><a href="Parslet/Source.html#method-i-eof-3F">#eof? &mdash; Parslet::Source</a></li>
+    
+      <li><a href="Parslet/Atoms/Base/Fail.html#method-i-error-3F">#error? &mdash; Parslet::Atoms::Base::Fail</a></li>
+    
+      <li><a href="Parslet/Atoms/Base/Success.html#method-i-error-3F">#error? &mdash; Parslet::Atoms::Base::Success</a></li>
+    
+      <li><a href="Parslet/Atoms/Base.html#method-i-error_tree">#error_tree &mdash; Parslet::Atoms::Base</a></li>
+    
+      <li><a href="Parslet/Atoms/Base.html#method-i-foldl">#foldl &mdash; Parslet::Atoms::Base</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-inspect">#inspect &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-line_and_column">#line_and_column &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Source.html#method-i-line_and_column">#line_and_column &mdash; Parslet::Source</a></li>
+    
+      <li><a href="Parslet/Pattern.html#method-i-match">#match &mdash; Parslet::Pattern</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-match">#match &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-maybe">#maybe &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/ErrorTree.html#method-i-nodes">#nodes &mdash; Parslet::ErrorTree</a></li>
+    
+      <li><a href="Parslet/Expression.html#method-i-parse">#parse &mdash; Parslet::Expression</a></li>
+    
+      <li><a href="Parslet/Atoms/Base.html#method-i-parse">#parse &mdash; Parslet::Atoms::Base</a></li>
+    
+      <li><a href="Parslet/Atoms/Base.html#method-i-parse_with_debug">#parse_with_debug &mdash; Parslet::Atoms::Base</a></li>
+    
+      <li><a href="Parslet/Atoms/Entity.html#method-i-parslet">#parslet &mdash; Parslet::Atoms::Entity</a></li>
+    
+      <li><a href="Parslet/Source.html#method-i-pos">#pos &mdash; Parslet::Source</a></li>
+    
+      <li><a href="Parslet/Source.html#method-i-pos-3D">#pos= &mdash; Parslet::Source</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-present-3F">#present? &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-prsnt-3F">#prsnt? &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/Source.html#method-i-read">#read &mdash; Parslet::Source</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-repeat">#repeat &mdash; Parslet::Atoms::DSL</a></li>
+    
+      <li><a href="Parslet/Transform.html#method-i-rule">#rule &mdash; Parslet::Transform</a></li>
+    
+      <li><a href="Parslet/ClassMethods.html#method-i-rule">#rule &mdash; Parslet::ClassMethods</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-size">#size &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Parser.html#method-i-to_citrus">#to_citrus &mdash; Parslet::Parser</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-to_f">#to_f &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-to_i">#to_i &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-to_int">#to_int &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Expression.html#method-i-to_parslet">#to_parslet &mdash; Parslet::Expression</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-to_s">#to_s &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/ErrorTree.html#method-i-to_s">#to_s &mdash; Parslet::ErrorTree</a></li>
+    
+      <li><a href="Parslet/Atoms/Base/Cause.html#method-i-to_s">#to_s &mdash; Parslet::Atoms::Base::Cause</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-to_slice">#to_slice &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-to_str">#to_str &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Slice.html#method-i-to_sym">#to_sym &mdash; Parslet::Slice</a></li>
+    
+      <li><a href="Parslet/Parser.html#method-i-to_treetop">#to_treetop &mdash; Parslet::Parser</a></li>
+    
+      <li><a href="Parslet/Expression.html#method-i-transform">#transform &mdash; Parslet::Expression</a></li>
+    
+      <li><a href="Parslet/Atoms/Base.html#method-i-try">#try &mdash; Parslet::Atoms::Base</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_alternative">#visit_alternative &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Treetop.html#method-i-visit_alternative">#visit_alternative &mdash; Parslet::Parser::Visitors::Treetop</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_alternative">#visit_alternative &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_entity">#visit_entity &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_entity">#visit_entity &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_lookahead">#visit_lookahead &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_lookahead">#visit_lookahead &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_named">#visit_named &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_named">#visit_named &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_re">#visit_re &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_re">#visit_re &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_repetition">#visit_repetition &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_repetition">#visit_repetition &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Treetop.html#method-i-visit_repetition">#visit_repetition &mdash; Parslet::Parser::Visitors::Treetop</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_sequence">#visit_sequence &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_sequence">#visit_sequence &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Parser/Visitors/Citrus.html#method-i-visit_str">#visit_str &mdash; Parslet::Parser::Visitors::Citrus</a></li>
+    
+      <li><a href="Parslet/Atoms/Transform.html#method-i-visit_str">#visit_str &mdash; Parslet::Atoms::Transform</a></li>
+    
+      <li><a href="Parslet/Atoms/DSL.html#method-i-7C">#| &mdash; Parslet::Atoms::DSL</a></li>
+    
+  </ul>
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+</body>
+</html>
