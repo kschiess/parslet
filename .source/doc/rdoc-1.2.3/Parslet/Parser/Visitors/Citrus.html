@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Parslet::Parser::Visitors::Citrus</title>
+
+  <link rel="stylesheet" href="../../../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../../../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../../../index.html">Home</a>
+          <a href="../../../index.html#classes">Classes</a>
+          <a href="../../../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../../../lib/parslet/export_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet/export.rb">lib/parslet/export.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link">Object</p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-visit_alternative">#visit_alternative</a></li>
+          
+          <li><a href="#method-i-visit_entity">#visit_entity</a></li>
+          
+          <li><a href="#method-i-visit_lookahead">#visit_lookahead</a></li>
+          
+          <li><a href="#method-i-visit_named">#visit_named</a></li>
+          
+          <li><a href="#method-i-visit_re">#visit_re</a></li>
+          
+          <li><a href="#method-i-visit_repetition">#visit_repetition</a></li>
+          
+          <li><a href="#method-i-visit_sequence">#visit_sequence</a></li>
+          
+          <li><a href="#method-i-visit_str">#visit_str</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../../../README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../../../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../../../Parslet.html">Parslet</a></li>
+        
+          <li><a href="../../../Parslet/Atoms.html">Parslet::Atoms</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a></li>
+        
+          <li><a href="../../../Parslet/Atoms/Transform.html">Parslet::Atoms::Transform</a></li>
+        
+          <li><a href="../../../Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+        
+          <li><a href="../../../Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+        
+          <li><a href="../../../Parslet/Expression.html">Parslet::Expression</a></li>
+        
+          <li><a href="../../../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a></li>
+        
+          <li><a href="../../../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+        
+          <li><a href="../../../Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+        
+          <li><a href="../../../Parslet/Parser.html">Parslet::Parser</a></li>
+        
+          <li><a href="../../../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+        
+          <li><a href="../../../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a></li>
+        
+          <li><a href="../../../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a></li>
+        
+          <li><a href="../../../Parslet/Pattern.html">Parslet::Pattern</a></li>
+        
+          <li><a href="../../../Parslet/Slice.html">Parslet::Slice</a></li>
+        
+          <li><a href="../../../Parslet/Source.html">Parslet::Source</a></li>
+        
+          <li><a href="../../../Parslet/Transform.html">Parslet::Transform</a></li>
+        
+          <li><a href="../../../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Parslet::Parser::Visitors::Citrus</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="context-attribute-method" class="method-detail">
+          <a name="context"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">context</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="output-attribute-method" class="method-detail">
+          <a name="output"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">output</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(context)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">context</span>)
+  <span class="ruby-ivar">@context</span> = <span class="ruby-identifier">context</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="visit_alternative-method" class="method-detail ">
+          <a name="method-i-visit_alternative"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_alternative</span><span
+              class="method-args">(alternatives)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_alternative-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_alternative</span>(<span class="ruby-identifier">alternatives</span>)
+  <span class="ruby-string">'('</span> <span class="ruby-operator">&lt;&lt;</span>
+  <span class="ruby-identifier">alternatives</span>.
+    <span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">el</span><span class="ruby-operator">|</span> <span class="ruby-identifier">el</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>) }.
+    <span class="ruby-identifier">join</span>(<span class="ruby-string">' | '</span>) <span class="ruby-operator">&lt;&lt;</span>
+  <span class="ruby-string">')'</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_alternative-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_alternative-method -->
+
+      
+        <div id="visit_entity-method" class="method-detail ">
+          <a name="method-i-visit_entity"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_entity</span><span
+              class="method-args">(name, block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_entity-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_entity</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">context</span>.<span class="ruby-identifier">deferred</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>)
+
+  <span class="ruby-node">&quot;(#{context.mangle_name(name)})&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_entity-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_entity-method -->
+
+      
+        <div id="visit_lookahead-method" class="method-detail ">
+          <a name="method-i-visit_lookahead"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_lookahead</span><span
+              class="method-args">(positive, bound_parslet)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_lookahead-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_lookahead</span>(<span class="ruby-identifier">positive</span>, <span class="ruby-identifier">bound_parslet</span>)
+  (<span class="ruby-identifier">positive</span> <span class="ruby-operator">?</span> <span class="ruby-string">'&amp;'</span> <span class="ruby-operator">:</span> <span class="ruby-string">'!'</span>) <span class="ruby-operator">&lt;&lt;</span>
+  <span class="ruby-identifier">bound_parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_lookahead-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_lookahead-method -->
+
+      
+        <div id="visit_named-method" class="method-detail ">
+          <a name="method-i-visit_named"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_named</span><span
+              class="method-args">(name, parslet)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_named-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_named</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">parslet</span>)
+  <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_named-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_named-method -->
+
+      
+        <div id="visit_re-method" class="method-detail ">
+          <a name="method-i-visit_re"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_re</span><span
+              class="method-args">(match)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_re-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_re</span>(<span class="ruby-identifier">match</span>)
+  <span class="ruby-identifier">match</span>.<span class="ruby-identifier">to_s</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_re-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_re-method -->
+
+      
+        <div id="visit_repetition-method" class="method-detail ">
+          <a name="method-i-visit_repetition"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_repetition</span><span
+              class="method-args">(min, max, parslet)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_repetition-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_repetition</span>(<span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">parslet</span>)
+  <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{min}*#{max}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_repetition-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_repetition-method -->
+
+      
+        <div id="visit_sequence-method" class="method-detail ">
+          <a name="method-i-visit_sequence"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_sequence</span><span
+              class="method-args">(parslets)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_sequence-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_sequence</span>(<span class="ruby-identifier">parslets</span>)
+  <span class="ruby-string">'('</span> <span class="ruby-operator">&lt;&lt;</span>
+  <span class="ruby-identifier">parslets</span>.
+    <span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">el</span><span class="ruby-operator">|</span> <span class="ruby-identifier">el</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>) }.
+    <span class="ruby-identifier">join</span>(<span class="ruby-string">' '</span>) <span class="ruby-operator">&lt;&lt;</span>
+  <span class="ruby-string">')'</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_sequence-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_sequence-method -->
+
+      
+        <div id="visit_str-method" class="method-detail ">
+          <a name="method-i-visit_str"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">visit_str</span><span
+              class="method-args">(str)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="visit_str-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_str</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-node">&quot;\&quot;#{str.inspect[1..-2]}\&quot;&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- visit_str-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- visit_str-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

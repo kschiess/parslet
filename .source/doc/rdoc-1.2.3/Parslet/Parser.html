@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Parslet::Parser</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../lib/parslet/export_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet/export.rb">lib/parslet/export.rb</a></li>
+          
+            <li><a href="../lib/parslet/parser_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/parslet/parser.rb">lib/parslet/parser.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="Atoms/Base.html">Parslet::Atoms::Base</a></p>
+        
+      </div>
+      
+
+      
+
+      
+      <!-- Namespace Contents -->
+      <div id="namespace-list-section" class="section">
+        <h3 class="section-header">Namespace</h3>
+        <ul class="link-list">
+          
+          <li><span class="type">MODULE</span> <a href="Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-root">::root</a></li>
+          
+          <li><a href="#method-i-to_citrus">#to_citrus</a></li>
+          
+          <li><a href="#method-i-to_treetop">#to_treetop</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Included Modules -->
+      <div id="includes-section" class="section">
+        <h3 class="section-header">Included Modules</h3>
+        <ul class="link-list">
+        
+        
+          <li><a class="include" href="../Parslet.html">Parslet</a></li>
+        
+        
+        </ul>
+      </div>
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="../README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Parslet.html">Parslet</a></li>
+        
+          <li><a href="../Parslet/Atoms.html">Parslet::Atoms</a></li>
+        
+          <li><a href="../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Cause.html">Parslet::Atoms::Base::Cause</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a></li>
+        
+          <li><a href="../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a></li>
+        
+          <li><a href="../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a></li>
+        
+          <li><a href="../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a></li>
+        
+          <li><a href="../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a></li>
+        
+          <li><a href="../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a></li>
+        
+          <li><a href="../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a></li>
+        
+          <li><a href="../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a></li>
+        
+          <li><a href="../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a></li>
+        
+          <li><a href="../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a></li>
+        
+          <li><a href="../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a></li>
+        
+          <li><a href="../Parslet/Atoms/Transform.html">Parslet::Atoms::Transform</a></li>
+        
+          <li><a href="../Parslet/ClassMethods.html">Parslet::ClassMethods</a></li>
+        
+          <li><a href="../Parslet/ErrorTree.html">Parslet::ErrorTree</a></li>
+        
+          <li><a href="../Parslet/Expression.html">Parslet::Expression</a></li>
+        
+          <li><a href="../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a></li>
+        
+          <li><a href="../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a></li>
+        
+          <li><a href="../Parslet/ParseFailed.html">Parslet::ParseFailed</a></li>
+        
+          <li><a href="../Parslet/Parser.html">Parslet::Parser</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a></li>
+        
+          <li><a href="../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a></li>
+        
+          <li><a href="../Parslet/Pattern.html">Parslet::Pattern</a></li>
+        
+          <li><a href="../Parslet/Slice.html">Parslet::Slice</a></li>
+        
+          <li><a href="../Parslet/Source.html">Parslet::Source</a></li>
+        
+          <li><a href="../Parslet/Transform.html">Parslet::Transform</a></li>
+        
+          <li><a href="../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Parslet::Parser</h1>
+
+    <div id="description" class="description">
+      
+<p>The base class for all your parsers. Use as follows:</p>
+
+<pre>require 'parslet'
+
+class MyParser &lt; Parslet::Parser
+  rule(:a) { str('a').repeat }
+  root(:a)        
+end
+
+pp MyParser.new.parse('aaaa')   # =&gt; 'aaaa'
+pp MyParser.new.parse('bbbb')   # =&gt; Parslet::Atoms::ParseFailed: 
+                                #    Don't know what to do with bbbb at line 1 char 1.</pre>
+
+<p><a href="Parser.html">Parslet::Parser</a> is also a grammar atom. This
+means that you can mix full  fledged parsers freely with small parts of a
+different parser.</p>
+
+<p>Example:</p>
+
+<pre>class ParserA &lt; Parslet::Parser
+  root :aaa
+  rule(:aaa) { str('a').repeat(3,3) }
+end
+class ParserB &lt; Parslet::Parser
+  root :expression
+  rule(:expression) { str('b') &gt;&gt; ParserA.new &gt;&gt; str('b') }
+end</pre>
+
+<p>In the above example, ParserB would parse something like ‘baaab’.</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="root-method" class="method-detail ">
+          <a name="method-c-root"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">root</span><span
+              class="method-args">(name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Define the parsers root function. This is the place where you start 
+parsing; if you have a rule for ‘file’ that describes what should be  in a
+file, this would be your root declaration:</p>
+
+<pre>class Parser
+  root :file
+  rule(:file) { ... }
+end</pre>
+
+<p>root declares a ‘parse’ function that works just like the parse  function
+that you can call on a simple parslet, taking a string as input and
+producing parse output.</p>
+
+<p>In a way, root is a shorthand for:</p>
+
+<pre>def parse(str)
+  your_parser_root.parse(str)
+end</pre>
+            
+
+            
+            <div class="method-source-code" id="root-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/parser.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">root</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">define_method</span>(<span class="ruby-value">:root</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- root-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- root-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="to_citrus-method" class="method-detail ">
+          <a name="method-i-to_citrus"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_citrus</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Exports the current parser instance as a string in the Citrus dialect.</p>
+
+<p>Example:</p>
+
+<pre>require 'parslet/export'
+class MyParser &lt; Parslet::Parser
+  root(:expression)
+  rule(:expression) { str('foo') }
+end
+
+MyParser.new.to_citrus # =&gt; a citrus grammar as a string</pre>
+            
+
+            
+            <div class="method-source-code" id="to_citrus-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_citrus</span>
+  <span class="ruby-constant">PrettyPrinter</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Visitors</span><span class="ruby-operator">::</span><span class="ruby-constant">Citrus</span>).
+    <span class="ruby-identifier">pretty_print</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">root</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_citrus-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_citrus-method -->
+
+      
+        <div id="to_treetop-method" class="method-detail ">
+          <a name="method-i-to_treetop"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_treetop</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Exports the current parser instance as a string in the Treetop dialect.</p>
+
+<p>Example:</p>
+
+<pre>require 'parslet/export'
+class MyParser &lt; Parslet::Parser
+  root(:expression)
+  rule(:expression) { str('foo') }
+end
+
+MyParser.new.to_treetop # =&gt; a treetop grammar as a string</pre>
+            
+
+            
+            <div class="method-source-code" id="to_treetop-source">
+<pre>
+<span class="ruby-comment"># File lib/parslet/export.rb, line 157</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_treetop</span>
+  <span class="ruby-constant">PrettyPrinter</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Visitors</span><span class="ruby-operator">::</span><span class="ruby-constant">Treetop</span>).
+    <span class="ruby-identifier">pretty_print</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">root</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_treetop-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_treetop-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

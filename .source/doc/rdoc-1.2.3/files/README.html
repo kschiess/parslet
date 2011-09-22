@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>README</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" />
+    <script src="../js/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/jquery-effect.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/main.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>     
+    <div class="banner">
+        <h1>
+            README
+        </h1>
+        <ul class="files">
+            <li>README</li>
+            <li>Last modified: 2011-06-05 17:10:35 +0200</li>
+        </ul>
+    </div>
+
+    <div id="bodyContent">
+        <div id="content">
+    
+    <div class="description">
+        <p>
+INTRODUCTION
+</p>
+<p>
+<a href="../classes/Parslet.html">Parslet</a> makes developing complex
+parsers easy. It does so by
+</p>
+<ul>
+<li>providing the best <b>error reporting</b> possible
+
+</li>
+<li><b>not generating</b> reams of code for you to debug
+
+</li>
+</ul>
+<p>
+<a href="../classes/Parslet.html">Parslet</a> takes the long way around to
+make <b>your job</b> easier. It allows for incremental language
+construction. Often, you start out small, implementing the atoms of your
+language first; <em>parslet</em> takes pride in making this possible.
+</p>
+<p>
+Eager to try this out? Please see the associated web site: <a
+href="http://kschiess.github.com/parslet">kschiess.github.com/parslet</a>
+</p>
+<p>
+SYNOPSIS
+</p>
+<pre>
+  require 'parslet'
+  include Parslet
+
+  # Constructs a parser using a Parser Expression Grammar like DSL:
+  parser =  str('&quot;') &gt;&gt;
+            (
+              str('\\') &gt;&gt; any |
+              str('&quot;').absnt? &gt;&gt; any
+            ).repeat.as(:string) &gt;&gt;
+            str('&quot;')
+
+  # Parse the string and capture parts of the interpretation (:string above)
+  tree = parser.parse('&quot;This is a \\&quot;String\\&quot; in which you can escape stuff&quot;')
+
+  tree # =&gt; {:string=&gt;&quot;This is a \\\&quot;String\\\&quot; in which you can escape stuff&quot;}
+
+  # Here's how you can grab results from that tree:
+
+  transform = Parslet::Transform.new do
+    rule(:string =&gt; simple(:x)) {
+      puts &quot;String contents: #{x}&quot; }
+  end
+  transform.apply(tree)
+</pre>
+<p>
+COMPATIBILITY
+</p>
+<p>
+This library should work with most rubies. I&#8217;ve tested it with MRI
+1.8 (except 1.8.6), 1.9, rbx-head, jruby. Please report as a bug if you
+encounter issues.
+</p>
+<p>
+Note that due to Ruby 1.8 internals, Unicode parsing is not supported on
+that version.
+</p>
+<p>
+STATUS
+</p>
+<p>
+At version 1.2.1 - See HISTORY.txt for changes.
+</p>
+<p>
+&#169; 2010 Kaspar Schiess
+</p>
+
+    </div>
+    
+
+    
+
+    
+    
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+    </div>
+  </body>
+</html>

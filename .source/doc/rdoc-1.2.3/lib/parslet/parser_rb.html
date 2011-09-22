@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>File: parser.rb [parslet - construction of parsers made easy]</title>
+
+  <link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet" />
+
+  <script src="../../js/jquery.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../../js/thickbox-compressed.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../../js/quicksearch.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../../js/darkfish.js" type="text/javascript"
+    charset="utf-8"></script>
+</head>
+
+<body class="file file-popup">
+  <div id="metadata">
+    <dl>
+      <dt class="modified-date">Last Modified</dt>
+      <dd class="modified-date">2011-06-05 17:38:39 +0200</dd>
+
+      
+      <dt class="requires">Requires</dt>
+      <dd class="requires">
+        <ul>
+        
+        </ul>
+      </dd>
+      
+
+      
+    </dl>
+  </div>
+
+  <div id="documentation">
+    
+    <div class="description">
+      <h2>Description</h2>
+      
+<p>The base class for all your parsers. Use as follows:</p>
+
+<pre>require 'parslet'
+
+class MyParser &lt; Parslet::Parser
+  rule(:a) { str('a').repeat }
+  root(:a)        
+end
+
+pp MyParser.new.parse('aaaa')   # =&gt; 'aaaa'
+pp MyParser.new.parse('bbbb')   # =&gt; Parslet::Atoms::ParseFailed: 
+                                #    Don't know what to do with bbbb at line 1 char 1.</pre>
+
+<p><a href="../../Parslet/Parser.html">Parslet::Parser</a> is also a grammar
+atom. This means that you can mix full  fledged parsers freely with small
+parts of a different parser.</p>
+
+<p>Example:</p>
+
+<pre>class ParserA &lt; Parslet::Parser
+  root :aaa
+  rule(:aaa) { str('a').repeat(3,3) }
+end
+class ParserB &lt; Parslet::Parser
+  root :expression
+  rule(:expression) { str('b') &gt;&gt; ParserA.new &gt;&gt; str('b') }
+end</pre>
+
+<p>In the above example, ParserB would parse something like ‘baaab’.</p>
+
+    </div>
+    
+  </div>
+</body>
+</html>
+
