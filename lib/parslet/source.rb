@@ -14,7 +14,9 @@ class Parslet::Source
     end
     
     @io = io
+    @pos = 0
     @line_cache = LineCache.new
+    @pos_cache = {}
   end
   
   # Reads n chars from the input and returns a Range instance. 
@@ -27,11 +29,14 @@ class Parslet::Source
   def eof?
     @io.eof?
   end
+
   def pos
-    @io.pos
+    @pos
   end
+
   def pos=(new_pos)
-    @io.pos = new_pos
+    @io.pos = @pos_cache[new_pos]
+    @pos = new_pos
   end
 
   # Returns a <line, column> tuple for the given position. If no position is
@@ -44,13 +49,18 @@ class Parslet::Source
   
 private
   def read_slice(needed)
-    start = @io.pos
-    buf = @io.gets(nil, needed)
+    # Save current io position for later rewinding
+    @pos_cache[@pos] ||= @io.pos
 
+    start = @io.pos
+    buf = 1.upto(needed).map{@io.getc}.compact.join("")
+    buf = nil if buf == ""
     # cache line ends
-    @line_cache.scan_for_line_endings(start, buf)
-    
-    Parslet::Slice.new(buf || '', start, @line_cache)
+    @line_cache.scan_for_line_endings(@io.pos, buf)
+
+    slice = Parslet::Slice.new(buf || '', @pos, @line_cache)
+    @pos += needed
+    slice
   end
   
   if RUBY_VERSION !~ /^1.9/
