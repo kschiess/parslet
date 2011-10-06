@@ -67,6 +67,9 @@ A semantic version parser. (meh)
 
 h2. Thanks for all the fish -- Contributions
 
+* *rogerbraun* ("rogerbraun":https://github.com/rogerbraun) for being my
+  unicode tester. 
+
 * *meh* ("meh":http://meh.paranoid.pk/) for taking a real close look. 
 
 * *John Mettraux* ("jmettraux":http://jmettraux.wordpress.com/) for the really
