@@ -21,7 +21,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     # contents of parslets inner loop. Changes here affect parslets speed 
     # enormously.
     error_pos = source.pos
-    s = source.read(str.size)
+    s = source.read(str.bytesize)
 
     return success(s) if s == str
     

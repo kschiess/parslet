@@ -17,7 +17,13 @@ class Parslet::Source
     @line_cache = LineCache.new
   end
   
-  # Reads n chars from the input and returns a Range instance. 
+  # Reads n bytes from the input and returns a Range instance. If the n 
+  # bytes end in the middle of a multibyte representation of a char, that 
+  # char is returned fully. 
+  #
+  # Example: 
+  #   source.read(1)  # always returns at least one valid char
+  #   source.read(7)  # reads 7 bytes, then to the next char boundary.
   #
   def read(n)
     raise ArgumentError, "Cannot read < 1 characters at a time." if n < 1
