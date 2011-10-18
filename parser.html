@@ -134,7 +134,15 @@
         <div class="highlight"><pre><code class="ruby"> 
         <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">maybe</span>          <span class="c1"># same as str(&#39;foo&#39;).repeat(0,1)</span>
         </code></pre>
-        </div><p>These all map to <code>Parslet::Atoms::Repetition</code></p>
+        </div><p>These all map to <code>Parslet::Atoms::Repetition</code>. Please note this
+        little twist to <code>#maybe</code>:</p>
+        <div class="highlight"><pre><code class="ruby"> 
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">maybe</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:f</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>         <span class="c1"># =&gt; {:f=&gt;nil}</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:f</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>   <span class="c1"># =&gt; {:f=&gt;[]}</span>
+        </code></pre>
+        </div><p>The &#8216;nil&#8217;-value of <code>#maybe</code> is nil. This is catering to the
+        intuition that <code>foo.maybe</code> either gives me <code>foo</code> or
+        nothing at all, not an empty array. But have it your way!</p>
         <h3>Alternation</h3>
         <p>The most important composition method for grammars is alternation. Without
         it, your grammars would only vary in the amount of things matched, but not

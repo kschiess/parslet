@@ -81,7 +81,7 @@
         </div><p>Two things are new here: (and both in the second line)</p>
         <ul>
         	<li>you can use (&#8216;call&#8217;) other rules in your rules</li>
-        	<li><code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
+        	<li><code>.maybe</code>, the same as <code>.repeat(0,1)</code><sup class="footnote" id="fnr1"><a href="#fn1">1</a></sup>, indicating that
           the thing before it is maybe present once in the input.</li>
         </ul>
         <p>Essentially, you can think about parslet rules as instructing Ruby to &#8220;parse
@@ -173,7 +173,9 @@
         
         <span class="c1"># Added structure: .as(...)</span>
         <span class="n">str</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex1</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>                  <span class="c1"># =&gt; {:ex1=&gt;&quot;ooo&quot;@0}</span>
-        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2a</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2b</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; {:ex2b=&gt;[{:ex2a=&gt;&quot;o&quot;@0}, {:ex2a=&gt;&quot;o&quot;@1}, {:ex2a=&gt;&quot;o&quot;@2}]}</span>
+        <span class="n">str</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2a</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="o">.</span><span class="n">as</span><span class="p">(</span><span class="ss">:ex2b</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;ooo&#39;</span><span class="p">)</span>  <span class="c1"># =&gt; {:ex2b=&gt;[{:ex2a=&gt;&quot;o&quot;@0}, </span>
+                                                          <span class="c1">#             {:ex2a=&gt;&quot;o&quot;@1}, </span>
+                                                          <span class="c1">#             {:ex2a=&gt;&quot;o&quot;@2}]}</span>
         </code></pre>
         </div><p>You get to name things the way you want! This is also free. Seriously: parslet
         requires you to add all the structure to its output. Annotate important parts
@@ -324,6 +326,8 @@
         </code></pre>
         </div><p>That&#8217;s a bunch of code for printing <code>[1, 2, 3, 9]</code>. Welcome to the
         fantastic world of compiler and interpreter writing!</p>
+        <p><sup class="footnote" id="fnr1"><a href="#fn1">1</a></sup> As far as parsing goes. There is a subtle difference between
+        <code>#repeat(0,1)</code> and <code>#maybe</code>. Can you figure it out?</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
