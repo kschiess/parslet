@@ -151,7 +151,17 @@ through the prettier:
 str('foo').maybe          # same as str('foo').repeat(0,1)
 {% endhighlight %}
 
-These all map to <code>Parslet::Atoms::Repetition</code>
+These all map to <code>Parslet::Atoms::Repetition</code>. Please note this
+little twist to <code>#maybe</code>:
+
+{% highlight ruby %} 
+str('foo').maybe.as(:f).parse('')         # => {:f=>nil}
+str('foo').repeat(0,1).as(:f).parse('')   # => {:f=>[]}
+{% endhighlight %}
+
+The 'nil'-value of <code>#maybe</code> is nil. This is catering to the
+intuition that <code>foo.maybe</code> either gives me <code>foo</code> or
+nothing at all, not an empty array. But have it your way!
 
 h3. Alternation
 

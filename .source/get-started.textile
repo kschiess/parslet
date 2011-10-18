@@ -75,7 +75,7 @@ rule(:space?) { space.maybe }
 Two things are new here: (and both in the second line)
 
 * you can use ('call') other rules in your rules 
-* <code>.maybe</code>, the same as <code>.repeat(0,1)</code>, indicating that
+* <code>.maybe</code>, the same as <code>.repeat(0,1)</code>[1], indicating that
   the thing before it is maybe present once in the input.
   
 Essentially, you can think about parslet rules as instructing Ruby to "parse
@@ -182,7 +182,9 @@ str('o').repeat.parse('ooo')                      # => "ooo"@0
 
 # Added structure: .as(...)
 str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"@0}
-str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  # => {:ex2b=>[{:ex2a=>"o"@0}, {:ex2a=>"o"@1}, {:ex2a=>"o"@2}]}
+str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  # => {:ex2b=>[{:ex2a=>"o"@0}, 
+                                                  #             {:ex2a=>"o"@1}, 
+                                                  #             {:ex2a=>"o"@2}]}
 {% endhighlight %}
 
 You get to name things the way you want! This is also free. Seriously: parslet
@@ -351,3 +353,5 @@ ast.eval
 That's a bunch of code for printing <code>[1, 2, 3, 9]</code>. Welcome to the
 fantastic world of compiler and interpreter writing!
 
+[1] As far as parsing goes. There is a subtle difference between
+<code>#repeat(0,1)</code> and <code>#maybe</code>. Can you figure it out?
