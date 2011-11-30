@@ -2,6 +2,10 @@
   
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
+
+= 1.3.0 / ???
+
+  - Grammar transforms turned out to be a dead end and have been removed. 
     
 = 1.2.3 / 22Sep2011
 
