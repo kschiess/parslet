@@ -4,7 +4,8 @@ describe 'VM operation' do
   extend Parslet
   
   [
-    [str('foo'), 'foo']
+    [str('foo'), 'foo'], 
+    [str('f') >> str('oo'), 'foo']
   ].each do |parser, input|
     describe "parsing #{input.inspect} with parser: #{parser.inspect}" do
       it "should behave the same as old mode" do
@@ -12,7 +13,9 @@ describe 'VM operation' do
 
         compiler = Parslet::Bytecode::Compiler.new
         program = compiler.compile(parser)
+        
         p program
+
         vm = Parslet::Bytecode::VM.new
         vm.run(program, input).should == result
       end 

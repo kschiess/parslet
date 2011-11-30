@@ -8,10 +8,20 @@ module Parslet::Bytecode
     
     def compile(atom)
       atom.accept(self)
+      @buffer
+    end
+    def add(instruction)
+      @buffer << instruction
     end
     
     def visit_str(str)
-      @buffer << Match.new(str)
+      add Match.new(str)
+    end
+    def visit_sequence(parslets)
+      parslets.each do |atom|
+        atom.accept(self)
+      end
+      add PackSequence.new(parslets.size)
     end
 
     Match = Struct.new(:str) do
@@ -20,6 +30,12 @@ module Parslet::Bytecode
         s = vm.source.read(str.bytesize)
 
         vm.push(s) if s == str
+      end
+    end
+    PackSequence = Struct.new(:size) do
+      def run(vm)
+        elts = vm.pop(size)
+        vm.push [:sequence, *elts]
       end
     end
   end

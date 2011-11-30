@@ -32,5 +32,8 @@ module Parslet::Bytecode
     def push(value)
       @values.push value
     end
+    def pop(n)
+      @values.pop(n)
+    end
   end
 end
