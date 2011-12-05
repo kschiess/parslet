@@ -8,7 +8,7 @@ h2. Matching EOF (End Of File)
 Ahh Sir, you'll be needin what us parsers call _epsilon_: 
 
 {% highlight ruby %} 
-rule(:eof) { any.absnt? }
+rule(:eof) { any.absent? }
 {% endhighlight %}
 
 Of course, most of us don't use this at all, since any parser has EOF as
