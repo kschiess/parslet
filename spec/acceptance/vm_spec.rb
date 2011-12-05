@@ -12,9 +12,7 @@ describe 'VM operation' do
     compiler = Parslet::Bytecode::Compiler.new
     program = compiler.compile(parser)
     
-    p program
-
-    vm = Parslet::Bytecode::VM.new
+    vm = Parslet::Bytecode::VM.new(true)
     vm.run(program, input).should == result
   end
   

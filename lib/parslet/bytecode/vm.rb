@@ -2,11 +2,20 @@ module Parslet::Bytecode
   class VM
     include Parslet::Atoms::CanFlatten
     
+    def initialize(debug=false)
+      @debug = debug
+    end
+    
+    def debug?
+      @debug
+    end
+    
     def run(program, io)
       init(program, io)
       
       loop do
         instruction = fetch
+        p [@ip, instruction] if debug?
         break unless instruction
 
         instruction.run(self)
