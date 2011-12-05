@@ -4,8 +4,15 @@ describe 'VM operation' do
   extend Parslet
   
   [
+    # string atoms
     [str('foo'), 'foo'], 
-    [str('f') >> str('oo'), 'foo']
+    
+    # sequences
+    [str('f') >> str('oo'), 'foo'], 
+    
+    # alternatives
+    [str('f') | str('o'), 'f'], 
+    [str('f') | str('o'), 'o']
   ].each do |parser, input|
     describe "parsing #{input.inspect} with parser: #{parser.inspect}" do
       it "should behave the same as old mode" do

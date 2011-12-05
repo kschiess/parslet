@@ -15,6 +15,7 @@ module Parslet::Atoms
     OUTER      = (prec+=1)    # printing is done here.
   end
   
+  require 'parslet/atoms/can_flatten'
   require 'parslet/atoms/context'
   require 'parslet/atoms/dsl'
   require 'parslet/atoms/base'

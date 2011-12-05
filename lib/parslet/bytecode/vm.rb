@@ -1,5 +1,7 @@
 module Parslet::Bytecode
   class VM
+    include Parslet::Atoms::CanFlatten
+    
     def run(program, io)
       init(program, io)
       
@@ -10,7 +12,7 @@ module Parslet::Bytecode
         instruction.run(self)
       end
       
-      return @values.last
+      return flatten(@values.last)
     end
     
     attr_reader :source
