@@ -37,5 +37,11 @@ module Parslet::Bytecode
     def pop(n)
       @values.pop(n)
     end
+    def success?
+      true
+    end
+    def jump(address)
+      @ip = address.address
+    end
   end
 end
