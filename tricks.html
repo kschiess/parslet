@@ -29,7 +29,7 @@
         <h2>Matching <span class="caps">EOF</span> (End Of File)</h2>
         <p>Ahh Sir, you&#8217;ll be needin what us parsers call <em>epsilon</em>:</p>
         <div class="highlight"><pre><code class="ruby"> 
-        <span class="n">rule</span><span class="p">(</span><span class="ss">:eof</span><span class="p">)</span> <span class="p">{</span> <span class="n">any</span><span class="o">.</span><span class="n">absnt?</span> <span class="p">}</span>
+        <span class="n">rule</span><span class="p">(</span><span class="ss">:eof</span><span class="p">)</span> <span class="p">{</span> <span class="n">any</span><span class="o">.</span><span class="n">absent?</span> <span class="p">}</span>
         </code></pre>
         </div><p>Of course, most of us don&#8217;t use this at all, since any parser has <span class="caps">EOF</span> as
         implicit last input.</p>
