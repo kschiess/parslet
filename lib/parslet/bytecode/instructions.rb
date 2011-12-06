@@ -3,16 +3,26 @@ module Parslet::Bytecode
   # string, but is really the slice that was matched).
   #
   Match = Struct.new(:str) do
+    def initialize(str)
+      super
+      @mismatch_error_prefix = "Expected #{str.inspect}, but got "
+    end
+    
     def run(vm)
       source = vm.source
       error_pos = source.pos
       s = source.read(str.bytesize)
 
-      if s == str
-        vm.push(s) 
-      else
+      if !s || s.size != str.size
         source.pos = error_pos
-        vm.set_error "Here goes error message"
+        vm.set_error source.error("Premature end of input")
+      else
+        if s == str
+          vm.push(s)
+        else
+          source.pos = error_pos
+          vm.set_error source.error([@mismatch_error_prefix, s])
+        end
       end
     end
   end

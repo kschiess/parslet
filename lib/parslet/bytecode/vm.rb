@@ -30,7 +30,7 @@ module Parslet::Bytecode
       
       return flatten(@values.last) if success?
       
-      @error
+      @error.raise
     end
     
     attr_reader :source

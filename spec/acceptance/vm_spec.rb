@@ -30,7 +30,8 @@ describe 'VM operation' do
     end
     
     if exception
-      vm_exception.should == exception
+      vm_exception.should be_kind_of(exception.class)
+      vm_exception.message.should == exception.message
     else
       vm_result.should == result
     end
