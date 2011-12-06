@@ -37,7 +37,8 @@ class Parslet::Atoms::Base
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
     if value.error?
-      parse_failed(value.message)
+      @last_cause = value.message
+      @last_cause.raise
     end
     
     # assert: value is a success answer
@@ -49,16 +50,15 @@ class Parslet::Atoms::Base
       # error to fail with. Otherwise just report that we cannot consume the
       # input.
       if cause 
-        # We're not using #parse_failed here, since it assigns to @last_cause.
-        # Still: We'll raise this differently, since the real cause is different.
-        raise Parslet::UnconsumedInput, 
-          "Unconsumed input, maybe because of this: #{cause}"
+        # NOTE We don't overwrite last_cause here.
+        source.
+          error("Unconsumed input, maybe because of this: #{cause}").raise
       else
         old_pos = source.pos
-        parse_failed(
-          format_cause(source, 
-            "Don't know what to do with #{source.read(100)}", old_pos), 
-          Parslet::UnconsumedInput)
+        @last_cause = source.error(
+          "Don't know what to do with #{source.read(100)}", old_pos)
+
+        @last_cause.raise(Parslet::UnconsumedInput)
       end
     end
     
@@ -142,40 +142,7 @@ private
   # Produces an instance of Fail and returns it. 
   #
   def error(source, str, pos=nil)
-    @last_cause = format_cause(source, str, pos)
+    @last_cause = source.error(str, pos)
     Fail.new(@last_cause)
-  end
-
-  # Signals to the outside that the parse has failed. Use this in conjunction
-  # with #format_cause for nice error messages. 
-  #
-  def parse_failed(cause, exception_klass=Parslet::ParseFailed)
-    @last_cause = cause
-    raise exception_klass,
-      @last_cause.to_s
-  end
-  
-  # An internal class that allows delaying the construction of error messages
-  # (as strings) until we really need to print them. 
-  #
-  class Cause < Struct.new(:message, :source, :pos)
-    def to_s
-      line, column = source.line_and_column(pos)
-      # Allow message to be a list of objects. Join them here, since we now
-      # really need it. 
-      Array(message).map { |o| 
-        o.respond_to?(:to_slice) ? 
-          o.str.inspect : 
-          o.to_s }.join + " at line #{line} char #{column}."
-    end
-  end
-
-  # Appends 'at line ... char ...' to the string given. Use +pos+ to override
-  # the position of the +source+. This method returns an object that can 
-  # be turned into a string using #to_s.
-  #
-  def format_cause(source, str, pos=nil)
-    real_pos = (pos||source.pos)
-    Cause.new(str, source, real_pos)
   end
 end

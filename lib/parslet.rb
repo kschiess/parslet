@@ -224,6 +224,7 @@ module Parslet
 end
 
 require 'parslet/slice'
+require 'parslet/cause'
 require 'parslet/source'
 require 'parslet/error_tree'
 require 'parslet/atoms'

@@ -14,6 +14,9 @@ module Parslet::Bytecode
       def resolve(vm)
         @address = vm.buffer_pointer
       end
+      def inspect
+        "@#{@address}"
+      end
     end
     
     def compile(atom)

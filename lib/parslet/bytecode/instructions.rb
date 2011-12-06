@@ -4,10 +4,16 @@ module Parslet::Bytecode
   #
   Match = Struct.new(:str) do
     def run(vm)
-      error_pos = vm.source.pos
-      s = vm.source.read(str.bytesize)
+      source = vm.source
+      error_pos = source.pos
+      s = source.read(str.bytesize)
 
-      vm.push(s) if s == str
+      if s == str
+        vm.push(s) 
+      else
+        source.pos = error_pos
+        vm.set_error "Here goes error message"
+      end
     end
   end
   
@@ -27,6 +33,10 @@ module Parslet::Bytecode
     def run(vm)
       if vm.success?
         vm.jump(adr)
+      else
+        # Otherwise, clear the error and try the alternative that comes
+        # right here in the byte code.
+        vm.clear_error
       end
     end
   end

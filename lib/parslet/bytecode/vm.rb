@@ -14,14 +14,23 @@ module Parslet::Bytecode
       init(program, io)
       
       loop do
+        p(
+          :ip => @ip, 
+          :top => @values.last,
+          :e => !!@error
+        ) if debug?
+        
         instruction = fetch
-        p [@ip, instruction] if debug?
         break unless instruction
+        
+        p [:instr, instruction] if debug?
 
         instruction.run(self)
       end
       
-      return flatten(@values.last)
+      return flatten(@values.last) if success?
+      
+      @error
     end
     
     attr_reader :source
@@ -46,11 +55,17 @@ module Parslet::Bytecode
     def pop(n)
       @values.pop(n)
     end
-    def success?
-      true
-    end
     def jump(address)
       @ip = address.address
+    end
+    def success?
+      !@error
+    end
+    def set_error(error)
+      @error = error
+    end
+    def clear_error
+      @error = nil
     end
   end
 end
