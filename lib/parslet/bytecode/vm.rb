@@ -28,8 +28,16 @@ module Parslet::Bytecode
         instruction.run(self)
       end
       
-      return flatten(@values.last) if success?
-      
+      return flatten(@values.last) if success? && source.eof?
+
+      if success?
+        # assert: not source.eof?
+        current_pos = source.pos
+        source.error(
+          "Don't know what to do with #{source.read(100)}", current_pos).
+          raise(Parslet::UnconsumedInput)
+      end
+
       @error.raise
     end
     
