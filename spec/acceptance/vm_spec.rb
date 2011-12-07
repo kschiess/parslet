@@ -17,25 +17,34 @@ describe 'VM operation' do
   # Checks if the VM code parses input the same as if you did
   # parser.parse(input).
   def vm_parses(parser, input)
-    exception = nil
+    result = parser.dup.parse(input)
+    
+    vm_result = vm_parse(parser, input)
+    
+    vm_result.should == result
+  end
+  
+  # Checks if the VM correctly fails on applying parser to input. 
+  #
+  def vm_fails(parser, input)
+    exception = catch_exception {
+      parser.dup.parse(input)
+    }
+
+    vm_exception = catch_exception {
+      vm_parse(parser, input)
+    }
+    
+    vm_exception.should_not be_nil
+    vm_exception.message.should == exception.message
+    vm_exception.class.should == exception.class
+  end
+  def catch_exception
     begin
-      result = parser.dup.parse(input)
+      yield
     rescue => exception
     end
-    
-    vm_exception = nil
-    begin
-      vm_result = vm_parse(parser, input)
-    rescue => vm_exception
-    end
-    
-    if exception
-      vm_exception.should_not be_nil
-      vm_exception.message.should == exception.message
-      vm_exception.should be_kind_of(exception.class)
-    else
-      vm_result.should == result
-    end
+    exception
   end
   
   describe 'comparison parsing: ' do
@@ -58,10 +67,13 @@ describe 'VM operation' do
   end
   describe 'error handling' do
     it "errors out when source is not read completely" do
-      vm_parses str('fo'), 'foo'
+      vm_fails str('fo'), 'foo'
     end
+    it "generates the helpful unconsumed error (with a cause)" do
+      vm_fails str('a').repeat(1), 'a.'
+    end 
     it "generates the correct error tree for simple string mismatch" do
-      vm_parses str('foo'), 'bar'
+      vm_fails str('foo'), 'bar'
     end 
   end
 end
