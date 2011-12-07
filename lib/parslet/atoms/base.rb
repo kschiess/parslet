@@ -51,8 +51,8 @@ class Parslet::Atoms::Base
       # input.
       if cause 
         # NOTE We don't overwrite last_cause here.
-        source.
-          error("Unconsumed input, maybe because of this: #{cause}").raise
+        raise Parslet::UnconsumedInput, 
+          "Unconsumed input, maybe because of this: #{cause}"
       else
         old_pos = source.pos
         @last_cause = source.error(

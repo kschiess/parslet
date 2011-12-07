@@ -266,12 +266,21 @@ describe Parslet do
     end
     context "when the pattern doesn't match the input" do
       let (:parslet) { (str('a')).repeat(1) }
+      attr_reader :exception
       before(:each) do
-        lambda { 
+        begin 
           parslet.parse('a.')
-        }.should not_parse
+        rescue => @exception
+        end
       end
 
+      it "raises Parslet::UnconsumedInput" do
+        exception.should be_kind_of(Parslet::UnconsumedInput)
+      end 
+      it "has the correct error message" do
+        exception.message.should == "Unconsumed input, maybe because of "+
+          "this: Expected \"a\", but got \".\" at line 1 char 2."
+      end 
       it "should have a relevant cause" do
         parslet.cause.should == "Expected \"a\", but got \".\" at line 1 char 2."
       end 
