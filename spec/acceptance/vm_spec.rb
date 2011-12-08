@@ -10,7 +10,7 @@ describe 'VM operation' do
     compiler = Parslet::Bytecode::Compiler.new
     program = compiler.compile(parser)
     
-    vm = Parslet::Bytecode::VM.new(false)
+    vm = Parslet::Bytecode::VM.new(true)
     vm.run(program, input)
   end
   
@@ -63,6 +63,11 @@ describe 'VM operation' do
       it "parses right side" do
         vm_parses str('f') | str('o'), 'o'
       end
+    end
+    describe 'repetition' do
+      it "parses" do
+        vm_parses str('a').repeat, 'aaa'
+      end 
     end
   end
   describe 'error handling' do

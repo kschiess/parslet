@@ -45,7 +45,7 @@ module Parslet::Atoms
     # Call back visitors #repetition method. See parslet/export for an example. 
     #
     def accept(visitor)
-      visitor.visit_repetition(min, max, parslet)
+      visitor.visit_repetition(@tag, min, max, parslet)
     end
   end
   

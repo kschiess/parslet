@@ -31,7 +31,7 @@ describe Parslet::Atoms do
   describe Parslet::Atoms::Repetition do
     let(:parslet) { str('a').repeat(1,2) }
     it "should call back visitor" do
-      visitor.should_receive(:visit_repetition).with(1, 2, Parslet::Atoms::Base).once
+      visitor.should_receive(:visit_repetition).with(:repetition, 1, 2, Parslet::Atoms::Base).once
       
       parslet.accept(visitor)
     end 

@@ -34,7 +34,7 @@ class Parslet::Parser
           join(' ') <<
         ')'
       end
-      def visit_repetition(min, max, parslet)
+      def visit_repetition(tag, min, max, parslet)
         parslet.accept(self) << "#{min}*#{max}"
       end
       def visit_alternative(alternatives)
@@ -52,7 +52,7 @@ class Parslet::Parser
     end
 
     class Treetop < Citrus
-      def visit_repetition(min, max, parslet)
+      def visit_repetition(tag, min, max, parslet)
         parslet.accept(self) << "#{min}..#{max}"
       end
 

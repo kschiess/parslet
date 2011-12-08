@@ -9,7 +9,7 @@ module Parslet::Bytecode
     class Address
       attr_reader :address
       def initialize(address=nil)
-        @address
+        @address = address
       end
       def resolve(vm)
         @address = vm.buffer_pointer
@@ -29,6 +29,9 @@ module Parslet::Bytecode
     
     def fwd_address
       Address.new
+    end
+    def current_address
+      Address.new(buffer_pointer)    
     end
     def buffer_pointer
       @buffer.size
@@ -52,6 +55,12 @@ module Parslet::Bytecode
       end
       
       adr_end.resolve(self)
+    end
+    def visit_repetition(tag, min, max, parslet)
+      start = current_address
+      add SetupRepeat.new(tag)
+      parslet.accept(self)
+      add Repeat.new(min, max, start)
     end
   end
 end

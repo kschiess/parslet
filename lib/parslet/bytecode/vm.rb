@@ -24,6 +24,7 @@ module Parslet::Bytecode
         break unless instruction
         
         p [:instr, instruction] if debug?
+        p [:stack, @values.reverse[0,4], @values.size>4 ? '...' : ''] if debug?
 
         instruction.run(self)
       end
