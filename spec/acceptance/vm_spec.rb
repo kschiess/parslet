@@ -69,16 +69,25 @@ describe 'VM operation' do
         vm_parses str('a').repeat, 'aaa'
       end 
     end
-  end
-  describe 'error handling' do
-    it "errors out when source is not read completely" do
-      vm_fails str('fo'), 'foo'
+    describe 'error handling' do
+      it "errors out when source is not read completely" do
+        vm_fails str('fo'), 'foo'
+      end
+      it "generates the correct error tree for simple string mismatch" do
+        vm_fails str('foo'), 'bar'
+      end 
     end
-    it "generates the helpful unconsumed error (with a cause)" do
-      vm_fails str('a').repeat(1), 'a.'
-    end 
-    it "generates the correct error tree for simple string mismatch" do
-      vm_fails str('foo'), 'bar'
-    end 
+  end
+  
+  describe 'places where the classic version is different' do
+    context 'that weird unconsumed message' do
+      it "also responds with an error, perhaps a more simple one" do
+        ex = catch_exception {
+          vm_parse str('a').repeat(1), 'a.'
+        }
+        ex.should be_kind_of(Parslet::UnconsumedInput)
+        ex.message.should == "Don't know what to do with . at line 1 char 2."
+      end 
+    end
   end
 end
