@@ -69,6 +69,11 @@ describe 'VM operation' do
         vm_parses str('a').repeat, 'aaa'
       end 
     end
+    describe 'named' do
+      it "parses" do
+        vm_parses str('foo').as(:bar), 'foo'
+      end 
+    end
     describe 'error handling' do
       it "errors out when source is not read completely" do
         vm_fails str('fo'), 'foo'

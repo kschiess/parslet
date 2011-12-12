@@ -106,4 +106,15 @@ module Parslet::Bytecode
       end
     end
   end
+
+  # Boxes a value inside a name tag.
+  #
+  Box = Struct.new(:name) do
+    def run(vm)
+      if vm.success?
+        result = vm.pop
+        vm.push(name => result)
+      end
+    end
+  end
 end

@@ -62,5 +62,9 @@ module Parslet::Bytecode
       parslet.accept(self)
       add Repeat.new(min, max, start)
     end
+    def visit_named(name, parslet)
+      parslet.accept(self)
+      add Box.new(name)
+    end
   end
 end
