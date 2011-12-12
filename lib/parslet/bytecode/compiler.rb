@@ -57,8 +57,8 @@ module Parslet::Bytecode
       adr_end.resolve(self)
     end
     def visit_repetition(tag, min, max, parslet)
-      start = current_address
       add SetupRepeat.new(tag)
+      start = current_address
       parslet.accept(self)
       add Repeat.new(min, max, start)
     end

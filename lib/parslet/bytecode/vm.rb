@@ -15,7 +15,7 @@ module Parslet::Bytecode
       
       loop do
         p(
-          :ip => @ip, 
+          :ip => Compiler::Address.new(@ip), 
           :top => @values.last,
           :e => !!@error
         ) if debug?
@@ -61,8 +61,12 @@ module Parslet::Bytecode
     def push(value)
       @values.push value
     end
-    def pop(n)
-      @values.pop(n)
+    def pop(n=nil)
+      if n
+        @values.pop(n)
+      else
+        @values.pop
+      end
     end
     def jump(address)
       @ip = address.address

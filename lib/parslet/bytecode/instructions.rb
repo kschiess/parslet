@@ -41,10 +41,9 @@ module Parslet::Bytecode
       source = vm.source
       start_position = source.pos
       
-      result = vm.pop(1)
-      occurrences, accumulator = vm.pop(2)
-
       unless vm.success?
+        occurrences, accumulator = vm.pop(2)
+
         # We've encountered an error. Are we still below the minimum number of
         # matches?
         if occurrences < min
@@ -54,12 +53,18 @@ module Parslet::Bytecode
         end
         
         # assert: occurrences >= min
+        
+        # We've matched the minimum number required, so this is a success: 
         vm.clear_error
         vm.push accumulator
+        return
       end
 
       # assert: vm.success?
       
+      result = vm.pop
+      occurrences, accumulator = vm.pop(2)
+
       accumulator << result
       occurrences += 1
 
