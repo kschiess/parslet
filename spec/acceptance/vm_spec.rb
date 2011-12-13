@@ -85,6 +85,11 @@ describe 'VM operation' do
         vm_fails str('foo').present? >> str('foo'), 'bar'
       end 
     end
+    describe 'negative lookahead' do
+      it "parses" do
+        vm_parses str('f').absent? >> str('o'), 'o'
+      end 
+    end
     describe 'error handling' do
       it "errors out when source is not read completely" do
         vm_fails str('fo'), 'foo'

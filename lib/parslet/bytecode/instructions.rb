@@ -160,7 +160,8 @@ module Parslet::Bytecode
       start_pos = vm.pop
       source.pos = start_pos
       
-      if vm.success?
+      if positive && vm.success? || !positive && !vm.success?
+        vm.clear_error
         vm.push nil
       else
         vm.set_error source.error('lookahead:error missing', start_pos)
