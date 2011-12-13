@@ -89,6 +89,9 @@ describe 'VM operation' do
       it "parses" do
         vm_parses str('f').absent? >> str('o'), 'o'
       end 
+      it "errors out" do
+        vm_fails str('f').absent? >> str('o'), 'f'
+      end 
     end
     describe 'error handling' do
       it "errors out when source is not read completely" do
