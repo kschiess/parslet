@@ -86,10 +86,18 @@ module Parslet::Bytecode
   # Packs size stack elements into an array that is prefixed with the
   # :sequence tag. This will later be converted by CanFlatten.flatten
   #
-  PackSequence = Struct.new(:size) do
+  PackSequence = Struct.new(:size, :error) do
     def run(vm)
+      source = vm.source
+      
       elts = vm.pop(size)
-      vm.push [:sequence, *elts]
+      
+      if vm.success?
+        vm.push [:sequence, *elts]
+      else
+        vm.set_error(
+          source.error(error))
+      end
     end
   end
   
@@ -109,11 +117,53 @@ module Parslet::Bytecode
 
   # Boxes a value inside a name tag.
   #
+  # Consumes: parslet result
+  # Pushes: boxed result
+  #
   Box = Struct.new(:name) do
     def run(vm)
       if vm.success?
         result = vm.pop
         vm.push(name => result)
+      end
+    end
+  end
+
+  # Pushes the current source pos to the stack.
+  #
+  # Consumes: Nothing
+  # Pushes: the current source.pos
+  #
+  PushPos = Class.new do
+    def run(vm)
+      source = vm.source 
+      vm.push source.pos
+    end
+  end
+
+  # Assumes that the stack contains the result of a parslet and above it 
+  # the source position from before parsing that parslet (as per PushPos).
+  # Will remove both and leave the vm in a state that indicates the result 
+  # of a lookahead, stack will be nil (no capture) and the error flag will 
+  # be set. 
+  #
+  # Consumes: VM state, source.pos
+  # Pushes: VM.state
+  # Effects: resets source.pos
+  #
+  CheckAndReset = Struct.new(:positive) do
+    def run(vm)
+      source = vm.source
+      
+      vm.pop if vm.success?
+      
+      start_pos = vm.pop
+      source.pos = start_pos
+      
+      if vm.success?
+        vm.push nil
+      else
+        vm.set_error source.error('lookahead:error missing', start_pos)
       end
     end
   end

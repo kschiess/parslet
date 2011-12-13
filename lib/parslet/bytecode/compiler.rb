@@ -41,10 +41,13 @@ module Parslet::Bytecode
       add Match.new(str)
     end
     def visit_sequence(parslets)
+      sequence = Parslet::Atoms::Sequence.new(*parslets)
       parslets.each do |atom|
         atom.accept(self)
       end
-      add PackSequence.new(parslets.size)
+      add PackSequence.new(
+        parslets.size, 
+        "Failed to match sequence (#{sequence.inspect})")
     end
     def visit_alternative(alternatives)
       adr_end = fwd_address
@@ -65,6 +68,11 @@ module Parslet::Bytecode
     def visit_named(name, parslet)
       parslet.accept(self)
       add Box.new(name)
+    end
+    def visit_lookahead(positive, parslet)
+      add PushPos.new
+      parslet.accept(self)
+      add CheckAndReset.new(positive)
     end
   end
 end

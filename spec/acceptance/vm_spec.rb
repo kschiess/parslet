@@ -55,6 +55,9 @@ describe 'VM operation' do
       it "should parse" do
         vm_parses str('f') >> str('oo'), 'foo'
       end
+      it "should error out with the correct message" do
+        vm_fails str('f') >> str('b'), 'fa'
+      end 
     end
     describe 'alternatives' do
       it "parses left side" do
@@ -72,6 +75,14 @@ describe 'VM operation' do
     describe 'named' do
       it "parses" do
         vm_parses str('foo').as(:bar), 'foo'
+      end 
+    end
+    describe 'positive lookahead' do
+      it "parses" do
+        vm_parses str('foo').present? >> str('foo'), 'foo'
+      end 
+      it "errors out correctly" do
+        vm_fails str('foo').present? >> str('foo'), 'bar'
       end 
     end
     describe 'error handling' do
