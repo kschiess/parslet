@@ -60,6 +60,12 @@ class Parslet::Source
   #     # would describe [0, 10], (10, 20], (20, 30]
   #
   module RangeSearch # :nodoc: 
+    def find_mid(left, right)
+      # NOTE: Jonathan Hinkle reported that when mathn is required, just
+      # dividing and relying on the integer truncation is not enough.
+      left + ((right - left) / 2).floor
+    end  
+    
     # Scans the array for the first number that is > than bound. Returns the 
     # index of that number. 
     #
@@ -71,7 +77,7 @@ class Parslet::Source
       right = size - 1 
 
       loop do
-        mid = left + (right - left) / 2
+        mid = find_mid(left, right)
 
         if self[mid] > bound
           right = mid
