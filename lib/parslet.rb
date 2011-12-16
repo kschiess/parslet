@@ -73,6 +73,9 @@ module Parslet
   #   parslet.parse_with_debug(str)
   #
   class ParseFailed < StandardError
+    # When using the VM parser, this is filled with the error tree that
+    # results from your parse.
+    attr_accessor :error_tree
   end
   
   # Raised when the parse operation didn't consume all of its input. In this

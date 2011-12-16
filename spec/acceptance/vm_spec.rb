@@ -27,8 +27,9 @@ describe 'VM operation' do
   # Checks if the VM correctly fails on applying parser to input. 
   #
   def vm_fails(parser, input)
+    orig_parser = parser.dup
     exception = catch_exception {
-      parser.dup.parse(input)
+      orig_parser.parse(input)
     }
 
     vm_exception = catch_exception {
@@ -38,6 +39,9 @@ describe 'VM operation' do
     vm_exception.should_not be_nil
     vm_exception.message.should == exception.message
     vm_exception.class.should == exception.class
+    
+    # TODO reenable this once the error tree is refactored
+    # vm_exception.error_tree.should == orig_parser.error_tree
   end
   def catch_exception
     begin
