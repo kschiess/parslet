@@ -21,6 +21,7 @@ module Parslet::Bytecode
     
     def compile(atom)
       atom.accept(self)
+      add Stop.new
       @buffer
     end
     def add(instruction)
@@ -73,6 +74,9 @@ module Parslet::Bytecode
       add PushPos.new
       parslet.accept(self)
       add CheckAndReset.new(positive)
+    end
+    def visit_entity(name, block)
+      add CompileOrJump.new(self, block)
     end
   end
 end

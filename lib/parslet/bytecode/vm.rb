@@ -25,8 +25,12 @@ module Parslet::Bytecode
         
         p [:instr, instruction] if debug?
         p [:stack, @values.reverse[0,4], @values.size>4 ? '...' : ''] if debug?
+        p [:calls, @calls] if debug?
 
         instruction.run(self)
+        break if @stop
+        
+        puts if debug?
       end
       
       return flatten(@values.last) if success? && source.eof?
@@ -51,6 +55,7 @@ module Parslet::Bytecode
       @source = Parslet::Source.new(io)
       @context = Parslet::Atoms::Context.new
       @values = []
+      @calls  = []
     end
     
     def fetch
@@ -74,11 +79,22 @@ module Parslet::Bytecode
     def success?
       !@error
     end
+    def call(adr)
+      @calls.push @ip
+      jump(adr)
+    end
+    def call_ret
+      @ip = @calls.pop
+      fail "One pop too many - empty call stack in #call_ret." unless @ip
+    end
     def set_error(error)
       @error = error
     end
     def clear_error
       @error = nil
+    end
+    def stop
+      @stop = true
     end
   end
 end

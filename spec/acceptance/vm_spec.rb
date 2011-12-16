@@ -10,7 +10,7 @@ describe 'VM operation' do
     compiler = Parslet::Bytecode::Compiler.new
     program = compiler.compile(parser)
     
-    vm = Parslet::Bytecode::VM.new(false)
+    vm = Parslet::Bytecode::VM.new(true)
     vm.run(program, input)
   end
   
@@ -95,6 +95,12 @@ describe 'VM operation' do
       end 
       it "errors out" do
         vm_fails str('f').absent? >> str('o'), 'f'
+      end 
+    end
+    describe 'entities' do
+      it "should parse" do
+        atom = Parslet::Atoms::Entity.new('foo') { str('foo') }
+        vm_parses atom, 'foo'
       end 
     end
     describe 'error handling' do

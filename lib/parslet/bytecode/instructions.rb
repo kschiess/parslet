@@ -168,4 +168,32 @@ module Parslet::Bytecode
       end
     end
   end
+  
+  # Compiles the block or 'calls' the subroutine that was compiled earlier.
+  #
+  CompileOrJump = Struct.new(:compiler, :block) do
+    def run(vm)
+      if @compiled_address
+        vm.call(@compiled_address)
+      else
+        # TODO raise not implemented if the block returns nil (see Entity)
+        atom = block.call
+        @compiled_address = compiler.current_address
+        atom.accept(compiler)
+        compiler.add Return.new
+        
+        vm.call(@compiled_address)
+      end
+    end
+  end
+  Return = Class.new do
+    def run(vm)
+      vm.call_ret
+    end
+  end
+  Stop = Class.new do
+    def run(vm)
+      vm.stop
+    end
+  end
 end
