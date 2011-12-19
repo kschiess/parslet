@@ -114,6 +114,14 @@ module Parslet::Bytecode
     end
   end
   
+  # Fails at this point with the given error message.
+  #
+  Fail = Struct.new(:message) do
+    def run(vm)
+      vm.set_error vm.source.error(message)
+    end
+  end
+  
   # If the vm.success? is true, branches to the given address. 
   #
   BranchOnSuccess = Struct.new(:adr) do

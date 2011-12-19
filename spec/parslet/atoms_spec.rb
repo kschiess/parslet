@@ -150,7 +150,7 @@ describe Parslet do
       end
 
       it "should have a sensible cause" do
-        parslet.cause.should == "Expected one of ['foo', 'bar']. at line 1 char 1."
+        parslet.cause.should == "Expected one of ['foo', 'bar'] at line 1 char 1."
       end   
       it "should have an error tree with 3 nodes" do
         parslet.error_tree.nodes.should == 3

@@ -19,7 +19,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     super()
     
     @alternatives = alternatives
-    @error_msg = "Expected one of #{alternatives.inspect}."
+    @error_msg = "Expected one of #{alternatives.inspect}"
   end
 
   #---
