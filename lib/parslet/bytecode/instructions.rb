@@ -83,21 +83,34 @@ module Parslet::Bytecode
   end
   
   
-  # Packs size stack elements into an array that is prefixed with the
-  # :sequence tag. This will later be converted by CanFlatten.flatten
+  # Checks if a sequence must be aborted early because of a parse failure. 
+  # Cleans up the stack and jumps after the sequence, having set error. 
   #
-  PackSequence = Struct.new(:size, :error) do
+  CheckSequence = Struct.new(:cleanup_items, :adr, :error) do
+    def run(vm)
+      unless vm.success?
+        vm.pop(cleanup_items)
+
+        cause = vm.source.error(error)
+        cause.children << vm.error
+        vm.set_error cause
+        vm.jump(adr)
+      end
+    end
+  end
+  
+  # Packs size stack elements into an array that is prefixed with the
+  # :sequence tag. This will later be converted by #flatten
+  #
+  PackSequence = Struct.new(:size) do
     def run(vm)
       source = vm.source
-      
+            
+      fail "Sequence runs into PackSequence with error flag set!" \
+        unless vm.success?
+
       elts = vm.pop(size)
-      
-      if vm.success?
-        vm.push [:sequence, *elts]
-      else
-        vm.set_error(
-          source.error(error))
-      end
+      vm.push [:sequence, *elts]
     end
   end
   
@@ -151,7 +164,7 @@ module Parslet::Bytecode
   # Pushes: VM.state
   # Effects: resets source.pos
   #
-  CheckAndReset = Struct.new(:positive) do
+  CheckAndReset = Struct.new(:positive, :parslet) do
     def run(vm)
       source = vm.source
       
@@ -164,7 +177,10 @@ module Parslet::Bytecode
         vm.clear_error
         vm.push nil
       else
-        vm.set_error source.error('lookahead:error missing', start_pos)
+        error_msg = positive ? 
+          ["Input should start with ", parslet] :
+          ["Input should not start with ", parslet]
+        vm.set_error source.error(error_msg, start_pos)
       end
     end
   end

@@ -17,7 +17,7 @@ module Parslet::Bytecode
         p(
           :ip => Compiler::Address.new(@ip), 
           :top => @values.last,
-          :e => !!@error
+          :e => @error.to_s
         ) if debug?
         
         instruction = fetch
@@ -93,6 +93,7 @@ module Parslet::Bytecode
     def clear_error
       @error = nil
     end
+    attr_reader :error
     def stop
       @stop = true
     end

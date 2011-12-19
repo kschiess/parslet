@@ -10,7 +10,7 @@ describe 'VM operation' do
     compiler = Parslet::Bytecode::Compiler.new
     program = compiler.compile(parser)
     
-    vm = Parslet::Bytecode::VM.new(false)
+    vm = Parslet::Bytecode::VM.new(true)
     vm.run(program, input)
   end
   
@@ -40,8 +40,7 @@ describe 'VM operation' do
     vm_exception.message.should == exception.message
     vm_exception.class.should == exception.class
     
-    # TODO reenable this once the error tree is refactored
-    # vm_exception.error_tree.should == orig_parser.error_tree
+    vm_exception.cause.ascii_tree.should == orig_parser.error_tree.to_s
   end
   def catch_exception
     begin
@@ -52,8 +51,13 @@ describe 'VM operation' do
   end
   
   describe 'comparison parsing: ' do
-    it "parses simple strings" do
-      vm_parses str('foo'), 'foo'
+    describe 'strings' do
+      it "parses" do
+        vm_parses str('foo'), 'foo'
+      end
+      it "error out" do
+        vm_fails str('foo'), 'bar'
+      end 
     end
     describe 'sequences' do
       it "should parse" do
