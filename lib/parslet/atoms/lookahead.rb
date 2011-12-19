@@ -14,9 +14,10 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     # Model positive and negative lookahead by testing this flag.
     @positive = positive
     @bound_parslet = bound_parslet
+    
     @error_msgs = {
-      :positive => "lookahead: #{bound_parslet.inspect} didn't match, but should have", 
-      :negative => "negative lookahead: #{bound_parslet.inspect} matched, but shouldn't have"
+      :positive => ["Input should start with ", bound_parslet], 
+      :negative => ["Input should not start with ", bound_parslet]
     }
   end
   
@@ -26,8 +27,8 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     value = bound_parslet.apply(source, context)
     return success(nil) if positive ^ value.error?
     
-    return error(source, @error_msgs[:positive]) if positive
-    return error(source, @error_msgs[:negative])
+    return error(source, @error_msgs[:positive], pos) if positive
+    return error(source, @error_msgs[:negative], pos)
     
   # This is probably the only parslet that rewinds its input in #try.
   # Lookaheads NEVER consume their input, even on success, that's why. 
@@ -40,9 +41,5 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     char = positive ? '&' : '!'
     
     "#{char}#{bound_parslet.to_s(prec)}"
-  end
-
-  def error_tree # :nodoc:
-    bound_parslet.error_tree
   end
 end

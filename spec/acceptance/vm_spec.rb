@@ -42,13 +42,6 @@ describe 'VM operation' do
     
     vm_exception.cause.ascii_tree.should == orig_parser.error_tree.to_s
   end
-  def catch_exception
-    begin
-      yield
-    rescue => exception
-    end
-    exception
-  end
   
   describe 'comparison parsing: ' do
     describe 'strings' do
