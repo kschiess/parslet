@@ -101,6 +101,10 @@ describe 'VM operation' do
       it "should parse" do
         atom = Parslet::Atoms::Entity.new('foo') { str('foo') }
         vm_parses atom, 'foo'
+      end
+      it "errors out properly" do
+        atom = Parslet::Atoms::Entity.new('foo') { str('foo') }
+        vm_fails atom, 'bar'
       end 
     end
     describe 'error handling' do
