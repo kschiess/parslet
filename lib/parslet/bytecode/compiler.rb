@@ -66,7 +66,7 @@ module Parslet::Bytecode
         alternative.accept(self)
         add BranchOnSuccess.new(adr_end)
       end
-      add Fail.new(["Expected one of ", alternatives], alternatives.size)
+      add Fail.new(["Expected one of ", alternatives.inspect], alternatives.size)
       
       adr_end.resolve(self)
     end
