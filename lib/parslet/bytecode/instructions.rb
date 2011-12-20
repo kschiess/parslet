@@ -147,11 +147,27 @@ module Parslet::Bytecode
     end
   end
   
-  # Fails at this point with the given error message.
+  # Enters a new stack frame that can be discarded with vm.discard_frame. This
+  # helps in situations where you need to pop a state that you don't know the
+  # size of. 
   #
-  Fail = Struct.new(:message) do
+  EnterFrame = Class.new do
     def run(vm)
-      vm.set_error vm.source.error(message)
+      vm.enter_frame
+    end
+  end
+  
+  # Fails at this point with the given error message. Size indicates how many
+  # different alternatives should have generated an error message on the
+  # stack.
+  #
+  Fail = Struct.new(:message, :size) do
+    def run(vm)
+      children = vm.pop(size)
+      error = vm.source.error(message)
+      error.children.replace(children)
+      
+      vm.set_error error
     end
   end
   
@@ -160,10 +176,25 @@ module Parslet::Bytecode
   BranchOnSuccess = Struct.new(:adr) do
     def run(vm)
       if vm.success?
+        # Stack will look like this: 
+        #  (n*) previous failures
+        #  successful match
+        # So we pop the match, discard the failures and push the success
+        # again. This way, it looks like a success should look. 
+        value = vm.pop
+        vm.discard_frame
+        vm.push value
+
         vm.jump(adr)
       else
         # Otherwise, clear the error and try the alternative that comes
         # right here in the byte code.
+
+        # Push the error as if it were a value. If all branches fail, this can
+        # be used to create a complete error trace. If not, VM#discard_frame
+        # will take care of those.
+        vm.push vm.error
+        
         vm.clear_error
       end
     end

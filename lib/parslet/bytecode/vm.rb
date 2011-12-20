@@ -56,6 +56,7 @@ module Parslet::Bytecode
       @context = Parslet::Atoms::Context.new
       @values = []
       @calls  = []
+      @frames = []
     end
     
     def fetch
@@ -72,6 +73,15 @@ module Parslet::Bytecode
       else
         @values.pop
       end
+    end
+    def enter_frame
+      @frames.push @values.size
+    end
+    def discard_frame
+      size = @frames.pop
+      fail "No stack frame." unless size
+      fail "Stack frame larger than the current stack." if size > @values.size
+      @values = @values[0,size]
     end
     def jump(address)
       @ip = address.address

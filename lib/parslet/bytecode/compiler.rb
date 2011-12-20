@@ -61,11 +61,12 @@ module Parslet::Bytecode
     def visit_alternative(alternatives)
       adr_end = fwd_address
       
+      add EnterFrame.new
       alternatives.each_with_index do |alternative, idx|
         alternative.accept(self)
         add BranchOnSuccess.new(adr_end)
       end
-      add Fail.new(["Expected one of ", alternatives])
+      add Fail.new(["Expected one of ", alternatives], alternatives.size)
       
       adr_end.resolve(self)
     end
