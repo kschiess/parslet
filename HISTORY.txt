@@ -6,6 +6,16 @@
 = 1.3.0 / ???
 
   - Grammar transforms turned out to be a dead end and have been removed. 
+
+  ! A few problems in error message generation have been fixed. This will
+  	improve diagnostics further.
+	
+  + A VM driven parser engine: Removes the limitation that parsing needs a 
+    lot of stack space, something dearly missing from Ruby 1.9.3 fibers.
+
+  ! Interaction with mathn fixed - Line number generation will terminate. 
+	
+  . Internal reorganisation, removing cruft and bit rot.
     
 = 1.2.3 / 22Sep2011
 
