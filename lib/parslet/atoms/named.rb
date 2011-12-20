@@ -1,8 +1,8 @@
-# Names a match to influence tree construction. 
+# Names a match to influence tree construction.
 #
-# Example: 
+# Example:
 #
-#   str('foo')            # will return 'foo', 
+#   str('foo')            # will return 'foo',
 #   str('foo').as(:foo)   # will return :foo => 'foo'
 #
 class Parslet::Atoms::Named < Parslet::Atoms::Base
@@ -12,16 +12,20 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
 
     @parslet, @name = parslet, name
   end
-  
+
   def apply(source, context) # :nodoc:
     value = parslet.apply(source, context)
 
-    return value if value.error?
-    success(
-      produce_return_value(
-        value.result))
+    if name.nil?
+      success(nil)
+    else
+      return value if value.error?
+      success(
+        produce_return_value(
+          value.result))
+    end
   end
-  
+
   def to_s_inner(prec) # :nodoc:
     "#{name}:#{parslet.to_s(prec)}"
   end
