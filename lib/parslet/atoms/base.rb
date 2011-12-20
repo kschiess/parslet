@@ -26,7 +26,23 @@ class Parslet::Atoms::Base
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
   #
-  def parse(io)
+  def parse(io, traditional=true)
+    if traditional
+      parse_traditional(io)
+    else
+      parse_vm(io)
+    end
+  end
+  
+  def parse_vm(io)
+    compiler = Parslet::Bytecode::Compiler.new
+    program = compiler.compile(self)
+    
+    vm = Parslet::Bytecode::VM.new(false)
+    vm.run(program, io)
+  end
+  
+  def parse_traditional(io)
     source = Parslet::Source.new(io)
     context = Parslet::Atoms::Context.new
     
