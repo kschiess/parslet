@@ -37,7 +37,6 @@ describe 'VM operation' do
     }
     
     vm_exception.should_not be_nil
-    p vm_exception.message
     vm_exception.message.should == exception.message
     vm_exception.class.should == exception.class
     

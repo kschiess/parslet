@@ -80,7 +80,9 @@ module Parslet::Bytecode
         # We've encountered an error. Are we still below the minimum number of
         # matches?
         if occurrences < min
-          vm.set_error source.error(@minrep_error, start_position)
+          error = source.error(@minrep_error, start_position)
+          error.children << vm.error
+          vm.set_error error
           return
         end
         
@@ -113,7 +115,6 @@ module Parslet::Bytecode
       vm.jump adr
     end
   end
-  
   
   # Checks if a sequence must be aborted early because of a parse failure. 
   # Cleans up the stack and jumps after the sequence, having set error. 
