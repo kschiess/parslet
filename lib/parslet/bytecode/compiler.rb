@@ -73,7 +73,7 @@ module Parslet::Bytecode
       add SetupRepeat.new(tag)
       start = current_address
       parslet.accept(self)
-      add Repeat.new(min, max, start)
+      add Repeat.new(min, max, start, parslet)
     end
     def visit_named(name, parslet)
       parslet.accept(self)

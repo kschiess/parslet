@@ -37,6 +37,7 @@ describe 'VM operation' do
     }
     
     vm_exception.should_not be_nil
+    p vm_exception.message
     vm_exception.message.should == exception.message
     vm_exception.class.should == exception.class
     
@@ -56,6 +57,12 @@ describe 'VM operation' do
       it "parses" do
         vm_parses match['foo'], 'f'
       end 
+      it "errors out (premature end of input)" do
+        vm_fails match['foo'].repeat(1), ''
+      end
+      it "errors out (mismatch)" do
+        vm_fails match['foo'], 'b'
+      end  
     end
     describe 'sequences' do
       it "should parse" do
@@ -79,6 +86,9 @@ describe 'VM operation' do
     describe 'repetition' do
       it "parses" do
         vm_parses str('a').repeat, 'aaa'
+      end 
+      it "errors out (minimal repetition)" do
+        vm_fails str('a').repeat(1), ''
       end 
     end
     describe 'named' do

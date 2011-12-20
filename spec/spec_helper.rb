@@ -18,7 +18,7 @@ end
 def catch_exception
   begin
     yield
-  rescue => exception
+  rescue Parslet::ParseFailed => exception
   end
   exception
 end

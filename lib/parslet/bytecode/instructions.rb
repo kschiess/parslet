@@ -27,9 +27,10 @@ module Parslet::Bytecode
     end
   end
 
-  Re = Struct.new(:match, :size) do
-    def initialize(match, size)
+  Re = Struct.new(:re, :size) do
+    def initialize(re, size)
       super
+      @failure = "Failed to match #{re.inspect[1..-2]}"
     end
     
     def run(vm)
@@ -37,7 +38,19 @@ module Parslet::Bytecode
       
       error_pos = source.pos
       s = source.read(size)
-
+      
+      # if !s || s.size != size
+      #   source.pos = error_pos
+      #   vm.set_error source.error("Premature end of input")
+      #   return 
+      # end
+      # 
+      if !s.match(re)
+        source.pos = error_pos
+        vm.set_error source.error(@failure)
+        return
+      end
+      
       vm.push s
     end
   end
@@ -51,7 +64,12 @@ module Parslet::Bytecode
   
   # Repeat matching with a minimum of min and a maximum of max times. 
   # 
-  Repeat = Struct.new(:min, :max, :adr) do
+  Repeat = Struct.new(:min, :max, :adr, :parslet) do
+    def initialize(*args)
+      super
+      
+      @minrep_error = ["Expected at least #{min} of ", parslet]
+    end
     def run(vm)
       source = vm.source
       start_position = source.pos
@@ -62,8 +80,7 @@ module Parslet::Bytecode
         # We've encountered an error. Are we still below the minimum number of
         # matches?
         if occurrences < min
-          vm.set_error
-            source.error("dadada", start_position)
+          vm.set_error source.error(@minrep_error, start_position)
           return
         end
         
