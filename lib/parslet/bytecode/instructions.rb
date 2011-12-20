@@ -26,6 +26,21 @@ module Parslet::Bytecode
       end
     end
   end
+
+  Re = Struct.new(:match, :size) do
+    def initialize(match, size)
+      super
+    end
+    
+    def run(vm)
+      source = vm.source
+      
+      error_pos = source.pos
+      s = source.read(size)
+
+      vm.push s
+    end
+  end
   
   SetupRepeat = Struct.new(:tag) do
     def run(vm)

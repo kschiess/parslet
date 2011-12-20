@@ -52,6 +52,11 @@ describe 'VM operation' do
         vm_fails str('foo'), 'bar'
       end 
     end
+    describe 'match' do
+      it "parses" do
+        vm_parses match['foo'], 'f'
+      end 
+    end
     describe 'sequences' do
       it "should parse" do
         vm_parses str('f') >> str('oo'), 'foo'

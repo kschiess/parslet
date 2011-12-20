@@ -41,6 +41,9 @@ module Parslet::Bytecode
     def visit_str(str)
       add Match.new(str)
     end
+    def visit_re(match)
+      add Re.new(match, 1)
+    end
     def visit_sequence(parslets)
       sequence = Parslet::Atoms::Sequence.new(*parslets)
       error_msg = "Failed to match sequence (#{sequence.inspect})"
