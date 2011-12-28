@@ -129,6 +129,20 @@ describe 'VM operation' do
         vm_fails str('foo'), 'bar'
       end 
     end
+    describe 'a Parslet::Parser' do
+      let(:parser) {
+        Class.new(Parslet::Parser) do
+          root(:foobar)
+          rule(:foobar) {
+            str('foo') >> str('bar')
+          }
+        end
+      }
+      
+      it "parses" do
+        vm_parses parser, 'foobar'
+      end 
+    end
   end
   
   describe 'places where the classic version is different' do
