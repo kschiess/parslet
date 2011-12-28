@@ -191,6 +191,9 @@ module Parslet::Bytecode
       error = vm.source.error(message)
       error.children.replace(children)
       
+      # Clean up the stack frames:
+      vm.discard_frame
+      
       vm.set_error error
     end
     def to_s
@@ -304,7 +307,7 @@ module Parslet::Bytecode
         vm.call(@compiled_address)
       else
         # TODO raise not implemented if the block returns nil (see Entity)
-        atom = block.call
+        atom = block_result
         @compiled_address = compiler.current_address
         atom.accept(compiler)
         compiler.add Return.new
@@ -314,10 +317,13 @@ module Parslet::Bytecode
     end
     def to_s
       if @compiled_address
-        "LCALL #{@compiled_address}"
+        "LCALL #{@compiled_address} (was atom<#{block_result}>)"
       else 
-        "LAZYC #{block.inspect}"
+        "LAZYC atom<#{block_result}>"
       end
+    end
+    def block_result
+      @block_result ||= block.call
     end
   end
   Return = Class.new do

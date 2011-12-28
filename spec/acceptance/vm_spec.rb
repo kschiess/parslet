@@ -70,6 +70,9 @@ describe 'VM operation' do
       it "should error out with the correct message" do
         vm_fails str('f') >> str('b'), 'fa'
       end 
+      it "errors out on EOF" do
+        vm_fails str('f')>>str('b'), ''
+      end 
     end
     describe 'alternatives' do
       it "parses left side" do
@@ -153,6 +156,31 @@ describe 'VM operation' do
         }
         ex.should be_kind_of(Parslet::UnconsumedInput)
         ex.message.should == "Don't know what to do with . at line 1 char 2."
+      end 
+    end
+  end
+
+  describe 'regressions' do
+    describe 'the common space? idiom' do
+      let(:space_p) { match['\s'].repeat(1).maybe }
+      
+      it "parses space" do
+        vm_parses space_p, "    \t   "
+      end 
+      it "parses nothing" do
+        vm_parses space_p, ""
+      end 
+      it "stops parsing at the first char" do
+        vm_parses space_p >> str('a'), '   a'
+      end 
+    end
+    describe 'stack state after long alternatives (from http parser)' do
+      let(:pchar) {
+        str(':') | str('@') | str('&') | str('=') | str('+') }
+      let(:path) { pchar.repeat(1) >> (str('/') >> pchar.repeat).repeat }
+      
+      it "fails to match path correctly" do
+        vm_parses path, '@'
       end 
     end
   end

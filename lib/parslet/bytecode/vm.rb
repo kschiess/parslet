@@ -14,25 +14,25 @@ module Parslet::Bytecode
       init(program, io)
       
       loop do
-        p(
-          :ip => Compiler::Address.new(@ip), 
-          :top => @values.last,
-          :e => @error.to_s
-        ) if debug?
-        
+        old_ip = @ip
         instruction = fetch
         break unless instruction
         
-        p [:instr, instruction] if debug?
-        p [:stack, @values.reverse[0,4], @values.size>4 ? '...' : ''] if debug?
-        p [:calls, @calls] if debug?
+        # Diagnostics
+        printf("executing %5d: %s\n", old_ip, instruction) if debug?
 
+        # Run the current instruction
         instruction.run(self)
-        break if @stop
         
-        puts if debug?
+        # Diagnostics
+        dump_state(0) if debug?
+        break if @stop
       end
       
+      fail "Stack contains too many values." if @values.size>1
+
+      # In the best case, we have successfully matched and consumed all input. 
+      # This is what we want, from now on down it's all error cases.
       return flatten(@values.last) if success? && source.eof?
 
       if success?
@@ -45,8 +45,8 @@ module Parslet::Bytecode
 
       @error.raise
       
-    rescue 
-      dump_state
+    rescue => ex
+      dump_state(-1) unless ex.kind_of?(Parslet::ParseFailed)
       raise
     end
     
@@ -69,14 +69,15 @@ module Parslet::Bytecode
     
     # Dumps the VM state so that the user can track errors down.
     #
-    def dump_state
-      puts "\nVM STATE on exception -------------------------------- "
+    def dump_state(ip_offset)
+      return unless debug?
+      puts "\nVM STATE -------------------------------------------- "
       puts "Program: "
       for adr in (@ip-5)..(@ip+5)
         printf("%s%5d: %s\n", 
-          adr == @ip ? '->' : '  ',
+          adr == @ip+ip_offset ? '->' : '  ',
           adr, 
-          @program.at(adr)) if @program.at(adr)
+          @program.at(adr)) if adr >= 0 && @program.at(adr)
       end
       
       puts "\nStack(#{@values.size}): (last 5, top is top of stack)"
@@ -102,8 +103,14 @@ module Parslet::Bytecode
     end
     def pop(n=nil)
       if n
+        fail "Stack corruption detected, popping too many values (#{n}/#{@values.size})." \
+          if n>@values.size
+            
         @values.pop(n)
       else
+        fail "Stack corruption detected, popping too many values. (stack is empty)" \
+          if @values.empty?
+        
         @values.pop
       end
     end

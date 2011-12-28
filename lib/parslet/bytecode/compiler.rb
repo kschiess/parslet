@@ -54,7 +54,7 @@ module Parslet::Bytecode
       end_adr = fwd_address
       parslets.each_with_index do |atom, idx|
         atom.accept(self)
-        add CheckSequence.new(idx+1, end_adr, error_msg)
+        add CheckSequence.new(idx, end_adr, error_msg)
       end
             
       add PackSequence.new(parslets.size)
