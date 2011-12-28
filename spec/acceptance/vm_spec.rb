@@ -140,7 +140,7 @@ describe 'VM operation' do
       }
       
       it "parses" do
-        vm_parses parser, 'foobar'
+        vm_parses parser.new, 'foobar'
       end 
     end
   end

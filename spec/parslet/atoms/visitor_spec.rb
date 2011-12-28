@@ -68,4 +68,13 @@ describe Parslet::Atoms do
       parslet.accept(visitor)
     end 
   end
+  describe "< Parslet::Parser" do
+    let(:parslet) { Parslet::Parser.new }
+    it "calls back to visitor" do
+      visitor.should_receive(:visit_parser).with(:root).once
+      
+      flexmock(parslet, :root => :root)
+      parslet.accept(visitor)
+    end 
+  end
 end

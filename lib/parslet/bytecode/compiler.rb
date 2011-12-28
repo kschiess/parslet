@@ -88,5 +88,8 @@ module Parslet::Bytecode
     def visit_entity(name, block)
       add CompileOrJump.new(self, block)
     end
+    def visit_parser(root)
+      root.accept(self)
+    end
   end
 end

@@ -10,7 +10,7 @@ module Parslet::Atoms
   end
   
   class Str
-    # Call back visitors #str method. See parslet/export for an example. 
+    # Call back visitors #visit_str method. See parslet/export for an example.
     #
     def accept(visitor)
       visitor.visit_str(str)
@@ -18,7 +18,8 @@ module Parslet::Atoms
   end
   
   class Entity
-    # Call back visitors #entity method. See parslet/export for an example. 
+    # Call back visitors #visit_entity method. See parslet/export for an
+    # example. 
     #
     def accept(visitor)
       visitor.visit_entity(name, block)
@@ -26,7 +27,8 @@ module Parslet::Atoms
   end
   
   class Named
-    # Call back visitors #named method. See parslet/export for an example. 
+    # Call back visitors #visit_named method. See parslet/export for an
+    # example. 
     #
     def accept(visitor)
       visitor.visit_named(name, parslet)
@@ -34,7 +36,8 @@ module Parslet::Atoms
   end
   
   class Sequence
-    # Call back visitors #sequence method. See parslet/export for an example. 
+    # Call back visitors #visit_sequence method. See parslet/export for an
+    # example. 
     #
     def accept(visitor)
       visitor.visit_sequence(parslets)
@@ -42,7 +45,8 @@ module Parslet::Atoms
   end
   
   class Repetition
-    # Call back visitors #repetition method. See parslet/export for an example. 
+    # Call back visitors #visit_repetition method. See parslet/export for an
+    # example. 
     #
     def accept(visitor)
       visitor.visit_repetition(@tag, min, max, parslet)
@@ -50,7 +54,8 @@ module Parslet::Atoms
   end
   
   class Alternative
-    # Call back visitors #alternative method. See parslet/export for an example. 
+    # Call back visitors #visit_alternative method. See parslet/export for an
+    # example. 
     #
     def accept(visitor)
       visitor.visit_alternative(alternatives)
@@ -58,7 +63,8 @@ module Parslet::Atoms
   end
   
   class Lookahead
-    # Call back visitors #lookahead method. See parslet/export for an example. 
+    # Call back visitors #visit_lookahead method. See parslet/export for an
+    # example. 
     #
     def accept(visitor)
       visitor.visit_lookahead(positive, bound_parslet)
@@ -66,10 +72,18 @@ module Parslet::Atoms
   end
   
   class Re
-    # Call back visitors #re method. See parslet/export for an example. 
+    # Call back visitors #visit_re method. See parslet/export for an example. 
     #
     def accept(visitor)
       visitor.visit_re(match)
     end
+  end
+end
+
+class Parslet::Parser
+  # Call back visitors #visit_parser method. 
+  #
+  def accept(visitor)
+    visitor.visit_parser(root)
   end
 end
