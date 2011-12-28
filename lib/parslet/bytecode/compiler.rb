@@ -65,9 +65,10 @@ module Parslet::Bytecode
       adr_end = fwd_address
       
       add EnterFrame.new
+      add PushPos.new
       alternatives.each_with_index do |alternative, idx|
         alternative.accept(self)
-        add BranchOnSuccess.new(adr_end)
+        add BranchOnSuccess.new(adr_end, idx)
       end
       add Fail.new(["Expected one of ", alternatives.inspect], alternatives.size)
       

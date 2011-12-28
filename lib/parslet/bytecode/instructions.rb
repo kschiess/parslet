@@ -203,8 +203,9 @@ module Parslet::Bytecode
   
   # If the vm.success? is true, branches to the given address. 
   #
-  BranchOnSuccess = Struct.new(:adr) do
+  BranchOnSuccess = Struct.new(:adr, :pos_ptr) do
     def run(vm)
+      source = vm.source
       if vm.success?
         # Stack will look like this: 
         #  (n*) previous failures
@@ -219,6 +220,10 @@ module Parslet::Bytecode
       else
         # Otherwise, clear the error and try the alternative that comes
         # right here in the byte code.
+        
+        # We need to reset the source.pos to what it was before starting on
+        # one of several alternatives: 
+        source.pos = vm.value_at(pos_ptr)
 
         # Push the error as if it were a value. If all branches fail, this can
         # be used to create a complete error trace. If not, VM#discard_frame
@@ -229,7 +234,7 @@ module Parslet::Bytecode
       end
     end
     def to_s
-      "BRSUC #{adr}"
+      "BRSUC #{adr}, #{pos_ptr}"
     end
   end
 

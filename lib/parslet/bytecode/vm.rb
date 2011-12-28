@@ -128,6 +128,9 @@ module Parslet::Bytecode
         @values.pop
       end
     end
+    def value_at(ptr)
+      @values.at(-ptr-1)
+    end
     def enter_frame
       @frames.push @values.size
     end

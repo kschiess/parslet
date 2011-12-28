@@ -155,6 +155,7 @@ describe 'VM operation' do
         ex.message.should == "Don't know what to do with . at line 1 char 2."
       end 
     end
+    
     describe 'match' do
       it "errors out (premature end of input)" do
         catch_exception { 
@@ -166,6 +167,14 @@ describe 'VM operation' do
   end
 
   describe 'regressions' do
+    describe 'alternatives' do
+      let(:radix) { digit >> str('r') >> digit }
+      let(:digit) { match['\d'].repeat(1) }
+      let(:atom) { radix | digit }
+      it "should correctly reset source pos" do
+        vm_parses atom, '5'
+      end 
+    end
     describe 'the common space? idiom' do
       let(:space_p) { match['\s'].repeat(1).maybe }
       
