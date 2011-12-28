@@ -72,6 +72,20 @@ module Parslet::Bytecode
     def dump_state(ip_offset)
       return unless debug?
       puts "\nVM STATE -------------------------------------------- "
+      
+      old_pos = source.pos
+      debug_pos = old_pos - 10
+      source.pos = debug_pos < 0 ? 0 : debug_pos
+      puts "Source: #{source.read(20)}"
+      puts (" "*"Source: ".size) << (" "*(10+(debug_pos<0 ? debug_pos : 0))) << '^'
+      source.pos = old_pos
+      
+      if @error
+        puts "Error register: #{@error}"
+      else 
+        puts "Error register: EMPTY"
+      end
+      
       puts "Program: "
       for adr in (@ip-5)..(@ip+5)
         printf("%s%5d: %s\n", 
