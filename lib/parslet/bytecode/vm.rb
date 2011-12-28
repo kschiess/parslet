@@ -96,7 +96,7 @@ module Parslet::Bytecode
       
       puts "\nStack(#{@values.size}): (last 5, top is top of stack)"
       @values.last(5).reverse.each_with_index do |v,i|
-        printf("  %5d: %s\n", i, v)
+        printf("  %5d: %s\n", i, v.inspect)
       end
 
       puts "\nStack Frames(#{@frames.size}): (last 5, top is top of stack)"
