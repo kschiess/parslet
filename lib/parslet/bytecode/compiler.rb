@@ -17,6 +17,9 @@ module Parslet::Bytecode
       def inspect
         "@#{@address}"
       end
+      def to_s
+        "@#{address}"
+      end
     end
     
     def compile(atom)

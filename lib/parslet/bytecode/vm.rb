@@ -44,6 +44,10 @@ module Parslet::Bytecode
       end
 
       @error.raise
+      
+    rescue 
+      dump_state
+      raise
     end
     
     attr_reader :source
@@ -61,6 +65,35 @@ module Parslet::Bytecode
     
     def fetch
       @program.at(@ip).tap { @ip += 1 }
+    end
+    
+    # Dumps the VM state so that the user can track errors down.
+    #
+    def dump_state
+      puts "\nVM STATE on exception -------------------------------- "
+      puts "Program: "
+      for adr in (@ip-5)..(@ip+5)
+        printf("%s%5d: %s\n", 
+          adr == @ip ? '->' : '  ',
+          adr, 
+          @program.at(adr)) if @program.at(adr)
+      end
+      
+      puts "\nStack(#{@values.size}): (last 5, top is top of stack)"
+      @values.last(5).reverse.each_with_index do |v,i|
+        printf("  %5d: %s\n", i, v)
+      end
+
+      puts "\nStack Frames(#{@frames.size}): (last 5, top is top of stack)"
+      @frames.last(5).reverse.each_with_index do |v,i|
+        printf("  %5d: trunc stack at %s\n", i, v)
+      end
+
+      puts "\nCall Stack(#{@calls.size}): (last 5, top is top of stack)"
+      @calls.last(5).reverse.each_with_index do |v,i|
+        printf("  %5d: return to @%s\n", i, v)
+      end
+      puts "---------------------- -------------------------------- "
     end
     
     # --------------------------------------------- interface for instructions

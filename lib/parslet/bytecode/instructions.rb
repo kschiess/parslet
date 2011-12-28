@@ -8,6 +8,10 @@ module Parslet::Bytecode
       @mismatch_error_prefix = "Expected #{str.inspect}, but got "
     end
     
+    def to_s
+      "MATCH #{str.inspect}"
+    end
+    
     def run(vm)
       source = vm.source
       error_pos = source.pos
@@ -31,6 +35,10 @@ module Parslet::Bytecode
     def initialize(re, size)
       super
       @failure = "Failed to match #{re.inspect[1..-2]}"
+    end
+    
+    def to_s
+      "RE    #{re.inspect}, #{size}"
     end
     
     def run(vm)
@@ -60,6 +68,10 @@ module Parslet::Bytecode
       vm.push 0       # occurrences
       vm.push [tag]   # will collect results
     end
+    
+    def to_s
+      "STPRE #{tag.inspect}"
+    end
   end
   
   # Repeat matching with a minimum of min and a maximum of max times. 
@@ -69,6 +81,9 @@ module Parslet::Bytecode
       super
       
       @minrep_error = ["Expected at least #{min} of ", parslet]
+    end
+    def to_s
+      "RPEAT #{min || 'n/a'}, #{max || 'n/a'}, #{adr}, #{parslet}"
     end
     def run(vm)
       source = vm.source
@@ -130,6 +145,9 @@ module Parslet::Bytecode
         vm.jump(adr)
       end
     end
+    def to_s
+      "CHKSQ #{cleanup_items}, #{adr}, #{error[0,50] + "..."}"
+    end
   end
   
   # Packs size stack elements into an array that is prefixed with the
@@ -145,6 +163,9 @@ module Parslet::Bytecode
       elts = vm.pop(size)
       vm.push [:sequence, *elts]
     end
+    def to_s
+      "PACK  #{size}"
+    end
   end
   
   # Enters a new stack frame that can be discarded with vm.discard_frame. This
@@ -154,6 +175,9 @@ module Parslet::Bytecode
   EnterFrame = Class.new do
     def run(vm)
       vm.enter_frame
+    end
+    def to_s
+      "ENTER"
     end
   end
   
@@ -168,6 +192,9 @@ module Parslet::Bytecode
       error.children.replace(children)
       
       vm.set_error error
+    end
+    def to_s
+      "FAIL  #{message}, #{size}"
     end
   end
   
@@ -198,6 +225,9 @@ module Parslet::Bytecode
         vm.clear_error
       end
     end
+    def to_s
+      "BRSUC #{adr}"
+    end
   end
 
   # Boxes a value inside a name tag.
@@ -212,6 +242,9 @@ module Parslet::Bytecode
         vm.push(name => result)
       end
     end
+    def to_s
+      "BOX   #{name.inspect}"
+    end
   end
 
   # Pushes the current source pos to the stack.
@@ -223,6 +256,9 @@ module Parslet::Bytecode
     def run(vm)
       source = vm.source 
       vm.push source.pos
+    end
+    def to_s
+      "PSHPS"
     end
   end
 
@@ -255,6 +291,9 @@ module Parslet::Bytecode
         vm.set_error source.error(error_msg, start_pos)
       end
     end
+    def to_s
+      "CHKRS #{positive ? ':&' : ':!'}, #{parslet.inspect}"
+    end
   end
   
   # Compiles the block or 'calls' the subroutine that was compiled earlier.
@@ -273,15 +312,28 @@ module Parslet::Bytecode
         vm.call(@compiled_address)
       end
     end
+    def to_s
+      if @compiled_address
+        "LCALL #{@compiled_address}"
+      else 
+        "LAZYC #{block.inspect}"
+      end
+    end
   end
   Return = Class.new do
     def run(vm)
       vm.call_ret
     end
+    def to_s
+      "RETRN"
+    end
   end
   Stop = Class.new do
     def run(vm)
       vm.stop
+    end
+    def to_s
+      "STPVM"
     end
   end
 end
