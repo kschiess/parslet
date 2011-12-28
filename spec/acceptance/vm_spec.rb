@@ -56,9 +56,6 @@ describe 'VM operation' do
       it "parses" do
         vm_parses match['foo'], 'f'
       end 
-      it "errors out (premature end of input)" do
-        vm_fails match['foo'].repeat(1), ''
-      end
       it "errors out (mismatch)" do
         vm_fails match['foo'], 'b'
       end  
@@ -157,6 +154,14 @@ describe 'VM operation' do
         ex.should be_kind_of(Parslet::UnconsumedInput)
         ex.message.should == "Don't know what to do with . at line 1 char 2."
       end 
+    end
+    describe 'match' do
+      it "errors out (premature end of input)" do
+        catch_exception { 
+          vm_parse match['foo'].repeat(1), ''
+        }.cause.ascii_tree.should == \
+          "`- Expected at least 1 of [foo] at line 1 char 1.\n   `- Premature end of input at line 1 char 1.\n"
+      end
     end
   end
 

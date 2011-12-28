@@ -17,7 +17,7 @@ module Parslet::Bytecode
       error_pos = source.pos
       s = source.read(str.bytesize)
 
-      if !s || s.size != str.size
+      if s.size != str.size
         source.pos = error_pos
         vm.set_error source.error("Premature end of input")
       else
@@ -47,12 +47,12 @@ module Parslet::Bytecode
       error_pos = source.pos
       s = source.read(size)
       
-      # if !s || s.size != size
-      #   source.pos = error_pos
-      #   vm.set_error source.error("Premature end of input")
-      #   return 
-      # end
-      # 
+      if s.size != size
+        source.pos = error_pos
+        vm.set_error source.error("Premature end of input")
+        return
+      end
+      
       if !s.match(re)
         source.pos = error_pos
         vm.set_error source.error(@failure)
@@ -280,7 +280,9 @@ module Parslet::Bytecode
       source = vm.source
       
       vm.pop if vm.success?
-      
+
+      # Retrieve the parse position from before attempting to match the
+      # parslet.
       start_pos = vm.pop
       source.pos = start_pos
       
