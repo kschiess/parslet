@@ -71,18 +71,20 @@ module Parslet::Bytecode
       add Re.new(match, 1)
     end
     def visit_sequence(parslets)
-      sequence = Parslet::Atoms::Sequence.new(*parslets)
-      error_msg = "Failed to match sequence (#{sequence.inspect})"
+      emit_block do
+        sequence = Parslet::Atoms::Sequence.new(*parslets)
+        error_msg = "Failed to match sequence (#{sequence.inspect})"
       
-      end_adr = fwd_address
-      parslets.each_with_index do |atom, idx|
-        atom.accept(self)
-        add CheckSequence.new(idx, end_adr, error_msg)
-      end
+        end_adr = fwd_address
+        parslets.each_with_index do |atom, idx|
+          atom.accept(self)
+          add CheckSequence.new(idx, end_adr, error_msg)
+        end
             
-      add PackSequence.new(parslets.size)
+        add PackSequence.new(parslets.size)
 
-      end_adr.resolve(self)
+        end_adr.resolve(self)
+      end
     end
     def visit_alternative(alternatives)
       emit_block do
@@ -100,12 +102,10 @@ module Parslet::Bytecode
       end
     end
     def visit_repetition(tag, min, max, parslet)
-      emit_block do
-        add SetupRepeat.new(tag)
-        start = current_address
-        parslet.accept(self)
-        add Repeat.new(min, max, start, parslet)
-      end
+      add SetupRepeat.new(tag)
+      start = current_address
+      parslet.accept(self)
+      add Repeat.new(min, max, start, parslet)
     end
     def visit_named(name, parslet)
       parslet.accept(self)
