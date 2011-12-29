@@ -4,6 +4,7 @@ module Parslet::Bytecode
   class Compiler
     def initialize
       @buffer = []
+      @blocks = Hash.new
     end
     
     class Address
@@ -19,6 +20,28 @@ module Parslet::Bytecode
       end
       def to_s
         "@#{address}"
+      end
+    end
+    class Block
+      def initialize(name, block, compiler)
+        @name = name
+        @block = block
+        @compiler = compiler
+      end
+      def address
+        return @address if @address
+        
+        # Actual compilation: 
+        
+        # TODO raise not implemented if the block returns nil (see Entity)
+        @address = @compiler.current_address
+        atom.accept(@compiler)
+        @compiler.add Return.new
+        
+        return @address
+      end
+      def atom
+        @atom ||= @block.call
       end
     end
     
@@ -62,23 +85,27 @@ module Parslet::Bytecode
       end_adr.resolve(self)
     end
     def visit_alternative(alternatives)
-      adr_end = fwd_address
+      emit_block do
+        adr_end = fwd_address
       
-      add EnterFrame.new
-      add PushPos.new
-      alternatives.each_with_index do |alternative, idx|
-        alternative.accept(self)
-        add BranchOnSuccess.new(adr_end, idx)
+        add EnterFrame.new
+        add PushPos.new
+        alternatives.each_with_index do |alternative, idx|
+          alternative.accept(self)
+          add BranchOnSuccess.new(adr_end, idx)
+        end
+        add Fail.new(["Expected one of ", alternatives.inspect], alternatives.size)
+      
+        adr_end.resolve(self)
       end
-      add Fail.new(["Expected one of ", alternatives.inspect], alternatives.size)
-      
-      adr_end.resolve(self)
     end
     def visit_repetition(tag, min, max, parslet)
-      add SetupRepeat.new(tag)
-      start = current_address
-      parslet.accept(self)
-      add Repeat.new(min, max, start, parslet)
+      emit_block do
+        add SetupRepeat.new(tag)
+        start = current_address
+        parslet.accept(self)
+        add Repeat.new(min, max, start, parslet)
+      end
     end
     def visit_named(name, parslet)
       parslet.accept(self)
@@ -90,10 +117,22 @@ module Parslet::Bytecode
       add CheckAndReset.new(positive, parslet)
     end
     def visit_entity(name, block)
-      add CompileOrJump.new(self, block)
+      @blocks[name] ||= Block.new(name, block, self)
+      add CallBlock.new(@blocks[name])
     end
     def visit_parser(root)
       root.accept(self)
+    end
+
+    def emit_block
+      end_adr = fwd_address
+      cache_adr = current_address
+      add CheckCache.new(end_adr)
+
+      yield
+
+      add StoreResult.new(cache_adr)
+      end_adr.resolve(self)
     end
   end
 end

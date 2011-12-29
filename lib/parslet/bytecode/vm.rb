@@ -12,7 +12,7 @@ module Parslet::Bytecode
     
     def run(program, io)
       init(program, io)
-      
+
       loop do
         old_ip = @ip
         instruction = fetch
@@ -28,7 +28,7 @@ module Parslet::Bytecode
         dump_state(0) if debug?
         break if @stop
       end
-      
+
       fail "Stack contains too many values." if @values.size>1
 
       # In the best case, we have successfully matched and consumed all input. 
@@ -66,6 +66,7 @@ module Parslet::Bytecode
       @values = []
       @calls  = []
       @frames = []
+      @cache  = {}
     end
     
     def fetch
@@ -117,6 +118,41 @@ module Parslet::Bytecode
     end
     
     # --------------------------------------------- interface for instructions
+    def access_cache(skip_adr)
+      key = [source.pos, @ip-1]
+      
+      # Is the given vm state in the cache yet?
+      if @cache[key]
+        # Restore state
+        success, value, advance = @cache[key]
+        
+        if success
+          push value 
+        else 
+          set_error value
+        end
+        
+        source.pos += advance
+        
+        # Skip to skip_adr
+        jump skip_adr
+        return true
+      end
+      
+      return false
+    end
+    def store_cache(adr)
+      if success?
+        pos, result = pop(2)
+        key = [pos, adr.address]
+        @cache[key] = [true, result, source.pos-pos]
+        push result
+      else
+        pos = pop
+        key = [pos, adr.address]
+        @cache[key] = [false, @error, source.pos-pos]
+      end
+    end
     def push(value)
       @values.push value
     end

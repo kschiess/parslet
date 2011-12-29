@@ -311,29 +311,12 @@ module Parslet::Bytecode
   
   # Compiles the block or 'calls' the subroutine that was compiled earlier.
   #
-  CompileOrJump = Struct.new(:compiler, :block) do
+  CallBlock = Struct.new(:block) do
     def run(vm)
-      if @compiled_address
-        vm.call(@compiled_address)
-      else
-        # TODO raise not implemented if the block returns nil (see Entity)
-        atom = block_result
-        @compiled_address = compiler.current_address
-        atom.accept(compiler)
-        compiler.add Return.new
-        
-        vm.call(@compiled_address)
-      end
+      vm.call(block.address)
     end
     def to_s
-      if @compiled_address
-        "LCALL #{@compiled_address} (was atom<#{block_result}>)"
-      else 
-        "LAZYC atom<#{block_result}>"
-      end
-    end
-    def block_result
-      @block_result ||= block.call
+      "LCALL #{block.address} (was atom<#{block.atom}>)"
     end
   end
   Return = Class.new do
@@ -350,6 +333,26 @@ module Parslet::Bytecode
     end
     def to_s
       "STPVM"
+    end
+  end
+
+  # Caching
+  CheckCache = Struct.new(:skip_adr) do
+    def run(vm)
+      return if vm.access_cache(skip_adr)
+      
+      vm.push vm.source.pos
+    end
+    def to_s
+      "RETCA #{skip_adr}"
+    end
+  end
+  StoreResult = Struct.new(:adr) do
+    def run(vm)
+      vm.store_cache(adr)
+    end
+    def to_s
+      "STOCA #{adr}"
     end
   end
 end
