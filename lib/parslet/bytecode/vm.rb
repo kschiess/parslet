@@ -35,6 +35,8 @@ module Parslet::Bytecode
       # This is what we want, from now on down it's all error cases.
       return flatten(@values.last) if success? && source.eof?
 
+      # Maybe we've matched some, but not all of the input? In parslets books, 
+      # this is an error as well. 
       if success?
         # assert: not source.eof?
         current_pos = source.pos
@@ -43,6 +45,9 @@ module Parslet::Bytecode
           raise(Parslet::UnconsumedInput)
       end
 
+      # assert: ! @error.nil?
+
+      # And maybe we just could not do it for a reason. Raise that. 
       @error.raise
       
     rescue => ex

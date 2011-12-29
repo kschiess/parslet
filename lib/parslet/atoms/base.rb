@@ -38,7 +38,7 @@ class Parslet::Atoms::Base
     compiler = Parslet::Bytecode::Compiler.new
     program = compiler.compile(self)
     
-    vm = Parslet::Bytecode::VM.new(false)
+    vm = Parslet::Bytecode::VM.new
     vm.run(program, io)
   end
   
