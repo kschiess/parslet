@@ -4,6 +4,11 @@ describe 'VM operation' do
   extend Parslet
   include Parslet
   
+  def self.rule(name, &block)
+    let(name) { example = self; Parslet::Atoms::Entity.new(name) { 
+      example.instance_eval(&block) } }
+  end
+  
   # Compiles the parser and runs it through the VM with the given input. 
   #
   def vm_parse(parser, input)
@@ -176,9 +181,9 @@ describe 'VM operation' do
       end 
     end
     describe 'alternatives' do
-      let(:radix) { digit >> str('r') >> digit }
-      let(:digit) { match['\d'].repeat(1) }
-      let(:atom) { radix | digit }
+      rule(:radix) { digit >> str('r') >> digit }
+      rule(:digit) { match['\d'].repeat(1) }
+      rule(:atom) { radix | digit }
       it "should correctly reset source pos" do
         vm_parses atom, '5'
       end 
