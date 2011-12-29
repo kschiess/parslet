@@ -65,6 +65,7 @@ module Parslet::Bytecode
   
   SetupRepeat = Struct.new(:tag) do
     def run(vm)
+      vm.push vm.source.pos
       vm.push 0       # occurrences
       vm.push [tag]   # will collect results
     end
@@ -90,12 +91,13 @@ module Parslet::Bytecode
       start_position = source.pos
       
       unless vm.success?
-        occurrences, accumulator = vm.pop(2)
+        pos, occurrences, accumulator = vm.pop(3)
+        source.pos = pos
 
         # We've encountered an error. Are we still below the minimum number of
         # matches?
         if occurrences < min
-          error = source.error(@minrep_error, start_position)
+          error = source.error(@minrep_error, pos)
           error.children << vm.error
           vm.set_error error
           return
@@ -112,7 +114,7 @@ module Parslet::Bytecode
       # assert: vm.success?
       
       result = vm.pop
-      occurrences, accumulator = vm.pop(2)
+      pos, occurrences, accumulator = vm.pop(3)
 
       accumulator << result
       occurrences += 1
@@ -125,6 +127,7 @@ module Parslet::Bytecode
       end
 
       # No maximum was set or it was not reached. Continue matching.
+      vm.push vm.source.pos
       vm.push occurrences
       vm.push accumulator
       vm.jump adr

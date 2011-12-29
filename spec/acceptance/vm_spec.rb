@@ -167,6 +167,14 @@ describe 'VM operation' do
   end
 
   describe 'regressions' do
+    describe 'repetitions' do
+      let(:simple) { str('a') >> str('b') }
+      let(:comp)   { simple.repeat(1) }
+      it "should reset source pos correctly" do
+        catch_exception { vm_parse comp, 'aba' }.
+          cause.ascii_tree.should == "`- Don't know what to do with a at line 1 char 3.\n"
+      end 
+    end
     describe 'alternatives' do
       let(:radix) { digit >> str('r') >> digit }
       let(:digit) { match['\d'].repeat(1) }
