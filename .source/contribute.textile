@@ -47,10 +47,6 @@ A javascript compiler that targets the rubinius VM. (Matthew Draper)
 A really small and elegant HTTP server written in Ruby. Think Webrick. Using
 parslet. (Postmodern)
 
-"*Reak*":https://github.com/rkh/Reak
-
-A smalltalk compiler that targets the rubinius VM. (R. Konstantin Haase)
-
 "*wt* aka working title":https://github.com/kschiess/wt
 
 A small parser that compiles to a postscript file. This is mostly for demoing
