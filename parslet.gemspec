@@ -2,14 +2,14 @@
 
 Gem::Specification.new do |s|
   s.name = 'parslet'
-  s.version = '1.2.3'
+  s.version = '1.3.0'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.authors = ['Kaspar Schiess']
   s.date = Date.today
   s.email = 'kaspar.schiess@absurd.li'
   s.extra_rdoc_files = ['README']
-  s.files = %w(Gemfile HISTORY.txt LICENSE Rakefile README) + Dir.glob("{lib,example}/**/*")
+  s.files = %w(HISTORY.txt LICENSE Rakefile README) + Dir.glob("{lib,example}/**/*")
   s.homepage = 'http://kschiess.github.com/parslet'
   s.rdoc_options = ['--main', 'README']
   s.require_paths = ['lib']

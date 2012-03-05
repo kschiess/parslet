@@ -2,8 +2,10 @@
   
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
+    
+= 1.3.1 / ???
 
-= 1.3.0 / ???
+= 1.3.0 / 5Mar2012
 
   ! Parslet::Transform::Context is now much more well-behaved. It has
     #respond_to? and #method_missing; it now looks like a plain old Ruby
