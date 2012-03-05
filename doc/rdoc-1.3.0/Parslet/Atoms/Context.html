@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Class: Parslet::Atoms::Context</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/parslet/atoms/context.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-cache">#cache</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../Parslet.html">Parslet</a>
+  
+    <li><a href="../../Parslet/Atoms.html">Parslet::Atoms</a>
+  
+    <li><a href="../../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>
+  
+    <li><a href="../../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a>
+  
+    <li><a href="../../Parslet/Atoms/CanFlatten.html">Parslet::Atoms::CanFlatten</a>
+  
+    <li><a href="../../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a>
+  
+    <li><a href="../../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a>
+  
+    <li><a href="../../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a>
+  
+    <li><a href="../../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a>
+  
+    <li><a href="../../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a>
+  
+    <li><a href="../../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>
+  
+    <li><a href="../../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>
+  
+    <li><a href="../../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>
+  
+    <li><a href="../../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>
+  
+    <li><a href="../../Parslet/Bytecode.html">Parslet::Bytecode</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler.html">Parslet::Bytecode::Compiler</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Address.html">Parslet::Bytecode::Compiler::Address</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Block.html">Parslet::Bytecode::Compiler::Block</a>
+  
+    <li><a href="../../Parslet/Bytecode/VM.html">Parslet::Bytecode::VM</a>
+  
+    <li><a href="../../Parslet/ClassMethods.html">Parslet::ClassMethods</a>
+  
+    <li><a href="../../Parslet/ErrorTree.html">Parslet::ErrorTree</a>
+  
+    <li><a href="../../Parslet/Expression.html">Parslet::Expression</a>
+  
+    <li><a href="../../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a>
+  
+    <li><a href="../../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a>
+  
+    <li><a href="../../Parslet/ParseFailed.html">Parslet::ParseFailed</a>
+  
+    <li><a href="../../Parslet/Parser.html">Parslet::Parser</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a>
+  
+    <li><a href="../../Parslet/Pattern.html">Parslet::Pattern</a>
+  
+    <li><a href="../../Parslet/Slice.html">Parslet::Slice</a>
+  
+    <li><a href="../../Parslet/Source.html">Parslet::Source</a>
+  
+    <li><a href="../../Parslet/Transform.html">Parslet::Transform</a>
+  
+    <li><a href="../../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Parslet::Atoms::Context</h1>
+
+  <div id="description" class="description">
+    
+<p>Helper class that implements a transient cache that maps position and
+parslet object to results. This is used for memoization in the packrat
+style.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/parslet/atoms/context.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+  <span class="ruby-ivar">@cache</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>, <span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = {} }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-cache" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cache</span><span
+            class="method-args">(obj, source) { || ... }</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Caches a parse answer for obj at source.pos. Applying the same parslet at
+one position of input always yields the same result, unless the input has
+changed.</p>
+
+<p>We need the entire source here so we can ask for how many characters  were
+consumed by a successful parse. Imitation of such a parse must  advance the
+input pos by the same amount of bytes.</p>
+          
+
+          
+          <div class="method-source-code" id="cache-source">
+            <pre><span class="ruby-comment"># File lib/parslet/atoms/context.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cache</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">source</span>, &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">beg</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span>
+    
+  <span class="ruby-comment"># Not in cache yet? Return early.</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">entry</span> = <span class="ruby-identifier">lookup</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">beg</span>)
+    <span class="ruby-identifier">result</span> = <span class="ruby-keyword">yield</span>
+
+    <span class="ruby-identifier">set</span> <span class="ruby-identifier">obj</span>, <span class="ruby-identifier">beg</span>, [<span class="ruby-identifier">result</span>, <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span><span class="ruby-operator">-</span><span class="ruby-identifier">beg</span>]
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">result</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># the condition in unless has returned true, so entry is not nil.</span>
+  <span class="ruby-identifier">result</span>, <span class="ruby-identifier">advance</span> = <span class="ruby-identifier">entry</span>
+
+  <span class="ruby-comment"># The data we're skipping here has been read before. (since it is in </span>
+  <span class="ruby-comment"># the cache) PLUS the actual contents are not interesting anymore since</span>
+  <span class="ruby-comment"># we know obj matches at beg. So skip reading.</span>
+  <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span> = <span class="ruby-identifier">beg</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">advance</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- cache-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- cache-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

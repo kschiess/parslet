@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Class: Parslet::Transform</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/parslet/transform.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../Parslet.html">Parslet</a>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-rule">::rule</a>
+    
+    <li><a href="#method-i-apply">#apply</a>
+    
+    <li><a href="#method-i-call_on_match">#call_on_match</a>
+    
+    <li><a href="#method-i-rule">#rule</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Parslet.html">Parslet</a>
+  
+    <li><a href="../Parslet/Atoms.html">Parslet::Atoms</a>
+  
+    <li><a href="../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>
+  
+    <li><a href="../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>
+  
+    <li><a href="../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a>
+  
+    <li><a href="../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a>
+  
+    <li><a href="../Parslet/Atoms/CanFlatten.html">Parslet::Atoms::CanFlatten</a>
+  
+    <li><a href="../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a>
+  
+    <li><a href="../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a>
+  
+    <li><a href="../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a>
+  
+    <li><a href="../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a>
+  
+    <li><a href="../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a>
+  
+    <li><a href="../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>
+  
+    <li><a href="../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>
+  
+    <li><a href="../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>
+  
+    <li><a href="../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>
+  
+    <li><a href="../Parslet/Bytecode.html">Parslet::Bytecode</a>
+  
+    <li><a href="../Parslet/Bytecode/Compiler.html">Parslet::Bytecode::Compiler</a>
+  
+    <li><a href="../Parslet/Bytecode/Compiler/Address.html">Parslet::Bytecode::Compiler::Address</a>
+  
+    <li><a href="../Parslet/Bytecode/Compiler/Block.html">Parslet::Bytecode::Compiler::Block</a>
+  
+    <li><a href="../Parslet/Bytecode/VM.html">Parslet::Bytecode::VM</a>
+  
+    <li><a href="../Parslet/ClassMethods.html">Parslet::ClassMethods</a>
+  
+    <li><a href="../Parslet/ErrorTree.html">Parslet::ErrorTree</a>
+  
+    <li><a href="../Parslet/Expression.html">Parslet::Expression</a>
+  
+    <li><a href="../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a>
+  
+    <li><a href="../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a>
+  
+    <li><a href="../Parslet/ParseFailed.html">Parslet::ParseFailed</a>
+  
+    <li><a href="../Parslet/Parser.html">Parslet::Parser</a>
+  
+    <li><a href="../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a>
+  
+    <li><a href="../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a>
+  
+    <li><a href="../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a>
+  
+    <li><a href="../Parslet/Pattern.html">Parslet::Pattern</a>
+  
+    <li><a href="../Parslet/Slice.html">Parslet::Slice</a>
+  
+    <li><a href="../Parslet/Source.html">Parslet::Source</a>
+  
+    <li><a href="../Parslet/Transform.html">Parslet::Transform</a>
+  
+    <li><a href="../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Parslet::Transform</h1>
+
+  <div id="description" class="description">
+    
+<p>Transforms an expression tree into something else. The transformation
+performs a depth-first, post-order traversal of the expression tree. During
+that traversal, each time a rule matches a node, the node is replaced by
+the result of the block associated to the rule. Otherwise the node is
+accepted as is into the result tree.</p>
+
+<p>This is almost what you would generally do with a tree visitor, except that
+you can match several levels of the tree at once.</p>
+
+<p>As a consequence of this, the resulting tree will contain pieces of the
+original tree and new pieces. Most likely, you will want to transform the
+original tree wholly, so this isn’t a problem.</p>
+
+<p>You will not be able to create a loop, given that each node will be
+replaced only once and then left alone. This means that the results of a
+replacement will not be acted upon.</p>
+
+<p>Example:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">Example</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Transform</span>
+  <span class="ruby-identifier">rule</span>(:<span class="ruby-identifier">string</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">simple</span>(:<span class="ruby-identifier">x</span>)) {  <span class="ruby-comment"># (1)</span>
+    <span class="ruby-constant">StringLiteral</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">x</span>)
+  }
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>A tree transform (<a href="Transform.html">Parslet::Transform</a>) is
+defined by a set of rules. Each rule can be defined by calling <a
+href="Transform.html#method-i-rule">#rule</a> with the pattern as argument.
+The block given will be called every time the rule matches somewhere in the
+tree given to <a href="Transform.html#method-i-apply">#apply</a>. It is
+passed a Hash containing all the variable bindings of this pattern match.</p>
+
+<p>In the above example, (1) illustrates a simple matching rule.</p>
+
+<p>Let’s say you want to parse matching parentheses and distill a maximum nest
+depth. You would probably write a parser like the one in example/parens.rb;
+here’s the relevant part:</p>
+
+<pre>rule(:balanced) {
+  str('(').as(:l) &gt;&gt; balanced.maybe.as(:m) &gt;&gt; str(')').as(:r)
+}</pre>
+
+<p>If you now apply this to a string like ‘(())’, you get a intermediate parse
+tree that looks like this:</p>
+
+<pre>{
+  l: '(', 
+  m: {
+    l: '(', 
+    m: nil, 
+    r: ')' 
+  }, 
+  r: ')' 
+}</pre>
+
+<p>This parse tree is good for debugging, but what we would really like to
+have is just the nesting depth. This transformation rule will produce that:</p>
+
+<pre class="ruby"><span class="ruby-identifier">rule</span>(:<span class="ruby-identifier">l</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'('</span>, :<span class="ruby-identifier">m</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">simple</span>(:<span class="ruby-identifier">x</span>), :<span class="ruby-identifier">r</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">')'</span>) { 
+  <span class="ruby-comment"># innermost :m will contain nil</span>
+  <span class="ruby-identifier">x</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">x</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>
+}
+</pre>
+
+<h1 id="label-Usage+patterns">Usage patterns</h1>
+
+<p>There are four ways of using this class. The first one is very much
+recommended, followed by the second one for generality. The other ones are
+omitted here.</p>
+
+<p>Recommended usage is as follows:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">MyTransformator</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Transform</span>
+  <span class="ruby-identifier">rule</span>(<span class="ruby-operator">...</span>) { <span class="ruby-operator">...</span> }
+  <span class="ruby-identifier">rule</span>(<span class="ruby-operator">...</span>) { <span class="ruby-operator">...</span> }
+  <span class="ruby-comment"># ...</span>
+<span class="ruby-keyword">end</span>
+<span class="ruby-constant">MyTransformator</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">apply</span>(<span class="ruby-identifier">tree</span>)
+</pre>
+
+<p>Alternatively, you can use the <a href="Transform.html">Transform</a> class
+as follows:</p>
+
+<pre>transform = Parslet::Transform.new do
+  rule(...) { ... }
+end
+transform.apply(tree)</pre>
+
+<h1 id="label-Execution+context">Execution context</h1>
+
+<p>The execution context of action blocks differs depending on the arity of 
+said blocks. This can be confusing. It is however somewhat intentional. You
+should not create fat <a href="Transform.html">Transform</a> descendants
+containing a lot of helper methods,  instead keep your AST class
+construction in global scope or make it available through a factory. The
+following piece of code illustrates usage of global scope:</p>
+
+<pre>transform = Parslet::Transform.new do
+  rule(...) { AstNode.new(a_variable) }
+  rule(...) { Ast.node(a_variable) } # modules are nice
+end
+transform.apply(tree)</pre>
+
+<p>And here’s how you would use a class builder (a factory):</p>
+
+<pre class="ruby"><span class="ruby-identifier">transform</span> = <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Transform</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+  <span class="ruby-identifier">rule</span>(<span class="ruby-operator">...</span>) { <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">add_node</span>(<span class="ruby-identifier">a_variable</span>) }
+  <span class="ruby-identifier">rule</span>(<span class="ruby-operator">...</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span> <span class="ruby-identifier">d</span>[:<span class="ruby-identifier">builder</span>].<span class="ruby-identifier">add_node</span>(<span class="ruby-identifier">d</span>[:<span class="ruby-identifier">a_variable</span>]) }
+<span class="ruby-keyword">end</span>
+<span class="ruby-identifier">transform</span>.<span class="ruby-identifier">apply</span>(<span class="ruby-identifier">tree</span>, :<span class="ruby-identifier">builder</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Builder</span>.<span class="ruby-identifier">new</span>)
+</pre>
+
+<p>As you can see, <a href="Transform.html">Transform</a> allows you to inject
+local context for your rule action blocks to use.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-rule" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rule</span><span
+            class="method-args">(expression, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Define a rule for the transform subclass.</p>
+          
+
+          
+          <div class="method-source-code" id="rule-source">
+            <pre><span class="ruby-comment"># File lib/parslet/transform.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rule</span>(<span class="ruby-identifier">expression</span>, &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@__transform_rules</span> <span class="ruby-operator">||=</span> []
+  <span class="ruby-ivar">@__transform_rules</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Pattern</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">expression</span>), <span class="ruby-identifier">block</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- rule-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- rule-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-apply" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">apply</span><span
+            class="method-args">(obj, context=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Applies the transformation to a tree that is generated by <a
+href="Parser.html">Parslet::Parser</a> or a simple parslet. Transformation
+will proceed down the tree, replacing parts/all of it with new objects. The
+resulting object will be returned.</p>
+          
+
+          
+          <div class="method-source-code" id="apply-source">
+            <pre><span class="ruby-comment"># File lib/parslet/transform.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">context</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">transform_elt</span>(
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">obj</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-constant">Hash</span>
+        <span class="ruby-identifier">recurse_hash</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">context</span>)
+      <span class="ruby-keyword">when</span> <span class="ruby-constant">Array</span>
+        <span class="ruby-identifier">recurse_array</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">context</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">obj</span>
+    <span class="ruby-keyword">end</span>, 
+    <span class="ruby-identifier">context</span>
+  )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- apply-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- apply-method -->
+
+    
+      <div id="method-i-call_on_match" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call_on_match</span><span
+            class="method-args">(bindings, block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Executes the block on the bindings obtained by <a
+href="Pattern.html#method-i-match">Parslet::Pattern#match</a>, if such a
+match can be made. Depending on the arity of the given block, it is called
+in  one of two environments: the current one or a clean toplevel
+environment.</p>
+
+<p>If you would like the current environment preserved, please use the  arity
+1 variant of the block. Alternatively, you can inject a context object and
+call methods on it (think :ctx =&gt; self).</p>
+
+<p>Example:</p>
+
+<pre class="ruby"><span class="ruby-comment"># the local variable a is simulated</span>
+<span class="ruby-identifier">t</span>.<span class="ruby-identifier">call_on_match</span>(:<span class="ruby-identifier">a</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">b</span>) { <span class="ruby-identifier">a</span> } 
+<span class="ruby-comment"># no change of environment here</span>
+<span class="ruby-identifier">t</span>.<span class="ruby-identifier">call_on_match</span>(:<span class="ruby-identifier">a</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">b</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span> <span class="ruby-identifier">d</span>[:<span class="ruby-identifier">a</span>] }
+</pre>
+          
+
+          
+          <div class="method-source-code" id="call_on_match-source">
+            <pre><span class="ruby-comment"># File lib/parslet/transform.rb, line 192</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_on_match</span>(<span class="ruby-identifier">bindings</span>, <span class="ruby-identifier">block</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">block</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">arity</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">bindings</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">context</span> = <span class="ruby-constant">Context</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">bindings</span>)
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">context</span>.<span class="ruby-identifier">instance_eval</span>(&amp;<span class="ruby-identifier">block</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- call_on_match-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- call_on_match-method -->
+
+    
+      <div id="method-i-rule" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rule</span><span
+            class="method-args">(expression, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Defines a rule to be applied whenever apply is called on a tree. A rule is
+composed of two parts:</p>
+<ul><li>
+<p>an *expression pattern*</p>
+</li><li>
+<p>a *transformation block*</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="rule-source">
+            <pre><span class="ruby-comment"># File lib/parslet/transform.rb, line 153</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rule</span>(<span class="ruby-identifier">expression</span>, &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@rules</span> <span class="ruby-operator">&lt;&lt;</span> [
+    <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Pattern</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">expression</span>), 
+    <span class="ruby-identifier">block</span>
+  ]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- rule-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- rule-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

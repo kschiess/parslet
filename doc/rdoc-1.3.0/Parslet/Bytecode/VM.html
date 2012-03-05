@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Class: Parslet::Bytecode::VM</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/parslet/bytecode/vm.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../Atoms/CanFlatten.html">Parslet::Atoms::CanFlatten</a>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-access_cache">#access_cache</a>
+    
+    <li><a href="#method-i-call">#call</a>
+    
+    <li><a href="#method-i-call_ret">#call_ret</a>
+    
+    <li><a href="#method-i-clear_error">#clear_error</a>
+    
+    <li><a href="#method-i-debug-3F">#debug?</a>
+    
+    <li><a href="#method-i-discard_frame">#discard_frame</a>
+    
+    <li><a href="#method-i-dump_state">#dump_state</a>
+    
+    <li><a href="#method-i-enter_frame">#enter_frame</a>
+    
+    <li><a href="#method-i-fetch">#fetch</a>
+    
+    <li><a href="#method-i-init">#init</a>
+    
+    <li><a href="#method-i-jump">#jump</a>
+    
+    <li><a href="#method-i-pop">#pop</a>
+    
+    <li><a href="#method-i-push">#push</a>
+    
+    <li><a href="#method-i-run">#run</a>
+    
+    <li><a href="#method-i-set_error">#set_error</a>
+    
+    <li><a href="#method-i-stop">#stop</a>
+    
+    <li><a href="#method-i-store_cache">#store_cache</a>
+    
+    <li><a href="#method-i-success-3F">#success?</a>
+    
+    <li><a href="#method-i-value_at">#value_at</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../Parslet.html">Parslet</a>
+  
+    <li><a href="../../Parslet/Atoms.html">Parslet::Atoms</a>
+  
+    <li><a href="../../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>
+  
+    <li><a href="../../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a>
+  
+    <li><a href="../../Parslet/Atoms/CanFlatten.html">Parslet::Atoms::CanFlatten</a>
+  
+    <li><a href="../../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a>
+  
+    <li><a href="../../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a>
+  
+    <li><a href="../../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a>
+  
+    <li><a href="../../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a>
+  
+    <li><a href="../../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a>
+  
+    <li><a href="../../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>
+  
+    <li><a href="../../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>
+  
+    <li><a href="../../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>
+  
+    <li><a href="../../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>
+  
+    <li><a href="../../Parslet/Bytecode.html">Parslet::Bytecode</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler.html">Parslet::Bytecode::Compiler</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Address.html">Parslet::Bytecode::Compiler::Address</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Block.html">Parslet::Bytecode::Compiler::Block</a>
+  
+    <li><a href="../../Parslet/Bytecode/VM.html">Parslet::Bytecode::VM</a>
+  
+    <li><a href="../../Parslet/ClassMethods.html">Parslet::ClassMethods</a>
+  
+    <li><a href="../../Parslet/ErrorTree.html">Parslet::ErrorTree</a>
+  
+    <li><a href="../../Parslet/Expression.html">Parslet::Expression</a>
+  
+    <li><a href="../../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a>
+  
+    <li><a href="../../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a>
+  
+    <li><a href="../../Parslet/ParseFailed.html">Parslet::ParseFailed</a>
+  
+    <li><a href="../../Parslet/Parser.html">Parslet::Parser</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a>
+  
+    <li><a href="../../Parslet/Pattern.html">Parslet::Pattern</a>
+  
+    <li><a href="../../Parslet/Slice.html">Parslet::Slice</a>
+  
+    <li><a href="../../Parslet/Source.html">Parslet::Source</a>
+  
+    <li><a href="../../Parslet/Transform.html">Parslet::Transform</a>
+  
+    <li><a href="../../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Parslet::Bytecode::VM</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-context" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">context</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-error" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">error</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-source" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">source</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(debug=false)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">debug</span>=<span class="ruby-keyword">false</span>)
+  <span class="ruby-ivar">@debug</span> = <span class="ruby-identifier">debug</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-access_cache" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">access_cache</span><span
+            class="method-args">(skip_adr)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>——————————————— interface for instructions</p>
+          
+
+          
+          <div class="method-source-code" id="access_cache-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">access_cache</span>(<span class="ruby-identifier">skip_adr</span>)
+  <span class="ruby-identifier">key</span> = [<span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span>, <span class="ruby-ivar">@ip</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>]
+  
+  <span class="ruby-comment"># Is the given vm state in the cache yet?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>]
+    <span class="ruby-comment"># Restore state</span>
+    <span class="ruby-identifier">success</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">advance</span> = <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>]
+    
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">success</span>
+      <span class="ruby-identifier">push</span> <span class="ruby-identifier">value</span> 
+    <span class="ruby-keyword">else</span> 
+      <span class="ruby-identifier">set_error</span> <span class="ruby-identifier">value</span>
+    <span class="ruby-keyword">end</span>
+    
+    <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">advance</span>
+    
+    <span class="ruby-comment"># Skip to skip_adr</span>
+    <span class="ruby-identifier">jump</span> <span class="ruby-identifier">skip_adr</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- access_cache-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- access_cache-method -->
+
+    
+      <div id="method-i-call" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call</span><span
+            class="method-args">(adr)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="call-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 190</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call</span>(<span class="ruby-identifier">adr</span>)
+  <span class="ruby-ivar">@calls</span>.<span class="ruby-identifier">push</span> <span class="ruby-ivar">@ip</span>
+  <span class="ruby-identifier">jump</span>(<span class="ruby-identifier">adr</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- call-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- call-method -->
+
+    
+      <div id="method-i-call_ret" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call_ret</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="call_ret-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 194</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_ret</span>
+  <span class="ruby-ivar">@ip</span> = <span class="ruby-ivar">@calls</span>.<span class="ruby-identifier">pop</span>
+  <span class="ruby-identifier">fail</span> <span class="ruby-node">&quot;One pop too many - empty call stack in #call_ret.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@ip</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- call_ret-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- call_ret-method -->
+
+    
+      <div id="method-i-clear_error" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear_error</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="clear_error-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 201</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_error</span>
+  <span class="ruby-ivar">@error</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- clear_error-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- clear_error-method -->
+
+    
+      <div id="method-i-debug-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">debug?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="debug-3F-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">debug?</span>
+  <span class="ruby-ivar">@debug</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- debug-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- debug-3F-method -->
+
+    
+      <div id="method-i-discard_frame" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">discard_frame</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="discard_frame-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 178</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">discard_frame</span>
+  <span class="ruby-identifier">size</span> = <span class="ruby-ivar">@frames</span>.<span class="ruby-identifier">pop</span>
+  <span class="ruby-identifier">fail</span> <span class="ruby-string">&quot;No stack frame.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">size</span>
+  <span class="ruby-identifier">fail</span> <span class="ruby-string">&quot;Stack frame larger than the current stack.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">size</span>
+  <span class="ruby-ivar">@values</span> = <span class="ruby-ivar">@values</span>[<span class="ruby-value">0</span>,<span class="ruby-identifier">size</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- discard_frame-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- discard_frame-method -->
+
+    
+      <div id="method-i-dump_state" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dump_state</span><span
+            class="method-args">(ip_offset)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Dumps the <a href="VM.html">VM</a> state so that the user can track errors
+down.</p>
+          
+
+          
+          <div class="method-source-code" id="dump_state-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dump_state</span>(<span class="ruby-identifier">ip_offset</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">debug?</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\nVM STATE -------------------------------------------- &quot;</span>
+  
+  <span class="ruby-identifier">old_pos</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span>
+  <span class="ruby-identifier">debug_pos</span> = <span class="ruby-identifier">old_pos</span> <span class="ruby-operator">-</span> <span class="ruby-value">10</span>
+  <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span> = <span class="ruby-identifier">debug_pos</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">debug_pos</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Source: #{source.read(20)}&quot;</span>
+  <span class="ruby-identifier">puts</span> (<span class="ruby-string">&quot; &quot;</span>*<span class="ruby-string">&quot;Source: &quot;</span>.<span class="ruby-identifier">size</span>) <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-string">&quot; &quot;</span>*(<span class="ruby-value">10</span><span class="ruby-operator">+</span>(<span class="ruby-identifier">debug_pos</span><span class="ruby-operator">&lt;</span><span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">debug_pos</span> <span class="ruby-operator">:</span> <span class="ruby-value">0</span>))) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">'^'</span>
+  <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span> = <span class="ruby-identifier">old_pos</span>
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@error</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Error register: #{@error}&quot;</span>
+  <span class="ruby-keyword">else</span> 
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Error register: EMPTY&quot;</span>
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Program: &quot;</span>
+  <span class="ruby-keyword">for</span> <span class="ruby-identifier">adr</span> <span class="ruby-keyword">in</span> (<span class="ruby-ivar">@ip</span><span class="ruby-operator">-</span><span class="ruby-value">5</span>)<span class="ruby-operator">..</span>(<span class="ruby-ivar">@ip</span><span class="ruby-operator">+</span><span class="ruby-value">5</span>)
+    <span class="ruby-identifier">printf</span>(<span class="ruby-string">&quot;%s%5d: %s\n&quot;</span>, 
+      <span class="ruby-identifier">adr</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@ip</span><span class="ruby-operator">+</span><span class="ruby-identifier">ip_offset</span> <span class="ruby-operator">?</span> <span class="ruby-string">'-&gt;'</span> <span class="ruby-operator">:</span> <span class="ruby-string">'  '</span>,
+      <span class="ruby-identifier">adr</span>, 
+      <span class="ruby-ivar">@program</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">adr</span>)) <span class="ruby-keyword">if</span> <span class="ruby-identifier">adr</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@program</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">adr</span>)
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;\nStack(#{@values.size}): (last 5, top is top of stack)&quot;</span>
+  <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">last</span>(<span class="ruby-value">5</span>).<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">printf</span>(<span class="ruby-string">&quot;  %5d: %s\n&quot;</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">v</span>.<span class="ruby-identifier">inspect</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;\nStack Frames(#{@frames.size}): (last 5, top is top of stack)&quot;</span>
+  <span class="ruby-ivar">@frames</span>.<span class="ruby-identifier">last</span>(<span class="ruby-value">5</span>).<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">printf</span>(<span class="ruby-string">&quot;  %5d: trunc stack at %s\n&quot;</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">v</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;\nCall Stack(#{@calls.size}): (last 5, top is top of stack)&quot;</span>
+  <span class="ruby-ivar">@calls</span>.<span class="ruby-identifier">last</span>(<span class="ruby-value">5</span>).<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">printf</span>(<span class="ruby-string">&quot;  %5d: return to @%s\n&quot;</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">v</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;---------------------- -------------------------------- &quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- dump_state-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- dump_state-method -->
+
+    
+      <div id="method-i-enter_frame" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enter_frame</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="enter_frame-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 175</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enter_frame</span>
+  <span class="ruby-ivar">@frames</span>.<span class="ruby-identifier">push</span> <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">size</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- enter_frame-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- enter_frame-method -->
+
+    
+      <div id="method-i-fetch" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fetch</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fetch-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fetch</span>
+  <span class="ruby-ivar">@program</span>.<span class="ruby-identifier">at</span>(<span class="ruby-ivar">@ip</span>).<span class="ruby-identifier">tap</span> { <span class="ruby-ivar">@ip</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- fetch-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- fetch-method -->
+
+    
+      <div id="method-i-init" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">init</span><span
+            class="method-args">(program, io)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="init-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">init</span>(<span class="ruby-identifier">program</span>, <span class="ruby-identifier">io</span>)
+  <span class="ruby-ivar">@ip</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@program</span> = <span class="ruby-identifier">program</span>
+  <span class="ruby-ivar">@source</span> = <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Source</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">io</span>)
+  <span class="ruby-ivar">@context</span> = <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Context</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@values</span> = []
+  <span class="ruby-ivar">@calls</span>  = []
+  <span class="ruby-ivar">@frames</span> = []
+  <span class="ruby-ivar">@cache</span>  = {}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- init-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- init-method -->
+
+    
+      <div id="method-i-jump" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">jump</span><span
+            class="method-args">(address)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="jump-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 184</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">jump</span>(<span class="ruby-identifier">address</span>)
+  <span class="ruby-ivar">@ip</span> = <span class="ruby-identifier">address</span>.<span class="ruby-identifier">address</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- jump-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- jump-method -->
+
+    
+      <div id="method-i-pop" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pop</span><span
+            class="method-args">(n=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="pop-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 159</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pop</span>(<span class="ruby-identifier">n</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">n</span>
+    <span class="ruby-identifier">fail</span> <span class="ruby-node">&quot;Stack corruption detected, popping too many values (#{n}/#{@values.size}).&quot;</span>            <span class="ruby-keyword">if</span> <span class="ruby-identifier">n</span><span class="ruby-operator">&gt;</span><span class="ruby-ivar">@values</span>.<span class="ruby-identifier">size</span>
+        
+    <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">pop</span>(<span class="ruby-identifier">n</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">fail</span> <span class="ruby-string">&quot;Stack corruption detected, popping too many values. (stack is empty)&quot;</span>            <span class="ruby-keyword">if</span> <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">empty?</span>
+    
+    <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">pop</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- pop-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- pop-method -->
+
+    
+      <div id="method-i-push" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">push</span><span
+            class="method-args">(value)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="push-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 156</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">push</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">push</span> <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- push-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- push-method -->
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">(program, io)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>(<span class="ruby-identifier">program</span>, <span class="ruby-identifier">io</span>)
+  <span class="ruby-identifier">init</span>(<span class="ruby-identifier">program</span>, <span class="ruby-identifier">io</span>)
+
+  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">old_ip</span> = <span class="ruby-ivar">@ip</span>
+    <span class="ruby-identifier">instruction</span> = <span class="ruby-identifier">fetch</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">instruction</span>
+    
+    <span class="ruby-comment"># Diagnostics</span>
+    <span class="ruby-identifier">printf</span>(<span class="ruby-string">&quot;executing %5d: %s\n&quot;</span>, <span class="ruby-identifier">old_ip</span>, <span class="ruby-identifier">instruction</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">debug?</span>
+
+    <span class="ruby-comment"># Run the current instruction</span>
+    <span class="ruby-identifier">instruction</span>.<span class="ruby-identifier">run</span>(<span class="ruby-keyword">self</span>)
+    
+    <span class="ruby-comment"># Diagnostics</span>
+    <span class="ruby-identifier">dump_state</span>(<span class="ruby-value">0</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">debug?</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@stop</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">fail</span> <span class="ruby-string">&quot;Stack contains too many values.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">&gt;</span><span class="ruby-value">1</span>
+
+  <span class="ruby-comment"># In the best case, we have successfully matched and consumed all input. </span>
+  <span class="ruby-comment"># This is what we want, from now on down it's all error cases.</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">flatten</span>(<span class="ruby-ivar">@values</span>.<span class="ruby-identifier">last</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">success?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">eof?</span>
+
+  <span class="ruby-comment"># Maybe we've matched some, but not all of the input? In parslets books, </span>
+  <span class="ruby-comment"># this is an error as well. </span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">success?</span>
+    <span class="ruby-comment"># assert: not source.eof?</span>
+    <span class="ruby-identifier">current_pos</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span>
+    <span class="ruby-identifier">source</span>.<span class="ruby-identifier">error</span>(
+      <span class="ruby-node">&quot;Don't know what to do with #{source.read(100)}&quot;</span>, <span class="ruby-identifier">current_pos</span>).
+      <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">UnconsumedInput</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># assert: ! @error.nil?</span>
+
+  <span class="ruby-comment"># And maybe we just could not do it for a reason. Raise that. </span>
+  <span class="ruby-ivar">@error</span>.<span class="ruby-identifier">raise</span>
+  
+<span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ex</span>
+  <span class="ruby-identifier">dump_state</span>(<span class="ruby-value">-1</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">ex</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">ParseFailed</span>)
+  <span class="ruby-identifier">raise</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- run-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- run-method -->
+
+    
+      <div id="method-i-set_error" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_error</span><span
+            class="method-args">(error)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_error-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 198</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_error</span>(<span class="ruby-identifier">error</span>)
+  <span class="ruby-ivar">@error</span> = <span class="ruby-identifier">error</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_error-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_error-method -->
+
+    
+      <div id="method-i-stop" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stop</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="stop-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 205</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
+  <span class="ruby-ivar">@stop</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- stop-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- stop-method -->
+
+    
+      <div id="method-i-store_cache" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">store_cache</span><span
+            class="method-args">(adr)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="store_cache-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">store_cache</span>(<span class="ruby-identifier">adr</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">success?</span>
+    <span class="ruby-identifier">pos</span>, <span class="ruby-identifier">result</span> = <span class="ruby-identifier">pop</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">key</span> = [<span class="ruby-identifier">pos</span>, <span class="ruby-identifier">adr</span>.<span class="ruby-identifier">address</span>]
+    <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>] = [<span class="ruby-keyword">true</span>, <span class="ruby-identifier">result</span>, <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span><span class="ruby-operator">-</span><span class="ruby-identifier">pos</span>]
+    <span class="ruby-identifier">push</span> <span class="ruby-identifier">result</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">pos</span> = <span class="ruby-identifier">pop</span>
+    <span class="ruby-identifier">key</span> = [<span class="ruby-identifier">pos</span>, <span class="ruby-identifier">adr</span>.<span class="ruby-identifier">address</span>]
+    <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">key</span>] = [<span class="ruby-keyword">false</span>, <span class="ruby-ivar">@error</span>, <span class="ruby-identifier">source</span>.<span class="ruby-identifier">pos</span><span class="ruby-operator">-</span><span class="ruby-identifier">pos</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- store_cache-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- store_cache-method -->
+
+    
+      <div id="method-i-success-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">success?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="success-3F-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 187</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">success?</span>
+  <span class="ruby-operator">!</span><span class="ruby-ivar">@error</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- success-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- success-3F-method -->
+
+    
+      <div id="method-i-value_at" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">value_at</span><span
+            class="method-args">(ptr)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="value_at-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/vm.rb, line 172</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">value_at</span>(<span class="ruby-identifier">ptr</span>)
+  <span class="ruby-ivar">@values</span>.<span class="ruby-identifier">at</span>(<span class="ruby-operator">-</span><span class="ruby-identifier">ptr</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- value_at-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- value_at-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

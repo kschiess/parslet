@@ -42,6 +42,6 @@ of parslet. Especially:
   "John":http://jmettraux.wordpress.com/about/ does a great job of explaining
   how parslet ties back in with railroad diagrams.
  
-"*rdoc Class Documentation*":doc/rdoc-1.2.3/index.html
+"*rdoc Class Documentation*":doc/rdoc-1.3.0/index.html
 
 The rdoc documentation will help you with the nitty gritty.

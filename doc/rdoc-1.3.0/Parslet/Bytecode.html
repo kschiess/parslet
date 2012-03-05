@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Module: Parslet::Bytecode</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/parslet/bytecode/compiler.rb
+    <li>lib/parslet/bytecode/instructions.rb
+    <li>lib/parslet/bytecode/vm.rb
+    <li>lib/parslet/bytecode.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Parslet.html">Parslet</a>
+  
+    <li><a href="../Parslet/Atoms.html">Parslet::Atoms</a>
+  
+    <li><a href="../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>
+  
+    <li><a href="../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>
+  
+    <li><a href="../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a>
+  
+    <li><a href="../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a>
+  
+    <li><a href="../Parslet/Atoms/CanFlatten.html">Parslet::Atoms::CanFlatten</a>
+  
+    <li><a href="../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a>
+  
+    <li><a href="../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a>
+  
+    <li><a href="../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a>
+  
+    <li><a href="../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a>
+  
+    <li><a href="../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a>
+  
+    <li><a href="../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>
+  
+    <li><a href="../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>
+  
+    <li><a href="../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>
+  
+    <li><a href="../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>
+  
+    <li><a href="../Parslet/Bytecode.html">Parslet::Bytecode</a>
+  
+    <li><a href="../Parslet/Bytecode/Compiler.html">Parslet::Bytecode::Compiler</a>
+  
+    <li><a href="../Parslet/Bytecode/Compiler/Address.html">Parslet::Bytecode::Compiler::Address</a>
+  
+    <li><a href="../Parslet/Bytecode/Compiler/Block.html">Parslet::Bytecode::Compiler::Block</a>
+  
+    <li><a href="../Parslet/Bytecode/VM.html">Parslet::Bytecode::VM</a>
+  
+    <li><a href="../Parslet/ClassMethods.html">Parslet::ClassMethods</a>
+  
+    <li><a href="../Parslet/ErrorTree.html">Parslet::ErrorTree</a>
+  
+    <li><a href="../Parslet/Expression.html">Parslet::Expression</a>
+  
+    <li><a href="../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a>
+  
+    <li><a href="../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a>
+  
+    <li><a href="../Parslet/ParseFailed.html">Parslet::ParseFailed</a>
+  
+    <li><a href="../Parslet/Parser.html">Parslet::Parser</a>
+  
+    <li><a href="../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a>
+  
+    <li><a href="../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a>
+  
+    <li><a href="../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a>
+  
+    <li><a href="../Parslet/Pattern.html">Parslet::Pattern</a>
+  
+    <li><a href="../Parslet/Slice.html">Parslet::Slice</a>
+  
+    <li><a href="../Parslet/Source.html">Parslet::Source</a>
+  
+    <li><a href="../Parslet/Transform.html">Parslet::Transform</a>
+  
+    <li><a href="../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Parslet::Bytecode</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="Box">Box
+        
+        <dd class="description"><p>Boxes a value inside a name tag.</p>
+
+<p>Consumes: parslet result Pushes: boxed result</p>
+        
+      
+        <dt id="BranchOnSuccess">BranchOnSuccess
+        
+        <dd class="description"><p>If the vm.success? is true, branches to the given address.</p>
+        
+      
+        <dt id="CallBlock">CallBlock
+        
+        <dd class="description"><p>Compiles the block or ‘calls’ the subroutine that was compiled earlier.</p>
+        
+      
+        <dt id="CheckAndReset">CheckAndReset
+        
+        <dd class="description"><p>Assumes that the stack contains the result of a parslet and above it  the
+source position from before parsing that parslet (as per <a
+href="Bytecode.html#PushPos">PushPos</a>). Will remove both and leave the
+vm in a state that indicates the result  of a lookahead, stack will be nil
+(no capture) and the error flag will  be set.</p>
+
+<p>Consumes: <a href="Bytecode/VM.html">VM</a> state, source.pos Pushes:
+VM.state Effects: resets source.pos</p>
+        
+      
+        <dt id="CheckCache">CheckCache
+        
+        <dd class="description"><p>Caching</p>
+        
+      
+        <dt id="CheckSequence">CheckSequence
+        
+        <dd class="description"><p>Checks if a sequence must be aborted early because of a parse failure. 
+Cleans up the stack and jumps after the sequence, having set error.</p>
+        
+      
+        <dt id="EnterFrame">EnterFrame
+        
+        <dd class="description"><p>Enters a new stack frame that can be discarded with vm.discard_frame. This
+helps in situations where you need to pop a state that you don’t know the
+size of.</p>
+        
+      
+        <dt id="Fail">Fail
+        
+        <dd class="description"><p>Fails at this point with the given error message. Size indicates how many
+different alternatives should have generated an error message on the stack.</p>
+        
+      
+        <dt id="Match">Match
+        
+        <dd class="description"><p>Matches the string and pushes the result on the stack (looks like the
+string, but is really the slice that was matched).</p>
+        
+      
+        <dt id="PackSequence">PackSequence
+        
+        <dd class="description"><p>Packs size stack elements into an array that is prefixed with the :sequence
+tag. This will later be converted by flatten</p>
+        
+      
+        <dt id="PushPos">PushPos
+        
+        <dd class="description"><p>Pushes the current source pos to the stack.</p>
+
+<p>Consumes: Nothing Pushes: the current source.pos</p>
+        
+      
+        <dt id="Re">Re
+        
+        <dd class="description">
+        
+      
+        <dt id="Repeat">Repeat
+        
+        <dd class="description"><p><a href="Bytecode.html#Repeat">Repeat</a> matching with a minimum of min
+and a maximum of max times.</p>
+        
+      
+        <dt id="Return">Return
+        
+        <dd class="description">
+        
+      
+        <dt id="SetupRepeat">SetupRepeat
+        
+        <dd class="description">
+        
+      
+        <dt id="Stop">Stop
+        
+        <dd class="description">
+        
+      
+        <dt id="StoreResult">StoreResult
+        
+        <dd class="description">
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

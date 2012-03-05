@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Class: Parslet::Atoms::Entity</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/parslet/atoms/entity.rb
+    <li>lib/parslet/atoms/visitor.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="Base.html">Parslet::Atoms::Base</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-accept">#accept</a>
+    
+    <li><a href="#method-i-parslet">#parslet</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../Parslet.html">Parslet</a>
+  
+    <li><a href="../../Parslet/Atoms.html">Parslet::Atoms</a>
+  
+    <li><a href="../../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>
+  
+    <li><a href="../../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a>
+  
+    <li><a href="../../Parslet/Atoms/CanFlatten.html">Parslet::Atoms::CanFlatten</a>
+  
+    <li><a href="../../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a>
+  
+    <li><a href="../../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a>
+  
+    <li><a href="../../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a>
+  
+    <li><a href="../../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a>
+  
+    <li><a href="../../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a>
+  
+    <li><a href="../../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>
+  
+    <li><a href="../../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>
+  
+    <li><a href="../../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>
+  
+    <li><a href="../../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>
+  
+    <li><a href="../../Parslet/Bytecode.html">Parslet::Bytecode</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler.html">Parslet::Bytecode::Compiler</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Address.html">Parslet::Bytecode::Compiler::Address</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Block.html">Parslet::Bytecode::Compiler::Block</a>
+  
+    <li><a href="../../Parslet/Bytecode/VM.html">Parslet::Bytecode::VM</a>
+  
+    <li><a href="../../Parslet/ClassMethods.html">Parslet::ClassMethods</a>
+  
+    <li><a href="../../Parslet/ErrorTree.html">Parslet::ErrorTree</a>
+  
+    <li><a href="../../Parslet/Expression.html">Parslet::Expression</a>
+  
+    <li><a href="../../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a>
+  
+    <li><a href="../../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a>
+  
+    <li><a href="../../Parslet/ParseFailed.html">Parslet::ParseFailed</a>
+  
+    <li><a href="../../Parslet/Parser.html">Parslet::Parser</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a>
+  
+    <li><a href="../../Parslet/Pattern.html">Parslet::Pattern</a>
+  
+    <li><a href="../../Parslet/Slice.html">Parslet::Slice</a>
+  
+    <li><a href="../../Parslet/Source.html">Parslet::Source</a>
+  
+    <li><a href="../../Parslet/Transform.html">Parslet::Transform</a>
+  
+    <li><a href="../../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Parslet::Atoms::Entity</h1>
+
+  <div id="description" class="description">
+    
+<p>This wraps pieces of parslet definition and gives them a name. The wrapped
+piece is lazily evaluated and cached. This has two purposes:</p>
+<ul><li>
+<p>Avoid infinite recursion during evaluation of the definition</p>
+</li><li>
+<p>Be able to print things by their name, not by their sometimes complicated
+content.</p>
+</li></ul>
+
+<p>You don’t normally use this directly, instead you should generated it by
+using the structuring method Parslet.rule.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-block" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">block</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">name</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-accept" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">accept</span><span
+            class="method-args">(visitor)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Call back visitors visit_entity method. See parslet/export for an example.</p>
+          
+
+          
+          <div class="method-source-code" id="accept-source">
+            <pre><span class="ruby-comment"># File lib/parslet/atoms/visitor.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">accept</span>(<span class="ruby-identifier">visitor</span>)
+  <span class="ruby-identifier">visitor</span>.<span class="ruby-identifier">visit_entity</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- accept-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- accept-method -->
+
+    
+      <div id="method-i-parslet" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parslet</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parslet-source">
+            <pre><span class="ruby-comment"># File lib/parslet/atoms/entity.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parslet</span>
+  <span class="ruby-ivar">@parslet</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@block</span>.<span class="ruby-identifier">call</span>.<span class="ruby-identifier">tap</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> 
+    <span class="ruby-identifier">raise_not_implemented</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">p</span>
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- parslet-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- parslet-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

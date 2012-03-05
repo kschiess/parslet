@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Class: Parslet::Bytecode::Compiler</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/parslet/bytecode/compiler.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-add">#add</a>
+    
+    <li><a href="#method-i-buffer_pointer">#buffer_pointer</a>
+    
+    <li><a href="#method-i-compile">#compile</a>
+    
+    <li><a href="#method-i-current_address">#current_address</a>
+    
+    <li><a href="#method-i-emit_block">#emit_block</a>
+    
+    <li><a href="#method-i-fwd_address">#fwd_address</a>
+    
+    <li><a href="#method-i-visit_alternative">#visit_alternative</a>
+    
+    <li><a href="#method-i-visit_entity">#visit_entity</a>
+    
+    <li><a href="#method-i-visit_lookahead">#visit_lookahead</a>
+    
+    <li><a href="#method-i-visit_named">#visit_named</a>
+    
+    <li><a href="#method-i-visit_parser">#visit_parser</a>
+    
+    <li><a href="#method-i-visit_re">#visit_re</a>
+    
+    <li><a href="#method-i-visit_repetition">#visit_repetition</a>
+    
+    <li><a href="#method-i-visit_sequence">#visit_sequence</a>
+    
+    <li><a href="#method-i-visit_str">#visit_str</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../Parslet.html">Parslet</a>
+  
+    <li><a href="../../Parslet/Atoms.html">Parslet::Atoms</a>
+  
+    <li><a href="../../Parslet/Atoms/Alternative.html">Parslet::Atoms::Alternative</a>
+  
+    <li><a href="../../Parslet/Atoms/Base.html">Parslet::Atoms::Base</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Fail.html">Parslet::Atoms::Base::Fail</a>
+  
+    <li><a href="../../Parslet/Atoms/Base/Success.html">Parslet::Atoms::Base::Success</a>
+  
+    <li><a href="../../Parslet/Atoms/CanFlatten.html">Parslet::Atoms::CanFlatten</a>
+  
+    <li><a href="../../Parslet/Atoms/Context.html">Parslet::Atoms::Context</a>
+  
+    <li><a href="../../Parslet/Atoms/DSL.html">Parslet::Atoms::DSL</a>
+  
+    <li><a href="../../Parslet/Atoms/Entity.html">Parslet::Atoms::Entity</a>
+  
+    <li><a href="../../Parslet/Atoms/Lookahead.html">Parslet::Atoms::Lookahead</a>
+  
+    <li><a href="../../Parslet/Atoms/Named.html">Parslet::Atoms::Named</a>
+  
+    <li><a href="../../Parslet/Atoms/Re.html">Parslet::Atoms::Re</a>
+  
+    <li><a href="../../Parslet/Atoms/Repetition.html">Parslet::Atoms::Repetition</a>
+  
+    <li><a href="../../Parslet/Atoms/Sequence.html">Parslet::Atoms::Sequence</a>
+  
+    <li><a href="../../Parslet/Atoms/Str.html">Parslet::Atoms::Str</a>
+  
+    <li><a href="../../Parslet/Bytecode.html">Parslet::Bytecode</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler.html">Parslet::Bytecode::Compiler</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Address.html">Parslet::Bytecode::Compiler::Address</a>
+  
+    <li><a href="../../Parslet/Bytecode/Compiler/Block.html">Parslet::Bytecode::Compiler::Block</a>
+  
+    <li><a href="../../Parslet/Bytecode/VM.html">Parslet::Bytecode::VM</a>
+  
+    <li><a href="../../Parslet/ClassMethods.html">Parslet::ClassMethods</a>
+  
+    <li><a href="../../Parslet/ErrorTree.html">Parslet::ErrorTree</a>
+  
+    <li><a href="../../Parslet/Expression.html">Parslet::Expression</a>
+  
+    <li><a href="../../Parslet/Expression/Treetop.html">Parslet::Expression::Treetop</a>
+  
+    <li><a href="../../Parslet/InvalidSliceOperation.html">Parslet::InvalidSliceOperation</a>
+  
+    <li><a href="../../Parslet/ParseFailed.html">Parslet::ParseFailed</a>
+  
+    <li><a href="../../Parslet/Parser.html">Parslet::Parser</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors.html">Parslet::Parser::Visitors</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Citrus.html">Parslet::Parser::Visitors::Citrus</a>
+  
+    <li><a href="../../Parslet/Parser/Visitors/Treetop.html">Parslet::Parser::Visitors::Treetop</a>
+  
+    <li><a href="../../Parslet/Pattern.html">Parslet::Pattern</a>
+  
+    <li><a href="../../Parslet/Slice.html">Parslet::Slice</a>
+  
+    <li><a href="../../Parslet/Source.html">Parslet::Source</a>
+  
+    <li><a href="../../Parslet/Transform.html">Parslet::Transform</a>
+  
+    <li><a href="../../Parslet/UnconsumedInput.html">Parslet::UnconsumedInput</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Parslet::Bytecode::Compiler</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+  <span class="ruby-ivar">@buffer</span> = []
+  <span class="ruby-ivar">@blocks</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-add" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add</span><span
+            class="method-args">(instruction)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="add-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add</span>(<span class="ruby-identifier">instruction</span>)
+  <span class="ruby-ivar">@buffer</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">instruction</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- add-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- add-method -->
+
+    
+      <div id="method-i-buffer_pointer" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">buffer_pointer</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="buffer_pointer-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 63</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">buffer_pointer</span>
+  <span class="ruby-ivar">@buffer</span>.<span class="ruby-identifier">size</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- buffer_pointer-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- buffer_pointer-method -->
+
+    
+      <div id="method-i-compile" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">compile</span><span
+            class="method-args">(atom)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="compile-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compile</span>(<span class="ruby-identifier">atom</span>)
+  <span class="ruby-identifier">atom</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">Stop</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@buffer</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- compile-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- compile-method -->
+
+    
+      <div id="method-i-current_address" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_address</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="current_address-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_address</span>
+  <span class="ruby-constant">Address</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">buffer_pointer</span>)    
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- current_address-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- current_address-method -->
+
+    
+      <div id="method-i-emit_block" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">emit_block</span><span
+            class="method-args">() { || ... }</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="emit_block-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">emit_block</span>
+  <span class="ruby-identifier">end_adr</span> = <span class="ruby-identifier">fwd_address</span>
+  <span class="ruby-identifier">cache_adr</span> = <span class="ruby-identifier">current_address</span>
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">CheckCache</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">end_adr</span>)
+
+  <span class="ruby-keyword">yield</span>
+
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">StoreResult</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">cache_adr</span>)
+  <span class="ruby-identifier">end_adr</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- emit_block-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- emit_block-method -->
+
+    
+      <div id="method-i-fwd_address" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fwd_address</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fwd_address-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fwd_address</span>
+  <span class="ruby-constant">Address</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- fwd_address-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- fwd_address-method -->
+
+    
+      <div id="method-i-visit_alternative" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_alternative</span><span
+            class="method-args">(alternatives)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_alternative-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_alternative</span>(<span class="ruby-identifier">alternatives</span>)
+  <span class="ruby-identifier">emit_block</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">adr_end</span> = <span class="ruby-identifier">fwd_address</span>
+  
+    <span class="ruby-identifier">add</span> <span class="ruby-constant">EnterFrame</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">add</span> <span class="ruby-constant">PushPos</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">alternatives</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">alternative</span>, <span class="ruby-identifier">idx</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">alternative</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+      <span class="ruby-identifier">add</span> <span class="ruby-constant">BranchOnSuccess</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">adr_end</span>, <span class="ruby-identifier">idx</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">add</span> <span class="ruby-constant">Fail</span>.<span class="ruby-identifier">new</span>([<span class="ruby-string">&quot;Expected one of &quot;</span>, <span class="ruby-identifier">alternatives</span>.<span class="ruby-identifier">inspect</span>], <span class="ruby-identifier">alternatives</span>.<span class="ruby-identifier">size</span>)
+  
+    <span class="ruby-identifier">adr_end</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_alternative-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_alternative-method -->
+
+    
+      <div id="method-i-visit_entity" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_entity</span><span
+            class="method-args">(name, block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_entity-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_entity</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@blocks</span>[<span class="ruby-identifier">name</span>] <span class="ruby-operator">||=</span> <span class="ruby-constant">Block</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">block</span>, <span class="ruby-keyword">self</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">CallBlock</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@blocks</span>[<span class="ruby-identifier">name</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_entity-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_entity-method -->
+
+    
+      <div id="method-i-visit_lookahead" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_lookahead</span><span
+            class="method-args">(positive, parslet)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_lookahead-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 114</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_lookahead</span>(<span class="ruby-identifier">positive</span>, <span class="ruby-identifier">parslet</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">PushPos</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">CheckAndReset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">positive</span>, <span class="ruby-identifier">parslet</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_lookahead-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_lookahead-method -->
+
+    
+      <div id="method-i-visit_named" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_named</span><span
+            class="method-args">(name, parslet)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_named-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_named</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">parslet</span>)
+  <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">Box</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_named-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_named-method -->
+
+    
+      <div id="method-i-visit_parser" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_parser</span><span
+            class="method-args">(root)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_parser-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_parser</span>(<span class="ruby-identifier">root</span>)
+  <span class="ruby-identifier">root</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_parser-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_parser-method -->
+
+    
+      <div id="method-i-visit_re" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_re</span><span
+            class="method-args">(match)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_re-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_re</span>(<span class="ruby-identifier">match</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">Re</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">match</span>, <span class="ruby-value">1</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_re-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_re-method -->
+
+    
+      <div id="method-i-visit_repetition" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_repetition</span><span
+            class="method-args">(tag, min, max, parslet)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_repetition-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_repetition</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">parslet</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">SetupRepeat</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag</span>)
+  <span class="ruby-identifier">start</span> = <span class="ruby-identifier">current_address</span>
+  <span class="ruby-identifier">parslet</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">Repeat</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">start</span>, <span class="ruby-identifier">parslet</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_repetition-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_repetition-method -->
+
+    
+      <div id="method-i-visit_sequence" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_sequence</span><span
+            class="method-args">(parslets)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_sequence-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_sequence</span>(<span class="ruby-identifier">parslets</span>)
+  <span class="ruby-identifier">emit_block</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">sequence</span> = <span class="ruby-constant">Parslet</span><span class="ruby-operator">::</span><span class="ruby-constant">Atoms</span><span class="ruby-operator">::</span><span class="ruby-constant">Sequence</span>.<span class="ruby-identifier">new</span>(*<span class="ruby-identifier">parslets</span>)
+    <span class="ruby-identifier">error_msg</span> = <span class="ruby-node">&quot;Failed to match sequence (#{sequence.inspect})&quot;</span>
+  
+    <span class="ruby-identifier">end_adr</span> = <span class="ruby-identifier">fwd_address</span>
+    <span class="ruby-identifier">parslets</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">atom</span>, <span class="ruby-identifier">idx</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">atom</span>.<span class="ruby-identifier">accept</span>(<span class="ruby-keyword">self</span>)
+      <span class="ruby-identifier">add</span> <span class="ruby-constant">CheckSequence</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">idx</span>, <span class="ruby-identifier">end_adr</span>, <span class="ruby-identifier">error_msg</span>)
+    <span class="ruby-keyword">end</span>
+        
+    <span class="ruby-identifier">add</span> <span class="ruby-constant">PackSequence</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">parslets</span>.<span class="ruby-identifier">size</span>)
+
+    <span class="ruby-identifier">end_adr</span>.<span class="ruby-identifier">resolve</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_sequence-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_sequence-method -->
+
+    
+      <div id="method-i-visit_str" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_str</span><span
+            class="method-args">(str)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_str-source">
+            <pre><span class="ruby-comment"># File lib/parslet/bytecode/compiler.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_str</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-identifier">add</span> <span class="ruby-constant">Match</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- visit_str-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- visit_str-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
