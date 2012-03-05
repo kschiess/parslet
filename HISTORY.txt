@@ -5,6 +5,10 @@
 
 = 1.3.0 / ???
 
+  ! Parslet::Transform::Context is now much more well-behaved. It has
+    #respond_to? and #method_missing; it now looks like a plain old Ruby
+    object with instance variables and attribute readers.
+
   - Grammar transforms turned out to be a dead end and have been removed. 
 
   ! A few problems in error message generation have been fixed. This will
@@ -12,6 +16,7 @@
 	
   + A VM driven parser engine: Removes the limitation that parsing needs a 
     lot of stack space, something dearly missing from Ruby 1.9.3 fibers.
+    This engine is experimental and might be removed in the future. 
 
   ! Interaction with mathn fixed - Line number generation will terminate. 
 	

@@ -11,14 +11,22 @@ require 'blankslate'
 #   end
 #
 class Parslet::Transform::Context < BlankSlate # :nodoc:
-  def initialize(bindings)
-    @bindings = bindings
+  reveal :methods
+  reveal :respond_to?
+  reveal :inspect
+  reveal :to_s
+  reveal :instance_variable_set
+  
+  def meta_def(name, &body)
+    metaclass = class <<self; self; end
+
+    metaclass.send(:define_method, name, &body)
   end
   
-  def method_missing(sym, *args, &block)
-    super unless args.empty?
-    super unless @bindings.has_key?(sym.to_sym)
-    
-    @bindings[sym]
+  def initialize(bindings)
+    bindings.each do |key, value|
+      meta_def(key.to_sym) { value }
+      instance_variable_set("@#{key}", value)
+    end
   end
 end
