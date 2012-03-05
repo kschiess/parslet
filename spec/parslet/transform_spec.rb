@@ -114,9 +114,9 @@ describe Parslet::Transform do
         end)
       end
       it "should execute in its own context" do
-        @foo = 'test'
+        @bar = 'test'
         transform.call_on_match(bindings, proc do
-          @foo.should_not == 'test'
+          @bar.should_not == 'test'
         end)
       end
     end
