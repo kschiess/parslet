@@ -1,3 +1,9 @@
+PATH
+  remote: .
+  specs:
+    parslet (1.2.3)
+      blankslate (~> 2.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -30,11 +36,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blankslate (~> 2)
   flexmock
   growl
   guard
   guard-rspec
+  parslet!
   rake
   rdoc
   rspec

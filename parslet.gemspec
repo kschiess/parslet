@@ -18,8 +18,6 @@ Gem::Specification.new do |s|
   
   s.add_dependency 'blankslate', '~> 2.0'
   
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'flexmock'
-  s.add_development_dependency 'rdoc'
-  s.add_development_dependency 'sdoc'
+  %w(rspec flexmock rdoc sdoc guard guard-rspec growl).each { |gem_name| 
+    s.add_development_dependency gem_name }
 end
