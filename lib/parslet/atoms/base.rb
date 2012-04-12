@@ -75,9 +75,7 @@ class Parslet::Atoms::Base
   def apply(source, context) # :nodoc:
     old_pos = source.pos
     
-    result = context.cache(self, source) {
-      try(source, context)
-    }
+    result = try(source, context)
     
     # This has just succeeded, so last_cause must be empty
     unless result.error?
@@ -134,6 +132,7 @@ class Parslet::Atoms::Base
   def error_tree
     Parslet::ErrorTree.new(self)
   end
+
 private
 
   # Produces an instance of Success and returns it. 
