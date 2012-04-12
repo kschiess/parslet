@@ -43,7 +43,10 @@ class Parslet::Atoms::Base
   end
   
   def parse_traditional(io)
-    source = Parslet::Source.new(io)
+    source = io.respond_to?(:line_and_column) ? 
+      io : 
+      Parslet::Source.new(io)
+    
     context = Parslet::Atoms::Context.new
     
     result = nil

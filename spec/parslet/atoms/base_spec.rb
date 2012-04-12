@@ -56,6 +56,24 @@ describe Parslet::Atoms::Base do
       unnamed([[{:a=>"a"}, {:m=>"m"}], {:a=>"a"}]).should == [{:a=>"a"}]
     end 
   end
+  describe '#parse(source)' do
+    context "when given something that looks like a source" do
+      let(:source) { flexmock("source lookalike", 
+        :line_and_column => [1,2], 
+        :pos => 1, 
+        :eof? => true) }
+      
+      it "should not rewrap in a source" do
+        flexmock(Parslet::Source).
+          should_receive(:new => :source_created).never
+        
+        begin
+          parslet.parse(source) 
+        rescue NotImplementedError
+        end
+      end 
+    end
+  end
   
   context "when the parse fails, the exception" do
     it "should contain a string" do
@@ -85,6 +103,7 @@ describe Parslet::Atoms::Base do
 
         parslet.cause.should == "cause at line 1 char 1."
       end
+      
       it "should reset the #cause to nil" do
         success = flexmock(:success, :error? => false)
         flexmock(parslet).
