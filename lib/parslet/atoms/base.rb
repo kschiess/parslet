@@ -26,23 +26,7 @@ class Parslet::Atoms::Base
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
   #
-  def parse(io, traditional=true)
-    if traditional
-      parse_traditional(io)
-    else
-      parse_vm(io)
-    end
-  end
-  
-  def parse_vm(io)
-    compiler = Parslet::Bytecode::Compiler.new
-    program = compiler.compile(self)
-    
-    vm = Parslet::Bytecode::VM.new
-    vm.run(program, io)
-  end
-  
-  def parse_traditional(io)
+  def parse(io, prefix_parse=false)
     source = io.respond_to?(:line_and_column) ? 
       io : 
       Parslet::Source.new(io)
@@ -64,7 +48,7 @@ class Parslet::Atoms::Base
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
-    unless source.eof?
+    if !prefix_parse && !source.eof?
       # Do we know why we stopped matching input? If yes, that's a good
       # error to fail with. Otherwise just report that we cannot consume the
       # input.

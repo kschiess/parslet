@@ -8,6 +8,13 @@
   + Made it possible to pass a custom Parslet::Source implementor to #parse.
     (see #63)
 
+  + #parse takes a second argument: prefix_parse can be set to true if no 
+    error should be raised on an incomplete parse. Result is returned as if 
+    the parse had gone through completely, but the input will not be consumed. 
+    
+  - VM engine on the way out. No benefit except for the intellectual
+    challenge.
+    
 = 1.3.0 / 5Mar2012
 
   ! Parslet::Transform::Context is now much more well-behaved. It has
