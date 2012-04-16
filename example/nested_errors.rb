@@ -65,7 +65,7 @@ class Parser < Parslet::Parser
   # body
 
   rule(:body) {
-    (line_separator >> (block | expression)).repeat(0).as(:body) >>
+    (line_separator >> (block | expression)).repeat(1).as(:body) >>
     line_separator
   }
 
