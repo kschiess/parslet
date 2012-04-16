@@ -35,7 +35,7 @@ class Parser < Parslet::Parser
   # res_statement
 
   rule(:reference) {
-    ((str('@@') | str('@')) >> identifier).as(:reference)
+    (str('@').repeat(1,2) >> identifier).as(:reference)
   }
 
   rule(:res_action_or_link) {
