@@ -23,8 +23,11 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     occ = 0
     result = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
+    break_on = nil
     loop do
       value = parslet.apply(source, context)
+
+      break_on = value
       break if value.error?
 
       occ += 1
@@ -35,9 +38,16 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
       return success(result) if max && occ>=max
     end
     
+    # assert: value.error? is true
+    
     # Greedy matcher has produced a failure. Check if occ (which will
     # contain the number of sucesses) is in {min, max}.
-    return error(source, @error_msgs[:minrep], start_pos) if occ < min
+    return error_at(
+      source, 
+      @error_msgs[:minrep], 
+      start_pos, 
+      [break_on.message]) if occ < min
+      
     return success(result)
   end
   
@@ -47,18 +57,6 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     minmax = '?' if min == 0 && max == 1
 
     parslet.to_s(prec) + minmax
-  end
-
-  def cause # :nodoc:
-    # Either the repetition failed or the parslet inside failed to repeat. 
-    super || parslet.cause
-  end
-  def error_tree # :nodoc:
-    if cause?
-      Parslet::ErrorTree.new(self, parslet.error_tree)
-    else
-      parslet.error_tree
-    end
   end
 end
 

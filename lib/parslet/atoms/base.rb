@@ -115,25 +115,6 @@ class Parslet::Atoms::Base
   def inspect # :nodoc:
     to_s(OUTER)
   end
-
-  # Cause should return the current best approximation of this parslet
-  # of what went wrong with the parse. Not relevant if the parse succeeds, 
-  # but needed for clever error reports. 
-  #
-  def cause # :nodoc:
-    @last_cause && @last_cause.to_s || nil
-  end
-  def cause? # :nodoc:
-    !!@last_cause
-  end
-
-  # Error tree returns what went wrong here plus what went wrong inside 
-  # subexpressions as a tree. The error stored for this node will be equal
-  # to #cause. 
-  #
-  def error_tree
-    Parslet::ErrorTree.new(self)
-  end
 private
 
   # Produces an instance of Success and returns it. 
@@ -144,8 +125,17 @@ private
 
   # Produces an instance of Fail and returns it. 
   #
-  def error(source, str, pos=nil)
-    @last_cause = source.error(str, pos)
-    Fail.new(@last_cause)
+  def error(source, str, children=nil)
+    cause = source.error(str)
+    cause.children = children || []
+    Fail.new(cause)
+  end
+
+  # Produces an instance of Fail and returns it. 
+  #
+  def error_at(source, str, pos, children=nil)
+    cause = source.error(str, pos)
+    cause.children = children || []
+    Fail.new(cause)
   end
 end

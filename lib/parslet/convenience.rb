@@ -29,7 +29,7 @@ class Parslet::Atoms::Base
     puts error
   rescue Parslet::ParseFailed => error
     puts error
-    puts error_tree
+    puts error.cause.ascii_tree
   end
 
 end

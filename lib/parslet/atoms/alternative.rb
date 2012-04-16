@@ -31,21 +31,20 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   end
   
   def try(source, context) # :nodoc:
-    alternatives.each { |a|
+    errors = alternatives.map { |a|
       value = a.apply(source, context)
       return value unless value.error?
+      
+      # Aggregate all errors
+      value.message
     }
+    
     # If we reach this point, all alternatives have failed. 
-    error(source, @error_msg)
+    error(source, @error_msg, errors)
   end
 
   precedence ALTERNATE
   def to_s_inner(prec) # :nodoc:
     alternatives.map { |a| a.to_s(prec) }.join(' / ')
-  end
-
-  def error_tree # :nodoc:
-    Parslet::ErrorTree.new(self, *alternatives.
-      map { |child| child.error_tree })
   end
 end

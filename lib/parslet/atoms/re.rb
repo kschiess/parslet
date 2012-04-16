@@ -24,8 +24,8 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     error_pos = source.pos
     s = source.read(1)
     
-    return error(source, @error_msgs[:premature], error_pos) unless s
-    return error(source, @error_msgs[:failed], error_pos) unless s.match(re)
+    return error_at(source, @error_msgs[:premature], error_pos) unless s
+    return error_at(source, @error_msgs[:failed], error_pos) unless s.match(re)
     
     return success(s)
   end

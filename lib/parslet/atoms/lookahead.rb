@@ -27,8 +27,8 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     value = bound_parslet.apply(source, context)
     return success(nil) if positive ^ value.error?
     
-    return error(source, @error_msgs[:positive], pos) if positive
-    return error(source, @error_msgs[:negative], pos)
+    return error_at(source, @error_msgs[:positive], pos) if positive
+    return error_at(source, @error_msgs[:negative], pos)
     
   # This is probably the only parslet that rewinds its input in #try.
   # Lookaheads NEVER consume their input, even on success, that's why. 

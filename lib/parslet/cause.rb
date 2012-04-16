@@ -2,7 +2,7 @@ module Parslet
   # An internal class that allows delaying the construction of error messages
   # (as strings) until we really need to print them. 
   #
-  class Cause < Struct.new(:message, :source, :pos) # :nodoc: 
+  class Cause < Struct.new(:message, :source, :pos, :children) # :nodoc: 
     # Appends 'at line ... char ...' to the string given. Use +pos+ to
     # override the position of the +source+. This method returns an object
     # that can be turned into a string using #to_s.
@@ -37,10 +37,7 @@ module Parslet
         recursive_ascii_tree(self, io, [true]) }.
         string
     end
-    
-    def children
-      @children ||= Array.new
-    end
+
   private
     def recursive_ascii_tree(node, stream, curved) # :nodoc:
       append_prefix(stream, curved)
