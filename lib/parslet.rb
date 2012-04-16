@@ -231,7 +231,6 @@ end
 require 'parslet/slice'
 require 'parslet/cause'
 require 'parslet/source'
-require 'parslet/error_tree'
 require 'parslet/atoms'
 require 'parslet/pattern'
 require 'parslet/pattern/binding'
