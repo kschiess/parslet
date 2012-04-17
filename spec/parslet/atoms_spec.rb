@@ -26,10 +26,10 @@ describe Parslet do
       parslet.parse('c')
     end 
     it "should not parse d" do
-      lambda {
+      cause = catch_failed_parse {
         parslet.parse('d')
-      }.should not_parse
-      parslet.cause.should == "Failed to match [abc] at line 1 char 1."
+      }
+      cause.to_s.should == "Failed to match [abc] at line 1 char 1."
     end 
     it "should print as [abc]" do
       parslet.inspect.should == "[abc]"
