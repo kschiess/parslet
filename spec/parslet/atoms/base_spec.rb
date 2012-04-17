@@ -11,12 +11,6 @@ describe Parslet::Atoms::Base do
       }.should raise_error(NotImplementedError)
     end 
   end
-  describe "<- #error_tree" do
-    it "should always return a tree" do
-      parslet.cause.should be_nil
-      parslet.error_tree.should_not be_nil
-    end 
-  end
   describe "<- #flatten_sequence" do
     [
       # 9 possibilities for making a word of 2 letters from the alphabeth of
@@ -90,30 +84,8 @@ describe Parslet::Atoms::Base do
       begin
         parslet.parse('foobar')
       rescue Parslet::ParseFailed => ex
-        ex.message.should == "Don't know what to do with bar at line 1 char 4."
+        ex.message.should == "Don't know what to do with \"bar\" at line 1 char 4."
       end
     end 
-  end
-  context "when a match succeeds" do
-    context "when there is an error from a previous run" do
-      before(:each) do
-        catch(:error) {
-          parslet.send(:error, Parslet::Source.new('test'), 'cause') 
-        }
-
-        parslet.cause.should == "cause at line 1 char 1."
-      end
-      
-      it "should reset the #cause to nil" do
-        success = flexmock(:success, :error? => false)
-        flexmock(parslet).
-          should_receive(:try => success)
-        
-        parslet.apply(Parslet::Source.new(''), context)
-        
-        parslet.cause?.should == false
-        parslet.cause.should be_nil
-      end 
-    end
   end
 end
