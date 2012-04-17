@@ -52,17 +52,11 @@ class Parslet::Atoms::Base
       # Do we know why we stopped matching input? If yes, that's a good
       # error to fail with. Otherwise just report that we cannot consume the
       # input.
-      if cause 
-        # NOTE We don't overwrite last_cause here.
-        raise Parslet::UnconsumedInput, 
-          "Unconsumed input, maybe because of this: #{cause}"
-      else
-        old_pos = source.pos
-        @last_cause = source.error(
-          "Don't know what to do with #{source.read(100)}", old_pos)
+      old_pos = source.pos
+      @last_cause = source.error(
+        "Don't know what to do with #{source.read(10).to_s.inspect}", old_pos)
 
-        @last_cause.raise(Parslet::UnconsumedInput)
-      end
+      @last_cause.raise(Parslet::UnconsumedInput)
     end
     
     return flatten(value.result)
