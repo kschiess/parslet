@@ -129,8 +129,7 @@ describe "Regressions from real examples" do
     end
     
     it "should count lines correctly" do
-      cause = nil
-      begin
+      cause = catch_failed_parse {
         subject.parse('
           a 
           a a a 
@@ -140,10 +139,8 @@ describe "Regressions from real examples" do
           */
           b
         ')
-      rescue Parslet::ParseFailed => ex
-        cause = ex.cause
-      end
-      puts cause.ascii_tree
+      }
+
       remove_indent(cause.ascii_tree).should == remove_indent(%q(
         Don't know what to do with "b\n        " at line 8 char 11.).strip)
     end 

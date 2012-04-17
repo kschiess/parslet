@@ -15,10 +15,10 @@ RSpec.configure do |config|
   }
 end
 
-def catch_exception
+def catch_failed_parse
   begin
     yield
   rescue Parslet::ParseFailed => exception
   end
-  exception
+  exception.cause
 end
