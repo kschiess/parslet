@@ -50,7 +50,8 @@ module Parslet
       end
     end
     def append_prefix(stream, curved) # :nodoc:
-      curved[0..-2].each do |c|
+      return if curved.size < 2
+      curved[1..-2].each do |c|
         stream.print c ? "   " : "|  "
       end
       stream.print curved.last ? "`- " : "|- "

@@ -28,7 +28,6 @@ class Parslet::Atoms::Base
   rescue Parslet::UnconsumedInput => error
     puts error
   rescue Parslet::ParseFailed => error
-    puts error
     puts error.cause.ascii_tree
   end
 
