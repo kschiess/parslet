@@ -6,17 +6,17 @@ describe Parslet::Atoms::Lookahead do
   describe 'negative lookahead' do
     it "influences the error tree" do
       parser = str('f').absent? >> str('b')
-      parser.parse('f') rescue nil
+      cause = catch_failed_parse { parser.parse('f') }
       
-      parser.error_tree.ascii_tree.should == "`- Failed to match sequence (!'f' 'b') at line 1 char 1.\n   `- Input should not start with 'f' at line 1 char 1.\n"
+      cause.ascii_tree.should == "Failed to match sequence (!'f' 'b') at line 1 char 1.\n`- Input should not start with 'f' at line 1 char 1.\n"
     end 
   end
   describe 'positive lookahead' do
     it "influences the error tree" do
       parser = str('f').present? >> str('b')
-      parser.parse('b') rescue nil
+      cause = catch_failed_parse { parser.parse('b') }
       
-      parser.error_tree.ascii_tree.should == "`- Failed to match sequence (&'f' 'b') at line 1 char 1.\n   `- Input should start with 'f' at line 1 char 1.\n"
+      cause.ascii_tree.should == "Failed to match sequence (&'f' 'b') at line 1 char 1.\n`- Input should start with 'f' at line 1 char 1.\n"
     end 
   end
 end
