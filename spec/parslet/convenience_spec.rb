@@ -28,8 +28,8 @@ describe 'parslet/convenience' do
       end
     end
     context 'output' do
-      it 'should puts once for the error, and once for the tree' do
-        parser.should_receive(:puts).twice
+      it 'should puts once for tree output' do
+        parser.should_receive(:puts).once
         
         parser.parse_with_debug('incorrect')
       end
