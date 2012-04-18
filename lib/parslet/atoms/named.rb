@@ -13,8 +13,8 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
     @parslet, @name = parslet, name
   end
   
-  def apply(source, context) # :nodoc:
-    value = parslet.apply(source, context)
+  def apply(source, context, memoize = false) # :nodoc:
+    value = parslet.apply(source, context, memoize)
 
     return value if value.error?
     success(
