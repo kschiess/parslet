@@ -5,6 +5,12 @@
     
 = 1.3.1 / ???
 
+  ! #error_tree and #cause removed from all of parslet. The 
+    Parslet::ParseFailed exception now contains a #cause field that can
+    be asked for an #ascii_tree as before. 
+    Cleaner internal error handling, not stateful in atoms anymore. Some 
+    parsers will see correct error reporting for the first time. (issue #65)
+
   + Made it possible to pass a custom Parslet::Source implementor to #parse.
     (see #63)
 
