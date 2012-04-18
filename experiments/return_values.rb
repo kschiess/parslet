@@ -16,10 +16,16 @@ def klass
   SuccessO.new("123")
 end
 
-n = 1000_000
+def raise_ex
+  fail "123"
+end
+
+
+n = 1000_00
 require 'benchmark'
-Benchmark.bmbm(9) do |bm|
+Benchmark.bm(9) do |bm|
   bm.report(:pair)    { n.times do pair end }
   bm.report(:struct)  { n.times do struct end }
   bm.report(:klass)  { n.times do klass end }
+  bm.report(:throw)  { n.times do raise_ex rescue nil end }
 end
