@@ -11,7 +11,7 @@ class IgnoreParslet < Parslet::Atoms::Base
     @parslet.to_s(prec)
   end
   def try(source, context)
-    result = success, value = @parslet.try(source, context)
+    success, value = result = @parslet.try(source, context)
     
     return succ(nil) if success
     return result
