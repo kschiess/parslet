@@ -23,13 +23,13 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     error_pos = source.pos
     s = source.read(str.bytesize)
 
-    return success(s) if s == str
+    return succ(s) if s == str
     
     # assert: s != str
 
     # Failures: 
-    return error(source, @error_msgs[:premature]) unless s && s.size==str.size
-    return error_at(source, [@error_msgs[:failed], s], error_pos) 
+    return err(source, @error_msgs[:premature]) unless s && s.size==str.size
+    return err_at(source, [@error_msgs[:failed], s], error_pos) 
   end
   
   def to_s_inner(prec) # :nodoc:

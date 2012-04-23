@@ -170,7 +170,8 @@ describe Parslet do
     end 
     context "when fed 'foo'" do
       it "should parse" do
-        parslet.apply(src('foo'), context).should_not be_error
+        success, _ = parslet.apply(src('foo'), context)
+        success.should == true
       end
       it "should not change input position" do
         source = src('foo')
@@ -185,7 +186,7 @@ describe Parslet do
     end
     describe "<- #parse" do
       it "should return nil" do
-        parslet.apply(src('foo'), context).result.should == nil
+        parslet.apply(src('foo'), context).should == [true, nil]
       end 
     end
   end
@@ -200,7 +201,7 @@ describe Parslet do
     end 
     context "when fed 'bar'" do
       it "should parse" do
-        parslet.apply(src('bar'), context).should_not be_error
+        parslet.apply(src('bar'), context).should == [true, nil]
       end
       it "should not change input position" do
         source = src('bar')

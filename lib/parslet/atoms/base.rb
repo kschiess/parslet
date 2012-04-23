@@ -8,20 +8,6 @@ class Parslet::Atoms::Base
   include Parslet::Atoms::DSL
   include Parslet::Atoms::CanFlatten
   
-  # Internally, all parsing functions return either an instance of Fail 
-  # or an instance of Success. 
-  #
-  class Fail < Struct.new(:message)
-    def error?; true end
-  end
-
-  # Internally, all parsing functions return either an instance of Fail 
-  # or an instance of Success.
-  #
-  class Success < Struct.new(:result)
-    def error?; false end
-  end
-  
   # Given a string or an IO object, this will attempt a parse of its contents
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
@@ -34,32 +20,28 @@ class Parslet::Atoms::Base
     context = Parslet::Atoms::Context.new
     
     result = nil
-    value = apply(source, context)
+    success, value = apply(source, context)
     
     # If we didn't succeed the parse, raise an exception for the user. 
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
-    if value.error?
-      @last_cause = value.message
-      @last_cause.raise
+    unless success
+      # Value is a Parslet::Cause, which can be turned into an exception:
+      value.raise
     end
     
-    # assert: value is a success answer
+    # assert: success is true
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
     if !prefix_parse && !source.eof?
-      # Do we know why we stopped matching input? If yes, that's a good
-      # error to fail with. Otherwise just report that we cannot consume the
-      # input.
       old_pos = source.pos
-      @last_cause = source.error(
-        "Don't know what to do with #{source.read(10).to_s.inspect}", old_pos)
-
-      @last_cause.raise(Parslet::UnconsumedInput)
+      source.error(
+        "Don't know what to do with #{source.read(10).to_s.inspect}", old_pos).
+        raise(Parslet::UnconsumedInput)
     end
     
-    return flatten(value.result)
+    return flatten(value)
   end
 
   #---
@@ -69,19 +51,15 @@ class Parslet::Atoms::Base
   def apply(source, context) # :nodoc:
     old_pos = source.pos
     
-    result = context.cache(self, source) {
+    success, value = result = context.cache(self, source) {
       try(source, context)
     }
-    
-    # This has just succeeded, so last_cause must be empty
-    unless result.error?
-      @last_cause = nil 
-      return result
-    end
+
+    return result if success
     
     # We only reach this point if the parse has failed. Rewind the input.
     source.pos = old_pos
-    return result # is instance of Fail
+    return result
   end
   
   # Override this in your Atoms::Base subclasses to implement parsing
@@ -113,23 +91,23 @@ private
 
   # Produces an instance of Success and returns it. 
   #
-  def success(result)
-    Success.new(result)
+  def succ(result)
+    [true, result]
   end
 
   # Produces an instance of Fail and returns it. 
   #
-  def error(source, str, children=nil)
+  def err(source, str, children=nil)
     cause = source.error(str)
     cause.children = children || []
-    Fail.new(cause)
+    [false, cause]
   end
 
   # Produces an instance of Fail and returns it. 
   #
-  def error_at(source, str, pos, children=nil)
+  def err_at(source, str, pos, children=nil)
     cause = source.error(str, pos)
     cause.children = children || []
-    Fail.new(cause)
+    [false, cause]
   end
 end

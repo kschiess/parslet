@@ -21,34 +21,34 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
   
   def try(source, context) # :nodoc:
     occ = 0
-    result = [@tag]   # initialize the result array with the tag (for flattening)
+    accum = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
     break_on = nil
     loop do
-      value = parslet.apply(source, context)
+      success, value = parslet.apply(source, context)
 
       break_on = value
-      break if value.error?
+      break unless success
 
       occ += 1
-      result << value.result
+      accum << value
       
       # If we're not greedy (max is defined), check if that has been 
       # reached. 
-      return success(result) if max && occ>=max
+      return succ(accum) if max && occ>=max
     end
     
     # assert: value.error? is true
     
     # Greedy matcher has produced a failure. Check if occ (which will
     # contain the number of sucesses) is in {min, max}.
-    return error_at(
+    return err_at(
       source, 
       @error_msgs[:minrep], 
       start_pos, 
-      [break_on.message]) if occ < min
+      [break_on]) if occ < min
       
-    return success(result)
+    return succ(accum)
   end
   
   precedence REPETITION

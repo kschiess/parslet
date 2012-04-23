@@ -24,10 +24,10 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     error_pos = source.pos
     s = source.read(1)
     
-    return error_at(source, @error_msgs[:premature], error_pos) unless s
-    return error_at(source, @error_msgs[:failed], error_pos) unless s.match(re)
+    return err_at(source, @error_msgs[:premature], error_pos) unless s
+    return err_at(source, @error_msgs[:failed], error_pos) unless s.match(re)
     
-    return success(s)
+    return succ(s)
   end
 
   def to_s_inner(prec) # :nodoc:

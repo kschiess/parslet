@@ -14,12 +14,12 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
   end
   
   def apply(source, context) # :nodoc:
-    value = parslet.apply(source, context)
+    success, value = result = parslet.apply(source, context)
 
-    return value if value.error?
-    success(
+    return result unless success
+    succ(
       produce_return_value(
-        value.result))
+        value))
   end
   
   def to_s_inner(prec) # :nodoc:

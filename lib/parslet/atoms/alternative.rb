@@ -32,15 +32,15 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   
   def try(source, context) # :nodoc:
     errors = alternatives.map { |a|
-      value = a.apply(source, context)
-      return value unless value.error?
+      success, value = result = a.apply(source, context)
+      return result if success
       
       # Aggregate all errors
-      value.message
+      value
     }
     
     # If we reach this point, all alternatives have failed. 
-    error(source, @error_msg, errors)
+    err(source, @error_msg, errors)
   end
 
   precedence ALTERNATE

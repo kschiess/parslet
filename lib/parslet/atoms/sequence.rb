@@ -20,14 +20,14 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   end
   
   def try(source, context) # :nodoc:
-    success([:sequence]+parslets.map { |p| 
-      value = p.apply(source, context) 
+    succ([:sequence]+parslets.map { |p| 
+      success, value = p.apply(source, context) 
 
-      if value.error?
-        return error(source, @error_msgs[:failed], [value.message]) 
+      unless success
+        return err(source, @error_msgs[:failed], [value]) 
       end
       
-      value.result
+      value
     })
   end
       
