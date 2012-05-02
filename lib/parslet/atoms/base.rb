@@ -16,17 +16,18 @@ class Parslet::Atoms::Base
     source = io.respond_to?(:line_and_column) ? 
       io : 
       Parslet::Source.new(io)
-    
-    context = Parslet::Atoms::Context.new(nil)
-    success, value = apply(source, context)
+
+    # Try to cheat. Assuming that we'll be able to parse the input, don't 
+    # run error reporting code. 
+    success, value = setup_and_apply(source, nil)
     
     # If we didn't succeed the parse, raise an exception for the user. 
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
     unless success
-      # Generate proper error using a reporter: 
-      context = Parslet::Atoms::Context.new
-      success, value = apply(source, context)
+      # Cheating has not paid off. Now pay the cost: Rerun the parse,
+      # gathering error information in the process.
+      success, value = setup_and_apply(source, Parslet::ErrorReporter.new)
       
       fail "Assertion failed: success was true when parsing with reporter" \
         if success
@@ -52,6 +53,16 @@ class Parslet::Atoms::Base
     end
     
     return flatten(value)
+  end
+  
+  # Creates a context for parsing and applies the current atom to the input. 
+  # Returns the parse result. 
+  #
+  # @return [<Boolean, Object>] Result of the parse. If the first member is 
+  #   true, the parse has succeeded. 
+  def setup_and_apply(source, error_reporter)
+    context = Parslet::Atoms::Context.new(error_reporter)
+    apply(source, context)
   end
 
   #---
