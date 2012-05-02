@@ -1,10 +1,10 @@
 $:.unshift File.dirname(__FILE__) + "/../lib"
 
+# This example demonstrates how to do deepest error reporting, as invented 
+# by John Mettraux (issue #64).
+
 require 'parslet'
 require 'parslet/convenience'
-
-# This example demonstrates tree error reporting in a real life example. 
-# The parser code has been contributed by John Mettraux.
 
 def prettify(str)
   puts " "*3 + " "*4 + "." + " "*4 + "10" + " "*3 + "." + " "*4 + "20"
@@ -16,7 +16,6 @@ def prettify(str)
 end
 
 class Parser < Parslet::Parser
-
   # commons
 
   rule(:space) { match('[ \t]').repeat(1) }
@@ -101,7 +100,6 @@ class Parser < Parslet::Parser
   root(:radix)
 end
 
-
 ds = [
   %{
     define f()
@@ -125,7 +123,8 @@ ds.each do |d|
   parser = Parser.new
 
   begin
-    parser.parse_with_debug(d)
+    parser.parse_with_debug(d, 
+      :reporter => Parslet::ErrorReporter::Deepest.new)
   end
 end
 

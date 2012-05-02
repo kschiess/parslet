@@ -4,3 +4,4 @@ module Parslet::ErrorReporter
 end
 
 require 'parslet/error_reporter/tree'
+require 'parslet/error_reporter/deepest'

@@ -96,5 +96,30 @@ describe Parslet::Atoms::Base do
       parslet.parse('foobarbaz', :prefix => true).should == 'foobar'
     end 
   end
-  
+
+  describe ':reporter option' do
+    let(:parslet) { Parslet.str('test') >> Parslet.str('ing') }
+    let(:reporter) { flexmock(:reporter) }
+    
+    it "replaces the default reporter" do
+      cause = flexmock(:cause)
+      
+      # Two levels of the parse, calling two different error reporting
+      # methods.
+      reporter.
+        should_receive(:err_at).once
+      reporter.
+        should_receive(:err => cause).once
+      
+      # The final cause will be sent the #raise method.
+      cause.
+        should_receive(:raise).once.and_throw(:raise)
+      
+      catch(:raise) {
+        parslet.parse('testung', :reporter => reporter)
+        
+        fail "NEVER REACHED"
+      }
+    end 
+  end
 end

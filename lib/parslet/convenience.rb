@@ -23,8 +23,8 @@ class Parslet::Atoms::Base
   #   
   #   FooParser.new.parse_with_debug('bar')
   #
-  def parse_with_debug str
-    parse str
+  def parse_with_debug str, opts={}
+    parse str, opts
   rescue Parslet::UnconsumedInput => error
     puts error
   rescue Parslet::ParseFailed => error
