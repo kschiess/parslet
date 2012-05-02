@@ -12,6 +12,9 @@ class Parslet::Atoms::Base
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
   #
+  # @param io [String, Source] input for the parse process
+  # TODO document options
+  #
   def parse(io, options={})
     source = io.respond_to?(:line_and_column) ? 
       io : 

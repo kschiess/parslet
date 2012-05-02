@@ -1,6 +1,16 @@
 module Parslet
   module ErrorReporter
-    # TODO describe
+    # Instead of reporting the latest error that happens like {Tree} does,
+    # this class reports the deepest error. Depth is defined here as how
+    # advanced into the input an error happens. The errors close to the
+    # greatest depth tend to be more relevant to the end user, since they
+    # specify what could be done to make them go away. 
+    #
+    # More specifically, errors produced by this reporter won't be related to
+    # the structure of the grammar at all. The positions of the errors will 
+    # be advanced and convey at every grammar level what the deepest rule
+    # was to fail. 
+    #
     class Deepest
       def initialize
         @deepest_cause = nil

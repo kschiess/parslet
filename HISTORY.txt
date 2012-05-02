@@ -4,6 +4,9 @@
     the win. 
     
 = 1.4.0 / ???
+  + :report argument to parse, allowing to customize error reporting within
+    wide boundaries. See issue #64 for a discussion.
+
   + Optimistic parse: Parsing is two phase, with the first phase assuming 
     there will be no errors.
 
