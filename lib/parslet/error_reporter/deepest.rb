@@ -47,7 +47,6 @@ module Parslet
         return deepest(cause)
       end
       
-    private
       # Checks to see if the lineage of the cause given includes a cause with
       # an error position deeper than the current deepest cause stored. If
       # yes, it passes the cause through to the caller. If no, it returns the
@@ -65,6 +64,7 @@ module Parslet
         return @deepest_cause
       end
       
+    private
       # Returns the leaf from a given error tree with the biggest rank. 
       #
       def deepest_child(cause, rank=0)
