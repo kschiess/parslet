@@ -42,7 +42,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     
     # Greedy matcher has produced a failure. Check if occ (which will
     # contain the number of sucesses) is in {min, max}.
-    return err_at(
+    return context.err_at(
       source, 
       @error_msgs[:minrep], 
       start_pos, 

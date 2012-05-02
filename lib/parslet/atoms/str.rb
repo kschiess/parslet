@@ -28,8 +28,10 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     # assert: s != str
 
     # Failures: 
-    return err(source, @error_msgs[:premature]) unless s && s.size==str.size
-    return err_at(source, [@error_msgs[:failed], s], error_pos) 
+    return context.err(source, @error_msgs[:premature]) \
+      unless s && s.size==str.size
+        
+    return context.err_at(source, [@error_msgs[:failed], s], error_pos) 
   end
   
   def to_s_inner(prec) # :nodoc:

@@ -4,8 +4,11 @@ module Parslet::Atoms
   # style. 
   #
   class Context
-    def initialize
+    # @param reporter [#err, #err_at] Error reporter (leave empty for default 
+    #   reporter)
+    def initialize(reporter=Parslet::ErrorReporter.new)
       @cache = Hash.new { |h, k| h[k] = {} }
+      @reporter = reporter
     end
 
     # Caches a parse answer for obj at source.pos. Applying the same parslet
@@ -36,6 +39,15 @@ module Parslet::Atoms
       source.pos = beg + advance
       return result
     end  
+    
+    def err_at(*args)
+      return [false, @reporter.err_at(*args)] if @reporter
+      return [false, nil]
+    end
+    def err(*args)
+      return [false, @reporter.err(*args)] if @reporter
+      return [false, nil]
+    end
   
   private 
     def lookup(obj, pos)

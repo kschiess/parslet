@@ -17,7 +17,7 @@ class Parslet::Atoms::Base
       io : 
       Parslet::Source.new(io)
     
-    context = Parslet::Atoms::Context.new
+    context = Parslet::Atoms::Context.new()
     
     result = nil
     success, value = apply(source, context)
@@ -70,7 +70,6 @@ class Parslet::Atoms::Base
       "Atoms::Base doesn't have behaviour, please implement #try(source, context)."
   end
 
-
   # Debug printing - in Treetop syntax. 
   #
   def self.precedence(prec) # :nodoc:
@@ -93,21 +92,5 @@ private
   #
   def succ(result)
     [true, result]
-  end
-
-  # Produces an instance of Fail and returns it. 
-  #
-  def err(source, str, children=nil)
-    cause = source.error(str)
-    cause.children = children || []
-    [false, cause]
-  end
-
-  # Produces an instance of Fail and returns it. 
-  #
-  def err_at(source, str, pos, children=nil)
-    cause = source.error(str, pos)
-    cause.children = children || []
-    [false, cause]
   end
 end
