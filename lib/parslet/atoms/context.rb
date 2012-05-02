@@ -9,7 +9,7 @@ module Parslet::Atoms
   class Context
     # @param reporter [#err, #err_at] Error reporter (leave empty for default 
     #   reporter)
-    def initialize(reporter=Parslet::ErrorReporter.new)
+    def initialize(reporter=Parslet::ErrorReporter::Tree.new)
       @cache = Hash.new { |h, k| h[k] = {} }
       @reporter = reporter
     end

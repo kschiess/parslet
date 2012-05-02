@@ -27,7 +27,7 @@ class Parslet::Atoms::Base
     unless success
       # Cheating has not paid off. Now pay the cost: Rerun the parse,
       # gathering error information in the process.
-      success, value = setup_and_apply(source, Parslet::ErrorReporter.new)
+      success, value = setup_and_apply(source, Parslet::ErrorReporter::Tree.new)
       
       fail "Assertion failed: success was true when parsing with reporter" \
         if success
