@@ -17,17 +17,27 @@ class Parslet::Atoms::Base
       io : 
       Parslet::Source.new(io)
     
-    context = Parslet::Atoms::Context.new()
-    
-    result = nil
+    context = Parslet::Atoms::Context.new(nil)
     success, value = apply(source, context)
     
     # If we didn't succeed the parse, raise an exception for the user. 
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
     unless success
-      # Value is a Parslet::Cause, which can be turned into an exception:
-      value.raise
+      # Generate proper error using a reporter: 
+      context = Parslet::Atoms::Context.new
+      success, value = apply(source, context)
+      
+      fail "Assertion failed: success was true when parsing with reporter" \
+        if success
+      
+      if value && value.respond_to?(:raise)
+        # Value is a Parslet::Cause, which can be turned into an exception:
+        value.raise
+      else
+        warn "Failure cause could not be generated, raise a generic error..."
+        raise Parslet::ParseFailed, "Parse failed."
+      end
     end
     
     # assert: success is true

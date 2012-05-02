@@ -10,6 +10,8 @@ module Parslet::Atoms
       @cache = Hash.new { |h, k| h[k] = {} }
       @reporter = reporter
     end
+    
+    attr_accessor :reporter
 
     # Caches a parse answer for obj at source.pos. Applying the same parslet
     # at one position of input always yields the same result, unless the input
