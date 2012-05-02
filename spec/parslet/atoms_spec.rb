@@ -126,9 +126,6 @@ describe Parslet do
     it "should inspect as ('foo' 'bar')" do
       parslet.inspect.should == "'foo' 'bar'"
     end 
-    it "returns the first half on a prefix parse" do
-      parslet.parse('foobarbaz', true).should == 'foobar'
-    end 
   end
   describe "str('foo') | str('bar')" do
     attr_reader :parslet

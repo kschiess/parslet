@@ -80,6 +80,7 @@ describe Parslet::Atoms::Base do
   end
   context "when not all input is consumed" do
     let(:parslet) { Parslet.str('foo') }
+    
     it "should raise with a proper error message" do
       begin
         parslet.parse('foobar')
@@ -88,4 +89,12 @@ describe Parslet::Atoms::Base do
       end
     end 
   end
+  context "when only parsing string prefix" do
+    let(:parslet) { Parslet.str('foo') >> Parslet.str('bar') }
+    
+    it "returns the first half on a prefix parse" do
+      parslet.parse('foobarbaz', prefix: true).should == 'foobar'
+    end 
+  end
+  
 end

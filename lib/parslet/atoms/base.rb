@@ -12,7 +12,7 @@ class Parslet::Atoms::Base
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
   #
-  def parse(io, prefix_parse=false)
+  def parse(io, options={})
     source = io.respond_to?(:line_and_column) ? 
       io : 
       Parslet::Source.new(io)
@@ -40,7 +40,7 @@ class Parslet::Atoms::Base
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
-    if !prefix_parse && !source.eof?
+    if !options[:prefix] && !source.eof?
       old_pos = source.pos
       Parslet::Cause.format(
         source, old_pos, 

@@ -15,11 +15,12 @@
 
   + Made it possible to pass a custom Parslet::Source implementor to #parse.
     (see #63)
-
-  + #parse takes a second argument: prefix_parse can be set to true if no 
-    error should be raised on an incomplete parse. Result is returned as if 
-    the parse had gone through completely, but the input will not be consumed. 
     
+  + #parse has now a second argument that is an options hash:
+    + Using the prefix: true option, you can do a string prefix parse. 
+    + Using the error_reporter: ... option, you can replace error reporting 
+      by your own implementation.
+
   - VM engine on the way out. No benefit except for the intellectual
     challenge.
     
