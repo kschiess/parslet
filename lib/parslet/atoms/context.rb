@@ -11,8 +11,6 @@ module Parslet::Atoms
       @reporter = reporter
     end
     
-    attr_accessor :reporter
-
     # Caches a parse answer for obj at source.pos. Applying the same parslet
     # at one position of input always yields the same result, unless the input
     # has changed. 
@@ -42,10 +40,17 @@ module Parslet::Atoms
       return result
     end  
     
+    # Report an error at a given position. 
+    # @see ErrorReporter
+    #
     def err_at(*args)
       return [false, @reporter.err_at(*args)] if @reporter
       return [false, nil]
     end
+    
+    # Report an error. 
+    # @see ErrorReporter
+    #
     def err(*args)
       return [false, @reporter.err(*args)] if @reporter
       return [false, nil]

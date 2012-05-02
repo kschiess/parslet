@@ -7,8 +7,8 @@ module Parslet
     # override the position of the +source+. This method returns an object
     # that can be turned into a string using #to_s.
     #
-    def self.format(source, pos, str)
-      self.new(str, source, pos)
+    def self.format(source, pos, str, children=nil)
+      self.new(str, source, pos, children || [])
     end
     
     # Make the uninitialized value for #children to be the empty array, but

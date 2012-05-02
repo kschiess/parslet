@@ -47,8 +47,9 @@ class Parslet::Atoms::Base
     # to provide a good error message (even asking down below)
     if !prefix_parse && !source.eof?
       old_pos = source.pos
-      source.error(
-        "Don't know what to do with #{source.read(10).to_s.inspect}", old_pos).
+      Parslet::Cause.format(
+        source, old_pos, 
+        "Don't know what to do with #{source.read(10).to_s.inspect}").
         raise(Parslet::UnconsumedInput)
     end
     

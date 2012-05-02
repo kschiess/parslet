@@ -48,17 +48,6 @@ module Parslet
     def line_and_column(position=nil)
       @line_cache.line_and_column(position || self.pos)
     end
-  
-    # Formats an error cause at the current position or at the position given 
-    # by pos. If pos is nil, the current source position will be the error 
-    # position.
-    #
-    def error(message, error_pos=nil)
-      real_pos = (error_pos||self.pos)      
-      
-      Cause.format(self, real_pos, message)
-    end
-  
   private
     def read_slice(needed)
       start = @io.pos
