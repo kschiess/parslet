@@ -3,7 +3,9 @@
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
     
-= 1.3.1 / ???
+= 1.4.0 / ???
+  + Optimistic parse: Parsing is two phase, with the first phase assuming 
+    there will be no errors.
 
   ! #error_tree and #cause removed from all of parslet. The 
     Parslet::ParseFailed exception now contains a #cause field that can

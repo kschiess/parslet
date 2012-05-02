@@ -11,17 +11,6 @@ module Parslet
       self.new(str, source, pos, children || [])
     end
     
-    # Make the uninitialized value for #children to be the empty array, but
-    # lazily.
-    #
-    def children
-      unless super
-        self.children = []
-      end
-      
-      super
-    end
-    
     def to_s
       line, column = source.line_and_column(pos)
       # Allow message to be a list of objects. Join them here, since we now
