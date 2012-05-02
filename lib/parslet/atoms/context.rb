@@ -3,6 +3,9 @@ module Parslet::Atoms
   # parslet object to results. This is used for memoization in the packrat
   # style. 
   #
+  # Also, error reporter is stored here and error reporting happens through
+  # this class. This makes the reporting pluggable. 
+  #
   class Context
     # @param reporter [#err, #err_at] Error reporter (leave empty for default 
     #   reporter)
