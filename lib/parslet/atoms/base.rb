@@ -32,13 +32,8 @@ class Parslet::Atoms::Base
       fail "Assertion failed: success was true when parsing with reporter" \
         if success
       
-      if value && value.respond_to?(:raise)
-        # Value is a Parslet::Cause, which can be turned into an exception:
-        value.raise
-      else
-        warn "Failure cause could not be generated, raise a generic error..."
-        raise Parslet::ParseFailed, "Parse failed."
-      end
+      # Value is a Parslet::Cause, which can be turned into an exception:
+      value.raise
     end
     
     # assert: success is true
