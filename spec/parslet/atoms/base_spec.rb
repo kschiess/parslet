@@ -93,7 +93,7 @@ describe Parslet::Atoms::Base do
     let(:parslet) { Parslet.str('foo') >> Parslet.str('bar') }
     
     it "returns the first half on a prefix parse" do
-      parslet.parse('foobarbaz', prefix: true).should == 'foobar'
+      parslet.parse('foobarbaz', :prefix => true).should == 'foobar'
     end 
   end
   
