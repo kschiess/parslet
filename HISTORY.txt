@@ -4,11 +4,18 @@
     the win. 
     
 = 1.4.0 / ???
-  + :report argument to parse, allowing to customize error reporting within
-    wide boundaries. See issue #64 for a discussion.
+
+  + :reporter argument to parse, allowing to customize error reporting within
+    wide boundaries. See issue #64 for a discussion. 
+    Included are two error reporters, one (default) with the existing error
+    tree functionality, one reporting deepest errors as defined by the above
+    ticket.
 
   + Optimistic parse: Parsing is two phase, with the first phase assuming 
-    there will be no errors.
+    there will be no errors. This yields ~ 20% speed improvement in the 
+    case where the parse succeeds.
+    Also, internal error handling is now using tuples. This and other 
+    optimizations have yielded ~ 30% overall improvement. 
 
   ! #error_tree and #cause removed from all of parslet. The 
     Parslet::ParseFailed exception now contains a #cause field that can
@@ -19,10 +26,8 @@
   + Made it possible to pass a custom Parslet::Source implementor to #parse.
     (see #63)
     
-  + #parse has now a second argument that is an options hash:
-    + Using the prefix: true option, you can do a string prefix parse. 
-    + Using the error_reporter: ... option, you can replace error reporting 
-      by your own implementation.
+  + #parse has now a second argument that is an options hash. See 
+    Parslet::Atoms::Base#parse for documentation.
 
   - VM engine on the way out. No benefit except for the intellectual
     challenge.

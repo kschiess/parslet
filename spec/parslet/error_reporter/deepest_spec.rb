@@ -26,7 +26,7 @@ describe Parslet::ErrorReporter::Deepest do
   end
   describe '#deepest(cause)' do
     def fake_cause(pos=13, children=nil)
-      flexmock('cause', :pos => pos, :children => children)
+      flexmock('cause' + pos.to_s, :pos => pos, :children => children)
     end
     
     context "when there is no deepest cause yet" do
