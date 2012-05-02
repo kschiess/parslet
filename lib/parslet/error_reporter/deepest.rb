@@ -47,6 +47,10 @@ module Parslet
         return deepest(cause)
       end
       
+      # Returns the cause that is currently deepest. Mainly for specs. 
+      #
+      attr_reader :deepest_cause
+      
       # Checks to see if the lineage of the cause given includes a cause with
       # an error position deeper than the current deepest cause stored. If
       # yes, it passes the cause through to the caller. If no, it returns the
@@ -55,13 +59,13 @@ module Parslet
       def deepest(cause)
         rank, leaf = deepest_child(cause)
         
-        if !@deepest_cause || leaf.pos >= @deepest_cause.pos
+        if !deepest_cause || leaf.pos >= deepest_cause.pos
           # This error reaches deeper into the input, save it as reference.
           @deepest_cause = leaf
           return cause
         end
         
-        return @deepest_cause
+        return deepest_cause
       end
       
     private
