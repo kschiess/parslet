@@ -1,5 +1,6 @@
 class Parslet::Atoms::Base
   
+  # TODO
   # Packages the common idiom
   #    
   #    begin
