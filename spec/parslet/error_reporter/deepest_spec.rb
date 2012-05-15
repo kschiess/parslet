@@ -10,7 +10,7 @@ describe Parslet::ErrorReporter::Deepest do
     it "returns the deepest cause" do
       flexmock(reporter).
         should_receive(:deepest).and_return(:deepest)
-      reporter.err(fake_source, 'message').
+      reporter.err('parslet', fake_source, 'message').
         should == :deepest
     end 
   end
@@ -20,7 +20,7 @@ describe Parslet::ErrorReporter::Deepest do
     it "returns the deepest cause" do
       flexmock(reporter).
         should_receive(:deepest).and_return(:deepest)
-      reporter.err(fake_source, 'message', 13).
+      reporter.err('parslet', fake_source, 'message', 13).
         should == :deepest
     end
   end

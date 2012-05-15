@@ -40,7 +40,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     }
     
     # If we reach this point, all alternatives have failed. 
-    context.err(source, @error_msg, errors)
+    context.err(self, source, @error_msg, errors)
   end
 
   precedence ALTERNATE

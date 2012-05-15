@@ -19,13 +19,14 @@ module Parslet
       # Produces an error cause that combines the message at the current level
       # with the errors that happened at a level below (children).
       #
+      # @param atom [Parslet::Atoms::Base] parslet that failed
       # @param source [Source] Source that we're using for this parse. (line 
       #   number information...)
       # @param message [String, Array] Error message at this level.
       # @param children [Array] A list of errors from a deeper level (or nil).
       # @return [Cause] An error tree combining children with message.
       #
-      def err(source, message, children=nil)
+      def err(atom, source, message, children=nil)
         position = source.pos
         cause = Cause.format(source, position, message, children)
         return deepest(cause)
@@ -34,6 +35,7 @@ module Parslet
       # Produces an error cause that combines the message at the current level
       # with the errors that happened at a level below (children).
       #
+      # @param atom [Parslet::Atoms::Base] parslet that failed
       # @param source [Source] Source that we're using for this parse. (line 
       #   number information...)
       # @param message [String, Array] Error message at this level.
@@ -41,7 +43,7 @@ module Parslet
       # @param children [Array] A list of errors from a deeper level (or nil).
       # @return [Cause] An error tree combining children with message.
       #
-      def err_at(source, message, pos, children=nil)
+      def err_at(atom, source, message, pos, children=nil)
         position = pos
         cause = Cause.format(source, position, message, children)
         return deepest(cause)
