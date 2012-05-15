@@ -13,7 +13,10 @@ class Parslet::Atoms::Base
   # will be thrown. 
   #
   # @param io [String, Source] input for the parse process
-  # TODO document options
+  # @option options [Parslet::ErrorReporter] :reporter error reporter to use, 
+  #   defaults to Parslet::ErrorReporter::Tree 
+  # @option options [Boolean] :prefix Should a prefix match be accepted? 
+  #   (default: false)
   #
   def parse(io, options={})
     source = io.respond_to?(:line_and_column) ? 
