@@ -22,7 +22,7 @@
 # * Parsing the input string; this yields an intermediary tree, see
 #   Parslet.any, Parslet.match, Parslet.str, Parslet::ClassMethods#rule and
 #   Parslet::ClassMethods#root.
-# * Transformat ion of the tree into something useful to you, see
+# * Transformation of the tree into something useful to you, see
 #   Parslet::Transform, Parslet.simple, Parslet.sequence and Parslet.subtree.
 #
 # The first stage is traditionally intermingled with the second stage; output
