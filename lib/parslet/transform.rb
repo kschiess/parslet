@@ -183,7 +183,6 @@ class Parslet::Transform
   # arity 1 variant of the block. Alternatively, you can inject a context object
   # and call methods on it (think :ctx => self).
   #
-  # Example:
   #   # the local variable a is simulated
   #   t.call_on_match(:a => :b) { a } 
   #   # no change of environment here
@@ -207,6 +206,8 @@ class Parslet::Transform
     self.class.rules + @rules
   end
   
+  # @api private 
+  #
   def transform_elt(elt, context) 
     rules.each do |pattern, block|
       if bindings=pattern.match(elt, context)
@@ -218,12 +219,17 @@ class Parslet::Transform
     # No rule matched - element is not transformed
     return elt
   end
+
+  # @api private 
+  #
   def recurse_hash(hsh, ctx) 
     hsh.inject({}) do |new_hsh, (k,v)|
       new_hsh[k] = apply(v, ctx)
       new_hsh
     end
   end
+  # @api private 
+  #
   def recurse_array(ary, ctx) 
     ary.map { |elt| apply(elt, ctx) }
   end
