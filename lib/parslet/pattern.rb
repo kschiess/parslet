@@ -28,9 +28,12 @@ class Parslet::Pattern
   # bindings to be a hash, the mappings in it will be treated like bindings
   # made during an attempted match. 
   #
-  # Example: 
-  #
   #   Pattern.new('a').match('a', :foo => 'bar') # => { :foo => 'bar' }
+  #
+  # @param subtree [String, Hash, Array] poro subtree returned by a parse
+  # @param bindings [Hash] variable bindings to be verified
+  # @return [Hash, nil] On success: variable bindings that allow a match. On 
+  #   failure: nil
   #
   def match(subtree, bindings=nil)
     bindings = bindings && bindings.dup || Hash.new
@@ -40,6 +43,8 @@ class Parslet::Pattern
   # Returns true if the tree element given by +tree+ matches the expression
   # given by +exp+. This match must respect bindings already made in
   # +bindings+. Note that bindings is carried along and modified. 
+  #
+  # @api private
   #
   def element_match(tree, exp, bindings) 
     # p [:elm, tree, exp]
@@ -63,6 +68,8 @@ class Parslet::Pattern
     end
   end
   
+  # @api private
+  #
   def element_match_binding(tree, exp, bindings)
     var_name = exp.variable_name
 
@@ -77,6 +84,8 @@ class Parslet::Pattern
     return true
   end
   
+  # @api private
+  #
   def element_match_ary_single(sequence, exp, bindings)
     return false if sequence.size != exp.size
     
@@ -84,6 +93,8 @@ class Parslet::Pattern
       element_match(elt, subexp, bindings) }
   end
   
+  # @api private
+  #
   def element_match_hash(tree, exp, bindings)
     # Early failure when one hash is bigger than the other
     return false unless exp.size == tree.size
