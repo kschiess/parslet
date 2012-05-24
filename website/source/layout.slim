@@ -1,0 +1,16 @@
+doctype 5
+html
+  head
+    link(
+      href='http://fonts.googleapis.com/css?family=Dosis' 
+      rel='stylesheet' type='text/css')
+
+    == stylesheet_link_tag 'sh_whitengrey'
+    == stylesheet_link_tag 'site'
+    
+    == javascript_include_tag 'sh_main.min'
+    == javascript_include_tag 'sh_ruby.min'
+    
+    title = data.page.title || 'cod - IPC made simple.'
+  body onload="sh_highlightDocument();"
+    == yield
