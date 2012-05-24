@@ -14,7 +14,9 @@ module Parslet
     
       @pos = 0
       @str = str
+      
       @line_cache = LineCache.new
+      @line_cache.scan_for_line_endings(0, @str)
     end
   
     # Checks if the given pattern matches at the current input position. 
@@ -33,22 +35,21 @@ module Parslet
         pos,
         @line_cache)
       
-      @line_cache.scan_for_line_endings(@pos, slice_str)
-      @pos += slice_str.bytesize
+      @pos += slice_str.size
       return slice
     end
     
-    # Returns how many bytes remain in the input. 
+    # Returns how many chars remain in the input. 
     #
-    def remaining_bytes
-      @str.bytesize - @pos
+    def chars_left
+      @str.size - @pos
     end
     
     def eof?
-      @pos >= @str.bytesize
+      @pos >= @str.size
     end
 
-    # Position of the parse as a byte offset into the original string. 
+    # Position of the parse as a character offset into the original string. 
     # @note: Encodings...
     attr_accessor :pos
 

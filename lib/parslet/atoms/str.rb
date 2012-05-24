@@ -10,6 +10,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     super()
 
     @str = str.to_s
+    @len = str.size
     @error_msgs = {
       :premature  => "Premature end of input", 
       :failed     => "Expected #{str.inspect}, but got "
@@ -17,16 +18,16 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
   end
   
   def try(source, context) # :nodoc:
-    return succ(source.consume(str.size)) if source.matches?(str)
+    return succ(source.consume(@len)) if source.matches?(str)
     
     # Failures: 
     return context.err(self, source, @error_msgs[:premature]) \
-      if source.remaining_bytes<str.bytesize
+      if source.chars_left<@len
       
     error_pos = source.pos  
     return context.err_at(
       self, source, 
-      [@error_msgs[:failed], source.consume(str.size)], error_pos) 
+      [@error_msgs[:failed], source.consume(@len)], error_pos) 
   end
   
   def to_s_inner(prec) # :nodoc:
