@@ -21,19 +21,14 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
   end
 
   def try(source, context) # :nodoc:
-    error_pos = source.pos
-    s = source.read(1)
+    return succ(source.consume(1)) if source.matches?(re)
     
     # No string could be read
-    return context.err_at(self, source, @error_msgs[:premature], error_pos) \
-      unless s
+    return context.err(self, source, @error_msgs[:premature]) \
+      if source.eof?
         
     # No match
-    return context.err_at(self, source, @error_msgs[:failed], error_pos) \
-      unless s.match(re)
-    
-    # Matches
-    return succ(s)
+    return context.err(self, source, @error_msgs[:failed]) \
   end
 
   def to_s_inner(prec) # :nodoc:

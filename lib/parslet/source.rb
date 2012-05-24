@@ -9,66 +9,55 @@ module Parslet
   # method for the current position. 
   #
   class Source
-    def initialize(io)
-      if io.respond_to? :to_str
-        io = StringIO.new(io)
-      end
+    def initialize(str)
+      raise ArgumentError unless str.respond_to?(:to_str)
     
-      @io = io
+      @pos = 0
+      @str = str
       @line_cache = LineCache.new
     end
   
-    # Reads n bytes from the input and returns a Range instance. If the n 
-    # bytes end in the middle of a multibyte representation of a char, that 
-    # char is returned fully. 
+    # Checks if the given pattern matches at the current input position. 
     #
-    # Example: 
-    #   source.read(1)  # always returns at least one valid char
-    #   source.read(7)  # reads 7 bytes, then to the next char boundary.
-    #
-    def read(n)
-      raise ArgumentError, "Cannot read < 1 characters at a time." if n < 1
-      read_slice(n)
+    def matches?(pattern)
+      @str.index(pattern, @pos) == @pos
     end
-  
+    
+    # Consumes n characters from the input, returning them as a slice of the
+    # input. 
+    #
+    def consume(n)
+      slice_str = @str.slice(@pos, n)
+      slice = Parslet::Slice.new(
+        slice_str, 
+        pos,
+        @line_cache)
+      
+      @line_cache.scan_for_line_endings(@pos, slice_str)
+      @pos += slice_str.bytesize
+      return slice
+    end
+    
+    # Returns how many bytes remain in the input. 
+    #
+    def remaining_bytes
+      @str.bytesize - @pos
+    end
+    
     def eof?
-      @io.eof?
-    end
-    def pos
-      @io.pos
-    end
-    def pos=(new_pos)
-      @io.pos = new_pos
+      @pos >= @str.bytesize
     end
 
+    # Position of the parse as a byte offset into the original string. 
+    # @note: Encodings...
+    attr_accessor :pos
+
     # Returns a <line, column> tuple for the given position. If no position is
-    # given, line/column information is returned for the current position given
-    # by #pos. 
+    # given, line/column information is returned for the current position
+    # given by #pos. 
     #
     def line_and_column(position=nil)
       @line_cache.line_and_column(position || self.pos)
-    end
-  private
-    def read_slice(needed)
-      start = @io.pos
-      buf = @io.gets(nil, needed)
-
-      # cache line ends
-      @line_cache.scan_for_line_endings(start, buf)
-    
-      Parslet::Slice.new(buf || '', start, @line_cache)
-    end
-  
-    if RUBY_VERSION !~ /^1.9/
-      def read_slice(needed)
-        start = @io.pos
-        buf = @io.read(needed)
-
-        # cache line ends
-        @line_cache.scan_for_line_endings(start, buf)
-
-        Parslet::Slice.new(buf || '', start, @line_cache)
-      end
     end
   end
 end

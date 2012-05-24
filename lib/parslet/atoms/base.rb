@@ -51,7 +51,7 @@ class Parslet::Atoms::Base
       old_pos = source.pos
       Parslet::Cause.format(
         source, old_pos, 
-        "Don't know what to do with #{source.read(10).to_s.inspect}").
+        "Don't know what to do with #{source.consume(10).to_s.inspect}").
         raise(Parslet::UnconsumedInput)
     end
     
