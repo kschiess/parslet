@@ -4,9 +4,7 @@ require 'stringio'
 require 'parslet/source/line_cache'
 
 module Parslet
-  # Wraps the input IO to parslet. The interface defined by this class is 
-  # smaller than what IO offers, but enhances it with a #column and #line 
-  # method for the current position. 
+  # Wraps the input string for parslet. 
   #
   class Source
     def initialize(str)
@@ -20,6 +18,9 @@ module Parslet
     end
   
     # Checks if the given pattern matches at the current input position. 
+    #
+    # @param pattern [Regexp, String] pattern to check for
+    # @return [Boolean] true if the pattern matches at #pos
     #
     def matches?(pattern)
       @str.index(pattern, @pos) == @pos
