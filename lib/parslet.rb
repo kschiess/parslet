@@ -88,6 +88,14 @@ module Parslet
   # parser worked just fine, but didn't account for the characters at the tail
   # of the input?
   #
+  #   str('foo').parse('foobar')
+  #   # raises Parslet::UnconsumedInput: 
+  #   #   Don't know what to do with "bar" at line 1 char 4.
+  #
+  # Note that you can have parslet ignore this error: 
+  #
+  #   str('foo').parse('foobar', prefix: true)  # => "foo"@0
+  #
   class UnconsumedInput < ParseFailed
   end
   
