@@ -7,13 +7,13 @@
 #
 class Parslet::Atoms::Named < Parslet::Atoms::Base
   attr_reader :parslet, :name
-  def initialize(parslet, name) # :nodoc:
+  def initialize(parslet, name)
     super()
 
     @parslet, @name = parslet, name
   end
   
-  def apply(source, context) # :nodoc:
+  def apply(source, context)
     success, value = result = parslet.apply(source, context)
 
     return result unless success
@@ -22,15 +22,15 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
         value))
   end
   
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     "#{name}:#{parslet.to_s(prec)}"
   end
 
-  def error_tree # :nodoc:
+  def error_tree
     parslet.error_tree
   end
 private
-  def produce_return_value(val) # :nodoc:
+  def produce_return_value(val)
     { name => flatten(val, true) }
   end
 end
