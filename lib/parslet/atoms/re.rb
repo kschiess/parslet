@@ -28,7 +28,7 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
       if source.eof?
         
     # No match
-    return context.err(self, source, @error_msgs[:failed]) \
+    return context.err(self, source, @error_msgs[:failed])
   end
 
   def to_s_inner(prec) # :nodoc:
