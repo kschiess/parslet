@@ -25,6 +25,7 @@ module Parslet
     def matches?(pattern)
       @str.index(pattern, @pos) == @pos
     end
+    alias match matches?
     
     # Consumes n characters from the input, returning them as a slice of the
     # input. 
