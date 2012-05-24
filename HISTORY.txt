@@ -5,6 +5,10 @@
     
 = 1.4.0 / ???
 
+  + Parslet::Source now doesn't hold a StringIO, it directly holds the 
+    buffer to be parsed. The api of Source has changed a tiny bit. This change
+    has been made for speed optimisation reasons.
+
   + :reporter argument to parse, allowing to customize error reporting within
     wide boundaries. See issue #64 for a discussion. 
     Included are two error reporters, one (default) with the existing error
