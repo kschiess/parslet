@@ -17,6 +17,8 @@ class Parslet::Atoms::Base
   #   defaults to Parslet::ErrorReporter::Tree 
   # @option options [Boolean] :prefix Should a prefix match be accepted? 
   #   (default: false)
+  # @return [Hash, Array, Parslet::Slice] PORO (Plain old Ruby object) result
+  #   tree
   #
   def parse(io, options={})
     source = io.respond_to?(:line_and_column) ? 

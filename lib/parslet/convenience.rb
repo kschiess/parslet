@@ -1,13 +1,11 @@
 class Parslet::Atoms::Base
   
-  # TODO
   # Packages the common idiom
   #    
   #    begin
   #      tree = parser.parse('something')
   #    rescue Parslet::ParseFailed => error
-  #      puts error
-  #      puts parser.error_tree
+  #      puts parser.cause.ascii_tree
   #    end
   #
   # into a convenient method.
@@ -23,6 +21,8 @@ class Parslet::Atoms::Base
   #   end
   #   
   #   FooParser.new.parse_with_debug('bar')
+  #
+  # @see Parslet::Atoms::Base#parse
   #
   def parse_with_debug str, opts={}
     parse str, opts
