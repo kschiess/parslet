@@ -1,0 +1,135 @@
+---
+title: Tricks for common situations
+layout: default
+---
+
+h2. Matching EOF (End Of File)
+
+Ahh Sir, you'll be needin what us parsers call _epsilon_: 
+
+{% highlight ruby %} 
+rule(:eof) { any.absent? }
+{% endhighlight %}
+
+Of course, most of us don't use this at all, since any parser has EOF as
+implicit last input.
+
+h2. Matching Strings Case Insensitive
+
+Parslet is fully hackable: You can use code to create parsers easily. Here's
+how I would match a string in case insensitive manner: 
+
+{% highlight ruby %} 
+def stri(str)
+  key_chars = str.split(//)
+  key_chars.
+    collect! { |char| match["#{char.upcase}#{char.downcase}"] }.
+    reduce(:>>)
+end
+
+# Constructs a parser using a Parser Expression Grammar 
+stri('keyword').parse "kEyWoRd"     # => "kEyWoRd"
+{% endhighlight %}
+
+h2. Testing
+
+Parslet helps you to create parsers that are in turn created out of many small
+parsers. It is really turtles all the way down. Imagine you have a complex 
+parser: 
+
+{% highlight ruby %} 
+class ComplexParser < Parslet::Parser
+  root :lots_of_stuff
+  
+  rule(:lots_of_stuff) { ... }
+  
+  # and many lines later: 
+  rule(:simple_rule) { str('a') }
+end
+{% endhighlight %}
+
+Also imagine that the parser (as a whole) fails to consume the 'a' that 
+<code>simple_rule</code> is talking about. 
+
+This kind of problem can very often be fixed by bisecting it into two possible
+problems. Either: 
+
+# the <code>lots_of_stuff</code> rule somehow doesn't place <code>simple_rule</code>
+  in the right context or
+# the <code>simple_rule</code> simply (hah!) fails to match its input. 
+
+I find it very useful in this situation to eliminate 2. from our options: 
+
+{% highlight ruby %} 
+require 'parslet/rig/rspec'
+
+describe ComplexParser  do
+  let(:parser) { ComplexParser.new }
+  context "simple_rule" do
+    it "should consume 'a'" do
+      parser.simple_rule.should parse('a')
+    end 
+  end
+end
+{% endhighlight %}
+
+Parslet parsers have one method per rule. These methods return valid parsers
+for a subset of your grammar. 
+
+h2. Error reports
+
+If your grammar fails and you're aching to know why, here's a bit of exception
+handling code that will help you out: 
+
+{% highlight ruby %} 
+begin
+  parser.parse(some_input)
+rescue Parslet::ParseFailed => error
+  puts error, parser.root.error_tree
+end
+{% endhighlight %}
+
+This should print something akin to: 
+
+{% highlight text %} 
+Parsing 1++2: Don't know what to do with ++2 at line 1 char 2.
+`- Unknown error in SUM / INTEGER
+   |- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 3.
+   |  `- Unknown error in [0-9]{1, } SPACE?
+   |     `- Expected at least 1 of \\s at line 1 char 2.
+   |        `- Failed to match \\s at line 1 char 3.
+   `- Unknown error in [0-9]{1, } SPACE?
+      `- Expected at least 1 of \\s at line 1 char 2.
+         `- Failed to match \\s at line 1 char 3.
+{% endhighlight %}
+
+These error reports are probably the fastest way to know exactly where you
+went wrong (or where your input is wrong, which is aequivalent).
+
+And since this is such a common idiom, we provide you with a shortcut: to
+get the above, just: 
+
+{% highlight ruby %} 
+require 'parslet/convenience'
+parser.parse_with_debug(input)
+{% endhighlight %}
+
+h2. Line numbers from parser output
+
+A traditional parser would parse and then perform several checking phases,
+like for example verifying all type constraints are respected in the input.
+During this checking phase, you will most likely want to report screens full
+of type errors back to the user ('cause that's what types are for, right?).
+Now where did that 'int' come from?
+
+Parslet gives you slices (Parslet::Slice) of input as part of your tree. These
+are essentially strings with line numbers. Here's how to print that error
+message:
+
+{% highlight ruby %} 
+# assume that type == "int"@0 - a piece from your parser output
+line, col = type.line_and_column
+puts "Sorry. Can't have #{type} at #{line}:#{col}!"
+{% endhighlight %}
+
+

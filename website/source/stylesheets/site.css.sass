@@ -1,35 +1,95 @@
+// main site styling
+=clearfix 
+  display: inline-block
+  
+  &:after 
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    visibility: hidden
+  
+  * html & 
+    height: 1px
+    
 body
   font:
-    size: 1.5em
-    family: 'Dosis', 'Helvetica', serif
-  width: 25em
-  margin:
-    left: auto
-    right: auto
-  color: #333
+    size: 17px
+    family: Helvetica
     
-  line-height: 1.4em
+  background-color: white
   
+a
+  color: black
+  
+.main_menu  
+  font-size: 1.2em
+  width: 50em
+  margin:
+    bottom: 1cm
+  
+  ul
+    +clearfix
+    list-style-type: none
+    font-size: 1.33em
+    margin-left: -8em
+
+  li
+    float: left
+    font-variant: small-caps
+    padding-left: 1em
+    
+  a, &:visited
+    text-decoration: none
+    color: #7c7c7c
+    
+.content
+  font-size: 1em
+  width: 50em
+  line-height: 1.4em
+  margin: 
+    left: 1cm
+    
+  p
+    margin: 1em
+    
+  img
+    margin-left: 3em
+    
+.copyright
+  font-variant: small-caps
+  font-size: 0.6em
+  color: #00ad00
+  margin:
+    left: 22em
+    top: 3cm
+    
   a
     text-decoration: none
-    
-  h1,h2,h3,h4
-    color: #454545
-  h2
-    margin:
-      top: 1.5em
-      bottom: 0em
-      
-  code
-    color: #696969
-    
-  pre
-    line-height: 1.4em
+    color: #00ad00
   
+body.code
+  code
+    font: 
+      size: 0.68em 
+      family: "Monaco", monospace
+      
+  pre
+    border: 2px solid #686868
+    -moz-border-radius: 15px
+    border-radius: 15px
+
+    background-color: #f8f8f8
+    color: #4679a9
+
+    line-height: 0.95em
+
+    margin: 
+      left: 1em
+    padding: -1em 0 -1em 0
+
     &.sh_sourceCode
       border-radius: 0.5em
       background-color: #f8f8f8
       padding-bottom: 1.4em
     
-.links
-  text-align: center

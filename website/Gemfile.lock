@@ -76,6 +76,7 @@ GEM
       rack
     rack-test (0.6.1)
       rack (>= 1.0)
+    rb-fsevent (0.9.1)
     sass (3.1.15)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
@@ -111,4 +112,5 @@ DEPENDENCIES
   case
   cod
   middleman
+  rb-fsevent
   text-highlight
