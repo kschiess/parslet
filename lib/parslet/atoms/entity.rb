@@ -10,14 +10,14 @@
 #
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
   attr_reader :name, :block
-  def initialize(name, &block) # :nodoc:
+  def initialize(name, &block)
     super()
     
     @name = name
     @block = block
   end
 
-  def try(source, context) # :nodoc:
+  def try(source, context)
     parslet.apply(source, context)
   end
   
@@ -27,16 +27,16 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
     }
   end
 
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     name.to_s.upcase
   end
 
-  def error_tree # :nodoc:
+  def error_tree
     parslet.error_tree
   end
   
 private 
-  def raise_not_implemented # :nodoc:
+  def raise_not_implemented
     trace = caller.reject {|l| l =~ %r{#{Regexp.escape(__FILE__)}}} # blatantly stolen from dependencies.rb in activesupport
     exception = NotImplementedError.new("rule(#{name.inspect}) { ... }  returns nil. Still not implemented, but already used?")
     exception.set_backtrace(trace)

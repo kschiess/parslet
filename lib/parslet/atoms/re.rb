@@ -9,7 +9,7 @@
 #
 class Parslet::Atoms::Re < Parslet::Atoms::Base
   attr_reader :match, :re
-  def initialize(match) # :nodoc:
+  def initialize(match)
     super()
 
     @match = match.to_s
@@ -20,7 +20,7 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     }
   end
 
-  def try(source, context) # :nodoc:
+  def try(source, context)
     return succ(source.consume(1)) if source.matches?(re)
     
     # No string could be read
@@ -31,7 +31,7 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     return context.err(self, source, @error_msgs[:failed])
   end
 
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     match.inspect[1..-2]
   end
 end

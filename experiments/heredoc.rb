@@ -29,7 +29,7 @@ class BoundParslet < Parslet::Atoms::Base
     @parslet, @name = parslet, name
   end
   
-  def try(source, context) # :nodoc:
+  def try(source, context)
     parslet.try(source, context).tap { |result| 
       set_binding(context, name, 
         flatten(result.result))
@@ -43,7 +43,7 @@ class BoundParslet < Parslet::Atoms::Base
     context.instance_variable_set('@bindings', b)
   end
     
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     parslet.to_s(prec)
   end
 end
@@ -55,7 +55,7 @@ class BindCompare < Parslet::Atoms::Base
     @parslet, @name = parslet, name
   end
   
-  def try(source, context) # :nodoc:
+  def try(source, context)
     parslet.try(source, context).tap { |result| 
       unless result.error?
         value = flatten(result.result)
@@ -74,7 +74,7 @@ class BindCompare < Parslet::Atoms::Base
     b[name]
   end
     
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     parslet.to_s(prec)
   end
 end

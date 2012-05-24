@@ -74,7 +74,7 @@ class Parslet::Atoms::Base
   # Calls the #try method of this parslet. In case of a parse error, apply
   # leaves the source in the state it was before the attempt. 
   #+++
-  def apply(source, context) # :nodoc:
+  def apply(source, context)
     old_pos = source.pos
     
     success, value = result = context.try_with_cache(self, source)
@@ -96,18 +96,18 @@ class Parslet::Atoms::Base
 
   # Debug printing - in Treetop syntax. 
   #
-  def self.precedence(prec) # :nodoc:
+  def self.precedence(prec)
     define_method(:precedence) { prec }
   end
   precedence BASE
-  def to_s(outer_prec=OUTER) # :nodoc:
+  def to_s(outer_prec=OUTER)
     if outer_prec < precedence
       "("+to_s_inner(precedence)+")"
     else
       to_s_inner(precedence)
     end
   end
-  def inspect # :nodoc:
+  def inspect
     to_s(OUTER)
   end
 private

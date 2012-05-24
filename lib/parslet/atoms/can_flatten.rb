@@ -20,7 +20,7 @@ module Parslet::Atoms
     # naming something using <code>.as(...)</code>. It changes the folding 
     # semantics of repetition.
     #
-    def flatten(value, named=false) # :nodoc:
+    def flatten(value, named=false)
       # Passes through everything that isn't an array of things
       return value unless value.instance_of? Array
 
@@ -53,12 +53,15 @@ module Parslet::Atoms
 
     # Flatten results from a sequence of parslets. 
     #
-    def flatten_sequence(list) # :nodoc:
+    # @api private
+    #
+    def flatten_sequence(list)
       foldl(list.compact) { |r, e|        # and then merge flat elements
         merge_fold(r, e)
       }
     end
-    def merge_fold(l, r) # :nodoc:
+    # @api private 
+    def merge_fold(l, r)
       # equal pairs: merge. ----------------------------------------------------
       if l.class == r.class
         if l.is_a?(Hash)
@@ -96,7 +99,9 @@ module Parslet::Atoms
     # the results, we want to leave an empty list alone - otherwise it is 
     # turned into an empty string. 
     #
-    def flatten_repetition(list, named) # :nodoc:
+    # @api private
+    #
+    def flatten_repetition(list, named)
       if list.any? { |e| e.instance_of?(Hash) }
         # If keyed subtrees are in the array, we'll want to discard all 
         # strings inbetween. To keep them, name them. 

@@ -99,9 +99,3 @@ class Parslet::Slice
     str.inspect << "@#{offset}"
   end
 end
-
-# Raised when trying to do an operation on slices that cannot succeed, like
-# adding non-adjacent slices. See Parslet::Slice.
-#
-class Parslet::InvalidSliceOperation < StandardError
-end

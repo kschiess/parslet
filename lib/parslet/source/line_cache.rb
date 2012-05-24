@@ -3,7 +3,7 @@
 class Parslet::Source
   # A cache for line start positions. 
   #
-  class LineCache # :nodoc: 
+  class LineCache 
     def initialize
       # Stores line endings as a simple position number. The first line always
       # starts at 0; numbers beyond the biggest entry are on any line > size, 
@@ -59,7 +59,7 @@ class Parslet::Source
   #     [10, 20, 30]
   #     # would describe [0, 10], (10, 20], (20, 30]
   #
-  module RangeSearch # :nodoc: 
+  module RangeSearch 
     def find_mid(left, right)
       # NOTE: Jonathan Hinkle reported that when mathn is required, just
       # dividing and relying on the integer truncation is not enough.

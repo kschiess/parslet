@@ -1,5 +1,5 @@
 class Parslet::Expression::Treetop
-  class Parser < Parslet::Parser # :nodoc:
+  class Parser < Parslet::Parser
     root(:expression)
     
     rule(:expression) { alternatives }
@@ -69,7 +69,7 @@ class Parslet::Expression::Treetop
     end
   end
   
-  class Transform < Parslet::Transform # :nodoc:
+  class Transform < Parslet::Transform
     
     rule(:repetition => simple(:rep), :sign => simple(:sign)) { 
       min = sign=='+' ? 1 : 0

@@ -26,11 +26,11 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   # Don't construct a hanging tree of Alternative parslets, instead store them
   # all here. This reduces the number of objects created.
   #+++
-  def |(parslet) # :nodoc:
+  def |(parslet)
     self.class.new(*@alternatives + [parslet])
   end
   
-  def try(source, context) # :nodoc:
+  def try(source, context)
     errors = alternatives.map { |a|
       success, value = result = a.apply(source, context)
       return result if success
@@ -44,7 +44,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   end
 
   precedence ALTERNATE
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     alternatives.map { |a| a.to_s(prec) }.join(' / ')
   end
 end

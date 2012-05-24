@@ -71,7 +71,7 @@ module Parslet
     end
 
   private
-    def recursive_ascii_tree(node, stream, curved) # :nodoc:
+    def recursive_ascii_tree(node, stream, curved)
       append_prefix(stream, curved)
       stream.puts node.to_s
 
@@ -81,7 +81,7 @@ module Parslet
         recursive_ascii_tree(child, stream, curved + [last_child])
       end
     end
-    def append_prefix(stream, curved) # :nodoc:
+    def append_prefix(stream, curved)
       return if curved.size < 2
       curved[1..-2].each do |c|
         stream.print c ? "   " : "|  "

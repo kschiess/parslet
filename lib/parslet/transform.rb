@@ -131,12 +131,12 @@ class Parslet::Transform
     
     # Allows accessing the class' rules
     #
-    def rules # :nodoc: 
+    def rules 
       @__transform_rules || []
     end
   end
   
-  def initialize(&block) # :nodoc: 
+  def initialize(&block) 
     @rules = []
     
     if block
@@ -203,11 +203,11 @@ class Parslet::Transform
   # Allow easy access to all rules, the ones defined in the instance and the 
   # ones predefined in a subclass definition. 
   #
-  def rules # :nodoc: 
+  def rules 
     self.class.rules + @rules
   end
   
-  def transform_elt(elt, context) # :nodoc: 
+  def transform_elt(elt, context) 
     rules.each do |pattern, block|
       if bindings=pattern.match(elt, context)
         # Produces transformed value
@@ -218,13 +218,13 @@ class Parslet::Transform
     # No rule matched - element is not transformed
     return elt
   end
-  def recurse_hash(hsh, ctx) # :nodoc: 
+  def recurse_hash(hsh, ctx) 
     hsh.inject({}) do |new_hsh, (k,v)|
       new_hsh[k] = apply(v, ctx)
       new_hsh
     end
   end
-  def recurse_array(ary, ctx) # :nodoc: 
+  def recurse_array(ary, ctx) 
     ary.map { |elt| apply(elt, ctx) }
   end
 end

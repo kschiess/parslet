@@ -5,7 +5,7 @@
 # It defines the most permissive kind of bind, the one that matches any subtree
 # whatever it looks like. 
 #
-class Parslet::Pattern::SubtreeBind < Struct.new(:symbol) # :nodoc:
+class Parslet::Pattern::SubtreeBind < Struct.new(:symbol)
   def variable_name
     symbol
   end
@@ -33,7 +33,7 @@ end
 # Binds a symbol to a simple subtree, one that is not either a sequence of
 # elements or a collection of attributes. 
 #
-class Parslet::Pattern::SimpleBind < Parslet::Pattern::SubtreeBind # :nodoc:
+class Parslet::Pattern::SimpleBind < Parslet::Pattern::SubtreeBind
   def can_bind?(subtree)
     not [Hash, Array].include?(subtree.class)
   end
@@ -41,7 +41,7 @@ end
 
 # Binds a symbol to a sequence of simple leafs ([element1, element2, ...])
 #
-class Parslet::Pattern::SequenceBind < Parslet::Pattern::SubtreeBind # :nodoc:
+class Parslet::Pattern::SequenceBind < Parslet::Pattern::SubtreeBind
   def can_bind?(subtree)
     subtree.kind_of?(Array) &&
       (not subtree.any? { |el| [Hash, Array].include?(el.class) })

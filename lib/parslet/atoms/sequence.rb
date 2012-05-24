@@ -15,11 +15,11 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
     }
   end
   
-  def >>(parslet) # :nodoc:
+  def >>(parslet)
     self.class.new(* @parslets+[parslet])
   end
   
-  def try(source, context) # :nodoc:
+  def try(source, context)
     succ([:sequence]+parslets.map { |p| 
       success, value = p.apply(source, context) 
 
@@ -32,7 +32,7 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   end
       
   precedence SEQUENCE
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     parslets.map { |p| p.to_s(prec) }.join(' ')
   end
 end

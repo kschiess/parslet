@@ -17,7 +17,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     }
   end
   
-  def try(source, context) # :nodoc:
+  def try(source, context)
     return succ(source.consume(@len)) if source.matches?(str)
     
     # Failures: 
@@ -30,7 +30,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
       [@error_msgs[:failed], source.consume(@len)], error_pos) 
   end
   
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     "'#{str}'"
   end
 end

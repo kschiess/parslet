@@ -10,7 +10,7 @@ require 'blankslate'
 #     a # => :b
 #   end
 #
-class Parslet::Transform::Context < BlankSlate # :nodoc:
+class Parslet::Transform::Context < BlankSlate
   reveal :methods
   reveal :respond_to?
   reveal :inspect

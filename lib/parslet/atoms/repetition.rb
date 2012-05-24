@@ -19,7 +19,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     }
   end
   
-  def try(source, context) # :nodoc:
+  def try(source, context)
     occ = 0
     accum = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
@@ -53,7 +53,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
   end
   
   precedence REPETITION
-  def to_s_inner(prec) # :nodoc:
+  def to_s_inner(prec)
     minmax = "{#{min}, #{max}}"
     minmax = '?' if min == 0 && max == 1
 

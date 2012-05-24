@@ -49,7 +49,7 @@ module Parslet
   # Extends classes that include Parslet with the module
   # {Parslet::ClassMethods}.
   #
-  def self.included(base) # :nodoc:
+  def self.included(base)
     base.extend(ClassMethods)
   end
   

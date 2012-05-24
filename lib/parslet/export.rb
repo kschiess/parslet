@@ -68,7 +68,7 @@ class Parslet::Parser
 
   # A helper class that formats Citrus and Treetop grammars as a string. 
   #
-  class PrettyPrinter # :nodoc:
+  class PrettyPrinter
     attr_reader :visitor
     def initialize(visitor_klass)
       @visitor = visitor_klass.new(self)
@@ -78,7 +78,7 @@ class Parslet::Parser
     # configured in initialize. Returns the string representation of the
     # Citrus or Treetop grammar.
     #
-    def pretty_print(name, parslet) # :nodoc:
+    def pretty_print(name, parslet)
       output = "grammar #{name}\n"
       
       output << rule('root', parslet)
@@ -111,7 +111,7 @@ class Parslet::Parser
     # Whenever the visitor encounters an rule in a parslet, it defers the
     # pretty printing of the rule by calling this method. 
     #
-    def deferred(name, content) # :nodoc:
+    def deferred(name, content)
       @todo ||= []
       @todo << [name, content]
     end
@@ -120,7 +120,7 @@ class Parslet::Parser
     # transforms some of the things that Ruby allows into other patterns. If
     # there is collision, we will not detect it for now. 
     #
-    def mangle_name(str) # :nodoc:
+    def mangle_name(str)
       str.to_s.sub(/\?$/, '_p')
     end
   end

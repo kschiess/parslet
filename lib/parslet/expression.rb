@@ -6,8 +6,6 @@
 # This can be viewed as an extension to parslet and might even be hosted in
 # its own gem one fine day. 
 # 
-# NOT FINISHED & EXPERIMENTAL
-#
 class Parslet::Expression
   include Parslet
   
