@@ -41,6 +41,8 @@ class Parslet::Atoms::Base
       
       # Value is a Parslet::Cause, which can be turned into an exception:
       value.raise
+      
+      fail "NEVER REACHED"
     end
     
     # assert: success is true
@@ -75,9 +77,7 @@ class Parslet::Atoms::Base
   def apply(source, context) # :nodoc:
     old_pos = source.pos
     
-    success, value = result = context.cache(self, source) {
-      try(source, context)
-    }
+    success, value = result = context.try_with_cache(self, source)
 
     return result if success
     
