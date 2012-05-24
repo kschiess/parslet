@@ -38,14 +38,14 @@ Have you got a project that uses parslet? Please write
 
 In here, you can find a parser for a lisp like language and much more. 
 
-"*Capuchin*":https://github.com/matthewd/capuchin
-
-A javascript compiler that targets the rubinius VM. (Matthew Draper)
-
 "*Net::HTTP::Server*":https://github.com/postmodern/net-http-server
 
 A really small and elegant HTTP server written in Ruby. Think Webrick. Using
 parslet. (Postmodern)
+
+"thnad":https://github.com/undees/thnad 
+
+Thnad is a tiny programming language with so few features that it is not useful for anything at all -- except showing how to write a compiler in half an hour.
 
 "*wt* aka working title":https://github.com/kschiess/wt
 
@@ -69,7 +69,7 @@ h2. Thanks for all the fish -- Contributions
 * *meh* ("meh":http://meh.paranoid.pk/) for taking a real close look. 
 
 * *John Mettraux* ("jmettraux":http://jmettraux.wordpress.com/) for the really
-  nice JSON example.
+  nice JSON example and for pushing parslet beyond its limits.
 
 * *Josep M. Bach* ("txus":http://www.txustice.me/) for minding the small 
   things that make a big difference.
