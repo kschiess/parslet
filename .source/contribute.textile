@@ -34,6 +34,10 @@ h2. Projects
 Have you got a project that uses parslet? Please write
 "us":mailto:kaspar.schiess@absurd.li about it. 
 
+"*Capuchin*":https://github.com/matthewd/capuchin
+
+A javascript compiler that targets the rubinius VM. (Matthew Draper)
+
 "*Examples*":https://github.com/kschiess/parslet/tree/master/example/
 
 In here, you can find a parser for a lisp like language and much more. 
