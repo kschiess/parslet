@@ -3,6 +3,7 @@
 require 'bundler/setup'
 
 $:.unshift File.expand_path(File.dirname(__FILE__) + "/lib")
+require 'prelude'
 require 'example_runner'
 
 ExampleRunner.new.run(ARGV)

@@ -7,3 +7,5 @@ gem 'RedCloth'
 gem 'cod'
 gem 'case'
 gem 'text-highlight'
+
+gem 'parslet'

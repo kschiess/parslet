@@ -1,43 +1,42 @@
 ---
-layout: default
 title: Get Started
 ---
 
 Let's develop a small language that allows for simple computation together. 
 Here's a valid input file for that language: 
 
-{% highlight ruby %} 
-puts(1 + 2)
-puts(4 + 2)
-{% endhighlight %}
+<pre class="sh_ruby"><code> 
+  puts(1 + 2)
+  puts(4 + 2)
+</code></pre>
 
 To install the parslet library, please do a 
 
-{% highlight bash %} 
-gem install parslet
-{% endhighlight %}
+<pre><code> 
+  gem install parslet
+</code></pre>
 
 Now let's write the first part of our parser. For now, we'll just recognize
 simple numbers like '1' or '42'.
 
-{% highlight ruby %} 
-require 'parslet' 
+<pre class="sh_ruby"><code title="mini_parser"> 
+  require 'parslet' 
 
-class Mini < Parslet::Parser
-  rule(:integer) { match('[0-9]').repeat(1) }
-  root(:integer)
-end
+  class Mini < Parslet::Parser
+    rule(:integer) { match('[0-9]').repeat(1) }
+    root(:integer)
+  end
 
-p Mini.new.parse("132432")
-{% endhighlight %}
+  Mini.new.parse("132432")  # => "132432"@0
+</code></pre>
 
 Running this example will print "132432@0". Congratulations! You just have
 written your first parser. Running it on the input '<code>puts(1)</code>' will
 not work yet. Let's see what happens in case of a failure:
 
-{% highlight ruby %} 
-Mini.new.parse("puts(1)") # raises Parslet::ParseFailed
-{% endhighlight %}
+<pre class="sh_ruby"><code> 
+  Mini.new.parse("puts(1)") # raises Parslet::ParseFailed
+</code></pre>
 
 Here's the error message provided by that exception: "Expected at least 1 of
 [0-9] at line 1 char 1." parslet tries to find a number there, but can't find
@@ -46,18 +45,18 @@ one.
 There are just two lines to the definition of this parser, let's go through
 them:
 
-{% highlight ruby %} 
+<pre class="sh_ruby"><code> 
 rule(:integer) { match('[0-9]').repeat(1) }
-{% endhighlight %}
+</code></pre>
 
 <code>rule</code> lets you create a new parser rule. Inside the block of that
 <code>:integer</code> rule, you find <code>match('[0-9]').repeat(1)</code>.
 This says: "match a character that is in the range <code>0-9</code>, then
 match any number of those, but at least match one."
 
-{% highlight ruby %} 
+<pre class="sh_ruby"><code> 
 root(:integer)
-{% endhighlight %}
+</code></pre>
 
 That second line just says: Start parsing at the rule called
 <code>:integer</code>.
@@ -67,10 +66,10 @@ h2. Addition
 Let's go for simple addition. We'll have to allow for spaces in our input,
 since those help make code readable. 
 
-{% highlight ruby %} 
+<pre class="sh_ruby"><code> 
 rule(:space)  { match('\s').repeat(1) }
 rule(:space?) { space.maybe }
-{% endhighlight %}
+</code></pre>
 
 Two things are new here: (and both in the second line)
 
@@ -84,11 +83,11 @@ you tell Ruby to go off, parse that subrule and then come back with the
 results. This helps when thinking about rule recursion. For example, a
 self-recursive rule like this one will of course create an endless loop:
 
-{% highlight ruby %} 
+<pre class="sh_ruby"><code> 
 rule(:infinity) {
   infinity >> str(';')
 }
-{% endhighlight %}
+</code></pre>
 
 Even though infinity seems to be delimited by ';', in reality, infinity is
 very long, especially towards the end. There is no way of knowing for the
@@ -99,7 +98,7 @@ grammar terminates, since in a way, it is like a normal program.
 
 Here's the full parser:
 
-{% highlight ruby %}  
+<pre class="sh_ruby"><code>  
 class Mini < Parslet::Parser
   rule(:integer)    { match('[0-9]').repeat(1) >> space? }
   
@@ -124,7 +123,7 @@ rescue Parslet::ParseFailed => error
 end
 
 parse "1 + 2 + 3"
-{% endhighlight %}
+</code></pre>
 
 As you can see, the parser got decorated with the <code>space?</code> idiom.
 Every atom of our language consumes the space right after it. This is a useful
@@ -145,7 +144,7 @@ Parsing 1++2: Don't know what to do with ++2 at line 1 char 2.
    `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
       `- Expected at least 1 of [0-9] at line 1 char 3.
          `- Failed to match [0-9] at line 1 char 3.
-{% endhighlight %}
+</code></pre>
 
 This is what parslet calls an <code>#error_tree</code>. Not only the output of
 your parser, but also its grammar is constructed like a tree. When things go
@@ -163,7 +162,7 @@ succeeds? It turns out, not much:
 {% highlight bash %} 
 * ruby 002.rb 
 Parsing 1 + 2 + 3: "1 + 2 + 3"@0
-{% endhighlight %}
+</code></pre>
 
 The only notable difference between input and output is that the output has an
 extra '@0' appended to it. This is related to line number tracking and will be
@@ -185,7 +184,7 @@ str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"@0}
 str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  # => {:ex2b=>[{:ex2a=>"o"@0}, 
                                                   #             {:ex2a=>"o"@1}, 
                                                   #             {:ex2a=>"o"@2}]}
-{% endhighlight %}
+</code></pre>
 
 You get to name things the way you want! This is also free. Seriously: parslet
 requires you to add all the structure to its output. Annotate important parts
@@ -234,13 +233,13 @@ class MiniP < Parslet::Parser
   rule(:expression) { funcall | sum | integer }
   root :expression
 end
-{% endhighlight %}
+</code></pre>
 
 That's really all there is to it -- our language is a really simple language. 
 When fed with a string like '<code>puts(1 + 2 + 3, 45)</code>, our parser outputs
 the following: 
 
-{% highlight ruby %} 
+<pre class="sh_ruby"><code> 
 # Ruby 1.9 hash syntax for easier reading
 {
   funcall: 'puts'@0, 
@@ -251,7 +250,7 @@ the following:
     {arg: '45'@16}
   ]
 }
-{% endhighlight %}
+</code></pre>
 
 Parslet calls this the _intermediary tree_. There are three types of nodes in
 this tree:
@@ -271,7 +270,7 @@ As nice as the format above is for printing and looking at - it may be
 difficult at times to get the information out of it again. Let's look at how
 to transform the tree:
 
-{% highlight ruby %} 
+<pre class="sh_ruby"><code> 
 class SimpleTransform < Parslet::Transform
   rule(funcall: 'puts', arglist: sequence(:args)) {
     "puts(#{args.inspect})"
@@ -281,7 +280,7 @@ end
 
 tree = {funcall: 'puts', arglist: [1,2,3]}
 SimpleTransform.new.apply(tree) # => "puts([1, 2, 3])"
-{% endhighlight %}
+</code></pre>
 
 Transformation is an entire topic by itself; this will be covered in detail
 "later on":transform.html. To whet your appetite, let me just give you a few
@@ -298,7 +297,7 @@ language by using a transformation. Note that from this point on, there is
 not one way to go about this, but thousands; you are really free (and on
 your own): 
 
-{% highlight ruby %} 
+<pre class="sh_ruby"><code> 
 class MiniP < Parslet::Parser
   # Single character rules
   rule(:lparen)     { str('(') >> space? }
@@ -348,7 +347,7 @@ ast = transf.apply(
     'puts(1,2,3, 4+5)'))
         
 ast.eval
-{% endhighlight %}
+</code></pre>
 
 That's a bunch of code for printing <code>[1, 2, 3, 9]</code>. Welcome to the
 fantastic world of compiler and interpreter writing!

@@ -51,9 +51,13 @@ class Example
       h[name] = io.read; 
       io.close 
       h }
-      
+            
     loop do
-      site_id, probe_value = $instrumentation.get rescue break
+      begin
+        site_id, probe_value = $instrumentation.get
+      rescue Exception => ex
+        break if ex.message.match(/All pipe ends/)
+      end
       fail "No such site #{site_id}." unless @sites.has_key?(site_id)
 
       @sites[site_id].store probe_value
