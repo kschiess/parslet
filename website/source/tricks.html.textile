@@ -1,6 +1,5 @@
 ---
 title: Tricks for common situations
-layout: default
 ---
 
 h2. Matching EOF (End Of File)

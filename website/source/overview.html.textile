@@ -1,6 +1,5 @@
 ---
 title: Overview
-layout: default
 ---
 
 Parslet is a library with a clear philosophy: It makes parser writing easy and

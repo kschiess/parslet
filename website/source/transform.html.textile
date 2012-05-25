@@ -1,6 +1,5 @@
 ---
 title: Transformation
-layout: default
 ---
 
 Parslet parsers output deep nested hashes. Those are nice for printing, but 
