@@ -311,9 +311,11 @@ class MiniP < Parslet::Parser
   rule(:operator)   { match('[+]') >> space? }
   
   # Grammar parts
-  rule(:sum)        { integer.as(:left) >> operator.as(:op) >> expression.as(:right) }
+  rule(:sum)        { 
+    integer.as(:left) >> operator.as(:op) >> expression.as(:right) }
   rule(:arglist)    { expression >> (comma >> expression).repeat }
-  rule(:funcall)    { identifier.as(:funcall) >> lparen >> arglist.as(:arglist) >> rparen }
+  rule(:funcall)    { 
+    identifier.as(:funcall) >> lparen >> arglist.as(:arglist) >> rparen }
   
   rule(:expression) { funcall | sum | integer }
   root :expression
@@ -332,9 +334,14 @@ class FunCall < Struct.new(:name, :args);
 end
 
 class MiniT < Parslet::Transform
-  rule(:int => simple(:int))                                          { IntLit.new(int) }
-  rule(:left => simple(:left), :right => simple(:right), :op => '+')  { Addition.new(left, right) }
-  rule(:funcall => 'puts', :arglist => subtree(:arglist))             { FunCall.new('puts', arglist) }
+  rule(:int => simple(:int))        { IntLit.new(int) }
+  rule(
+    :left => simple(:left), 
+    :right => simple(:right), 
+    :op => '+')                     { Addition.new(left, right) }
+  rule(
+    :funcall => 'puts', 
+    :arglist => subtree(:arglist))  { FunCall.new('puts', arglist) }
 end
 
 parser = MiniP.new
