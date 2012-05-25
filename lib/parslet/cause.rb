@@ -26,7 +26,9 @@ module Parslet
     # node. Very often carries the reasons for this cause. 
     #
     # @return [Array<Parslet::Cause>] A list of reasons for this cause. 
-    attr_reader :children
+    def children
+      @children ||= []
+    end
     
     # Appends 'at line LINE char CHAR' to the string given. Use +pos+ to
     # override the position of the +source+. This method returns an object

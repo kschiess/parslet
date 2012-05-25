@@ -5,7 +5,9 @@ describe Parslet::ErrorReporter::Deepest do
   let(:fake_source) { flexmock('source') }
   
   describe '#err' do
-    before(:each) { fake_source.should_receive(:pos => 13) }
+    before(:each) { fake_source.should_receive(
+      :pos => 13, 
+      :line_and_column => [1,1]) }
     
     it "returns the deepest cause" do
       flexmock(reporter).
@@ -15,7 +17,9 @@ describe Parslet::ErrorReporter::Deepest do
     end 
   end
   describe '#err_at' do
-    before(:each) { fake_source.should_receive(:pos => 13) }
+    before(:each) { fake_source.should_receive(
+      :pos => 13, 
+      :line_and_column => [1,1]) }
 
     it "returns the deepest cause" do
       flexmock(reporter).
