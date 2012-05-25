@@ -1,6 +1,5 @@
 ---
 title: Documentation
-layout: default
 ---
 
 "*Getting Started*":get-started.html
@@ -42,6 +41,8 @@ of parslet. Especially:
   "John":http://jmettraux.wordpress.com/about/ does a great job of explaining
   how parslet ties back in with railroad diagrams.
  
-"*rdoc Class Documentation*":doc/rdoc-1.3.0/index.html
+"*YARD Class Documentation*":http://rubydoc.info/gems/parslet/frames
 
-The rdoc documentation will help you with the nitty gritty.
+The "YARD documentation":http://rubydoc.info/gems/parslet/frames will help you
+with the nitty gritty. This documentation is real important too. It will be
+constantly improved! (Thanks linode.com and DockYard for sponsoring this tool.)
