@@ -71,18 +71,42 @@ a
 body.code
   code
     font: 
-      size: 0.68em 
+      size: 0.78em 
       family: "Monaco", monospace
       
+    // _why's poignant guide theme
+    .sh_keyword  // keyword
+      color: #761A47
+
+    .sh_comment // comment
+      color: #686868
+
+    .sh_string // string
+      color: #42aa7a
+      background-color: #edf7f7
+
+    .sh_constant // constant
+      color: #551e03
+
+    .sh_method // method
+      color: #4679a9
+
+    .sh_symbol // symbol
+      color: #551e03
+
+    .sh_number
+      color: #42aa7a
+  
+      
   pre
-    border: 2px solid #686868
-    -moz-border-radius: 15px
-    border-radius: 15px
+    // border: 2px solid #686868
+    // -moz-border-radius: 15px
+    // border-radius: 15px
 
     background-color: #f8f8f8
     color: #4679a9
 
-    line-height: 0.95em
+    line-height: 1em
 
     margin: 
       left: 1em
