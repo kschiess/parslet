@@ -10,12 +10,12 @@ keys would produce code that is hard to read and maintain.
 This is why parslet also comes with a hash transformation engine. To construct
 such a transform, you have to derive from <code>Parslet::Transform</code>: 
 
-{% highlight ruby %} 
-class MyTransform < Parslet::Transform
-  rule('a') { 'b' }
-end
-MyTransform.new.apply('a') # => 'b'
-{% endhighlight %}
+<pre class="sh_ruby"><code title="simple transform">
+  class MyTransform < Parslet::Transform
+    rule('a') { 'b' }
+  end
+  MyTransform.new.apply('a') # => "b"
+</code></pre>
 
 This is a transformation that replaces all 'a's with 'b's. A transformation
 rule has two parts: A *pattern* (here: <code>'a'</code>) and an *action block*
@@ -27,23 +27,23 @@ the children and only then look at the node itself. While traversing, all
 rules are tested in the order in which they are defined. If a rule matches, the
 corresponding tree is _replaced_ by whatever the action block returns.
 
-Here's another way of saying the same thing, perhaps more in line with what 
+Here's another way of saying the same thing, perhaps more in line with what
 you need as a user of Parslet: <code>Parslet::Transform</code> is what allows
-you to transform the PORO-trees magically into a real abstract syntax tree. The
-rule definitions are the futuristic nano-machines that act on tree leaves first, 
-eating them away and replacing them with contraptions of your own design. Here's
-how that might look like in Ruby: 
+you to transform the PORO-trees magically into a real abstract syntax tree.
+The rule definitions are the futuristic nano-machines that act on tree leaves
+first, eating them away and replacing them with contraptions of your own
+design. Here's how that might look like in Ruby:
 
-{% highlight ruby %} 
-tree = {:left => {:int => '1'}, 
-        :op   => '+', 
-        :right => {:int => '2'}}
+<pre class="sh_ruby"><code title="poro magic">
+  tree = {:left => {:int => '1'}, 
+          :op   => '+', 
+          :right => {:int => '2'}}
         
-class Trans < Parslet::Transform
-  rule(:int => simple(:x)) { Integer(x) }
-end
-Trans.new.apply(tree)     # => {:op=>"+", :right=>2, :left=>1}
-{% endhighlight %}
+  class Trans < Parslet::Transform
+    rule(:int => simple(:x)) { Integer(x) }
+  end
+  Trans.new.apply(tree)     # => {:left=>1, :op=>"+", :right=>2}
+</code></pre>
 
 You can start thinking about the leaves first, transforming those <code>:int
 => '1'</code> into real Ruby integers. This incremental (test driven!)
@@ -52,15 +52,17 @@ from too many nano-machines. Rules should in general be simple and transform
 a small part of the tree into a more useful variant. Turns out that if we were
 looking for an interpreter, one more rule will give us evaluation: 
 
-{% highlight ruby %} 
-# ... snippage ...
+<pre class="sh_ruby"><code title="building up">
+  tree = {:left => {:int => '1'}, 
+          :op   => '+', 
+          :right => {:int => '2'}}
 
-class Trans < Parslet::Transform
-  rule(:int => simple(:x)) { Integer(x) }
-  rule(:op => '+', :left => simple(:l), :right => simple(:r)) { l + r }
-end
-Trans.new.apply(tree)     # => 3
-{% endhighlight %}
+  class Trans < Parslet::Transform
+    rule(:int => simple(:x)) { Integer(x) }
+    rule(:op => '+', :left => simple(:l), :right => simple(:r)) { l + r }
+  end
+  Trans.new.apply(tree)     # => 3
+</code></pre>
 
 Cool, isn't it? To recap: parslet intentionally spits out deep nested hashes, 
 because it also gives you the tool to work with those. Turning the intermediary
@@ -79,20 +81,20 @@ Transform allows you to specify patterns that have wildcards in them. The
 wildcards match part of the tree, but at the same time capture it for working
 on it in your action block. The wildcard
 
-{% highlight ruby %} 
-simple(:x)
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  simple(:x)
+</code></pre>
 
 will match any object BUT hashes or arrays. While this is obviously useful
 for capturing strings, you can also capture other 'simple' (as opposed to 
 composed) objects of your own creation. <code>simple(:x)</code> would thus match
 all of these objects: 
 
-{% highlight ruby %} 
-"a string"
-123
-Foo.new(:some, :class, :instance)
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  "a string"
+  123
+  Foo.new(:some, :class, :instance)
+</code></pre>
 
 If you think about what you'll be doing to your intermediary trees, replacing
 leaves with more useful objects, <code>simple</code> really makes good sense, 
@@ -105,24 +107,24 @@ result. You can use <code>simple(...)</code> to replace all parts of these
 arrays with your own objects, but you cannot replace the array as a whole. 
 This is the purpose of <code>sequence(symbol)</code>: 
 
-{% highlight ruby %} 
-sequence(:x)
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  sequence(:x)
+</code></pre>
 
 will match all of these: 
 
-{% highlight ruby %} 
-['a', 'b', 'c']
-['a', 'a', 'a']
-[Foo.new, Bar.new]
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  ['a', 'b', 'c']
+  ['a', 'a', 'a']
+  [Foo.new, Bar.new]
+</code></pre>
 
 but not
 
-{% highlight ruby %} 
-[{:a => :b}]
-[['a', 'b']]
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  [{:a => :b}]
+  [['a', 'b']]
+</code></pre>
 
 Like its smaller brother, <code>sequence</code> is very picky about what it
 consumes and what not. All for the same reasons. 
@@ -141,14 +143,14 @@ matches within the same pattern, the engine will assume that you want these
 two matched objects to be equal (under <code>==</code>). This allows to 
 specify constraints on your matches that would need code to express otherwise: 
 
-{% highlight ruby %} 
-# The following code is an excerpt from example/simple_xml.rb in the distro
-t.rule(
-  open: {name: simple(:tag)}, 
-  close: {name: simple(:tag)}, 
-  inner: simple(:t)
-) { 'verified' }
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  # The following code is an excerpt from example/simple_xml.rb in the distro
+  t.rule(
+    open: {name: simple(:tag)}, 
+    close: {name: simple(:tag)}, 
+    inner: simple(:t)
+  ) { 'verified' }
+</code></pre>
 
 This replaces _matching_ open and close tags with the word 'verified',
 consuming them from the tree and allowing the same rule to match higher up. A
@@ -167,27 +169,27 @@ ways to use it. Since at least one of those is inconvenient for you, the user,
 I am going to show only the remaining two, Variant 1 that produces an instance
 of the transform for direct use:
 
-{% highlight ruby %} 
-# Variant 1
-transform = Parslet::Transform.new do
-  rule(...) { ... } 
-  rule(...) { ... } 
-  rule(...) { ... } 
-end
-transform.apply(tree)
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  # Variant 1
+  transform = Parslet::Transform.new do
+    rule(...) { ... } 
+    rule(...) { ... } 
+    rule(...) { ... } 
+  end
+  transform.apply(tree)
+</code></pre>
 
 and Variant 2 that allows constructing the transformation as a class: 
 
-{% highlight ruby %} 
-# Variant 2
-class MyTransform < Parslet::Transform
-  rule(...) { ... } 
-  rule(...) { ... } 
-  rule(...) { ... } 
-end
-MyTransform.new.apply(tree)
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  # Variant 2
+  class MyTransform < Parslet::Transform
+    rule(...) { ... } 
+    rule(...) { ... } 
+    rule(...) { ... } 
+  end
+  MyTransform.new.apply(tree)
+</code></pre>
 
 I guess both have their sweet spot. 
 
@@ -197,16 +199,16 @@ As you might have noticed by now, parslet provides choice as well as nice
 parsers. To recap: Rules have a left side called _pattern_ and a right side 
 called _action block_:
 
-{% highlight ruby %} 
-rule(PATTERN) {ACTION_BLOCK}
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  rule(PATTERN) {ACTION_BLOCK}
+</code></pre>
 
 There are two ways of writing action blocks, and the difference might be 
 fundamental to know to you one day. If written like this: 
 
-{% highlight ruby %} 
-rule(:foo => simple(:x)) { puts x }
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  rule(:foo => simple(:x)) { puts x }
+</code></pre>
 
 the block will be able to access <code>x</code> as a local variable. This is 
 very convenient and shortens the action code, often to the point of being
@@ -218,10 +220,10 @@ as a local method (aka accessor). You can only have one self at any one time;
 variable access to the binding of the block isn't possible inside this kind
 of action blocks: 
 
-{% highlight ruby %} 
-y = 12
-rule(:foo => simple(:x)) { Integer(x) + y }
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  y = 12
+  rule(:foo => simple(:x)) { Integer(x) + y }
+</code></pre>
 
 This will (depending on the context) throw a <code>NameError</code> or a
 <code>NoMethodError</code>.
@@ -229,10 +231,10 @@ This will (depending on the context) throw a <code>NameError</code> or a
 But this can be fixed by using the other, less elegant style for action
 blocks:
 
-{% highlight ruby %} 
-y = 12
-rule(:foo => simple(:x)) { |dictionary| Integer(dictionary[:x]) + y }
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  y = 12
+  rule(:foo => simple(:x)) { |dictionary| Integer(dictionary[:x]) + y }
+</code></pre>
 
 In this second flavor, the block gets executed in the context of definition, 
 whatever that was. This means that it can capture and access local variables
@@ -244,18 +246,18 @@ h2. A word on patterns
 
 Given the PORO hash
 
-{% highlight ruby %} 
-{ 
-  :dog => 'terrier', 
-  :cat => 'suit' }
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  { 
+    :dog => 'terrier', 
+    :cat => 'suit' }
+</code></pre>
 
 one might assume that the following rule matches <code>:dog</code> and
 replaces it by <code>'foo'</code>:
 
-{% highlight ruby %} 
-rule(:dog => 'terrier') { 'foo' }
-{% endhighlight %}
+<pre class="sh_ruby"><code>
+  rule(:dog => 'terrier') { 'foo' }
+</code></pre>
 
 This is frankly impossible. How would <code>'foo'</code> live besides
 <code>:cat => 'suit'</code> inside the hash? It cannot. This is why hashes are
