@@ -3,7 +3,11 @@
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
     
-= 1.4.0 / ???
+= 1.4.0 / 25May2012
+
+  + Revised documentation. A few new API features have finally made it into
+    the documentation. Examples in the documentation are now curated and
+    run against the current code so that they really really work. 
 
   + Parslet::Source now doesn't hold a StringIO, it directly holds the 
     buffer to be parsed. The api of Source has changed a tiny bit. This change
