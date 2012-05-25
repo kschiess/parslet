@@ -4,6 +4,7 @@
 
 $:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
+require 'parslet/convenience'
 
 class EmailParser < Parslet::Parser
   rule(:space) { match('\s').repeat(1) }
@@ -48,9 +49,4 @@ unless ARGV[0]
   STDOUT.puts "since you haven't specified any EMAIL_ADDR, for testing purposes we're using a.b.c.d@gmail.com"
 end
 
-begin
-  p sanitizer.apply(parser.parse(ARGV[0] || 'a.b.c.d@gmail.com'))
-rescue Parslet::ParseFailed => error
-  puts error
-  puts parser.error_tree
-end
+p sanitizer.apply(parser.parse_with_debug(ARGV[0] || 'a.b.c.d@gmail.com'))

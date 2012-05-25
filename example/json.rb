@@ -107,9 +107,6 @@ module MyJson
     out = transformer.apply(tree)
 
     out
-
-  rescue Parslet::ParseFailed => e
-    puts e, parser.root.error_tree
   end
 end
 

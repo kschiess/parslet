@@ -25,10 +25,6 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
   def to_s_inner(prec)
     "#{name}:#{parslet.to_s(prec)}"
   end
-
-  def error_tree
-    parslet.error_tree
-  end
 private
   def produce_return_value(val)
     { name => flatten(val, true) }

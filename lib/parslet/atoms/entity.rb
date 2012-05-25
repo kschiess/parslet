@@ -29,12 +29,7 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
 
   def to_s_inner(prec)
     name.to_s.upcase
-  end
-
-  def error_tree
-    parslet.error_tree
-  end
-  
+  end  
 private 
   def raise_not_implemented
     trace = caller.reject {|l| l =~ %r{#{Regexp.escape(__FILE__)}}} # blatantly stolen from dependencies.rb in activesupport

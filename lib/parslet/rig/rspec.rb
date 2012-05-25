@@ -7,8 +7,8 @@ RSpec::Matchers.define(:parse) do |input, opts|
       block ? 
         block.call(result) : 
         (as == result || as.nil?)
-    rescue Parslet::ParseFailed
-      trace = parser.error_tree.ascii_tree if opts && opts[:trace]
+    rescue Parslet::ParseFailed => ex
+      trace = ex.cause.ascii_tree if opts && opts[:trace]
       false
     end
   end

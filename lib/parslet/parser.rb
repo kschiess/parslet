@@ -61,10 +61,6 @@ class Parslet::Parser < Parslet::Atoms::Base
     root.try(source, context)
   end
   
-  def error_tree
-    root.error_tree
-  end
-  
   def to_s_inner(prec)
     root.to_s(prec)
   end
