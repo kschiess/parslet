@@ -9,3 +9,4 @@ gem 'case'
 gem 'text-highlight'
 
 gem 'parslet'
+gem 'rspec'
