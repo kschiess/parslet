@@ -17,5 +17,5 @@ Slim::Engine.set_default_options :pretty => true
 set :textile, :layout_engine => :slim
 
 configure :build do
-  set :http_prefix, "/cod/"
+  set :http_prefix, "/parslet/"
 end
