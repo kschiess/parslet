@@ -115,13 +115,14 @@ Here's the full parser:
 
   def parse(str)
     mini = Mini.new
-    print "Parsing #{str}: "
   
-    p mini.parse(str)
+    mini.parse(str)
+  rescue Parslet::ParseFailed => failure
+    puts failure.cause.ascii_tree
   end
 
   parse "1 + 2 + 3"  # => "1 + 2 + 3"@0
-  parse "1++2"       # raises <Parslet::UnconsumedInput: Don't know what to do with "++2" ...
+  parse "a + 2"      # fails, see below
 </code></pre>
 
 As you can see, the parser got decorated with the <code>space?</code> idiom.
@@ -131,36 +132,35 @@ convention that makes top level rules (the important ones) look cleaner.
 Note also the addition of <code>:operator</code>, <code>:sum</code> and
 <code>:expression</code>. The runner code has been extended a bit, so as to
 throw nice explanations of what went wrong when a parse failure is
-encountered. Running the code on '<code>1++2</code>' for example outputs:
+encountered. Running the code on '<code>a + 2</code>' for example outputs:
 
-<pre><code>  
-  Parsing 1++2: Don't know what to do with ++2 at line 1 char 2.
-  `- Unknown error in SUM / INTEGER
-     |- Failed to match sequence (INTEGER OPERATOR) at line 1 char 3.
-     |  `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
-     |     `- Expected at least 1 of [0-9] at line 1 char 3.
-     |        `- Failed to match [0-9] at line 1 char 3.
-     `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
-        `- Expected at least 1 of [0-9] at line 1 char 3.
-           `- Failed to match [0-9] at line 1 char 3.
-</code></pre>
+<pre class="output">  
+Expected one of [SUM, INTEGER] at line 1 char 1.
+|- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 1.
+|  `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 1.
+|     `- Expected at least 1 of [0-9] at line 1 char 1.
+|        `- Failed to match [0-9] at line 1 char 1.
+`- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 1.
+   `- Expected at least 1 of [0-9] at line 1 char 1.
+      `- Failed to match [0-9] at line 1 char 1.
+</pre>
 
 This is what parslet calls an <code>#error_tree</code>. Not only the output of
 your parser, but also its grammar is constructed like a tree. When things go
 wrong, every branch of the tree has its own reasons for not accepting a given
-input. The <code>#error_tree</code> method returns those reasons.
+input. The <code>#cause</code> method returns those reasons.
 
 Our grammar has essentially two branches, <code>SUM</code> and
-<code>INTEGER</code>. Can you see why all rules expect a space at character 4?
+<code>INTEGER</code>. Can you see why all rules expect a number as the first
+character?
 
 h2. Tree output (and what to do about it)
 
 But if we leave the negative examples for a second; what happens if the parse
 succeeds? It turns out, not much: 
 
-{% highlight bash %} 
-* ruby 002.rb 
-Parsing 1 + 2 + 3: "1 + 2 + 3"@0
+<pre class="sh_ruby"><code>
+  parse "1 + 2 + 3"  # => "1 + 2 + 3"@0
 </code></pre>
 
 The only notable difference between input and output is that the output has an
@@ -173,16 +173,16 @@ Parslet hasn't got its own opinion on what to do with your input. By default,
 it will just play it back to you. But parslet provides also a method of 
 structuring its output: 
 
-{% highlight ruby%} 
-# Without structure: just strings.
-str('ooo').parse('ooo')                           # => "ooo"@0
-str('o').repeat.parse('ooo')                      # => "ooo"@0
+<pre class="sh_ruby"><code title="output_samples"> 
+  # Without structure: just strings.
+  str('ooo').parse('ooo')                           # => "ooo"@0
+  str('o').repeat.parse('ooo')                      # => "ooo"@0
 
-# Added structure: .as(...)
-str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"@0}
-str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  # => {:ex2b=>[{:ex2a=>"o"@0}, 
-                                                  #             {:ex2a=>"o"@1}, 
-                                                  #             {:ex2a=>"o"@2}]}
+  # Added structure: .as(...)
+  str('ooo').as(:ex1).parse('ooo')                  # => {:ex1=>"ooo"@0}
+  
+  long = str('o').as(:ex2a).repeat.as(:ex2b).parse('ooo')  
+  long # => {:ex2b=>[{:ex2a=>"o"@0}, {:ex2a=>"o"@1}, {:ex2a=>"o"@2}]}
 </code></pre>
 
 You get to name things the way you want! This is also free. Seriously: parslet
@@ -194,12 +194,12 @@ we had initially).
 Once you start naming things, you'll notice that what you don't name,
 disappears. Parslet assumes that _what you don't name is unimportant_.
 
-{% highlight ruby%} 
+<pre class="sh_ruby"><code title="inline_parser"> 
 parser =  str('a').as(:a) >> str(' ').maybe >> 
           str('+').as(:o) >> str(' ').maybe >> 
           str('b').as(:b)
-parser.parse('a + b') # => {:b=>"b"@4, :o=>"+"@2, :a=>"a"@0}
-{% endhighlight%}
+parser.parse('a + b') # => {:a=>"a"@0, :o=>"+"@2, :b=>"b"@4}
+</code></pre>
 
 Think of this like using a highlighter on your input: What is there not to
 like about neon yellow?
@@ -209,7 +209,7 @@ h2. Making the parser complete
 Let's look at the complete parser definition that also allows for function
 calls:
 
-{% highlight ruby%} 
+<pre class="sh_ruby"><code title="full_parser"> 
 class MiniP < Parslet::Parser
   # Single character rules
   rule(:lparen)     { str('(') >> space? }
@@ -232,23 +232,22 @@ class MiniP < Parslet::Parser
   rule(:expression) { funcall | sum | integer }
   root :expression
 end
+
+require 'pp'
+pp MiniP.new.parse("puts(1 + 2 + 3, 45)")
 </code></pre>
 
 That's really all there is to it -- our language is a really simple language. 
 When fed with a string like '<code>puts(1 + 2 + 3, 45)</code>, our parser outputs
 the following: 
 
-<pre class="sh_ruby"><code> 
-# Ruby 1.9 hash syntax for easier reading
-{
-  funcall: 'puts'@0, 
-  arglist: [
-    {arg: {
-      left: '1'@5, op: '+ '@7, right: {
-        left: '2'@9, op: '+ '@11, right: '3'@13}}}, 
-    {arg: '45'@16}
-  ]
-}
+<pre class="output"> 
+{:funcall=>"puts"@0,
+ :arglist=>
+  [{:left=>{:int=>"1"@5},
+    :op=>"+ "@7,
+    :right=>{:left=>{:int=>"2"@9}, :op=>"+ "@11, :right=>{:int=>"3"@13}}},
+   {:int=>"45"@16}]}
 </code></pre>
 
 Parslet calls this the _intermediary tree_. There are three types of nodes in
@@ -261,7 +260,7 @@ this tree:
 The format of this tree is easy to work with and to read. Here's what the
 above tree would look like as a graphic:
 
-!imgs/ast.png!
+!images/ast.png!
 
 h2. Where to go from here: An Interpreter
 
@@ -296,7 +295,7 @@ language by using a transformation. Note that from this point on, there is
 not one way to go about this, but thousands; you are really free (and on
 your own): 
 
-<pre class="sh_ruby"><code> 
+<pre class="sh_ruby"><code title="putting it all together"> 
 class MiniP < Parslet::Parser
   # Single character rules
   rule(:lparen)     { str('(') >> space? }
@@ -345,7 +344,7 @@ ast = transf.apply(
   parser.parse(
     'puts(1,2,3, 4+5)'))
         
-ast.eval
+ast.eval # => [1, 2, 3, 9]
 </code></pre>
 
 That's a bunch of code for printing <code>[1, 2, 3, 9]</code>. Welcome to the

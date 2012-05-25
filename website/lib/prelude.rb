@@ -1,1 +1,2 @@
 require 'parslet'
+include Parslet
