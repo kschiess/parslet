@@ -46,7 +46,7 @@ There are just two lines to the definition of this parser, let's go through
 them:
 
 <pre class="sh_ruby"><code> 
-rule(:integer) { match('[0-9]').repeat(1) }
+  rule(:integer) { match('[0-9]').repeat(1) }
 </code></pre>
 
 <code>rule</code> lets you create a new parser rule. Inside the block of that
@@ -55,7 +55,7 @@ This says: "match a character that is in the range <code>0-9</code>, then
 match any number of those, but at least match one."
 
 <pre class="sh_ruby"><code> 
-root(:integer)
+  root(:integer)
 </code></pre>
 
 That second line just says: Start parsing at the rule called
@@ -67,15 +67,15 @@ Let's go for simple addition. We'll have to allow for spaces in our input,
 since those help make code readable. 
 
 <pre class="sh_ruby"><code> 
-rule(:space)  { match('\s').repeat(1) }
-rule(:space?) { space.maybe }
+  rule(:space)  { match('\s').repeat(1) }
+  rule(:space?) { space.maybe }
 </code></pre>
 
 Two things are new here: (and both in the second line)
 
 * you can use ('call') other rules in your rules 
-* <code>.maybe</code>, the same as <code>.repeat(0,1)</code>[1], indicating that
-  the thing before it is maybe present once in the input.
+* <code>.maybe</code>, the same as <code>.repeat(0,1)</code>[1], indicating 
+  that the thing before it is maybe present once in the input.
   
 Essentially, you can think about parslet rules as instructing Ruby to "parse
 this" and "parse that". Calling other rules can be looked at in the same way;
@@ -84,9 +84,9 @@ results. This helps when thinking about rule recursion. For example, a
 self-recursive rule like this one will of course create an endless loop:
 
 <pre class="sh_ruby"><code> 
-rule(:infinity) {
-  infinity >> str(';')
-}
+  rule(:infinity) {
+    infinity >> str(';')
+  }
 </code></pre>
 
 Even though infinity seems to be delimited by ';', in reality, infinity is
@@ -98,31 +98,30 @@ grammar terminates, since in a way, it is like a normal program.
 
 Here's the full parser:
 
-<pre class="sh_ruby"><code>  
-class Mini < Parslet::Parser
-  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+<pre class="sh_ruby"><code title="full_parser">  
+  class Mini < Parslet::Parser
+    rule(:integer)    { match('[0-9]').repeat(1) >> space? }
   
-  rule(:space)      { match('\s').repeat(1) }
-  rule(:space?)     { space.maybe }
+    rule(:space)      { match('\s').repeat(1) }
+    rule(:space?)     { space.maybe }
   
-  rule(:operator)   { match('[+]') >> space? }
+    rule(:operator)   { match('[+]') >> space? }
   
-  rule(:sum)        { integer >> operator >> expression }
-  rule(:expression) { sum | integer }
+    rule(:sum)        { integer >> operator >> expression }
+    rule(:expression) { sum | integer }
 
-  root :expression
-end
+    root :expression
+  end
 
-def parse(str)
-  mini = Mini.new
-  print "Parsing #{str}: "
+  def parse(str)
+    mini = Mini.new
+    print "Parsing #{str}: "
   
-  p mini.parse(str)
-rescue Parslet::ParseFailed => error
-  puts error, mini.root.error_tree
-end
+    p mini.parse(str)
+  end
 
-parse "1 + 2 + 3"
+  parse "1 + 2 + 3"  # => "1 + 2 + 3"@0
+  parse "1++2"       # raises <Parslet::UnconsumedInput: Don't know what to do with "++2" ...
 </code></pre>
 
 As you can see, the parser got decorated with the <code>space?</code> idiom.
@@ -134,16 +133,16 @@ Note also the addition of <code>:operator</code>, <code>:sum</code> and
 throw nice explanations of what went wrong when a parse failure is
 encountered. Running the code on '<code>1++2</code>' for example outputs:
 
-{% highlight bash %} 
-Parsing 1++2: Don't know what to do with ++2 at line 1 char 2.
-`- Unknown error in SUM / INTEGER
-   |- Failed to match sequence (INTEGER OPERATOR) at line 1 char 3.
-   |  `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
-   |     `- Expected at least 1 of [0-9] at line 1 char 3.
-   |        `- Failed to match [0-9] at line 1 char 3.
-   `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
-      `- Expected at least 1 of [0-9] at line 1 char 3.
-         `- Failed to match [0-9] at line 1 char 3.
+<pre><code>  
+  Parsing 1++2: Don't know what to do with ++2 at line 1 char 2.
+  `- Unknown error in SUM / INTEGER
+     |- Failed to match sequence (INTEGER OPERATOR) at line 1 char 3.
+     |  `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
+     |     `- Expected at least 1 of [0-9] at line 1 char 3.
+     |        `- Failed to match [0-9] at line 1 char 3.
+     `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 3.
+        `- Expected at least 1 of [0-9] at line 1 char 3.
+           `- Failed to match [0-9] at line 1 char 3.
 </code></pre>
 
 This is what parslet calls an <code>#error_tree</code>. Not only the output of

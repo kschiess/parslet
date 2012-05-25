@@ -13,7 +13,8 @@ class FailSite < Site
     
     s = s[1..-1]
     
-    s.size > 47 ? s[0,47] + '...' : s
+    max_len = 60
+    s.size > max_len ? s[0,max_len] + '...' : s
   end
 
   def check

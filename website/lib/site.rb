@@ -30,7 +30,7 @@ class Site
     v = @values.size == 1 ? @values.first : @values
     s = v.inspect
     
-    max_len = 40 - 3
+    max_len = 60 - 3
     s.size > max_len ? s[0,max_len] + '...' : s
   end
   def check
