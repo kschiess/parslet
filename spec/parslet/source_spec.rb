@@ -15,14 +15,14 @@ describe Parslet::Source do
         source.consume(100).should == 'a'*100
       end
     end
-    describe "<- #eof?" do
-      subject { source.eof? }
+    describe "<- #chars_left" do
+      subject { source.chars_left }
   
-      it { should be_false }
+      it { should == 202 }
       context "after depleting the source" do
         before(:each) { source.consume(10000) }
   
-        it { should be_true }
+        it { should == 0 }
       end
     end
     describe "<- #pos" do
@@ -98,7 +98,7 @@ describe Parslet::Source do
         attr_reader :results
         before(:each) { 
           @results = {}
-          while not source.eof?
+          while source.chars_left>0
             pos = source.pos
             @results[pos] = source.line_and_column
             source.consume(1)
@@ -123,7 +123,7 @@ describe Parslet::Source do
         end
         it "should give the same results when reading" do
           cur = source.pos = 0
-          while not source.eof?
+          while source.chars_left>0
             source.line_and_column.should == results[cur]
             cur += 1
             source.consume(1)
@@ -148,7 +148,6 @@ describe Parslet::Source do
       source.consume(1)
       
       source.consume(2)
-      source.eof?.should == true
       source.chars_left.should == 0
     end 
   end

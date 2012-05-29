@@ -47,10 +47,6 @@ module Parslet
       @str.size - @pos
     end
     
-    def eof?
-      @pos >= @str.size
-    end
-
     # Position of the parse as a character offset into the original string. 
     # @note: Encodings...
     attr_accessor :pos

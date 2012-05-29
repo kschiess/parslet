@@ -51,7 +51,7 @@ class Parslet::Atoms::Base
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
-    if !options[:prefix] && !source.eof?
+    if !options[:prefix] && source.chars_left > 0
       old_pos = source.pos
       Parslet::Cause.format(
         source, old_pos, 
