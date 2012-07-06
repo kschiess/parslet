@@ -48,7 +48,9 @@ parslet. (Postmodern)
 
 "*thnad*":https://github.com/undees/thnad 
 
-Thnad is a tiny programming language with so few features that it is not useful for anything at all -- except showing how to write a compiler in half an hour.
+Thnad is a tiny programming language with so few features that it is not
+useful for anything at all -- except showing how to write a compiler in half
+an hour.
 
 "*wt* aka working title":https://github.com/kschiess/wt
 
