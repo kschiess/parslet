@@ -7,6 +7,8 @@ require 'rspec'
 require 'parslet'
 require 'parslet/rig/rspec'
 
+# This is the parsing stage. It expresses left associativity by compiling
+# list of things that have the same associativity. 
 class CalcParser < Parslet::Parser
   root :addition
   
@@ -28,6 +30,7 @@ class CalcParser < Parslet::Parser
   rule(:space?) { match['\s'].repeat }
 end
 
+# Classes for the abstract syntax tree.
 Int    = Struct.new(:int) {
   def eval; self end
   def op(operation, other)
@@ -65,6 +68,7 @@ LeftOp = Struct.new(:operation, :right) {
   end
 }
 
+# Transforming intermediary syntax tree into a real AST.
 class CalcTransform < Parslet::Transform
   rule(i: simple(:i)) { Int.new(Integer(i)) }
   rule(o: simple(:o), r: simple(:i)) { LeftOp.new(o, i) }
@@ -72,9 +76,13 @@ class CalcTransform < Parslet::Transform
   rule(sequence(:seq)) { Seq.new(seq) }
 end
 
+# And this calls everything in the right order.
 def calculate(str)
-  tree = CalcParser.new.parse(str)
-  CalcTransform.new.apply(tree).eval.to_i
+  intermediary_tree = CalcParser.new.parse(str)
+  abstract_tree = CalcTransform.new.apply(intermediary_tree)
+  result = abstract_tree.eval
+  
+  result.to_i
 end
 
 # A test suite for the above parser
