@@ -110,16 +110,6 @@ describe CalcParser do
       a.should parse('1+2+3-4')
     end 
   end
-  
-  describe 'whole computation specs' do
-    def self.result_of(str, int)
-      it(str) { calculate(str).should == int } 
-    end
-
-    result_of '1+1', 2
-    result_of '1-1-1', -1
-    result_of '1+1+3*5/2', 9
-  end
 end
 describe CalcTransform do
   def t(obj)
@@ -133,12 +123,23 @@ describe CalcTransform do
     t(l: :obj).should == :obj
   end 
 end
+describe 'whole computation specs' do
+  def self.result_of(str, int)
+    it(str) { calculate(str).should == int } 
+  end
 
-RSpec::Core::Runner.run([], $stderr, $stdout)
+  result_of '1+1', 2
+  result_of '1-1-1', -1
+  result_of '1+1+3*5/2', 9
+  result_of '123*2', 246
+end
+
+
+# Enable these if you want to change the code.
+# RSpec::Core::Runner.run([], $stderr, $stdout)
 
 str = ARGV.join
-unless str.match(/\s+/)
-  puts 
-  print "You're asking me for the result of #{str}: -> "
-  puts calculate(ARGV.join)
-end
+str = '123*2' if str.match(/^\s*$/)
+
+print "#{str} (command line): -> "
+puts calculate(str)
