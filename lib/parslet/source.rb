@@ -7,13 +7,10 @@ module Parslet
   # Wraps the input string for parslet. 
   #
   class Source
-    attr_reader :waterline
-
     def initialize(str)
       raise ArgumentError unless str.respond_to?(:to_str)
 
       @pos = 0
-      @waterline = 0
       @str = str
 
       @line_cache = LineCache.new
@@ -41,7 +38,6 @@ module Parslet
         @line_cache)
 
       @pos += slice_str.size
-      @waterline = @pos if @pos > @waterline
 
       return slice
     end
@@ -50,12 +46,6 @@ module Parslet
     #
     def chars_left
       @str.size - @pos
-    end
-
-    # Returns the size of the source.
-    #
-    def size
-      @str.size
     end
 
     # Position of the parse as a character offset into the original string. 

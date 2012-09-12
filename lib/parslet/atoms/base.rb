@@ -32,7 +32,7 @@ class Parslet::Atoms::Base
     # If we didn't succeed the parse, raise an exception for the user.
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
-    reparse(source, options) unless success
+    reparse(source, options).raise unless success
 
     # assert: success is true
 
@@ -40,9 +40,10 @@ class Parslet::Atoms::Base
     # to provide a good error message (even asking down below)
     if !options[:prefix] && source.chars_left > 0
 
-      reparse(source, options) if source.waterline == source.size
-
       old_pos = source.pos
+      cause = reparse(source, options)
+
+      cause.raise if cause && cause.pos > old_pos
 
       Parslet::Cause.format(
         source, old_pos,
@@ -65,8 +66,7 @@ class Parslet::Atoms::Base
     reporter = options[:reporter] || Parslet::ErrorReporter::Tree.new
     success, value = setup_and_apply(source, reporter)
 
-    value.raise if value.respond_to?(:raise)
-    reporter.cause.raise
+    value.respond_to?(:raise) ? value : reporter.cause
   end
 
   # Creates a context for parsing and applies the current atom to the input. 

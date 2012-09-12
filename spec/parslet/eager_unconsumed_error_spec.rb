@@ -72,9 +72,46 @@ describe 'Parslet and unconsumed input' do
         end
       })
     }.should raise_error(
+      Parslet::UnconsumedInput,
+      "Don't know what to do with \"begin b\\n  \" at line 4 char 9."
+    )
+  end
+
+  it 'fails gracefully on a missing end (3)' do
+
+    lambda {
+      MyParser.new.parse(%q{
+        begin a
+        end
+        begin b
+          begin c
+            li
+          end
+        end
+      })
+    }.should raise_error(
+      Parslet::UnconsumedInput,
+      "Don't know what to do with \"begin b\\n  \" at line 4 char 9."
+    )
+  end
+
+  it 'fails gracefully on a missing end (4 deepest reporter)' do
+
+    lambda {
+      MyParser.new.parse(
+        %q{
+          begin a
+          end
+          begin b
+            begin c
+              li
+            end
+          end
+        },
+        :reporter => Parslet::ErrorReporter::Deepest.new)
+    }.should raise_error(
       Parslet::ParseFailed,
-      #'Failed to match sequence (SP? 'begin' SP [a-z] NL BODY SP? 'end') at line 7 char 7.'
-      'Failed to match sequence (NL BLOCK) at line 4 char 9.'
+      'Expected "end", but got "li\n" at line 6 char 15.'
     )
   end
 end

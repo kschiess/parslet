@@ -268,7 +268,7 @@ describe Parslet do
       end
       it "has the correct error message" do
         exception.message.should ==
-          'Expected "a", but got "." at line 1 char 2.'
+          "Don't know what to do with \".\" at line 1 char 2."
       end
     end
   end
