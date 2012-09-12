@@ -257,19 +257,19 @@ describe Parslet do
       let (:parslet) { (str('a')).repeat(1) }
       attr_reader :exception
       before(:each) do
-        begin 
+        begin
           parslet.parse('a.')
         rescue => @exception
         end
       end
 
       it "raises Parslet::UnconsumedInput" do
-        exception.should be_kind_of(Parslet::UnconsumedInput)
-      end 
+        exception.should be_kind_of(Parslet::ParseFailed)
+      end
       it "has the correct error message" do
-        exception.message.should == \
-          "Don't know what to do with \".\" at line 1 char 2."
-      end 
+        exception.message.should ==
+          'Expected "a", but got "." at line 1 char 2.'
+      end
     end
   end
   

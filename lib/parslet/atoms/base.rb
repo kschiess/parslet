@@ -21,47 +21,54 @@ class Parslet::Atoms::Base
   #   tree
   #
   def parse(io, options={})
-    source = io.respond_to?(:line_and_column) ? 
-      io : 
+    source = io.respond_to?(:line_and_column) ?
+      io :
       Parslet::Source.new(io)
 
-    # Try to cheat. Assuming that we'll be able to parse the input, don't 
-    # run error reporting code. 
+    # Try to cheat. Assuming that we'll be able to parse the input, don't
+    # run error reporting code.
     success, value = setup_and_apply(source, nil)
-    
-    # If we didn't succeed the parse, raise an exception for the user. 
+
+    # If we didn't succeed the parse, raise an exception for the user.
     # Stack trace will be off, but the error tree should explain the reason
     # it failed.
-    unless success
-      # Cheating has not paid off. Now pay the cost: Rerun the parse,
-      # gathering error information in the process.
-      reporter = options[:reporter] || Parslet::ErrorReporter::Tree.new
-      success, value = setup_and_apply(source, reporter)
-      
-      fail "Assertion failed: success was true when parsing with reporter" \
-        if success
-      
-      # Value is a Parslet::Cause, which can be turned into an exception:
-      value.raise
-      
-      fail "NEVER REACHED"
-    end
-    
+    reparse(source, options) unless success
+
     # assert: success is true
-    
+
     # If we haven't consumed the input, then the pattern doesn't match. Try
     # to provide a good error message (even asking down below)
     if !options[:prefix] && source.chars_left > 0
+
+      reparse(source, options) if source.waterline == source.size
+
       old_pos = source.pos
+
       Parslet::Cause.format(
-        source, old_pos, 
+        source, old_pos,
         "Don't know what to do with #{source.consume(10).to_s.inspect}").
         raise(Parslet::UnconsumedInput)
     end
-    
+
     return flatten(value)
   end
-  
+
+  # The initial (quick) parse was not a success (so we need a reparse) with
+  # the error reporter on.
+  # Or, the initial parse was successful but we have a challenged
+  # unconsumed input... (the parser was able to consume everything, almost).
+  #
+  def reparse(source, options)
+
+    source.pos = 0
+
+    reporter = options[:reporter] || Parslet::ErrorReporter::Tree.new
+    success, value = setup_and_apply(source, reporter)
+
+    value.raise if value.respond_to?(:raise)
+    reporter.cause.raise
+  end
+
   # Creates a context for parsing and applies the current atom to the input. 
   # Returns the parse result. 
   #

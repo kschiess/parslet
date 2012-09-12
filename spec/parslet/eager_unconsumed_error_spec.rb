@@ -57,7 +57,8 @@ describe 'Parslet and unconsumed input' do
       })
     }.should raise_error(
       Parslet::ParseFailed,
-      'Failed to match sequence (NL? BLOCK (NL BLOCK){0, } NL?) at line 2 char 9.')
+      'Failed to match sequence (NL? BLOCK (NL BLOCK){0, } NL?) at line 2 char 9.'
+    )
   end
 
   it 'fails gracefully on a missing end (2)' do
@@ -72,7 +73,9 @@ describe 'Parslet and unconsumed input' do
       })
     }.should raise_error(
       Parslet::ParseFailed,
-      'Failed to match sequence (NL? BLOCK (NL BLOCK){0, } NL?) at line 4 char 9.')
+      #'Failed to match sequence (SP? 'begin' SP [a-z] NL BODY SP? 'end') at line 7 char 7.'
+      'Failed to match sequence (NL BLOCK) at line 4 char 9.'
+    )
   end
 end
 
