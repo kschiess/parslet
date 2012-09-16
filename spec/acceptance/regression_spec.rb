@@ -221,4 +221,94 @@ describe "Regressions from real examples" do
       ))
     end 
   end
+
+  # Issue #68: Extra input reporting, written by jmettraux
+  class RepetitionParser < Parslet::Parser
+    rule(:nl)      { match('[\s]').repeat(1) }
+    rule(:nl?)     { nl.maybe }
+    rule(:sp)      { str(' ').repeat(1) }
+    rule(:sp?)     { str(' ').repeat(0) }
+    rule(:line)    { sp >> str('line') }
+    rule(:body)    { ((line | block) >> nl).repeat(0) }
+    rule(:block)   { sp? >> str('begin') >> sp >> match('[a-z]') >> nl >>
+                     body >> sp? >> str('end') }
+    rule(:blocks)  { nl? >> block >> (nl >> block).repeat(0) >> nl? }
+
+    root(:blocks)
+  end
+  describe RepetitionParser do
+    def di(s)
+      s.strip.to_s.lines.map { |l| l.chomp.strip }.join("\n")
+    end
+
+    it 'parses a block' do
+      subject.parse(%q{
+        begin a
+        end
+      })
+    end
+    it 'parses nested blocks' do
+      subject.parse(%q{
+        begin a
+          begin b
+          end
+        end
+      })
+    end
+    it 'parses successive blocks' do
+      subject.parse(%q{
+        begin a
+        end
+        begin b
+        end
+      })
+    end
+    it 'fails gracefully on a missing end' do
+      error = catch_failed_parse {
+        subject.parse(%q{
+          begin a
+            begin b
+          end
+        }) }
+      
+      di(error.ascii_tree).should == di(%q(
+        Failed to match sequence (NL? BLOCK (NL BLOCK){0, } NL?) at line 2 char 11.
+        `- Failed to match sequence (SP? 'begin' SP [a-z] NL BODY SP? 'end') at line 5 char 9.
+           `- Premature end of input at line 5 char 9.
+        ))
+    end
+    it 'fails gracefully on a missing end (2)' do
+      error = catch_failed_parse {
+        subject.parse(%q{
+          begin a
+          end
+          begin b
+            begin c
+          end
+        }) }
+
+      di(error.ascii_tree).should == di(%q(
+        Failed to match sequence (NL? BLOCK (NL BLOCK){0, } NL?) at line 3 char 14.
+        `- Don't know what to do with "begin b\n  " at line 4 char 11.
+        ))
+    end
+    it 'fails gracefully on a missing end (deepest reporter)' do
+      error = catch_failed_parse {
+        subject.parse(%q{
+            begin a
+            end
+            begin b
+              begin c
+                li
+              end
+            end
+          },
+          :reporter => Parslet::ErrorReporter::Deepest.new) }
+
+      di(error.ascii_tree).should == di(%q(
+        Failed to match sequence (NL? BLOCK (NL BLOCK){0, } NL?) at line 3 char 16.
+        `- Expected "end", but got "li\n" at line 6 char 17.
+        ))
+    end
+  end
 end
