@@ -22,6 +22,12 @@ module Parslet
     # tree. 
     #
     class Tree
+      attr_reader :cause
+
+      def initialize
+        @cause = nil
+      end
+
       # Produces an error cause that combines the message at the current level
       # with the errors that happened at a level below (children).
       #
@@ -34,7 +40,7 @@ module Parslet
       #
       def err(atom, source, message, children=nil)
         position = source.pos
-        Cause.format(source, position, message, children)
+        @cause = Cause.format(source, position, message, children)
       end
 
       # Produces an error cause that combines the message at the current level
@@ -50,7 +56,7 @@ module Parslet
       #
       def err_at(atom, source, message, pos, children=nil)
         position = pos
-        Cause.format(source, position, message, children)
+        @cause = Cause.format(source, position, message, children)
       end
     end
   end

@@ -69,7 +69,11 @@ module Parslet
         
         return deepest_cause
       end
-      
+
+      # Let's respond to #cause (reparse uses it).
+      #
+      alias cause deepest_cause
+
     private
       # Returns the leaf from a given error tree with the biggest rank. 
       #
