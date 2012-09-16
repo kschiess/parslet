@@ -19,9 +19,10 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
     self.class.new(* @parslets+[parslet])
   end
   
-  def try(source, context)
-    succ([:sequence]+parslets.map { |p| 
-      success, value = p.apply(source, context) 
+  def try(source, context, postfix)
+    succ([:sequence]+parslets.map.each_with_index { |p, idx| 
+      child_postfix = postfix && (idx == parslets.size-1)
+      success, value = p.apply(source, context, child_postfix) 
 
       unless success
         return context.err(self, source, @error_msgs[:failed], [value]) 

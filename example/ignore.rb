@@ -10,8 +10,8 @@ class IgnoreParslet < Parslet::Atoms::Base
   def to_s_inner(prec)
     @parslet.to_s(prec)
   end
-  def try(source, context)
-    success, value = result = @parslet.try(source, context)
+  def try(source, context, postfix)
+    success, value = result = @parslet.try(source, context, postfix)
     
     return succ(nil) if success
     return result

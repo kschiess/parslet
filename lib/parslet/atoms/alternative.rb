@@ -30,9 +30,9 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     self.class.new(*@alternatives + [parslet])
   end
   
-  def try(source, context)
+  def try(source, context, postfix)
     errors = alternatives.map { |a|
-      success, value = result = a.apply(source, context)
+      success, value = result = a.apply(source, context, postfix)
       return result if success
       
       # Aggregate all errors

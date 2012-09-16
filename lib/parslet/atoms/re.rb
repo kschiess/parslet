@@ -20,7 +20,7 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     }
   end
 
-  def try(source, context)
+  def try(source, context, postfix)
     return succ(source.consume(1)) if source.matches?(re)
     
     # No string could be read

@@ -15,18 +15,19 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     @min, @max = min, max
     @tag = tag
     @error_msgs = {
-      :minrep  => "Expected at least #{min} of #{parslet.inspect}"
+      :minrep  => "Expected at least #{min} of #{parslet.inspect}", 
+      :unconsumed => "Extra input after last repetition"
     }
   end
   
-  def try(source, context)
+  def try(source, context, postfix)
     occ = 0
     accum = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
     
     break_on = nil
     loop do
-      success, value = parslet.apply(source, context)
+      success, value = parslet.apply(source, context, false)
 
       break_on = value
       break unless success
@@ -48,6 +49,15 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
       @error_msgs[:minrep], 
       start_pos, 
       [break_on]) if occ < min
+      
+    # Postfix is true, that means that we're inside the part of the parser that
+    # should consume the input completely. Repetition failing here means
+    # probably that we didn't. 
+    return context.err(
+      self, 
+      source, 
+      @error_msgs[:unconsumed], 
+      [break_on]) if postfix && source.chars_left>0
       
     return succ(accum)
   end

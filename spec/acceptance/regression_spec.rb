@@ -130,8 +130,7 @@ describe "Regressions from real examples" do
     
     it "should count lines correctly" do
       cause = catch_failed_parse {
-        subject.parse('
-          a 
+        subject.parse('a
           a a a 
           aaa // ff
           /* 
@@ -142,7 +141,13 @@ describe "Regressions from real examples" do
       }
 
       remove_indent(cause.ascii_tree).should == remove_indent(%q(
-        Don't know what to do with "b\n        " at line 8 char 11.).strip)
+      Expected one of [(LINE EOL){1, }, LINE] at line 1 char 2.
+      |- Extra input after last repetition at line 7 char 11.
+      |  `- Failed to match sequence (LINE EOL) at line 7 char 11.
+      |     `- Failed to match sequence (SPACE? [\n\r]{1, } SPACE?) at line 7 char 11.
+      |        `- Expected at least 1 of [\n\r] at line 7 char 11.
+      |           `- Failed to match [\n\r] at line 7 char 11.
+      `- Don't know what to do with "\n         " at line 1 char 2.).strip)
     end 
   end
 
@@ -203,10 +208,17 @@ describe "Regressions from real examples" do
     rule(:twochar) { any >> str('2') }
   end
   describe TwoCharLanguage do
+    def di(s)
+      s.strip.to_s.lines.map { |l| l.chomp.strip }.join("\n")
+    end
+
     it "should raise UnconsumedInput" do
-      expect {
-        subject.parse('123')
-      }.to raise_error(Parslet::UnconsumedInput)
+      error = catch_failed_parse {
+        subject.parse('123') }
+      di(error.ascii_tree).should == di(%q(
+        Failed to match sequence (. '2') at line 1 char 3.
+        `- Don't know what to do with "3" at line 1 char 3.
+      ))
     end 
   end
 end

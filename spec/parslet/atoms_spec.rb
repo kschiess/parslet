@@ -263,12 +263,13 @@ describe Parslet do
         end
       end
 
-      it "raises Parslet::UnconsumedInput" do
-        exception.should be_kind_of(Parslet::UnconsumedInput)
+      it "raises Parslet::ParseFailed" do
+        # ParseFailed here, because the input doesn't match the parser grammar. 
+        exception.should be_kind_of(Parslet::ParseFailed)
       end 
       it "has the correct error message" do
         exception.message.should == \
-          "Don't know what to do with \".\" at line 1 char 2."
+          "Extra input after last repetition at line 1 char 2."
       end 
     end
   end

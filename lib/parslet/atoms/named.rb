@@ -13,8 +13,8 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
     @parslet, @name = parslet, name
   end
   
-  def apply(source, context)
-    success, value = result = parslet.apply(source, context)
+  def apply(source, context, postfix)
+    success, value = result = parslet.apply(source, context, postfix)
 
     return result unless success
     succ(

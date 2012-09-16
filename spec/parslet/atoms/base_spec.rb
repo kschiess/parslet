@@ -7,7 +7,7 @@ describe Parslet::Atoms::Base do
   describe "<- #try(io)" do
     it "should raise NotImplementedError" do
       lambda {
-        parslet.try(flexmock(:io), context)
+        parslet.try(flexmock(:io), context, false)
       }.should raise_error(NotImplementedError)
     end 
   end
@@ -82,11 +82,10 @@ describe Parslet::Atoms::Base do
     let(:parslet) { Parslet.str('foo') }
     
     it "should raise with a proper error message" do
-      begin
-        parslet.parse('foobar')
-      rescue Parslet::ParseFailed => ex
-        ex.message.should == "Don't know what to do with \"bar\" at line 1 char 4."
-      end
+      error = catch_failed_parse {
+        parslet.parse('foobar') }
+      
+      error.to_s.should == "Don't know what to do with \"bar\" at line 1 char 4."
     end 
   end
   context "when only parsing string prefix" do

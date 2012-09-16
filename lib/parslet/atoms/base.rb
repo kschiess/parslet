@@ -27,7 +27,7 @@ class Parslet::Atoms::Base
 
     # Try to cheat. Assuming that we'll be able to parse the input, don't 
     # run error reporting code. 
-    success, value = setup_and_apply(source, nil)
+    success, value = setup_and_apply(source, nil, !options[:prefix])
     
     # If we didn't succeed the parse, raise an exception for the user. 
     # Stack trace will be off, but the error tree should explain the reason
@@ -36,7 +36,8 @@ class Parslet::Atoms::Base
       # Cheating has not paid off. Now pay the cost: Rerun the parse,
       # gathering error information in the process.
       reporter = options[:reporter] || Parslet::ErrorReporter::Tree.new
-      success, value = setup_and_apply(source, reporter)
+      source.pos = 0
+      success, value = setup_and_apply(source, reporter, !options[:prefix])
       
       fail "Assertion failed: success was true when parsing with reporter" \
         if success
@@ -48,15 +49,12 @@ class Parslet::Atoms::Base
     end
     
     # assert: success is true
-    
-    # If we haven't consumed the input, then the pattern doesn't match. Try
-    # to provide a good error message
+
+    # Extra input is now handled inline with the rest of the parsing. If 
+    # really we have success == true, prefix: false and still some input 
+    # is left dangling, that is a BUG.
     if !options[:prefix] && source.chars_left > 0
-      old_pos = source.pos
-      Parslet::Cause.format(
-        source, old_pos, 
-        "Don't know what to do with #{source.consume(10).to_s.inspect}").
-        raise(Parslet::UnconsumedInput)
+      fail "BUG: New error strategy should not reach this point."
     end
     
     return flatten(value)
@@ -67,21 +65,43 @@ class Parslet::Atoms::Base
   #
   # @return [<Boolean, Object>] Result of the parse. If the first member is 
   #   true, the parse has succeeded. 
-  def setup_and_apply(source, error_reporter)
+  def setup_and_apply(source, error_reporter, demand_postfix)
     context = Parslet::Atoms::Context.new(error_reporter)
-    apply(source, context)
+    apply(source, context, demand_postfix)
   end
 
-  #---
   # Calls the #try method of this parslet. Success consumes input, error will 
   # rewind the input. 
-  #+++
-  def apply(source, context)
+  #
+  # @param source [Parslet::Source] source to read input from
+  # @param context [Parslet::Atoms::Context] context to use for the parsing
+  # @param postfix [Boolean] true if this atom is in postfix position 
+  #   for the current parse. 
+  def apply(source, context, postfix=false)
     old_pos = source.pos
     
-    success, value = result = context.try_with_cache(self, source)
+    success, value = result = context.try_with_cache(self, source, postfix)
 
-    return result if success
+    if success
+      # If a postfix parse was made and doesn't result in the consumption of 
+      # all the input, that is considered an error. 
+      # old_pos = source.pos
+      # Parslet::Cause.format(
+      #   source, old_pos, 
+      #   "Don't know what to do with #{source.consume(10).to_s.inspect}").
+      #   raise(Parslet::UnconsumedInput)
+      
+      offending_pos   = source.pos
+      offending_input = source.consume(10)
+      source.pos = offending_pos
+      return context.err(
+        self, 
+        source, 
+        "Don't know what to do with #{offending_input.to_s.inspect}"
+      ) if postfix && source.chars_left>0
+      
+      return result
+    end
     
     # We only reach this point if the parse has failed. Rewind the input.
     source.pos = old_pos
@@ -91,7 +111,7 @@ class Parslet::Atoms::Base
   # Override this in your Atoms::Base subclasses to implement parsing
   # behaviour. 
   #
-  def try(source, context)
+  def try(source, context, postfix)
     raise NotImplementedError, \
       "Atoms::Base doesn't have behaviour, please implement #try(source, context)."
   end
