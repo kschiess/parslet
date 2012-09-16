@@ -50,7 +50,7 @@ class Parslet::Atoms::Base
     # assert: success is true
     
     # If we haven't consumed the input, then the pattern doesn't match. Try
-    # to provide a good error message (even asking down below)
+    # to provide a good error message
     if !options[:prefix] && source.chars_left > 0
       old_pos = source.pos
       Parslet::Cause.format(
@@ -73,8 +73,8 @@ class Parslet::Atoms::Base
   end
 
   #---
-  # Calls the #try method of this parslet. In case of a parse error, apply
-  # leaves the source in the state it was before the attempt. 
+  # Calls the #try method of this parslet. Success consumes input, error will 
+  # rewind the input. 
   #+++
   def apply(source, context)
     old_pos = source.pos
