@@ -14,7 +14,7 @@ describe "Unconsumed input:" do
     end
     it "doesn't error out if prefix is true" do
       expect {
-        parser.parse('(aaac)', prefix: true)
+        parser.parse('(aaac)', :prefix => true)
       }.not_to raise_error
     end
   end
