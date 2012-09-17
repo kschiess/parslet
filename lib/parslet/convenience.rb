@@ -26,8 +26,6 @@ class Parslet::Atoms::Base
   #
   def parse_with_debug str, opts={}
     parse str, opts
-  rescue Parslet::UnconsumedInput => error
-    puts error
   rescue Parslet::ParseFailed => error
     puts error.cause.ascii_tree
   end

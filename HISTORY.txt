@@ -10,6 +10,9 @@
     of the parse. More information in the resulting exception ensues! Thanks
     again to John Mettraux for inspiration & acceptance specs. 
     
+    NOTE that this means that the UnconsumedInput exception is gone, since the
+    unconsumed input case is nothing special anymore. 
+    
   * This history now finally reads like the Changelog of the linux kernel. 
     Meaning that probably no one ever reads this. 
     

@@ -212,7 +212,7 @@ describe "Regressions from real examples" do
       s.strip.to_s.lines.map { |l| l.chomp.strip }.join("\n")
     end
 
-    it "should raise UnconsumedInput" do
+    it "should raise an error" do
       error = catch_failed_parse {
         subject.parse('123') }
       di(error.ascii_tree).should == di(%q(
