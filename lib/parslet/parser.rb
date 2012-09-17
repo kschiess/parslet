@@ -57,8 +57,8 @@ class Parslet::Parser < Parslet::Atoms::Base
     end
   end
   
-  def try(source, context, postfix)
-    root.try(source, context, postfix)
+  def try(source, context, consume_all)
+    root.try(source, context, consume_all)
   end
   
   def to_s_inner(prec)

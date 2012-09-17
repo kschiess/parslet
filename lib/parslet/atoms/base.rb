@@ -65,9 +65,9 @@ class Parslet::Atoms::Base
   #
   # @return [<Boolean, Object>] Result of the parse. If the first member is 
   #   true, the parse has succeeded. 
-  def setup_and_apply(source, error_reporter, demand_postfix)
+  def setup_and_apply(source, error_reporter, consume_all)
     context = Parslet::Atoms::Context.new(error_reporter)
-    apply(source, context, demand_postfix)
+    apply(source, context, consume_all)
   end
 
   # Calls the #try method of this parslet. Success consumes input, error will 
@@ -75,31 +75,31 @@ class Parslet::Atoms::Base
   #
   # @param source [Parslet::Source] source to read input from
   # @param context [Parslet::Atoms::Context] context to use for the parsing
-  # @param postfix [Boolean] true if this atom is in postfix position 
-  #   for the current parse. 
-  def apply(source, context, postfix=false)
+  # @param consume_all [Boolean] true if the current parse must consume
+  #   all input by itself.
+  def apply(source, context, consume_all=false)
     old_pos = source.pos
     
-    success, value = result = context.try_with_cache(self, source, postfix)
+    success, value = result = context.try_with_cache(self, source, consume_all)
 
     if success
-      # If a postfix parse was made and doesn't result in the consumption of 
-      # all the input, that is considered an error. 
-      # old_pos = source.pos
-      # Parslet::Cause.format(
-      #   source, old_pos, 
-      #   "Don't know what to do with #{source.consume(10).to_s.inspect}").
-      #   raise(Parslet::UnconsumedInput)
+      # If a consume_all parse was made and doesn't result in the consumption
+      # of all the input, that is considered an error. 
       
-      offending_pos   = source.pos
-      offending_input = source.consume(10)
-      source.pos = offending_pos
-      return context.err(
-        self, 
-        source, 
-        "Don't know what to do with #{offending_input.to_s.inspect}"
-      ) if postfix && source.chars_left>0
+      if consume_all && source.chars_left>0
+        # Read 10 characters ahead. Why ten? I don't know. 
+        offending_pos   = source.pos
+        offending_input = source.consume(10)
+        source.pos = offending_pos
+        
+        return context.err(
+          self, 
+          source, 
+          "Don't know what to do with #{offending_input.to_s.inspect}"
+        ) 
+      end
       
+      # Looks like the parse was successful after all. Don't rewind the input.
       return result
     end
     
@@ -111,7 +111,7 @@ class Parslet::Atoms::Base
   # Override this in your Atoms::Base subclasses to implement parsing
   # behaviour. 
   #
-  def try(source, context, postfix)
+  def try(source, context, consume_all)
     raise NotImplementedError, \
       "Atoms::Base doesn't have behaviour, please implement #try(source, context)."
   end

@@ -17,7 +17,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     }
   end
   
-  def try(source, context, postfix)
+  def try(source, context, consume_all)
     return succ(source.consume(@len)) if source.matches?(str)
     
     # Input ending early:

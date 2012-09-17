@@ -17,8 +17,8 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
     @block = block
   end
 
-  def try(source, context, postfix)
-    parslet.apply(source, context, postfix)
+  def try(source, context, consume_all)
+    parslet.apply(source, context, consume_all)
   end
   
   def parslet

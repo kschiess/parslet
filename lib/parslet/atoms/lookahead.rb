@@ -21,10 +21,10 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     }
   end
   
-  def try(source, context, postfix)
+  def try(source, context, consume_all)
     pos = source.pos
 
-    success, value = bound_parslet.apply(source, context, postfix)
+    success, value = bound_parslet.apply(source, context, consume_all)
     
     if positive
       return succ(nil) if success

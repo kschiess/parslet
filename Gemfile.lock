@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    parslet (1.4.0)
+    parslet (1.4.1)
       blankslate (~> 2.0)
 
 GEM

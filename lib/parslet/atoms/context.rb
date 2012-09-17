@@ -22,12 +22,12 @@ module Parslet::Atoms
     # were consumed by a successful parse. Imitation of such a parse must 
     # advance the input pos by the same amount of bytes.
     #
-    def try_with_cache(obj, source, postfix)
+    def try_with_cache(obj, source, consume_all)
       beg = source.pos
         
       # Not in cache yet? Return early.
       unless entry = lookup(obj, beg)
-        result = obj.try(source, self, postfix)
+        result = obj.try(source, self, consume_all)
     
         set obj, beg, [result, source.pos-beg]
         return result

@@ -20,7 +20,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     }
   end
   
-  def try(source, context, postfix)
+  def try(source, context, consume_all)
     occ = 0
     accum = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
@@ -50,17 +50,19 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
       start_pos, 
       [break_on]) if occ < min
       
-    # Postfix is true, that means that we're inside the part of the parser that
-    # should consume the input completely. Repetition failing here means
+    # consume_all is true, that means that we're inside the part of the parser
+    # that should consume the input completely. Repetition failing here means
     # probably that we didn't. 
-    # We have a special clause to create an error here because otherwise 
-    # break_on would get thrown away. It turns out, that contains very 
+    #
+    # We have a special clause to create an error here because otherwise
+    # break_on would get thrown away. It turns out, that contains very
     # interesting information in a lot of cases. 
+    #
     return context.err(
       self, 
       source, 
       @error_msgs[:unconsumed], 
-      [break_on]) if postfix && source.chars_left>0
+      [break_on]) if consume_all && source.chars_left>0
       
     return succ(accum)
   end
