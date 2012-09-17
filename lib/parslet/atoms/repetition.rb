@@ -53,6 +53,9 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     # Postfix is true, that means that we're inside the part of the parser that
     # should consume the input completely. Repetition failing here means
     # probably that we didn't. 
+    # We have a special clause to create an error here because otherwise 
+    # break_on would get thrown away. It turns out, that contains very 
+    # interesting information in a lot of cases. 
     return context.err(
       self, 
       source, 
