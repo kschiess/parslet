@@ -20,7 +20,11 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
   end
   
   def try(source, context, consume_all)
-    succ([:sequence]+parslets.map.each_with_index { |p, idx| 
+    # Presize an array
+    result = Array.new(parslets.size + 1)
+    result[0] = :sequence
+    
+    parslets.each_with_index do |p, idx|
       child_consume_all = consume_all && (idx == parslets.size-1)
       success, value = p.apply(source, context, child_consume_all) 
 
@@ -28,8 +32,10 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
         return context.err(self, source, @error_msgs[:failed], [value]) 
       end
       
-      value
-    })
+      result[idx+1] = value
+    end
+    
+    return succ(result)
   end
       
   precedence SEQUENCE
