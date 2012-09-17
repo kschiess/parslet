@@ -141,7 +141,7 @@ describe "Regressions from real examples" do
       }
 
       remove_indent(cause.ascii_tree).should == remove_indent(%q(
-      Expected one of [(LINE EOL){1, }, LINE] at line 1 char 2.
+      Expected one of [(LINE EOL){1, }, LINE] at line 1 char 1.
       |- Extra input after last repetition at line 7 char 11.
       |  `- Failed to match sequence (LINE EOL) at line 7 char 11.
       |     `- Failed to match sequence (SPACE? [\n\r]{1, } SPACE?) at line 7 char 11.
@@ -216,7 +216,7 @@ describe "Regressions from real examples" do
       error = catch_failed_parse {
         subject.parse('123') }
       di(error.ascii_tree).should == di(%q(
-        Failed to match sequence (. '2') at line 1 char 3.
+        Failed to match sequence (. '2') at line 1 char 2.
         `- Don't know what to do with "3" at line 1 char 3.
       ))
     end 

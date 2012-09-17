@@ -85,17 +85,19 @@ class Parslet::Atoms::Base
     if success
       # If a consume_all parse was made and doesn't result in the consumption
       # of all the input, that is considered an error. 
-      
       if consume_all && source.chars_left>0
         # Read 10 characters ahead. Why ten? I don't know. 
         offending_pos   = source.pos
         offending_input = source.consume(10)
-        source.pos = offending_pos
         
-        return context.err(
+        # Rewind input (as happens always in error case)
+        source.pos      = old_pos
+        
+        return context.err_at(
           self, 
           source, 
-          "Don't know what to do with #{offending_input.to_s.inspect}"
+          "Don't know what to do with #{offending_input.to_s.inspect}", 
+          offending_pos
         ) 
       end
       
