@@ -95,4 +95,44 @@ module Parslet::Atoms::DSL
   def as(name)
     Parslet::Atoms::Named.new(self, name)
   end
+
+  # Captures a part of the input and stores it under the name given. This 
+  # is very useful to create self-referential parses. A capture stores
+  # the result of its parse (may be complex) on a successful parse action.
+  # 
+  # Example: 
+  #   str('a').capture(:b)  # will store captures[:b] == 'a'
+  # 
+  def capture(name)
+    Parslet::Atoms::Capture.new(self, name)
+  end
+  
+  # Introduces a new capture scope. This means that all old captures stay
+  # accessible, but new values stored will only be available during the block
+  # given and the old values will be restored after the block. 
+  #
+  # Example: 
+  #   # :a will be available until the end of the block. Afterwards, 
+  #   # :a from the outer scope will be available again, if such a thing 
+  #   # exists. 
+  #   scope { str('a').capture(:a) }
+  #
+  def scope(&block)
+    Parslet::Atoms::Scope.new(block)
+  end
+  
+  # Designates a piece of the parser as being dynamic. Dynamic parsers can
+  # either return a parser at runtime, which will be applied on the input, or
+  # return a result from a parse. 
+  # 
+  # Dynamic parse pieces are never cached and can introduce performance
+  # abnormalitites - use sparingly where other constructs fail. 
+  # 
+  # Example: 
+  #   # Parses either 'a' or 'b', depending on the weather
+  #   dynamic { rand() < 0.5 ? str('a') : str('b') }
+  #   
+  def dynamic(&block)
+    Parslet::Atoms::Dynamic.new(block)
+  end
 end

@@ -12,6 +12,7 @@ module Parslet::Atoms
     def initialize(reporter=Parslet::ErrorReporter::Tree.new)
       @cache = Hash.new { |h, k| h[k] = {} }
       @reporter = reporter
+      @captures = Parslet::Scope.new
     end
     
     # Caches a parse answer for obj at source.pos. Applying the same parslet
@@ -29,7 +30,10 @@ module Parslet::Atoms
       unless entry = lookup(obj, beg)
         result = obj.try(source, self, consume_all)
     
-        set obj, beg, [result, source.pos-beg]
+        if obj.cached?
+          set obj, beg, [result, source.pos-beg]
+        end
+        
         return result
       end
 
@@ -59,6 +63,23 @@ module Parslet::Atoms
       return [false, nil]
     end
   
+    # Returns the current captures made on the input (see
+    # Parslet::Atoms::Base#capture). Use as follows: 
+    # 
+    #   context.captures[:foobar] # => returns capture :foobar
+    #
+    attr_reader :captures
+    
+    # Starts a new scope. Use the #scope method of Parslet::Atoms::DSL
+    # to call this. 
+    #
+    def scope
+      captures.push
+      yield
+    ensure
+      captures.pop
+    end
+    
   private 
     def lookup(obj, pos)
       @cache[pos][obj] 

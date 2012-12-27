@@ -27,5 +27,8 @@ module Parslet::Atoms
   require 'parslet/atoms/re'
   require 'parslet/atoms/str'
   require 'parslet/atoms/entity'
+  require 'parslet/atoms/capture'
+  require 'parslet/atoms/dynamic'
+  require 'parslet/atoms/scope'
 end
 

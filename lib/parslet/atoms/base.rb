@@ -118,6 +118,13 @@ class Parslet::Atoms::Base
       "Atoms::Base doesn't have behaviour, please implement #try(source, context)."
   end
 
+  # Returns true if this atom can be cached in the packrat cache. Most parslet
+  # atoms are cached, so this always returns true, unless overridden.
+  #
+  def cached?
+    true
+  end
+
   # Debug printing - in Treetop syntax. 
   #
   def self.precedence(prec)
