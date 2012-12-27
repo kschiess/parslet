@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem "middleman"
 gem 'rb-fsevent'
 gem 'RedCloth'
+gem 'slim'
 
 gem 'cod'
 gem 'case'

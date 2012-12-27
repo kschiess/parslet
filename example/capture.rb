@@ -8,8 +8,6 @@ require 'parslet'
 require 'parslet/convenience'
 require 'pp'
 
-
-
 class CapturingParser < Parslet::Parser
   root :document
   
@@ -30,13 +28,13 @@ class CapturingParser < Parslet::Parser
   # The end of the document is marked by the marker that was at the beginning
   # of the document, by itself on a line.
   rule(:doc_end) { captured_marker }
-  
-  rule(:newline) { match["\n"] }
   rule(:captured_marker) { 
     dynamic { |source, context|
       str(context.captures[:marker])
     }
   }
+  
+  rule(:newline) { match["\n"] }
 end
 
 parser = CapturingParser.new

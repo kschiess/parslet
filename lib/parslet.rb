@@ -169,6 +169,37 @@ module Parslet
   end
   module_function :any
   
+  # Introduces a new capture scope. This means that all old captures stay
+  # accessible, but new values stored will only be available during the block
+  # given and the old values will be restored after the block. 
+  #
+  # Example: 
+  #   # :a will be available until the end of the block. Afterwards, 
+  #   # :a from the outer scope will be available again, if such a thing 
+  #   # exists. 
+  #   scope { str('a').capture(:a) }
+  #
+  def scope(&block)
+    Parslet::Atoms::Scope.new(block)
+  end
+  module_function :scope
+  
+  # Designates a piece of the parser as being dynamic. Dynamic parsers can
+  # either return a parser at runtime, which will be applied on the input, or
+  # return a result from a parse. 
+  # 
+  # Dynamic parse pieces are never cached and can introduce performance
+  # abnormalitites - use sparingly where other constructs fail. 
+  # 
+  # Example: 
+  #   # Parses either 'a' or 'b', depending on the weather
+  #   dynamic { rand() < 0.5 ? str('a') : str('b') }
+  #   
+  def dynamic(&block)
+    Parslet::Atoms::Dynamic.new(block)
+  end
+  module_function :dynamic
+  
   # A special kind of atom that allows embedding whole treetop expressions
   # into parslet construction. 
   #

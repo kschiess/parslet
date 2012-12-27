@@ -1,9 +1,8 @@
+require 'slim'
 require 'tilt'
 require 'RedCloth'
 
 class NBRedClothTemplate < Tilt::RedClothTemplate
-  include Middleman::CoreExtensions::FrontMatter::YamlAware
-  
   def prepare
     super
     @engine.hard_breaks = false
