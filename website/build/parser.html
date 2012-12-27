@@ -8,11 +8,11 @@
   <body class="code" onload="sh_highlightDocument();">
     <div id="everything">
       <div class="main_menu"><img alt="Parslet Logo" src="/parslet/images/parsley_logo.png" /><ul>
-          <li><a href="index.html">about</a></li>
-          <li><a href="get-started.html">get started</a></li>
-          <li><a href="install.html">install</a></li>
-          <li><a href="documentation.html">documentation</a></li>
-          <li><a href="contribute.html">contribute</a></li>
+          <li><a href="/parslet/">about</a></li>
+          <li><a href="/parslet/get-started.html">get started</a></li>
+          <li><a href="/parslet/install.html">install</a></li>
+          <li><a href="/parslet/documentation.html">documentation</a></li>
+          <li><a href="/parslet/contribute.html">contribute</a></li>
         </ul>
       </div>
       <div class="content">
@@ -210,6 +210,61 @@ tree (assuming a successful parse) on the right:</p>
   str('a').maybe.as(:a)                   {:a=&gt;"a"@0}                             
   str('a').maybe.as(:a)                   {:a=&gt;nil}
 </code></pre>
+<h2>Capturing input</h2>
+<p><em>Advanced reading material &#8211; feel free to skip this.</em></p>
+<p>Sometimes a parser needs to match against something that was already matched
+against. Think about Ruby heredocs for example:</p>
+<pre class="sh_ruby"><code>
+  str = &lt;-HERE
+    This is part of the heredoc.
+  HERE
+</code></pre>
+<p>The key to matching this kind of document is to capture part of the input
+first and then construct the rest of the parser based on the captured part.
+This is what it looks like in its simplest form:</p>
+<pre class="sh_ruby"><code>
+  match['ab'].capture(:capt) &gt;&gt;               # create the capture
+    dynamic { |s,c| str(c.captures[:capt]) }  # and match using the capture
+</code></pre>
+<p>This parser matches either &#8216;aa&#8217; or &#8216;bb&#8217;, but not mixed forms &#8216;ab&#8217; or &#8216;ba&#8217;. The
+last sample introduced two new concepts for this kind of complex parser: the 
+<code>#capture(name)</code> method and the <code>dynamic { ... }</code> code
+block.</p>
+<p>Appending <code>#capture(name)</code> to any parser will capture that parsers
+result in the captures hash in the parse context. If and only if the parser
+<code>match['ab']</code> succeeds, it stores either &#8216;a&#8217; or &#8216;b&#8217; in 
+<code>context.captures[:capt]</code>.</p>
+<p>The only way to get at that hash during the parse process is in a
+<code>dynamic { ... }</code> code block. (for reasons that are out of the
+scope of this document) In such a block, you can:</p>
+<pre class="sh_ruby"><code>
+  dynamic { |source, context|
+    # construct parsers by using randomness
+    rand &lt; 0.5 ? str('a') : str('b')
+    
+    # Or by using context information 
+    str( context.captures[:capt] )
+    
+    # Or by .. doing other kind of work (consumes 100 chars and then 'a')
+    source.consume(100)
+    return str('a')
+  }
+</code></pre>
+<h3>Scopes</h3>
+<p>What if you want to parse heredocs contained within heredocs? It&#8217;s turtles all
+the way down, after all. To be able to remember what string was used to
+construct the outer heredoc, you would use the <code>#scope { ... }</code>
+block that was introduced in parslet 1.5. Like opening a Ruby block, it allows
+you to capture results (assign values to variables) to the same names you&#8217;ve 
+already used in outer scope &#8211; <em>without destroying the outer scopes values for 
+these captures!</em>.</p>
+<p>Here&#8217;s an example for this: 
+<pre class="sh_ruby"><code>
+  str('a').capture(:a) &gt;&gt; scope { str('b').capture(:a) } &gt;&gt; 
+    dynamic { |s,c| str(c.captures[:a]) }
+</code></pre></p>
+<p>This parses &#8216;aba&#8217; &#8211; if you understand that, you understand scopes and
+captures. Congrats.</p>
 <h2>And more</h2>
 <p>Now you know exactly how to create parsers using Parslet. Your parsers
 will output intricate structures made of endless arrays, complex hashes and 
