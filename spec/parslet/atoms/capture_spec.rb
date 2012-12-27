@@ -16,6 +16,6 @@ describe Parslet::Atoms::Capture do
   end 
   it "should capture complex results" do
     inject 'a', str('a').as(:b).capture(:a)
-    context.captures[:a].should == {b: 'a'}
+    context.captures[:a].should == {:b => 'a'}
   end 
 end
