@@ -19,4 +19,8 @@ class Parslet::Atoms::Scope < Parslet::Atoms::Base
       return parslet.apply(source, context, consume_all)
     end
   end
+  
+  def to_s_inner(prec)
+    "scope { #{block.call.to_s(prec)} }"
+  end
 end

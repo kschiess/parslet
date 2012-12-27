@@ -30,5 +30,9 @@ class Parslet::Atoms::Capture < Parslet::Atoms::Base
     
     return result
   end
+  
+  def to_s_inner(prec)
+    "(#{name.inspect} = #{parslet.to_s(prec)})"
+  end
 end
 
