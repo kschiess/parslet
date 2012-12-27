@@ -3,8 +3,8 @@
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
     
-= 1.4.1 / ???
-
+= 1.5 / ??
+    
   + Handles unconsumed input at end of parse completely differently. Instead
     of generating a toplevel error, it now raises an error in every branch
     of the parse. More information in the resulting exception ensues! Thanks
@@ -15,6 +15,9 @@
     
   * This history now finally reads like the Changelog of the linux kernel. 
     Meaning that probably no one ever reads this. 
+    
+  + Captures and parsing subsequent input based on captured values. This has
+    been long overdue - finally you can parse HEREdocs with parslet!
     
 = 1.4.0 / 25May2012
 
