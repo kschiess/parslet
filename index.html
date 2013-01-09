@@ -24,7 +24,7 @@
   parser =  str('"') &gt;&gt; 
             (
               str('\\') &gt;&gt; any |
-              str('"').absnt? &gt;&gt; any
+              str('"').absent? &gt;&gt; any
             ).repeat.as(:string) &gt;&gt; 
             str('"')
 
