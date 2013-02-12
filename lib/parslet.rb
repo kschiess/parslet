@@ -199,6 +199,38 @@ module Parslet
     Parslet::Atoms::Dynamic.new(block)
   end
   module_function :dynamic
+
+  # Returns a parslet atom that parses infix expressions. Operations are 
+  # specified as a list of <atom, precedence, associativity> tuples, where 
+  # atom is simply the parslet atom that matches an operator, precedence is 
+  # a number and associativity is either :left or :right. 
+  # 
+  # Higher precedence indicates that the operation should bind tighter than
+  # other operations with lower precedence. In common algebra, '+' has 
+  # lower precedence than '*'. So you would have a precedence of 1 for '+' and
+  # a precedence of 2 for '*'. Only the order relation between these two 
+  # counts, so any number would work. 
+  #
+  # Associativity is what decides what interpretation to take for strings that
+  # are ambiguous like '1 + 2 + 3'. If '+' is specified as left associative, 
+  # the expression would be interpreted as '(1 + 2) + 3'. If right 
+  # associativity is chosen, it would be interpreted as '1 + (2 + 3)'. Note 
+  # that the hash trees output reflect that choice as well. 
+  #
+  # Example:
+  #   infix_expression(integer, [add_op, 1, :left])
+  #   # would parse things like '1 + 2'
+  #
+  # @param element [Parslet::Atoms::Base] elements that take the NUMBER position
+  #    in the expression
+  # @param operations [Array<(Parslet::Atoms::Base, Integer, {:left, :right})>]
+  #  
+  # @see Parslet::Atoms::Infix
+  #
+  def infix_expression(element, *operations)
+    Parslet::Atoms::Infix.new(element, operations)
+  end
+  module_function :infix_expression
   
   # A special kind of atom that allows embedding whole treetop expressions
   # into parslet construction. 
@@ -254,7 +286,7 @@ module Parslet
     Pattern::SubtreeBind.new(symbol)
   end
   module_function :subtree
-  
+
   autoload :Expression, 'parslet/expression'
 end
 

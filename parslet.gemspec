@@ -14,8 +14,4 @@ Gem::Specification.new do |s|
   s.summary = 'Parser construction library with great error reporting in Ruby.'  
   
   s.add_dependency 'blankslate', '~> 2.0'
-  
-  %w(rspec flexmock rdoc sdoc guard guard-rspec rb-fsevent growl).
-    each { |gem_name| 
-      s.add_development_dependency gem_name }
 end
