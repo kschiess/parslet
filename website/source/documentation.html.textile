@@ -40,6 +40,11 @@ of parslet. Especially:
   to construct a JSON parser in a few lines.
   "John":http://jmettraux.wordpress.com/about/ does a great job of explaining
   how parslet ties back in with railroad diagrams.
+
+* "Parsing TOML in Ruby with Parslet":http://zerowidth.com/2013/02/24/parsing-toml-in-ruby-with-parslet.html
+  shows how to parse TOML ("Tom's Obvious Minimal Language":https://github.com/mojombo/toml)
+  using parslet. I sense a theme here. Code is on github - this is the first
+  article in a series, linked from the article.
  
 "*YARD Class Documentation*":http://rubydoc.info/gems/parslet/frames
 
