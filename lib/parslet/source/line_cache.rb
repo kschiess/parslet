@@ -32,22 +32,23 @@ class Parslet::Source
 
     def scan_for_line_endings(start_pos, buf)
       return unless buf
-      return unless buf.index("\n")
-      cur = -1
 
-      # If we have already read part or all of buf, we already know about
-      # line ends in that portion. remove it and correct cur (search index)
+      buf = StringScanner.new(buf)
+      return unless buf.exist?(/\n/)
+
+      ## If we have already read part or all of buf, we already know about
+      ## line ends in that portion. remove it and correct cur (search index)
       if @last_line_end && start_pos < @last_line_end
         # Let's not search the range from start_pos to last_line_end again.
-        cur = @last_line_end - start_pos -1
+        buf.pos = @last_line_end - start_pos
       end
 
-      # Scan the string for line endings; store the positions of all endings
-      # in @line_ends. 
-      while buf && cur = buf.index("\n", cur+1)
-        @last_line_end = (start_pos + cur+1)
+      ## Scan the string for line endings; store the positions of all endings
+      ## in @line_ends. 
+      while buf.skip_until(/\n/)
+        @last_line_end = start_pos + buf.pos
         @line_ends << @last_line_end
-      end 
+      end
     end
   end
 

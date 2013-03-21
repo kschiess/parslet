@@ -1,5 +1,7 @@
 
 require 'stringio'
+require 'strscan'
+require 'forwardable'
 
 require 'parslet/source/line_cache'
 
@@ -7,14 +9,15 @@ module Parslet
   # Wraps the input string for parslet. 
   #
   class Source
+    extend Forwardable
+
     def initialize(str)
       raise ArgumentError unless str.respond_to?(:to_str)
-    
-      @pos = 0
-      @str = str
-      
+
+      @str = StringScanner.new(str)
+
       @line_cache = LineCache.new
-      @line_cache.scan_for_line_endings(0, @str)
+      @line_cache.scan_for_line_endings(0, str)
     end
   
     # Checks if the given pattern matches at the current input position. 
@@ -23,7 +26,8 @@ module Parslet
     # @return [Boolean] true if the pattern matches at #pos
     #
     def matches?(pattern)
-      @str.index(pattern, @pos) == @pos
+      regexp = pattern.is_a?(String) ? Regexp.new(Regexp.escape(pattern)) : pattern
+      !@str.match?(regexp).nil?
     end
     alias match matches?
     
@@ -31,25 +35,32 @@ module Parslet
     # input. 
     #
     def consume(n)
-      slice_str = @str.slice(@pos, n)
+      original_pos = @str.pos
+      slice_str = n.times.map { @str.getch }.join
       slice = Parslet::Slice.new(
-        slice_str, 
-        pos,
+        slice_str,
+        original_pos,
         @line_cache)
-      
-      @pos += slice_str.size
+
       return slice
     end
     
     # Returns how many chars remain in the input. 
     #
     def chars_left
-      @str.size - @pos
+      @str.rest_size
     end
     
     # Position of the parse as a character offset into the original string. 
     # @note: Encodings...
-    attr_accessor :pos
+    def_delegator :@str, :pos
+    def pos=(n)
+      if n > @str.string.bytesize
+        @str.pos = @str.string.bytesize
+      else
+        @str.pos = n
+      end
+    end
 
     # Returns a <line, column> tuple for the given position. If no position is
     # given, line/column information is returned for the current position
