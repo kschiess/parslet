@@ -37,3 +37,38 @@ describe Parslet::Source::RangeSearch do
     end
   end
 end
+
+describe Parslet::Source::LineCache do
+  describe "<- scan_for_line_endings" do
+    context "calculating the line_and_columns" do
+      let(:str) { "foo\nbar\nbazd" }
+
+      it "should return the first line if we have no line ends" do
+        subject.scan_for_line_endings(0, nil)
+        subject.line_and_column(3).should == [1, 4]
+
+        subject.scan_for_line_endings(0, "")
+        subject.line_and_column(5).should == [1, 6]
+      end
+
+      it "should find the right line starting from pos 0" do
+        subject.scan_for_line_endings(0, str)
+        subject.line_and_column(5).should == [2, 2]
+        subject.line_and_column(9).should == [3, 2]
+      end
+
+      it "should find the right line starting from pos 5" do
+        subject.scan_for_line_endings(5, str)
+        subject.line_and_column(11).should == [2, 3]
+      end
+
+      it "should find the right line if scannning the string multiple times" do
+        subject.scan_for_line_endings(0, str)
+        subject.scan_for_line_endings(0, "#{str}\nthe quick\nbrown fox")
+        subject.line_and_column(10).should == [3,3]
+        subject.line_and_column(24).should == [5,2]
+      end
+    end
+  end
+end
+
