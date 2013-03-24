@@ -1,7 +1,6 @@
 
 require 'stringio'
 require 'strscan'
-require 'forwardable'
 
 require 'parslet/source/line_cache'
 
@@ -9,12 +8,17 @@ module Parslet
   # Wraps the input string for parslet. 
   #
   class Source
-    extend Forwardable
-
     def initialize(str)
-      raise ArgumentError unless str.respond_to?(:to_str)
+      raise(
+        ArgumentError, 
+        "Must construct Source with a string like object."
+      ) unless str.respond_to?(:to_str)
 
       @str = StringScanner.new(str)
+
+      # maps 1 => /./m, 2 => /../m, etc...
+      @re_cache = Hash.new { |h,k| 
+        h[k] = /(.|$){#{k}}/m }
 
       @line_cache = LineCache.new
       @line_cache.scan_for_line_endings(0, str)
@@ -22,12 +26,11 @@ module Parslet
   
     # Checks if the given pattern matches at the current input position. 
     #
-    # @param pattern [Regexp, String] pattern to check for
+    # @param pattern [Regexp] pattern to check for
     # @return [Boolean] true if the pattern matches at #pos
     #
     def matches?(pattern)
-      regexp = pattern.is_a?(String) ? Regexp.new(Regexp.escape(pattern)) : pattern
-      !@str.match?(regexp).nil?
+      @str.match?(pattern)
     end
     alias match matches?
     
@@ -36,7 +39,7 @@ module Parslet
     #
     def consume(n)
       original_pos = @str.pos
-      slice_str = n.times.map { @str.getch }.join
+      slice_str = @str.scan(@re_cache[n])
       slice = Parslet::Slice.new(
         slice_str,
         original_pos,
@@ -53,13 +56,12 @@ module Parslet
     
     # Position of the parse as a character offset into the original string. 
     # @note: Encodings...
-    def_delegator :@str, :pos
+    def pos
+      @str.pos
+    end
     def pos=(n)
-      if n > @str.string.bytesize
-        @str.pos = @str.string.bytesize
-      else
-        @str.pos = n
-      end
+      @str.pos = n
+    rescue RangeError
     end
 
     # Returns a <line, column> tuple for the given position. If no position is

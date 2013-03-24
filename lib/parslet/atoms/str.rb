@@ -10,6 +10,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     super()
 
     @str = str.to_s
+    @pat = Regexp.new(Regexp.escape(str))
     @len = str.size
     @error_msgs = {
       :premature  => "Premature end of input", 
@@ -18,7 +19,7 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
   end
   
   def try(source, context, consume_all)
-    return succ(source.consume(@len)) if source.matches?(str)
+    return succ(source.consume(@len)) if source.matches?(@pat)
     
     # Input ending early:
     return context.err(self, source, @error_msgs[:premature]) \

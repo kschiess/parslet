@@ -136,15 +136,21 @@ describe Parslet::Source do
   
   describe "reading encoded input", :ruby => 1.9 do
     let(:source) { described_class.new("éö変わる") }
+
+    def r str
+      Regexp.new(Regexp.escape(str))
+    end
     
     it "should read characters, not bytes" do
-      source.should match("é")
+      source.should match(r("é"))
       source.consume(1)
+      source.pos.should == 2
       
-      source.should match("ö")
+      source.should match(r("ö"))
       source.consume(1)
+      source.pos.should == 4
       
-      source.should match("変")
+      source.should match(r("変"))
       source.consume(1)
       
       source.consume(2)
