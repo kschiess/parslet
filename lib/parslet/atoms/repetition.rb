@@ -21,14 +21,14 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
   end
   
   def try(source, context, consume_all)
-    occ = 0
     accum = [@tag]   # initialize the result array with the tag (for flattening)
-    start_pos = source.pos
     
     if max == 0
       return succ(accum)
     end
     
+    occ = 0
+    start_pos = source.pos
     break_on = nil
     loop do
       success, value = parslet.apply(source, context, false)
