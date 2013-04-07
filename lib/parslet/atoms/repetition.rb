@@ -25,18 +25,22 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     accum = [@tag]   # initialize the result array with the tag (for flattening)
     start_pos = source.pos
     
-    break_on = nil
-    loop do
-      success, value = parslet.apply(source, context, false)
+    if max != 0
+      break_on = nil
+      loop do # FIXME this will run at least once, even if max is 0
+        success, value = parslet.apply(source, context, false)
 
-      break_on = value
-      break unless success
+        break_on = value
+        break unless success
 
-      occ += 1
-      accum << value
-      
-      # If we're not greedy (max is defined), check if that has been reached. 
-      return succ(accum) if max && occ>=max
+        occ += 1
+        accum << value
+        
+        # If we're not greedy (max is defined), check if that has been reached. 
+        return succ(accum) if max && occ>=max
+      end
+    else
+      return succ(accum)
     end
     
     # Last attempt to match parslet was a failure, failure reason in break_on.
