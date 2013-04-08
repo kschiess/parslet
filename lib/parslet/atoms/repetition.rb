@@ -42,7 +42,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     # Last attempt to match parslet was a failure, failure reason in break_on.
     
     # Greedy matcher has produced a failure. Check if occ (which will
-    # contain the number of sucesses) is >= min.
+    # contain the number of successes) is >= min.
     return context.err_at(
       self, 
       source, 
