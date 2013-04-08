@@ -59,13 +59,13 @@ module MiniLisp
       
       # To understand these, take a look at what comes out of the parser. 
       t.rule(:identifier => simple(:ident)) { ident.to_sym }
-        
+      
       t.rule(:string => simple(:str))       { str }
-        
+      
       t.rule(:integer => simple(:int))      { Integer(int) }
-        
+      
       t.rule(:float=>{:integer=> simple(:a), :e=> simple(:b)}) { Float(a + b) }
-        
+      
       t.rule(:exp => subtree(:exp))         { exp }
     end
     
@@ -91,4 +91,3 @@ pp transform.do(result) if result
 
 # Thereby reducing it to the earlier problem: 
 # http://github.com/kschiess/toylisp
-
