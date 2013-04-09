@@ -68,6 +68,9 @@ A semantic version parser. (meh)
 
 h2. Thanks for all the fish -- Contributions
 
+* *Rory O’Kane* ("roryokane":https://github.com/roryokane) for a careful code 
+  review!
+
 * *Zach Moazeni* ("zmoazeni":https://github.com/zmoazeni) for his work on
   Unicode performance.
 
