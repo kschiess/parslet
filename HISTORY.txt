@@ -2,8 +2,16 @@
   
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
+
+= 1.6 / ??
+
+  ! A performance anomaly when parsing multibyte characters has been detected
+    and fixed with the help of Zach Moazeni (@zmoazeni).
+
+  ! A few small bug fixes and optimisations have been introduced. API should 
+    remain unchanged. 
     
-= 1.5 / ??
+= 1.5 / 27Dec2012
     
   + Handles unconsumed input at end of parse completely differently. Instead
     of generating a toplevel error, it now raises an error in every branch
@@ -18,12 +26,6 @@
     
   + Captures and parsing subsequent input based on captured values. This has
     been long overdue - finally you can parse HEREdocs with parslet!
-
-  ! A performance anomaly when parsing multibyte characters has been detected
-    and fixed with the help of Zach Moazeni (@zmoazeni).
-
-  ! A few small bug fixes and optimisations have been introduced. API should 
-    remain unchanged. 
     
 = 1.4.0 / 25May2012
 
