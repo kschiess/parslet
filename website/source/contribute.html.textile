@@ -8,7 +8,7 @@ the day for you? Please contribute! Find the code on
 
 h2. Contact
 
-Join us on IRC in #parslet. 
+Join us on IRC in #parslet on irc.freenode.net.
 
 Discussion and patches (or the odd cry for 'Help! How can I parse X?') should
 go to our mailing list at
