@@ -13,5 +13,12 @@ describe "Parslet combinations" do
       it { should parse("a") }
       it { should parse("aa") }
     end
+    
+    describe "0 times" do
+      subject { parslet.repeat(0,0) }
+      
+      it { should parse("") }
+      it { should_not parse("a") }
+    end
   end
 end
