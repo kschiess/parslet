@@ -11,6 +11,11 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
   def initialize(parslet, min, max, tag=:repetition)
     super()
 
+    raise ArgumentError, 
+      "Asking for zero repetitions of a parslet. (#{parslet.inspect} repeating #{min},#{max})" \
+      if max == 0
+
+
     @parslet = parslet
     @min, @max = min, max
     @tag = tag
