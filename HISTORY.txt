@@ -18,6 +18,12 @@
     
   + Captures and parsing subsequent input based on captured values. This has
     been long overdue - finally you can parse HEREdocs with parslet!
+
+  ! A performance anomaly when parsing multibyte characters has been detected
+    and fixed with the help of Zach Moazeni (@zmoazeni).
+
+  ! A few small bug fixes and optimisations have been introduced. API should 
+    remain unchanged. 
     
 = 1.4.0 / 25May2012
 
