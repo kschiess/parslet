@@ -13,7 +13,8 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.summary = 'Parser construction library with great error reporting in Ruby.'  
   
-  s.add_dependency 'blankslate', '~> 2.0'
+  s.add_dependency 'blankslate',     '~> 2.0'
+  s.add_dependency 'active_support', '~> 3.0.0'
   
   %w(rspec flexmock rdoc sdoc guard guard-rspec rb-fsevent growl).
     each { |gem_name| 
