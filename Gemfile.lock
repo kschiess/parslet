@@ -1,12 +1,16 @@
 PATH
   remote: .
   specs:
-    parslet (1.5)
+    parslet (1.5.0)
+      active_support (~> 3.0.0)
       blankslate (~> 2.0)
 
 GEM
   remote: http://rubygems.org/
   specs:
+    active_support (3.0.0)
+      activesupport (= 3.0.0)
+    activesupport (3.0.0)
     blankslate (2.1.2.4)
     coderay (1.0.8)
     diff-lcs (1.1.3)
