@@ -1,3 +1,6 @@
+require 'active_support/inflector'
+require 'active_support/core_ext/string/inflections'
+
 # A simple parser generator library. Typical usage would look like this: 
 #
 #   require 'parslet'
@@ -99,7 +102,26 @@ module Parslet
     #     root :twobar
     #   end
     #
-    def rule(name, &definition)
+    def rule(name, options={}, &definition)
+      def_rule(name, &definition)
+      
+      if options[:repeat]
+        raise TypeError, 'option[:repeat] must be `true` or an instance of Hash' unless options[:repeat] == true || options[:repeat].is_a?(Hash)
+        
+        name_plural = name.to_s.pluralize.to_sym
+        repeat_options = { min: 1, max: nil, predicate: false }
+        repeat_options = repeat_options.merge( options[:repeat] ) if options[:repeat].is_a?(Hash)
+        
+        def_rule(name_plural) { send(name).repeat( repeat_options[:min], repeat_options[:max] ) }
+        def_rule("#{name_plural}?") { send(name_plural).maybe } if repeat_options[:predicate]
+      end
+      
+      def_rule("#{name}?") { send(name).maybe } if options[:predicate]
+    end
+    
+    protected
+    
+    def def_rule(name, &definition)
       define_method(name) do
         @rules ||= {}     # <name, rule> memoization
         return @rules[name] if @rules.has_key?(name)
