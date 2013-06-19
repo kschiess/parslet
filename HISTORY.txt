@@ -9,6 +9,8 @@
     calculator) directly. This will solve many of the problems we have 
     more elegantly. 
 
+  - Drops 1.8.7 compatibility. 
+
   ! A performance anomaly when parsing multibyte characters has been detected
     and fixed with the help of Zach Moazeni (@zmoazeni).
 
