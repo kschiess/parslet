@@ -61,9 +61,19 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
     result << flatten(value, true)
 
     # Loop until we fail on operator matching or until input runs out.
-    while source.chars_left > 0
+    loop do
       op_pos = source.pos
       op_match, prec, assoc = match_operation(source, context, false)
+
+      # If no operator could be matched here, one of several cases 
+      # applies: 
+      #
+      # - end of file
+      # - end of expression
+      # - syntax error
+      # 
+      # We abort matching the expression here. 
+      break unless op_match
 
       if prec >= current_prec
         next_prec = (assoc == :left) ? prec+1 : prec
@@ -88,13 +98,13 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
     errors = []
     @operations.each do |op_atom, prec, assoc|
       success, value = op_atom.apply(source, context, consume_all)
-      return value, prec, assoc if success
+      return flatten(value, true), prec, assoc if success
 
       # assert: this was in fact an error, accumulate
       errors << value
     end
 
-    abort context.err(self, source, "Expected an operator.", errors)
+    return nil
   end
 
   def abort(error)

@@ -55,7 +55,7 @@ class Parslet::Pattern
         return element_match_ary_single(tree, exp, bindings)
     else
       # If elements match exactly, then that is good enough in all cases
-      return true if tree == exp
+      return true if exp === tree
       
       # If exp is a bind variable: Check if the binding matches
       if exp.respond_to?(:can_bind?) && exp.can_bind?(tree)

@@ -11,8 +11,8 @@ describe 'Infix expression parsing' do
       Infix.new(*args)
     end
 
-    rule(:mul_op) { match['*/'] }
-    rule(:add_op) { match['+-'] }
+    rule(:mul_op) { match['*/'] >> str(' ').maybe }
+    rule(:add_op) { match['+-'] >> str(' ').maybe }
     rule(:digit) { match['0-9'] }
     rule(:integer) { cts digit.repeat(1) }
 
@@ -40,6 +40,9 @@ describe 'Infix expression parsing' do
     let(:m) { p.expression }
     it "parses simple multiplication" do
       m.should parse('1*2').as(l: '1', o: '*', r: '2')
+    end
+    it "parses simple multiplication with spaces" do
+      m.should parse('1 * 2').as(l: '1 ', o: '* ', r: '2')
     end
     it "parses division" do
       m.should parse('1/2')
@@ -100,9 +103,7 @@ INTEGER was expected at line 1 char 3.
             mo.parse('1%') }
 
           cause.ascii_tree.to_s.should == <<-ERROR
-Expected an operator. at line 1 char 2.
-|- Failed to match [*/] at line 1 char 2.
-`- Failed to match [+-] at line 1 char 2.
+Don't know what to do with "%" at line 1 char 2.
           ERROR
         end
       end
