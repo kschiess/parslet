@@ -19,19 +19,18 @@ module Parslet::Accelerator
   end
 
 module_function 
-  def str variable
-    Expression.new(:str, variable)
+  def str variable, *constraints
+    Expression.new(:str, variable, *constraints)
   end
 
-  def re variable
-    Expression.new(:re, variable)
+  def re variable, *constraints
+    Expression.new(:re, variable, *constraints)
   end
 
   def match atom, expr
     engine = Engine.new
 
     return engine.bindings if engine.match(atom, expr)
-    return false
   end
 end
 

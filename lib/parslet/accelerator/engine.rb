@@ -36,13 +36,15 @@ module Parslet::Accelerator
       false
     end
     def visit_re(regexp)
-      match(:re) do |variable|
-        @engine.try_bind(variable, regexp)
+      match(:re) do |*bind_conditions|
+        bind_conditions.all? { |bind_cond| 
+          @engine.try_bind(bind_cond, regexp) }
       end
     end
     def visit_str(str)
-      match(:str) do |variable|
-        @engine.try_bind(variable, str)
+      match(:str) do |*bind_conditions|
+        bind_conditions.all? { |bind_cond| 
+          @engine.try_bind(bind_cond, str) }
       end
     end
 
@@ -67,12 +69,27 @@ module Parslet::Accelerator
     end
 
     def try_bind(variable, value)
-      if @bindings.has_key? variable
-        return value == @bindings[variable]
+      if bound? variable
+        return value == lookup(variable)
       else
-        @bindings[variable] = value
-        return true
+        case variable
+          when Symbol
+            bind(variable, value)
+        else
+          # This does not look like a variable - let's try matching it against
+          # the value: 
+          variable === value
+        end    
       end
+    end
+    def bound? var
+      @bindings.has_key? var
+    end
+    def lookup var
+      @bindings[var]
+    end
+    def bind var, val
+      @bindings[var] = val
     end
   end
 end

@@ -1,10 +1,10 @@
 
 # Parslet Optimizers
 
-* Detect patterns in parsers: see section on 'Parser Pattern Detection'
+* Detect patterns in parsers: see section on 'Parser Pattern Matching'
 * Replace with optimized parsers: see section on 'Binding and Actions'
 
-## Parser Pattern Detection
+## Parser Pattern Matching
 
 We'll demonstrate how pattern detection is constructed by showing what the smallest parts do first. Let's require needed libraries.
 
@@ -47,4 +47,36 @@ Let's start assembling these simple parsers into more complex patterns and match
       
     binding.values_at(:x, :y).assert == %w(a b)
 
-Matching of 'foo' against 'foo'.
+
+## Binding to Values
+
+As a side note, our parser should also respect literal value matches in the pattern and only bind to subsequent locations when the values match up. 
+
+    binding = Accelerator.match(
+      str('a') >> str('b'), 
+      Accelerator.str(:x) >> Accelerator.str(:x))
+  
+    binding.assert == nil
+    
+Another property should be that literal strings passed to the pattern should be matched using ===. 
+
+    binding = Accelerator.match(
+      str('abc') >> str('bcd'), 
+      Accelerator.str(/b/) >> Accelerator.str('bcd'))
+  
+    binding.assert == {}
+
+The binding is empty here, since no variables were given. But lets also implement constrained variable bindings, that seems useful. The way this works is that you specify a variable you want to bind to first, and then a list of constraints that are matched by `#===`.
+
+    A = Accelerator
+    A.match(str('abc'), A.str(:x, /c/))[:x].assert == 'abc'
+    A.match(str('abc'), A.str(:x, /d/)).assert == nil
+   
+    A.match(str('abc'), A.str(:x, /a/, /c/))[:x].assert == 'abc'
+    A.match(str('abc'), A.str(:x, /a/, /d/)).assert == nil
+    
+Here's a quick demonstration that demonstrates that this feature equally applies to both `Accelerator.re` and `Parslet.match`. 
+
+    A.match(match['abc'], A.re(:x, /d/)).assert == nil
+    A.match(match['abc'], A.re(:x, /c/))[:x].assert == '[abc]'
+   
