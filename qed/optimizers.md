@@ -4,7 +4,7 @@ The goals of parslet are simple: make writing PEG parsers a predictable and stra
 
 ## Dark Clouds ahead
 
-It's all fun and games until you write your first thousand line long parser that works. So far, we happily take credit for parslet, since that is much harder to do with other parser engines. But very often, the resulting parser is rather slow - having execution times in the second range instead of the subsecond range. 
+Writing your first thousand line parser that works is easy – IF you use parslet. But very often, the resulting parser is rather slow - having execution times in the second range instead of the subsecond range. 
 
 You fire up your email client and drop us a mail to the mailing list, asking: "Why is parslet so slow?" You'll receive the following answers: 
 
