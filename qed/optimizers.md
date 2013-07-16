@@ -48,7 +48,7 @@ So we're pretty confident that this new parser will work faster; maybe fast even
     quote = str('"')
     quote >> GobbleUp.new('"') >> quote
     
-And all is fine. Right? We think no. You've chosen to use parslet, so you don't want to end up sprinkling your grammar which is as much specification as it is implementation with things like `GobbleUp`. What would be nice if you could keep the parser as it is, but somehow replace the pattern of `(quote.absent? >> any).repeat` with `GobbleUp.new('"')` before doing any work with your parser. Well, you can.
+And all is fine. Right? We think no. You've chosen to use parslet, so you don't want to end up sprinkling your grammar which is as much specification as it is implementation with things like `GobbleUp`. Wouldn't it be nice if you could keep the parser as it is, but somehow replace the pattern of `(quote.absent? >> any).repeat` with `GobbleUp.new('"')` before doing any work with your parser? Well, you can.
 
     quote = str('"')
     parser = quote >> (quote.absent? >> any).repeat >> quote
@@ -61,7 +61,7 @@ And all is fine. Right? We think no. You've chosen to use parslet, so you don't 
 
 ## Overview
 
-Now that the goal is defined, let us expose the details of the system proposed above. We'll start with explaining what these `Accelerator.rule` things are, how they match against your parser and how binding of variables work. (_Parslet Pattern Matching_) Then we'll explain what actions you can take once you've matched part of your parser. (_Binding and Actions_)
+Now that the goal is defined, let us expose the details of the system proposed above. We'll start with explaining what these `Accelerator.rule` things are, how they match against your parser and how binding of variables work. (*Parslet Pattern Matching*) Then we'll explain what actions you can take once you've matched part of your parser. (*Binding and Actions*)
 
 # Parser Pattern Matching
 
