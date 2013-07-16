@@ -58,6 +58,8 @@ And all is fine. Right? We think no. You've chosen to use parslet, so you don't 
       A.rule( (A.str(:x).absent? >> any).repeat ) { GobbleUp.new(x) })
     
     optimized_parser.parse('"Parsing is now fully optimized! (tm)"')
+    
+(If you're interested in a bit of history, the example that triggered the discussion around accelerators is preserved in "optimizer.rb":https://github.com/kschiess/parslet/blob/master/experiments/optimizer.rb. If you look past the hacks and the optimism, you'll recognize some of the things we talk about in this document.)
 
 ## Overview
 
