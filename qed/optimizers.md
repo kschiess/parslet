@@ -1,23 +1,22 @@
-
 # Parslet Accelerator
 
-The goals of parslet were simple: Make writing PEG parsers a predictable and understandable endeavour. Some people have since claimed the word 'fun' for writing parsers, a connotation that we don't entirely oppose - otherwise why would we spend our time extending parslet?
+The goals of parslet are simple: make writing PEG parsers a predictable and straightforward endeavour. Some people have since claimed the word 'fun' for writing parsers, a connotation that we don't entirely oppose - otherwise why would we spend our time extending parslet?
 
 ## Dark Clouds ahead
 
-It's all fun and games until you wrote your first thousand line long parser that works. So far, we'd like to take credit for parslet, since that is much harder to do with other parser engines. But very often, the resulting parser is rather slow - having execution times in the second range instead of the subsecond range. 
+It's all fun and games until you write your first thousand line long parser that works. So far, we happily take credit for parslet, since that is much harder to do with other parser engines. But very often, the resulting parser is rather slow - having execution times in the second range instead of the subsecond range. 
 
-You fire up your email client and drop us a mail to the mailing list, asking: Why is parslet so slow? You'll receive the following answers: 
+You fire up your email client and drop us a mail to the mailing list, asking: "Why is parslet so slow?" You'll receive the following answers: 
 
 * Parslet is not a parser generator, but a parser engine based on Ruby. As such, it will be slower than parsers written in languages such as C. 
-* Parslet's internal structure is simple and understandable. We've invested a lot of effort in making everything it does obvious and extendable. The downside of this somewhat OO-heavy approach is that we've got many objects juggling data and deep callstacks. Read: Bad use of caches and CPU time. 
-* Very few big languages have parsers written in high level languages such as Ruby. For good reasons. Depending on how serious you are about writing a new language (as opposed to fiddling around), you might want to _not start with parslet at all._
+* Parslet's internal structure is simple and clear. We've invested a lot of effort in making everything it does obvious and extendable. The downside of this somewhat OO-heavy approach is that we've got many objects juggling data and deep callstacks. Read: Bad use of caches and CPU time. 
+* Very few big languages have parsers written in high level languages such as Ruby. For good reasons. Depending on how serious you are about writing a new language (as opposed to fiddling around), you might want to _not start with parslet at all_.
 
-It is not like we've done nothing to fix the above reasons; rather, we're doing everyhing we can *provided the main goal of simplicity and understandability is not in danger*! If you look up what has been done over the years you'll find a lot of small and large optimisations. But we've always refused to sacrifice simplicity of design to the god of optimisation, especially when it came to make a single parser faster. We want parslet to be fast in general and frankly, your parser of language X is not our concern - only insofar as it uses parslet.
+It's not like we haven't done anything to fix the above reasons; rather, we're doing everything we can, provided the main goal of *simplicity and understandability* is not in danger! If you look up what has been done over the years you will find a lot of small and large optimisations. But we have always refused to sacrifice simplicity of design to the god of optimisation, especially when it came to making a single parser faster. We want parslet to be fast in general, and frankly, your parser of language X is not our concern - only insofar as it uses parslet.
 
-But parslet needs to be useful for something, otherwise what is the point, right? We would like to make parslet as useful as possible for smaller languages and for places where execution speed isn't your only concern. A lot of languages have rapidly evolving grammars and are developed by programmers that don't have the time for hand-writing parsers in C. 
+But parslet needs to be useful for something. If not, what is the point? We would like to make parslet as useful as possible for smaller languages and for places where execution speed isn't your only concern. A lot of languages have rapidly evolving grammars and are developed by programmers that don't have the time for hand-writing parsers in C. 
 
-Still, what should you do once you've written your parser and speed becomes the issue? Until now, you had no real options short of rewriting the damn thing in C. That changes now; we've come up with Parslet Accelerator. The accelerator will allow you to pattern match bits of your _parser_ and replace them with bits that do the same work but faster. Really, just hot spot optimisation, but without sacrificing readability of the original parser grammar. 
+Still, what should you do once you've written your parser and speed becomes the issue? Until now, you had no real options short of rewriting the damn thing in C. That has changed: we've come up with Parslet Accelerator. The Accelerator will allow you to pattern match bits of your _parser_ and replace them with bits that do the same work, but faster. Really just hot spot optimisation, but without sacrificing readability of the original parser grammar.
 
 ## An Example
 
@@ -48,7 +47,7 @@ So we're pretty confident that this new parser will work faster; maybe fast even
     quote = str('"')
     quote >> GobbleUp.new('"') >> quote
     
-And all is fine. Right? We think no. You've chosen to use parslet, so you don't want to end up sprinkling your grammar which is as much specification as it is implementation with things like `GobbleUp`. Wouldn't it be nice if you could keep the parser as it is, but somehow replace the pattern of `(quote.absent? >> any).repeat` with `GobbleUp.new('"')` before doing any work with your parser? Well, you can.
+And all is fine, right? We don't think so. You've chosen to use parslet, so you don't want to end up sprinkling your grammar which is as much specification as it is implementation with things like `GobbleUp`. Wouldn't it be nice if you could keep the parser as it is, but somehow replace the pattern of `(quote.absent? >> any).repeat` with `GobbleUp.new('"')` before doing any work with your parser? Well, you can.
 
     quote = str('"')
     parser = quote >> (quote.absent? >> any).repeat >> quote
