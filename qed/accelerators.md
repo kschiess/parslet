@@ -1,8 +1,26 @@
 # Parslet Accelerator
 
+## Synopsis
+
+Reading this all the way is worth it. But don't despair; if your attention span is short, read this and zap away! The TLDR: 
+
+Parslet is slow because of the way it is constructed internally. Optimisation helps, but makes your parser harder to read. Don't go there. Use parser accelerators instead - optimize parts of your parser without changing its definition. This is what it looks like: 
+
+    slow_parser = something >> slow_part >> other
+    
+    include Parslet::Accelerator
+    optimized_parser = apply(
+      rule( slow_part ) { faster_part })
+    
+    optimized_parser.parse('"Parsing is now fully optimized! (tm)"')    
+    
+Thus parslet allows you to write cristal clear parsers that are also as fast as you can make them. (But still slower than C!)
+
+## Introduction
+
 The goals of parslet are simple: make writing PEG parsers a predictable and straightforward endeavour. Some people have since claimed the word 'fun' for writing parsers, a connotation that we don't entirely oppose - otherwise why would we spend our time extending parslet?
 
-## Dark Clouds ahead
+### Dark Clouds ahead
 
 Writing your first thousand line parser that works is easy – IF you use parslet. But very often, the resulting parser is rather slow - having execution times in the second range instead of the subsecond range. 
 
@@ -18,7 +36,7 @@ But parslet needs to be useful for something. If not, what is the point? We woul
 
 Still, what should you do once you've written your parser and speed becomes the issue? Until now, you had no real options short of rewriting the damn thing in C. That has changed: we've come up with Parslet Accelerator. The Accelerator will allow you to pattern match bits of your _parser_ and replace them with bits that do the same work, but faster. Really just hot spot optimisation, but without sacrificing readability of the original parser grammar.
 
-## An Example
+### An Example
 
 Let's consider the parser for quoted strings as an example, usually written to look something like this: 
 
@@ -60,11 +78,11 @@ And all is fine, right? We don't think so. You've chosen to use parslet, so you 
     
 (If you're interested in a bit of history, the example that triggered the discussion around accelerators is preserved in [optimizer.rb](https://github.com/kschiess/parslet/blob/master/experiments/optimizer.rb). If you look past the hacks and the optimism, you'll recognize some of the things we talk about in this document.)
 
-## Overview
+### About this Document
 
 Now that the goal is defined, let us expose the details of the system proposed above. We'll start with explaining what these `Accelerator.rule` things are, how they match against your parser and how binding of variables work. (*Parslet Pattern Matching*) Then we'll explain what actions you can take once you've matched part of your parser. (*Binding and Actions*)
 
-# Parser Pattern Matching
+## Parser Pattern Matching
 
 We'll demonstrate how pattern detection is constructed by showing what the smallest parts do first. Let's require needed libraries.
 
@@ -140,8 +158,8 @@ Here's a quick demonstration that demonstrates that this feature equally applies
     A.match(match['abc'], A.re(:x, /d/)).assert == nil
     A.match(match['abc'], A.re(:x, /c/))[:x].assert == '[abc]'
    
-# Bindings and Actions
+## Bindings and Actions
    
-# Closing Note
+## Closing Note
 
 * not a panacea
