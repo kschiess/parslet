@@ -144,4 +144,4 @@ Here's a quick demonstration that demonstrates that this feature equally applies
    
 # Closing Note
 
-* not a pancea
+* not a panacea
