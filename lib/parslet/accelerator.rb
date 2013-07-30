@@ -17,6 +17,17 @@ module Parslet::Accelerator
       join_or_new :alt, other_expr
     end
 
+    def absent?
+      Expression.new(:absent, self)
+    end
+    def present?
+      Expression.new(:present, self)
+    end
+
+    def repeat min=0, max=nil
+      Expression.new(:rep, min, max, self)
+    end
+
     def join_or_new tag, other_expr
       if type == tag
         @args << other_expr

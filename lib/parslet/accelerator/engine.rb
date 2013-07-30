@@ -18,7 +18,9 @@ module Parslet::Accelerator
       false
     end
     def visit_repetition(tag, min, max, atom)
-      false
+      match(:rep) do |e_min, e_max, expr|
+        e_min == min && e_max == max && @engine.match(atom, expr)
+      end
     end
     def visit_alternative(alternatives)
       match(:alt) do |*expressions|
@@ -39,7 +41,12 @@ module Parslet::Accelerator
       end
     end
     def visit_lookahead(positive, atom)
-      false
+      match(:absent) do |expr|
+        return positive == false && @engine.match(atom, expr)
+      end
+      match(:present) do |expr|
+        return positive == true && @engine.match(atom, expr)
+      end
     end
     def visit_re(regexp)
       match(:re) do |*bind_conditions|
