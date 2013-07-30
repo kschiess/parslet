@@ -21,7 +21,13 @@ module Parslet::Accelerator
       false
     end
     def visit_alternative(alternatives)
-      false
+      match(:alt) do |*expressions|
+        return false if alternatives.size != expressions.size
+
+        alternatives.zip(expressions).all? do |atom, expr|
+          @engine.match(atom, expr)
+        end
+      end
     end
     def visit_sequence(sequence)
       match(:seq) do |*expressions|

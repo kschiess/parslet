@@ -125,6 +125,15 @@ Let's start assembling these simple parsers into more complex patterns and match
       
     binding.values_at(:x, :y).assert == %w(a b)
 
+Also, alternatives should correctly bind. 
+
+	binding = Accelerator.match(
+	  str('a') | str('b'), 
+	  Accelerator.str(:x) | Accelerator.str(:y))
+  
+	binding.values_at(:x, :y).assert == %w(a b)
+
+Note that this means that we bind to the whole alternative subtree, not either to the left or to the right. We're matching the parslet tree, so the meaning of the alternative is irrelevant. 
 
 ## Binding to Values
 

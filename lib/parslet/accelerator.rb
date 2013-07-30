@@ -10,10 +10,18 @@ module Parslet::Accelerator
     end
 
     def >> other_expr
-      if type == :seq
+      join_or_new :seq, other_expr
+    end
+
+    def | other_expr
+      join_or_new :alt, other_expr
+    end
+
+    def join_or_new tag, other_expr
+      if type == tag
         @args << other_expr
       else
-        Expression.new(:seq, self, other_expr)
+        Expression.new(tag, self, other_expr)
       end
     end
   end
