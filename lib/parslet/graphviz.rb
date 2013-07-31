@@ -16,6 +16,7 @@ module Parslet
     def initialize g
       @graph = g
       @known_links = Set.new
+      @visited = Set.new
     end
 
     attr_reader :parent
@@ -27,6 +28,10 @@ module Parslet
       s = node(name)
 
       downwards s
+
+      return if @visited.include?(name)
+      @visited << name
+
       recurse block.call, s
     end
     def visit_named(name, atom)
