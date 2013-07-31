@@ -56,14 +56,17 @@ module Parslet
       recurse atom, parent
     end
     def visit_re(regexp)
-      @parent = nil
+      # downwards node(regexp.object_id, label: escape("re(#{regexp.inspect})"))
     end
     def visit_str(str)
-      @parent = nil
+      # downwards node(str.object_id, label: escape("#{str.inspect}"))
     end
 
-    def node name
-      @graph.add_nodes name.to_s
+    def escape str
+      str.gsub('"', "'")
+    end
+    def node name, opts={}
+      @graph.add_nodes name.to_s, opts
     end
     def downwards child
       if @parent && !@known_links.include?([@parent, child])
