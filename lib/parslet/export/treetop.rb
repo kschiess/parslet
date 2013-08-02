@@ -1,7 +1,13 @@
 module Parslet
   class Parser
     module Visitors
-      class Treetop < Citrus
+      class Treetop
+        include Export::Grammer
+
+        def initialize(context)
+          @context = context
+        end
+
         def visit_repetition(tag, min, max, parslet)
           parslet.accept(self) << "#{min}..#{max}"
         end

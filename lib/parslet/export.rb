@@ -2,6 +2,7 @@
 
 require 'set'
 require 'parslet/atoms/visitor'
+require_relative "export/grammer"
 require_relative "export/citrus"
 require_relative "export/treetop"
 require_relative "export/pretty_printer"
