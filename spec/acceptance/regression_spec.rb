@@ -8,21 +8,21 @@ describe "Regressions from real examples" do
   # This parser piece produces on the left a subtree that is keyed (a hash)
   # and on the right a subtree that is a repetition of such subtrees. I've
   # for now decided that these would merge into the repetition such that the
-  # return value is an array. This avoids maybe loosing keys/values in a 
-  # hash merge. 
+  # return value is an array. This avoids maybe loosing keys/values in a
+  # hash merge.
   #
   class ArgumentListParser
     include Parslet
 
     rule :argument_list do
-      expression.as(:argument) >> 
+      expression.as(:argument) >>
         (comma >> expression.as(:argument)).repeat
     end
     rule :expression do
       string
     end
     rule :string do
-      str('"') >> 
+      str('"') >>
       (
         str('\\') >> any |
         str('"').absent? >> any
@@ -38,7 +38,7 @@ describe "Regressions from real examples" do
     rule :space do
       match("[ \t]").repeat(1)
     end
-    
+
     def parse(str)
       argument_list.parse(str)
     end
@@ -47,10 +47,10 @@ describe "Regressions from real examples" do
     let(:instance) { ArgumentListParser.new }
     it "should have method expression" do
       instance.should respond_to(:expression)
-    end 
+    end
     it 'should parse "arg1", "arg2"' do
       result = ArgumentListParser.new.parse('"arg1", "arg2"')
-      
+
       result.should have(2).elements
       result.each do |r|
         r[:argument]
@@ -58,7 +58,7 @@ describe "Regressions from real examples" do
     end
     it 'should parse "arg1", "arg2", "arg3"' do
       result = ArgumentListParser.new.parse('"arg1", "arg2", "arg3"')
-      
+
       result.should have(3).elements
       result.each do |r|
         r[:argument]
@@ -70,25 +70,25 @@ describe "Regressions from real examples" do
     rule(:balanced) {
       str('(').as(:l) >> balanced.maybe.as(:m) >> str(')').as(:r)
     }
-  
+
     root(:balanced)
   end
   describe ParensParser do
     let(:instance) { ParensParser.new }
-    
+
     context "statefulness: trying several expressions in sequence" do
       it "should not be stateful" do
         # NOTE: Since you've come here to read this, I'll explain why
-        # this is broken and not fixed: You're looking at the tuning branch, 
-        # which rewrites a bunch of stuff - so I have failing tests to 
-        # remind me of what is left to be done. And to remind you not to 
-        # trust this code. 
+        # this is broken and not fixed: You're looking at the tuning branch,
+        # which rewrites a bunch of stuff - so I have failing tests to
+        # remind me of what is left to be done. And to remind you not to
+        # trust this code.
         instance.parse('(())')
-        lambda {
+        expect {
           instance.parse('((()))')
           instance.parse('(((())))')
-        }.should_not raise_error(Parslet::ParseFailed)
-      end 
+        }.not_to raise_error
+      end
     end
     context "expression '(())'" do
       let(:result) { instance.parse('(())') }
@@ -97,13 +97,13 @@ describe "Regressions from real examples" do
         result.should be_a(Hash)
         result.should have_key(:m)
         result[:m].should be_a(Hash)   # This was an array earlier
-      end 
+      end
       context "inner hash" do
         let(:inner) { result[:m] }
-        
+
         it "should have nil as :m" do
           inner[:m].should be_nil
-        end 
+        end
       end
     end
   end
@@ -127,13 +127,13 @@ describe "Regressions from real examples" do
     def remove_indent(s)
       s.to_s.lines.map { |l| l.chomp.strip }.join("\n")
     end
-    
+
     it "should count lines correctly" do
       cause = catch_failed_parse {
         subject.parse('a
-          a a a 
+          a a a
           aaa // ff
-          /* 
+          /*
           a
           */
           b
@@ -148,7 +148,7 @@ describe "Regressions from real examples" do
       |        `- Expected at least 1 of [\n\r] at line 7 char 11.
       |           `- Failed to match [\n\r] at line 7 char 11.
       `- Don't know what to do with "\n         " at line 1 char 2.).strip)
-    end 
+    end
   end
 
   class BLanguage < Parslet::Parser
@@ -159,13 +159,13 @@ describe "Regressions from real examples" do
   describe BLanguage do
     it "should parse 'bb'" do
       subject.should parse('bb').as(:one => 'b', :two => 'b')
-    end 
+    end
     it "should transform with binding constraint" do
       transform = Parslet::Transform.new do |t|
         t.rule(:one => simple(:b), :two => simple(:b)) { :ok }
       end
       transform.apply(subject.parse('bb')).should == :ok
-    end 
+    end
   end
 
   class UnicodeLanguage < Parslet::Parser
@@ -176,9 +176,9 @@ describe "Regressions from real examples" do
     it "should parse UTF-8 strings" do
       subject.should parse('éèäöü').as('éèäöü')
       subject.should parse('RubyKaigi2009のテーマは、「変わる／変える」です。 前回の').as('RubyKaigi2009のテーマは、「変わる／変える」です。 前回の')
-    end 
+    end
   end
-  
+
   class UnicodeSentenceLanguage < Parslet::Parser
     rule(:sentence) { (match('[^。]').repeat(1) >> str("。")).as(:sentence) }
     rule(:sentences) { sentence.repeat }
@@ -197,10 +197,10 @@ describe "Regressions from real examples" do
       "すり合わせるべきものをすり合わせ、変えていくべきところを " +
       "変えていくことが、豊かな未来へとつながる道に違いありません。"
     }
-    
+
     it "should parse sentences" do
       subject.should parse(string)
-    end 
+    end
   end
 
   class TwoCharLanguage < Parslet::Parser
@@ -219,7 +219,7 @@ describe "Regressions from real examples" do
         Failed to match sequence (. '2') at line 1 char 2.
         `- Don't know what to do with "3" at line 1 char 3.
       ))
-    end 
+    end
   end
 
   # Issue #68: Extra input reporting, written by jmettraux
@@ -270,7 +270,7 @@ describe "Regressions from real examples" do
             begin b
           end
         }) }
-      
+
       di(error.ascii_tree).should == di(%q(
         Failed to match sequence (NL? BLOCK (NL BLOCK){0, } NL?) at line 2 char 11.
         `- Failed to match sequence (SP? 'begin' SP [a-z] NL BODY SP? 'end') at line 5 char 9.
