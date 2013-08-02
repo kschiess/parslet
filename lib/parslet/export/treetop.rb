@@ -19,3 +19,24 @@ module Parslet
     end
   end
 end
+
+module Parslet
+  class Parser
+    # Exports the current parser instance as a string in the Treetop dialect.
+    #
+    # Example:
+    #
+    #   require 'parslet/export'
+    #   class MyParser < Parslet::Parser
+    #     root(:expression)
+    #     rule(:expression) { str('foo') }
+    #   end
+    #
+    #   MyParser.new.to_treetop # => a treetop grammar as a string
+    #
+    def to_treetop
+      PrettyPrinter.new(Visitors::Treetop).
+        pretty_print(self.class.name, root)
+    end
+  end
+end
