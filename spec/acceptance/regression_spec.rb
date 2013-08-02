@@ -84,11 +84,11 @@ describe "Regressions from real examples" do
         # remind me of what is left to be done. And to remind you not to 
         # trust this code. 
         instance.parse('(())')
-        lambda {
+        expect {
           instance.parse('((()))')
           instance.parse('(((())))')
-        }.should_not raise_error(Parslet::ParseFailed)
-      end 
+        }.not_to raise_error
+      end
     end
     context "expression '(())'" do
       let(:result) { instance.parse('(())') }

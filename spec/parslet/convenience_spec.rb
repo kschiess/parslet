@@ -18,13 +18,13 @@ describe 'parslet/convenience' do
         parser.should_receive(:puts)
       end
       it 'should exist' do
-        lambda { parser.parse_with_debug('anything') }.should_not raise_error(NoMethodError)
+        expect { parser.parse_with_debug('anything') }.not_to raise_error
       end
       it 'should catch ParseFailed exceptions' do
-        lambda { parser.parse_with_debug('bar') }.should_not raise_error(Parslet::ParseFailed)
+        expect { parser.parse_with_debug('bar') }.not_to raise_error
       end
       it 'should parse correct input like #parse' do
-        lambda { parser.parse_with_debug('foo') }.should_not raise_error
+        expect { parser.parse_with_debug('foo') }.not_to raise_error
       end
     end
     context 'output' do
