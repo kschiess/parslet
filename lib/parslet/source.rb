@@ -53,6 +53,18 @@ module Parslet
     def chars_left
       @str.rest_size
     end
+
+    # Returns how many chars there are between current position and the 
+    # string given. If the string given doesn't occur in the source, then 
+    # the remaining chars (#chars_left) are returned. 
+    #
+    # @return [Fixnum] count of chars until str or #chars_left
+    #
+    def chars_until str
+      slice_str = @str.check_until(Regexp.new(Regexp.escape(str)))
+      return chars_left unless slice_str
+      return slice_str.size - str.size
+    end
     
     # Position of the parse as a character offset into the original string. 
     # @note: Encodings...

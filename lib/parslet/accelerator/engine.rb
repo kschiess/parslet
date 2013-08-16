@@ -2,6 +2,7 @@
 require 'parslet/atoms/visitor'
 
 module Parslet::Accelerator
+  # @api private
   class Apply
     def initialize(engine, expr)
       @engine = engine
@@ -69,6 +70,7 @@ module Parslet::Accelerator
     end
   end
 
+  # @api private
   class Engine
     attr_reader :bindings
 

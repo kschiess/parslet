@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Parslet::Transform::Context do
+describe Parslet::Context do
   def context(*args)
     described_class.new(*args)
   end

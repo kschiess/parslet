@@ -71,8 +71,8 @@ And all is fine, right? We don't think so. You've chosen to use parslet, so you 
     parser = quote >> (quote.absent? >> any).repeat >> quote
     
     A = Accelerator # for making what follows a bit shorter
-    optimized_parser = A.apply(
-      A.rule( (A.str(:x).absent? >> any).repeat ) { GobbleUp.new(x) })
+    optimized_parser = A.apply(parser, 
+      A.rule( (A.str(:x).absent? >> A.any).repeat ) { GobbleUp.new(x) })
     
     optimized_parser.parse('"Parsing is now fully optimized! (tm)"')
     
@@ -114,6 +114,11 @@ Another simple parser is the one that matches against variants of the `match(...
 Note how the internal regular expression value used for the match atom is really bound to :x – we'll keep this as a convention. This also means that some parslet internas are leaked through the Accelerator API here. We consider that a feature, since working with accelerators will bring you into close contact with the atoms internas.
 
 Also the Accelerator matcher for `Parslet.match` is called `Accelerator.re` - the reason for this should be obvious from what stands above. 
+
+Just to make this complete, a special case for the `match(...)` atom is the `any` atom. 
+
+    binding = Accelerator.match(any, Accelerator.any)
+    binding.assert != nil
 
 ## Composite Parsers
 
@@ -171,7 +176,6 @@ Another property should be that literal strings passed to the pattern should be 
 
 The binding is empty here, since no variables were given. But lets also implement constrained variable bindings, that seems useful. The way this works is that you specify a variable you want to bind to first, and then a list of constraints that are matched by `#===`.
 
-    A = Accelerator
     A.match(str('abc'), A.str(:x, /c/))[:x].assert == 'abc'
     A.match(str('abc'), A.str(:x, /d/)).assert == nil
    

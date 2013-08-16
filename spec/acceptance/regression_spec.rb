@@ -184,7 +184,7 @@ describe "Regressions from real examples" do
     rule(:sentences) { sentence.repeat }
     root(:sentences)
   end
-  describe UnicodeSentenceLanguage, :ruby => 1.9 do
+  describe UnicodeSentenceLanguage do
     let(:string) {
       "RubyKaigi2009のテーマは、「変わる／変える」です。 前回の" +
       "RubyKaigi2008のテーマであった「多様性」の言葉の通り、 " +

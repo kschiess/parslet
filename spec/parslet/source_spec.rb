@@ -52,6 +52,11 @@ describe Parslet::Source do
         end
       end
     end
+    describe '#chars_until' do
+      it 'should return 100 chars before line end' do
+        source.chars_until("\n").should == 100
+      end
+    end
     describe "<- #column & #line" do
       subject { source.line_and_column }
   
@@ -134,7 +139,7 @@ describe Parslet::Source do
     
   end
   
-  describe "reading encoded input", :ruby => 1.9 do
+  describe "reading encoded input" do
     let(:source) { described_class.new("éö変わる") }
 
     def r str

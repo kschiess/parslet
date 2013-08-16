@@ -116,8 +116,6 @@ class Parslet::Transform
   # context?
   include Parslet   
   
-  autoload :Context, 'parslet/transform/context'
-
   class << self
     # FIXME: Only do this for subclasses?
     include Parslet
@@ -234,3 +232,5 @@ class Parslet::Transform
     ary.map { |elt| apply(elt, ctx) }
   end
 end
+
+require 'parslet/context'

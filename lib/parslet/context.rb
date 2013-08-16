@@ -10,7 +10,8 @@ require 'blankslate'
 #     a # => :b
 #   end
 #
-class Parslet::Transform::Context < BlankSlate
+# @api private
+class Parslet::Context < BlankSlate
   reveal :methods
   reveal :respond_to?
   reveal :inspect
