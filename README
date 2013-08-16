@@ -51,17 +51,20 @@ SYNOPSIS
   # and then
   Smalltalk.new.parse('smalltalk')
 
+FEATURES
+
+  * Tools for every part of the parser chain
+  * Transformers generate Abstract Syntax Trees
+  * Accelerators transform parsers, making them quite a bit faster
+  * Pluggable error reporters
+  * Graphviz export for your parser
+  * Rspec testing support rig
+  * Simply Ruby, composable and hackable
+
 COMPATIBILITY
 
-This library should work with most rubies. I've tested it with MRI 1.8 
-(except 1.8.6), 1.9, rbx-head, jruby. Please report as a bug if you encounter 
-issues.
-
-Note that due to Ruby 1.8 internals, Unicode parsing is not supported on that 
-version. 
-
-On Mac OS X Lion, ruby-1.8.7-p352 has been known to segfault. Use
-ruby-1.8.7-p334 for better results.
+This library is intended to work with Ruby variants >= 1.9. I've tested it on 
+MRI 1.9, rbx-head, jruby. Please report as a bug if you encounter issues.
 
 STATUS 
 
