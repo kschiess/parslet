@@ -67,6 +67,11 @@ module Parslet::Accelerator
       Expression.new(:rep, min, max, self)
     end
 
+    # @return [Expression]
+    def as name
+      Expression.new(:as, name)
+    end
+
     # @api private
     # @return [Expression]
     def join_or_new tag, other_expr

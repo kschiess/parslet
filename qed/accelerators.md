@@ -155,6 +155,18 @@ And then there is positive and negative lookahead.
     Accelerator.match(
       str('a').absent?, 
       A.str('a').absent?).assert != nil
+      
+And named values.
+
+    Accelerator.match(
+      str('a').as(:a), 
+      A.str('a').as(:a)).assert != nil
+      
+Which we also want to be able to bind.
+
+    Accelerator.match(
+      str('a').as(:a), 
+      A.str('a').as(:b)).assert == {:b => :a}
     
 ## Binding to Values
 

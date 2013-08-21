@@ -16,7 +16,9 @@ module Parslet::Accelerator
       false
     end
     def visit_named(name, atom)
-      false
+      match(:as) do |key|
+        @engine.try_bind(key, name)
+      end
     end
     def visit_repetition(tag, min, max, atom)
       match(:rep) do |e_min, e_max, expr|
