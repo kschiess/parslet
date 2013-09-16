@@ -33,10 +33,6 @@ h2. Projects
 Have you got a project that uses parslet? Please write
 "us":mailto:kaspar.schiess@absurd.li about it. 
 
-"*Capuchin*":https://github.com/matthewd/capuchin
-
-A javascript compiler that targets the rubinius VM. (Matthew Draper)
-
 "*edn-ruby*":https://github.com/relevance/edn-ruby
 
 edn-ruby is a Ruby library to read and write "edn":https://github.com/edn-format/edn 
@@ -52,6 +48,10 @@ In here, you can find a parser for a lisp like language and much more.
 A really small and elegant HTTP server written in Ruby. Think Webrick. Using
 parslet. (Postmodern)
 
+"*regexador*":https://github.com/Hal9000/regexador
+
+An external DSL for Ruby that tries to make regular expressions readable and maintainable. (Hal Fulton)
+
 "*self-ml*":https://github.com/self-ml/selfml
 
 A "self-ml":http://self-ml.github.io/ implementation using parslet. 
@@ -62,11 +62,6 @@ A "self-ml":http://self-ml.github.io/ implementation using parslet.
 Thnad is a tiny programming language with so few features that it is not
 useful for anything at all -- except showing how to write a compiler in half
 an hour.
-
-"*wt* aka working title":https://github.com/kschiess/wt
-
-A small parser that compiles to a postscript file. This is mostly for demoing
-the various aspects of a parser.
 
 "*Werd.rb*":https://github.com/rk/werd
 
