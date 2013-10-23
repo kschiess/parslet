@@ -87,7 +87,7 @@ describe "Regressions from real examples" do
         lambda {
           instance.parse('((()))')
           instance.parse('(((())))')
-        }.should_not raise_error(Parslet::ParseFailed)
+        }.should_not raise_error
       end 
     end
     context "expression '(())'" do
