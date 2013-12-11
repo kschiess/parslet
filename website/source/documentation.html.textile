@@ -49,6 +49,9 @@ of parslet. Especially:
   shows how to parse TOML ("Tom's Obvious Minimal Language":https://github.com/mojombo/toml)
   using parslet. I sense a theme here. Code is on github - this is the first
   article in a series, linked from the article.
+
+* "Write You a Parser for Fun and Win":http://viget.com/extend/write-you-a-parser-for-fun-and-win
+  a succinct writeup on parsing text formats by David Eisinger.
  
 "*YARD Class Documentation*":http://rubydoc.info/gems/parslet/frames
 
