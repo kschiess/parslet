@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ['README']
   s.files = %w(HISTORY.txt LICENSE Rakefile README) + Dir.glob("{lib,example}/**/*")
   s.homepage = 'http://kschiess.github.com/parslet'
+  s.license = 'MIT'
   s.rdoc_options = ['--main', 'README']
   s.require_paths = ['lib']
   s.summary = 'Parser construction library with great error reporting in Ruby.'  
