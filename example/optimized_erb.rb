@@ -1,7 +1,7 @@
 # Please also look at the more naive 'erb.rb'. This shows how to optimize an
 # ERB like parser using parslet. 
 
-$:.unshift File.dirname(__FILE__) + "/lib"
+$:.unshift File.join(File.dirname(__FILE__), "/../lib")
 
 require 'parslet'
 require './qed/applique/gobbleup'
