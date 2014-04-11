@@ -33,3 +33,22 @@ describe 'rspec integration' do
   # end
   
 end
+
+describe 'rspec3 syntax' do
+  include Parslet
+
+  let(:s) { str('example') }
+
+  it { expect(s).to parse('example') }
+  it { expect(s).not_to parse('foo') }
+  it { expect(s).to parse('example').as('example') }
+  it { expect(s).not_to parse('foo').as('example') }
+
+  it { expect(s).not_to parse('example').as('foo') }
+
+  # Uncomment to test error messages manually: 
+  # it { expect(str('foo')).to parse('foo', :trace => true).as('bar') }
+  # it { expect(str('foo')).to parse('food', :trace => true) }
+  # it { expect(str('foo')).not_to parse('foo', :trace => true).as('foo') }
+  # it { expect(str('foo')).not_to parse('foo', :trace => true) }
+end
