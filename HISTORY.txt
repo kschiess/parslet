@@ -5,9 +5,10 @@
 
 = 1.6 / ??
 
-  + Parslet accelerators permit replacing parts of your parser with optimized
-    atoms using pattern matching. Look at examples/optimized_erb.rb or the
-    introduction to the feature in qed/accelerators.md.
+  + EXPERIMENTAL: Parslet accelerators permit replacing parts of your parser 
+    with optimized atoms using pattern matching. Look at 
+    examples/optimized_erb.rb or the introduction to the feature in 
+    qed/accelerators.md.
 
   + infix_expression permits to declare an infix expression parser (think 
     calculator) directly. This will solve many of the problems we have 
