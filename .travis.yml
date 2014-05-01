@@ -1,7 +1,17 @@
-language: ruby
-rvm: 
+rvm:
+  - ree
   - 1.9.3
-  # The rubies below all fail. 
-  # - jruby-19mode # JRuby in 1.9 mode
-  # - rbx-18mode
-  # - rbx-19mode
+  - "2.0"
+  - "2.1"
+  - ruby-head
+  - jruby-19mode
+  - jruby-head
+  - rbx-19mode
+# matrix:
+#   allow_failures:
+#     - rvm: rbx-18mode
+#       env: "GIT_BRANCH=release-1.2 ADAPTER=in_memory"
+#     - rvm: rbx-19mode
+#       env: "GIT_BRANCH=release-1.2 ADAPTER=in_memory"
+#     - rvm: rbx-19mode
+#       env: "GIT_BRANCH=release-1.2 ADAPTER=yaml"
