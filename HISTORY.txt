@@ -3,7 +3,9 @@
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
 
-= 1.6 / ??
+= 1.7 / ???
+
+= 1.6 / 1May2014
 
   + EXPERIMENTAL: Parslet accelerators permit replacing parts of your parser 
     with optimized atoms using pattern matching. Look at 
