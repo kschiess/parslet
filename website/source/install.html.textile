@@ -2,7 +2,7 @@
 title: Install
 ---
 
-Parslet is at version _1.5.0_. 
+Parslet is at version _1.6.0_. 
 
 *Rubygems*
 
@@ -13,7 +13,7 @@ Parslet is at version _1.5.0_.
 *Bundler*
 
 <pre>
-  gem 'parslet', '~> 1.5'
+  gem 'parslet', '~> 1.6'
 </pre>
 
 or if you want to track the edge: 
