@@ -218,9 +218,16 @@ And here's how we turn this around to parse the second kind of input.
     include Parslet
     parser = str('a').repeat(1) >> str('b').repeat(1)
     new_parser = A.apply(parser,
-      A.rule(A.str(:x).repeat(1) >> A.str(:y).repeat(1)) { str(y).repeat(1) >> str(x).repeat(1) })
+      A.rule(A.str(:x).repeat(1) >> A.str(:y).repeat(1)) { 
+        str(y).repeat(1) >> str(x).repeat(1) } )
 
     new_parser.parse('bbbaaaa').assert == 'bbbaaaa'
+
+The `Accelerator.apply` method should be called with the following schema: 
+
+    Accelerator.apply(PARSER, RULE1, RULE2, ...)
+
+This is a more modern syntax than `Parslet::Transform` uses - maybe we'll update that class in a future version.
 
 ## Closing Note
 
