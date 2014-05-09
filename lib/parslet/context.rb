@@ -17,6 +17,8 @@ class Parslet::Context < BlankSlate
   reveal :inspect
   reveal :to_s
   reveal :instance_variable_set
+
+  include Parslet
   
   def meta_def(name, &body)
     metaclass = class <<self; self; end
