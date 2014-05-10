@@ -1,5 +1,6 @@
-INTRODUCTION
+# Parslet
 
+## Introduction
 Parslet makes developing complex parsers easy. It does so by
 
 * providing the best error reporting possible
@@ -13,8 +14,9 @@ possible.
 Eager to try this out? Please see the associated web site:
 http://kschiess.github.com/parslet
 
-SYNOPSIS
+## Synopsis
 
+```ruby
   require 'parslet'
   include Parslet
 
@@ -50,8 +52,9 @@ SYNOPSIS
 
   # and then
   Smalltalk.new.parse('smalltalk')
+```
 
-FEATURES
+## Feature
 
   * Tools for every part of the parser chain
   * Transformers generate Abstract Syntax Trees
@@ -61,12 +64,12 @@ FEATURES
   * Rspec testing support rig
   * Simply Ruby, composable and hackable
 
-COMPATIBILITY
+## Compatibility
 
 This library is intended to work with Ruby variants >= 1.9. I've tested it on 
 MRI 1.9, rbx-head, jruby. Please report as a bug if you encounter issues.
 
-STATUS 
+## Status 
 
 Production worthy.
 
