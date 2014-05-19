@@ -31,9 +31,9 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
 
       if right.kind_of? Array
         # Subexpression -> Subhash
-        left = {l: left, o: op, r: produce_tree(right)}
+        left = {:l => left, :o => op, :r => produce_tree(right)}
       else
-        left = {l: left, o: op, r: right}
+        left = {:l => left, :o => op, :r => right}
       end
     end
 
@@ -42,16 +42,16 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
 
   # A precedence climbing algorithm married to parslet, as described here
   #   http://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing/
-  # 
-  # @note Error handling in this routine is done by throwing :error and 
+  #
+  # @note Error handling in this routine is done by throwing :error and
   #       as a value the error to return to parslet. This avoids cluttering
   #       the recursion logic here with parslet error handling. 
   #
   def precedence_climb(source, context, consume_all, current_prec=1, needs_element=false)
     result = []
 
-    # To even begin parsing an arithmetic expression, there needs to be 
-    # at least one @element. 
+    # To even begin parsing an arithmetic expression, there needs to be
+    # at least one @element.
     success, value = @element.apply(source, context, false)
     
     unless success
@@ -65,14 +65,14 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
       op_pos = source.pos
       op_match, prec, assoc = match_operation(source, context, false)
 
-      # If no operator could be matched here, one of several cases 
-      # applies: 
+      # If no operator could be matched here, one of several cases
+      # applies:
       #
       # - end of file
       # - end of expression
       # - syntax error
-      # 
-      # We abort matching the expression here. 
+      #
+      # We abort matching the expression here.
       break unless op_match
 
       if prec >= current_prec

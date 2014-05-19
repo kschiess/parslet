@@ -82,7 +82,7 @@ module Parslet
 
   module Graphable
     def graph opts
-      g = GraphViz.new(:G, type: :digraph)
+      g = GraphViz.new(:G, :type => :digraph)
       visitor = GraphvizVisitor.new(g)
 
       new.accept(visitor)
