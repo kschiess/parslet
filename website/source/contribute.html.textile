@@ -72,6 +72,10 @@ improvements. (Robert Kosek)
 
 A semantic version parser. (meh)
 
+"*shortcode*":https://github.com/kernow/shortcode
+
+A ruby gem for parsing Wordpress style shortcodes using parslet. (Jamie Dyer)
+
 h2. Thanks for all the fish -- Contributions
 
 * *Rory O’Kane* ("roryokane":https://github.com/roryokane) for a careful code 
