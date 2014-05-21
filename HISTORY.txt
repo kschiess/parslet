@@ -5,6 +5,8 @@
 
 = 1.7 / ???
 
+  ! Small speed gains from improvements on the hot spots. 
+
 = 1.6 / 1May2014
 
   + EXPERIMENTAL: Parslet accelerators permit replacing parts of your parser 

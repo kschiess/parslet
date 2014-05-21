@@ -81,11 +81,15 @@ module Parslet::Atoms
     end
     
   private 
+    # NOTE These methods use #object_id directly, since that seems to bring the
+    # most performance benefit. This is a hot spot; going through
+    # Atoms::Base#hash doesn't yield as much.
+    #
     def lookup(obj, pos)
-      @cache[pos][obj] 
+      @cache[pos][obj.object_id] 
     end
     def set(obj, pos, val)
-      @cache[pos][obj] = val
+      @cache[pos][obj.object_id] = val
     end
   end
 end
