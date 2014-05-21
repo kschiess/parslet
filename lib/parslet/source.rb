@@ -38,7 +38,7 @@ module Parslet
     # input. 
     #
     def consume(n)
-      original_pos = @str.pos
+      original_pos = @str.charpos
       slice_str = @str.scan(@re_cache[n])
       slice = Parslet::Slice.new(
         slice_str,
