@@ -5,7 +5,7 @@ describe Parslet::Parser do
   
   # string = "‡ 1. A compound representing α1 adrenergic receptor.‡"
   string = "‡ 1."
-  class FooParser < Parslet::Parser
+  class OffsetParser < Parslet::Parser
     rule(:space)  { match['[:space:]'].repeat(1) }
     rule(:number) {
       str('‡') >>
@@ -15,8 +15,8 @@ describe Parslet::Parser do
     root(:number)
   end
   
-  it "should parse 'string' with coreect offset" do
-    parsed = FooParser.new.parse(string)
+  it "should parse 'string' with correct offset" do
+    parsed = OffsetParser.new.parse(string)
     parsed[:number].offset.should == 2
   end 
 end
