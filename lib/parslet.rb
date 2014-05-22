@@ -290,8 +290,6 @@ module Parslet
   autoload :Expression, 'parslet/expression'
 end
 
-require 'parslet/shims/charpos'
-
 require 'parslet/slice'
 require 'parslet/cause'
 require 'parslet/source'

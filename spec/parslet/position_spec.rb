@@ -1,3 +1,4 @@
+# Encoding: UTF-8
 
 require 'spec_helper'
 
