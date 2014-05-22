@@ -2,6 +2,7 @@
 require 'stringio'
 require 'strscan'
 
+require 'parslet/position'
 require 'parslet/source/line_cache'
 
 module Parslet
@@ -38,11 +39,11 @@ module Parslet
     # input. 
     #
     def consume(n)
-      original_pos = @str.charpos
+      position = self.pos
       slice_str = @str.scan(@re_cache[n])
       slice = Parslet::Slice.new(
+        position, 
         slice_str,
-        original_pos,
         @line_cache)
 
       return slice
@@ -71,7 +72,7 @@ module Parslet
     # @note Please be aware of encodings at this point. 
     #
     def pos
-      @str.charpos
+      Position.new(@str.string, @str.pos)
     end
     def bytepos
       @str.pos
@@ -89,7 +90,7 @@ module Parslet
     # given by #pos. 
     #
     def line_and_column(position=nil)
-      @line_cache.line_and_column(position || self.pos)
+      @line_cache.line_and_column(position || self.bytepos)
     end
   end
 end

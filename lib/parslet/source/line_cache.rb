@@ -12,9 +12,11 @@ class Parslet::Source
       @line_ends.extend RangeSearch
     end
 
-    # Returns a <line, column> tuple for the given input position. 
-    # 
+    # Returns a <line, column> tuple for the given input position. Input
+    # position must be given as byte offset into original string. 
+    #
     def line_and_column(pos)
+      pos = pos.bytepos if pos.respond_to? :bytepos
       eol_idx = @line_ends.lbound(pos)
 
       if eol_idx
@@ -46,7 +48,7 @@ class Parslet::Source
       ## Scan the string for line endings; store the positions of all endings
       ## in @line_ends. 
       while buf.skip_until(/\n/)
-        @last_line_end = start_pos + buf.charpos
+        @last_line_end = start_pos + buf.pos
         @line_ends << @last_line_end
       end
     end

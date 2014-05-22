@@ -1,21 +1,27 @@
 require 'spec_helper'
 
 describe Parslet::Slice do
+  def cslice string, offset, cache=nil
+    described_class.new(
+      Parslet::Position.new(string, offset), 
+      string, cache)
+  end
+
   describe "construction" do
     it "should construct from an offset and a string" do
-      described_class.new('foobar', 40)
+      cslice('foobar', 40)
     end
   end
-  context "('foobar', 40)" do
-    let(:slice) { described_class.new('foobar', 40) }
+  context "('foobar', 40, 'foobar')" do
+    let(:slice) { cslice('foobar', 40) }
     describe "comparison" do
       it "should be equal to other slices with the same attributes" do
-        other = described_class.new('foobar', 40)
+        other = cslice('foobar', 40)
         slice.should == other
         other.should == slice
       end 
       it "should be equal to other slices (offset is irrelevant for comparison)" do
-        other = described_class.new('foobar', 41)
+        other = cslice('foobar', 41)
         slice.should == other
         other.should == slice
       end 
@@ -37,7 +43,7 @@ describe Parslet::Slice do
     end
     describe "offset" do
       it "should return the associated offset" do
-        slice.offset.should == 40
+        slice.offset.should == 6
       end
       it "should fail to return a line and column" do
         lambda {
@@ -46,7 +52,7 @@ describe Parslet::Slice do
       end 
       
       context "when constructed with a source" do
-        let(:slice) { described_class.new(
+        let(:slice) { cslice(
           'foobar', 40,  
           flexmock(:cache, :line_and_column => [13, 14])) }
         it "should return proper line and column" do
@@ -69,13 +75,13 @@ describe Parslet::Slice do
         it { should == 6 } 
       end
       describe "<- #+" do
-        let(:other) { described_class.new('baz', 10) }
+        let(:other) { cslice('baz', 10) }
         subject { slice + other }
         
         it "should concat like string does" do
           subject.size.should == 9
           subject.should == 'foobarbaz'
-          subject.offset.should == 40
+          subject.offset.should == 6
         end 
       end
     end
@@ -92,12 +98,12 @@ describe Parslet::Slice do
       end
       describe "cast to Float" do
         it "should return a float" do
-          Float(described_class.new('1.345', 11)).should == 1.345
+          Float(cslice('1.345', 11)).should == 1.345
         end 
       end
       describe "cast to Integer" do
         it "should cast to integer as a string would" do
-          s = described_class.new('1234', 40)
+          s = cslice('1234', 40)
           Integer(s).should == 1234
           s.to_i.should == 1234
         end 
@@ -112,7 +118,7 @@ describe Parslet::Slice do
     describe "inspection and string conversion" do
       describe "#inspect" do
         subject { slice.inspect }
-        it { should == '"foobar"@40' }
+        it { should == '"foobar"@6' }
       end
       describe "#to_s" do
         subject { slice.to_s }
@@ -124,7 +130,7 @@ describe Parslet::Slice do
         Marshal.dump(slice)
       end
       context "when storing a line cache" do
-        let(:slice) { described_class.new('foobar', 40, Parslet::Source::LineCache.new()) }
+        let(:slice) { cslice('foobar', 40, Parslet::Source::LineCache.new()) }
         it "should serialize" do
           Marshal.dump(slice)
         end

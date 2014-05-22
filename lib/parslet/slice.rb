@@ -23,15 +23,21 @@
 # delegation, we opt for a partial emulation that gets the job done.
 #
 class Parslet::Slice
-  attr_reader :str, :offset
+  attr_reader :str
+  attr_reader :position
   attr_reader :line_cache
 
   # Construct a slice using a string, an offset and an optional line cache. 
   # The line cache should be able to answer to the #line_and_column message. 
   #
-  def initialize(string, offset, line_cache=nil)
-    @str, @offset = string, offset
+  def initialize(position, string, line_cache=nil)
+    @position = position
+    @str = string
     @line_cache = line_cache
+  end
+
+  def offset
+    @position.charpos
   end
 
   # Compares slices to other slices or strings.
@@ -57,7 +63,7 @@ class Parslet::Slice
   # as the one of this slice. 
   #
   def +(other)
-    self.class.new(str + other.to_s, offset, line_cache)
+    self.class.new(@position, str + other.to_s, line_cache)
   end
 
   # Returns a <line, column> tuple referring to the original input.
@@ -66,7 +72,7 @@ class Parslet::Slice
     raise ArgumentError, "No line cache was given, cannot infer line and column." \
       unless line_cache
 
-    line_cache.line_and_column(self.offset)
+    line_cache.line_and_column(@position.bytepos)
   end
 
 
@@ -96,6 +102,7 @@ class Parslet::Slice
 
   # Prints the slice as <code>"string"@offset</code>.
   def inspect
+
     str.inspect << "@#{offset}"
   end
 end

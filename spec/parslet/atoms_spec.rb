@@ -89,7 +89,7 @@ describe Parslet do
     it "should leave pos untouched if there is no foo" do
       source = src('bar')
       parslet.apply(source, context)
-      source.pos.should == 0
+      source.pos.charpos.should == 0
     end
     it "should inspect as 'foo'?" do
       parslet.inspect.should == "'foo'?"
@@ -173,7 +173,7 @@ describe Parslet do
       it "should not change input position" do
         source = src('foo')
         parslet.apply(source, context)
-        source.pos.should == 0
+        source.pos.charpos.should == 0
       end
     end
     context "when fed 'bar'" do
@@ -203,7 +203,7 @@ describe Parslet do
       it "should not change input position" do
         source = src('bar')
         parslet.apply(source, context)
-        source.pos.should == 0
+        source.pos.charpos.should == 0
       end
     end
     context "when fed 'foo'" do
@@ -241,7 +241,7 @@ describe Parslet do
     it "should consume one char" do
       source = src('foo')
       parslet.apply(source, context)
-      source.pos.should == 1
+      source.pos.charpos.should == 1
     end 
   end
   describe "eof behaviour" do

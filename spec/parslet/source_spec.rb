@@ -26,7 +26,7 @@ describe Parslet::Source do
       end
     end
     describe "<- #pos" do
-      subject { source.pos }
+      subject { source.pos.charpos }
   
       it { should == 0 }
       context "after reading a few bytes" do
@@ -36,13 +36,13 @@ describe Parslet::Source do
             pos += (n = rand(10)+1)
             source.consume(n)
   
-            source.pos.should == pos
+            source.pos.charpos.should == pos
           end
         end 
       end
     end
     describe "<- #pos=(n)" do
-      subject { source.pos }
+      subject { source.pos.charpos }
       10.times do
         pos = rand(200)
         context "setting position #{pos}" do
@@ -104,7 +104,7 @@ describe Parslet::Source do
         before(:each) { 
           @results = {}
           while source.chars_left>0
-            pos = source.pos
+            pos = source.pos.charpos
             @results[pos] = source.line_and_column
             source.consume(1)
           end
@@ -149,12 +149,12 @@ describe Parslet::Source do
     it "should read characters, not bytes" do
       source.should match(r("é"))
       source.consume(1)
-      source.pos.should == 1
+      source.pos.charpos.should == 1
       source.bytepos.should == 2
       
       source.should match(r("ö"))
       source.consume(1)
-      source.pos.should == 2
+      source.pos.charpos.should == 2
       source.bytepos.should == 4
       
       source.should match(r("変"))

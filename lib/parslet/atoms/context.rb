@@ -31,7 +31,7 @@ module Parslet::Atoms
         result = obj.try(source, self, consume_all)
     
         if obj.cached?
-          set obj, beg, [result, source.pos-beg]
+          set obj, beg, [result, source.bytepos-beg]
         end
         
         return result

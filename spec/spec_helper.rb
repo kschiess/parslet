@@ -22,3 +22,8 @@ def catch_failed_parse
   end
   exception.cause
 end
+
+def slet name, &block
+  let(name, &block)
+  subject(&block)
+end
