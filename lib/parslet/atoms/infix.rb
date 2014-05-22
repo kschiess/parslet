@@ -62,7 +62,7 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
 
     # Loop until we fail on operator matching or until input runs out.
     loop do
-      op_pos = source.pos
+      op_pos = source.bytepos
       op_match, prec, assoc = match_operation(source, context, false)
 
       # If no operator could be matched here, one of several cases 
@@ -82,7 +82,7 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
         result << precedence_climb(
           source, context, consume_all, next_prec, true)
       else
-        source.pos = op_pos
+        source.bytepos = op_pos
         return unwrap(result)
       end
     end

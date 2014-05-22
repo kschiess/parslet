@@ -38,7 +38,7 @@ module Parslet
     # input. 
     #
     def consume(n)
-      original_pos = @str.pos
+      original_pos = @str.charpos
       slice_str = @str.scan(@re_cache[n])
       slice = Parslet::Slice.new(
         slice_str,
@@ -67,11 +67,19 @@ module Parslet
     end
     
     # Position of the parse as a character offset into the original string. 
-    # @note: Encodings...
+    #
+    # @note Please be aware of encodings at this point. 
+    #
     def pos
+      @str.charpos
+    end
+    def bytepos
       @str.pos
     end
-    def pos=(n)
+
+    # @note Please be aware of encodings at this point. 
+    #
+    def bytepos=(n)
       @str.pos = n
     rescue RangeError
     end

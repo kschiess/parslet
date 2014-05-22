@@ -46,7 +46,7 @@ describe Parslet::Source do
       10.times do
         pos = rand(200)
         context "setting position #{pos}" do
-          before(:each) { source.pos = pos }
+          before(:each) { source.bytepos = pos }
   
           it { should == pos }
         end
@@ -78,24 +78,24 @@ describe Parslet::Source do
         before(:each) { source.consume(10000) }
   
         context "when seeking to 9" do
-          before(:each) { source.pos = 9 }
+          before(:each) { source.bytepos = 9 }
           it { should == [1, 10] }
         end
         context "when seeking to 100" do
-          before(:each) { source.pos = 100 }
+          before(:each) { source.bytepos = 100 }
           it { should == [1, 101] }
         end
         context "when seeking to 101" do
-          before(:each) { source.pos = 101 }
+          before(:each) { source.bytepos = 101 }
           it { should == [2, 1] }
         end
         context "when seeking to 102" do
-          before(:each) { source.pos = 102 }
+          before(:each) { source.bytepos = 102 }
           it { should == [2, 2] }
         end
         context "when seeking beyond eof" do
           it "should not throw an error" do
-            source.pos = 1000
+            source.bytepos = 1000
           end 
         end
       end
@@ -122,12 +122,12 @@ describe Parslet::Source do
         end
         it "should give the same results when seeking" do
           results.each do |pos, result|
-            source.pos = pos
+            source.bytepos = pos
             source.line_and_column.should == result
           end
         end
         it "should give the same results when reading" do
-          cur = source.pos = 0
+          cur = source.bytepos = 0
           while source.chars_left>0
             source.line_and_column.should == results[cur]
             cur += 1
@@ -145,20 +145,23 @@ describe Parslet::Source do
     def r str
       Regexp.new(Regexp.escape(str))
     end
-    
+  
     it "should read characters, not bytes" do
       source.should match(r("é"))
       source.consume(1)
-      source.pos.should == 2
+      source.pos.should == 1
+      source.bytepos.should == 2
       
       source.should match(r("ö"))
       source.consume(1)
-      source.pos.should == 4
+      source.pos.should == 2
+      source.bytepos.should == 4
       
       source.should match(r("変"))
       source.consume(1)
       
       source.consume(2)
+      source.chars_left.should == 0
       source.chars_left.should == 0
     end 
   end

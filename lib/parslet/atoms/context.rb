@@ -24,7 +24,7 @@ module Parslet::Atoms
     # advance the input pos by the same amount of bytes.
     #
     def try_with_cache(obj, source, consume_all)
-      beg = source.pos
+      beg = source.bytepos
         
       # Not in cache yet? Return early.
       unless entry = lookup(obj, beg)
@@ -43,7 +43,7 @@ module Parslet::Atoms
       # The data we're skipping here has been read before. (since it is in 
       # the cache) PLUS the actual contents are not interesting anymore since
       # we know obj matches at beg. So skip reading.
-      source.pos = beg + advance
+      source.bytepos = beg + advance
       return result
     end  
     

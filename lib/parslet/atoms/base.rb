@@ -36,7 +36,7 @@ class Parslet::Atoms::Base
       # Cheating has not paid off. Now pay the cost: Rerun the parse,
       # gathering error information in the process.
       reporter = options[:reporter] || Parslet::ErrorReporter::Tree.new
-      source.pos = 0
+      source.bytepos = 0
       success, value = setup_and_apply(source, reporter, !options[:prefix])
       
       fail "Assertion failed: success was true when parsing with reporter" \
@@ -78,7 +78,7 @@ class Parslet::Atoms::Base
   # @param consume_all [Boolean] true if the current parse must consume
   #   all input by itself.
   def apply(source, context, consume_all=false)
-    old_pos = source.pos
+    old_pos = source.bytepos
     
     success, value = result = context.try_with_cache(self, source, consume_all)
 
@@ -91,7 +91,7 @@ class Parslet::Atoms::Base
         offending_input = source.consume(10)
         
         # Rewind input (as happens always in error case)
-        source.pos      = old_pos
+        source.bytepos  = old_pos
         
         return context.err_at(
           self, 
@@ -106,7 +106,7 @@ class Parslet::Atoms::Base
     end
     
     # We only reach this point if the parse has failed. Rewind the input.
-    source.pos = old_pos
+    source.bytepos = old_pos
     return result
   end
   

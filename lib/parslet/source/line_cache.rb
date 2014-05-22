@@ -46,7 +46,7 @@ class Parslet::Source
       ## Scan the string for line endings; store the positions of all endings
       ## in @line_ends. 
       while buf.skip_until(/\n/)
-        @last_line_end = start_pos + buf.pos
+        @last_line_end = start_pos + buf.charpos
         @line_ends << @last_line_end
       end
     end

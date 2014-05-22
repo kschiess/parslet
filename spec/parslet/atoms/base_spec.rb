@@ -54,7 +54,7 @@ describe Parslet::Atoms::Base do
     context "when given something that looks like a source" do
       let(:source) { flexmock("source lookalike", 
         :line_and_column => [1,2], 
-        :pos => 1, 
+        :bytepos => 1, 
         :chars_left => 0) }
       
       it "should not rewrap in a source" do
