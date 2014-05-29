@@ -1,0 +1,57 @@
+---
+title: Projects that use parslet
+---
+
+Have you got a project that uses parslet? Please write
+"us":mailto:kaspar.schiess@absurd.li about it. 
+
+"*edn-ruby*":https://github.com/relevance/edn-ruby
+
+edn-ruby is a Ruby library to read and write "edn":https://github.com/edn-format/edn 
+(extensible data notation), a subset of Clojure used for transferring data between 
+applications, much like JSON, YAML, or XML.
+
+"*Examples*":https://github.com/kschiess/parslet/tree/master/example/
+
+In here, you can find a parser for a lisp like language and much more. 
+
+"*Net::HTTP::Server*":https://github.com/postmodern/net-http-server
+
+A really small and elegant HTTP server written in Ruby. Think Webrick. Using
+parslet. (Postmodern)
+
+"*regexador*":https://github.com/Hal9000/regexador
+
+An external DSL for Ruby that tries to make regular expressions readable and maintainable. (Hal Fulton)
+
+"*self-ml*":https://github.com/self-ml/selfml
+
+A "self-ml":http://self-ml.github.io/ implementation using parslet. 
+(Ricardo Mendes)
+
+"*thnad*":https://github.com/undees/thnad 
+
+Thnad is a tiny programming language with so few features that it is not
+useful for anything at all -- except showing how to write a compiler in half
+an hour.
+
+"*Werd.rb*":https://github.com/rk/werd
+
+A variant of Chris Pound's word generator written in Ruby, with some
+improvements. (Robert Kosek)
+
+"*versionub*":https://github.com/meh/versionub
+
+A semantic version parser. (meh)
+
+"*shortcode*":https://github.com/kernow/shortcode
+
+A ruby gem for parsing Wordpress style shortcodes using parslet. (Jamie Dyer)
+
+"*Simple Java Parser*":https://github.com/parttimenerd/parser-experiments/tree/master/SimpleJavaParser
+
+A simple Java parser that can parse the overall structure of a Java file.
+
+"*crystal*":https://github.com/ruby-in-ruby/crystal
+
+A ruby  virtual machine in 100% ruby, that tries to parse most of ruby syntax with parslet.
