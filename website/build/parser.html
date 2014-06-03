@@ -4,19 +4,38 @@
     <meta content="text/html;charset=UTF-8" http-equiv="Content-type" />
     <title>parslet -Parser construction</title>
     <meta content="Kaspar Schiess (http://absurd.li)" name="author" />
-    <link href="images/favicon3.ico" rel="shortcut icon" /><link href="/parslet/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" /><link href="/parslet/stylesheets/sh_whitengrey.css" media="screen" rel="stylesheet" type="text/css" /><script src="/parslet/javascripts/sh_main.min.js" type="text/javascript"></script><script src="/parslet/javascripts/sh_ruby.min.js" type="text/javascript"></script></head>
+    <link href="images/favicon3.ico" rel="shortcut icon" />
+    <link href="/parslet/stylesheets/site.css" rel="stylesheet" type="text/css" /><link href="/parslet/stylesheets/sh_whitengrey.css" rel="stylesheet" type="text/css" /><script src="/parslet/javascripts/sh_main.min.js" type="text/javascript"></script><script src="/parslet/javascripts/sh_ruby.min.js" type="text/javascript"></script>
+  </head>
   <body class="code" onload="sh_highlightDocument();">
     <div id="everything">
-      <div class="main_menu"><img alt="Parslet Logo" src="/parslet/images/parsley_logo.png" /><ul>
-          <li><a href="/parslet/">about</a></li>
-          <li><a href="/parslet/get-started.html">get started</a></li>
-          <li><a href="/parslet/install.html">install</a></li>
-          <li><a href="/parslet/documentation.html">documentation</a></li>
-          <li><a href="/parslet/contribute.html">contribute</a></li>
+      <div class="main_menu">
+        <img alt="Parslet Logo" src="/parslet/images/parsley_logo.png" />
+        <ul>
+          <li>
+            <a href="/parslet/">about</a>
+          </li>
+          <li>
+            <a href="/parslet/get-started.html">get started</a>
+          </li>
+          <li>
+            <a href="/parslet/install.html">install</a>
+          </li>
+          <li>
+            <a href="/parslet/documentation.html">docs</a>
+          </li>
+          <li>
+            <a href="/parslet/contribute.html">contribute</a>
+          </li>
+          <li>
+            <a href="/parslet/projects.html">projects</a>
+          </li>
         </ul>
       </div>
       <div class="content">
-        <h1>Parser construction</h1><p>A parser is nothing more than a class that derives from
+        <h1>
+          Parser construction
+        </h1><p>A parser is nothing more than a class that derives from
 <code>Parslet::Parser</code>. The simplest parser that one could write would
 look like this:</p>
 <pre class="sh_ruby"><code>
@@ -272,17 +291,23 @@ a few string leftovers. But your programming skills fail you when you try
 to put all this data to use. Selecting keys upon keys in hash after hash, you
 feel like a cockroach that has just read Kafka&#8217;s works. This is no fun. This 
 is not what you signed up for.</p>
-<p>Time to introduce you to <a href="transform.html">Parslet::Transform</a> and its workings.</p></div>
-      <div class="copyright"><p><span class="caps">MIT</span> License, 2010-2012, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
-        Logo by <a href="http://floere.github.com">Florian Hanke</a>, <a href="http://creativecommons.org/licenses/by/1.0/">CC Attribution</a> license</p></div>
-      <script type="text/javascript">var _gaq = _gaq || [];
+<p>Time to introduce you to <a href="transform.html">Parslet::Transform</a> and its workings.</p>
+      </div>
+      <div class="copyright">
+        <p><span class="caps">MIT</span> License, 2010-2012, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
+        Logo by <a href="http://floere.github.com">Florian Hanke</a>, <a href="http://creativecommons.org/licenses/by/1.0/">CC Attribution</a> license</p>
+      </div>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-16365074-2']);
-        _gaq.push(['_trackPageview']); 
+        _gaq.push(['_trackPageview']);
+        
         (function() {
           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();</script>
+        })();
+      </script>
     </div>
   </body>
 </html>
