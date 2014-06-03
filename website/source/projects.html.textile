@@ -1,5 +1,5 @@
 ---
-title: Projects that use parslet
+title: Projects
 ---
 
 Have you got a project that uses parslet? Please write
@@ -7,9 +7,9 @@ Have you got a project that uses parslet? Please write
 
 "*edn-ruby*":https://github.com/relevance/edn-ruby
 
-edn-ruby is a Ruby library to read and write "edn":https://github.com/edn-format/edn 
-(extensible data notation), a subset of Clojure used for transferring data between 
-applications, much like JSON, YAML, or XML.
+edn-ruby is a Ruby library to read and write "edn":https://github.com/edn-
+format/edn  (extensible data notation), a subset of Clojure used for
+transferring data between  applications, much like JSON, YAML, or XML.
 
 "*Examples*":https://github.com/kschiess/parslet/tree/master/example/
 
@@ -22,7 +22,8 @@ parslet. (Postmodern)
 
 "*regexador*":https://github.com/Hal9000/regexador
 
-An external DSL for Ruby that tries to make regular expressions readable and maintainable. (Hal Fulton)
+An external DSL for Ruby that tries to make regular expressions readable and
+maintainable. (Hal Fulton)
 
 "*self-ml*":https://github.com/self-ml/selfml
 
@@ -54,4 +55,5 @@ A simple Java parser that can parse the overall structure of a Java file.
 
 "*crystal*":https://github.com/ruby-in-ruby/crystal
 
-A ruby  virtual machine in 100% ruby, that tries to parse most of ruby syntax with parslet.
+A ruby  virtual machine in 100% ruby, that tries to parse most of ruby syntax
+using parslet.
