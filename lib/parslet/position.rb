@@ -18,4 +18,9 @@ class Parslet::Position
   def <=> b
     self.bytepos <=> b.bytepos
   end
+  
+  def context
+    slice = @string.byteslice(0,@bytepos)
+    slice[-20..-1] || slice
+  end
 end
