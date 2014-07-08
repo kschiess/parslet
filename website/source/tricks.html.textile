@@ -60,7 +60,9 @@ problems. Either:
 I find it very useful in this situation to eliminate 2. from our options: 
 
 <pre class="sh_ruby"><code title="rspec">
+  # File spec/simple_spec.rb
   require 'rspec'
+  require 'parslet'
   require 'parslet/rig/rspec'
   
   class ComplexParser < Parslet::Parser
@@ -71,23 +73,68 @@ I find it very useful in this situation to eliminate 2. from our options:
     let(:parser) { ComplexParser.new }
     context "simple_rule" do
       it "should consume 'a'" do
-        parser.simple_rule.should parse('a')
+        expect(parser.simple_rule).to parse('a')
       end 
     end
   end
-  
-  RSpec::Core::Runner.run([])
 </code></pre>
 
-Output is: 
+Running it with rspec gives us
+
 <pre class="output">
+  $ rspec --format documentation
 
-Example::ComplexParser
-  simple_rule
-    should consume 'a'
+  ComplexParser
+    simple_rule
+      should consume 'a'
 
-Finished in 0.00115 seconds
-1 example, 0 failures
+  Finished in 0.001 seconds (files took 1.74 seconds to load)
+  1 example, 0 failures
+</pre>
+
+You can get more information from the rspec matcher by adding the trace option:
+
+<pre class="sh_ruby"><code title="rspec">
+  # File spec/failing_spec.rb
+  require 'rspec'
+  require 'parslet'
+  require 'parslet/rig/rspec'
+  
+  class ComplexParser < Parslet::Parser
+    rule(:simple_rule) { str('a') }
+  end
+
+  describe ComplexParser  do
+    let(:parser) { ComplexParser.new }
+    context "simple_rule" do
+      it "should consume 'a'" do
+        expect(parser.simple_rule).to parse('bad input', trace: true)
+      end 
+    end
+  end
+</code></pre>
+
+Running the failing example with rspec gives us
+
+<pre class="output">
+  $ rspec
+  F
+
+  Failures:
+
+    1) ComplexParser simple_rule should consume 'a'
+       Failure/Error: expect(parser.simple_rule).to parse('bad input', trace:
+  true)
+         expected SIMPLE_RULE to be able to parse "bad input"
+         Expected "a", but got "b" at line 1 char 1.
+       # ./spec/parslet_spec.rb:13:in `block (3 levels) in <top (required)>'
+
+  Finished in 0.001 seconds (files took 1.78 seconds to load)
+  1 example, 1 failure
+
+  Failed examples:
+
+  rspec ./spec/parslet_spec.rb:12 # ComplexParser simple_rule should consume 'a'
 </pre>
 
 Parslet parsers have one method per rule. These methods return valid parsers
