@@ -109,7 +109,7 @@ describe Parslet::Source do
             source.consume(1)
           end
   
-          @results.should have(202).entries
+          @results.entries.size.should == 202
           @results
         }
   

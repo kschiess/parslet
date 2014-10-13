@@ -18,7 +18,11 @@ describe Parslet::Pattern do
   # use this for new examples.
   #
   RSpec::Matchers.define :match_with_bind do |pattern, exp_bindings|
-    failure_message_for_should do |tree|
+    unless respond_to?(:failure_message)
+      alias_method :failure_message_for_should, :failure_message
+    end
+    
+    failure_message do |tree|
       "expected #{pattern.inspect} to match #{tree.inspect}, but didn't. (block wasn't called or not correctly)"
     end
     match do |tree|

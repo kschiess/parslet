@@ -6,6 +6,8 @@
 = 1.7 / ???
 
   ! Small speed gains from improvements on the hot spots. 
+  + More lenient on the blankslate version.
+  + Modernizes the test suite to run with rspec again. (!)
 
 = 1.6 / 1May2014
 

@@ -51,7 +51,7 @@ describe "Regressions from real examples" do
     it 'should parse "arg1", "arg2"' do
       result = ArgumentListParser.new.parse('"arg1", "arg2"')
       
-      result.should have(2).elements
+      result.size.should == 2
       result.each do |r|
         r[:argument]
       end
@@ -59,7 +59,7 @@ describe "Regressions from real examples" do
     it 'should parse "arg1", "arg2", "arg3"' do
       result = ArgumentListParser.new.parse('"arg1", "arg2", "arg3"')
       
-      result.should have(3).elements
+      result.size.should == 3
       result.each do |r|
         r[:argument]
       end
