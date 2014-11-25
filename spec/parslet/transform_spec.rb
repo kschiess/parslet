@@ -55,6 +55,19 @@ describe Parslet::Transform do
           Bi.new('c', 'f')
       end 
     end
+    describe "data_module" do
+      let(:data_module) { {'data_module_method' => -> {'foobar'} } }
+      let(:transform) { Parslet::Transform.new(data_module) }
+      context "given simple(:x) => (eval 'data_module_method').call" do
+        before(:each) do
+          transform.rule(simple(:x)) { (eval 'data_module_method').call }
+        end
+
+        it "should call data_module_method from the data_module" do
+          transform.apply(['data_module_method']).should == ['foobar']
+        end
+      end
+    end
   end
   describe "dsl construction" do
     let(:transform) { Parslet::Transform.new do
