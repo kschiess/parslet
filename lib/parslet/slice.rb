@@ -57,6 +57,8 @@ class Parslet::Slice
   def size
     str.size
   end
+
+  alias length size
   
   # Concatenate two slices; it is assumed that the second slice begins 
   # where the first one ends. The offset of the resulting slice is the same
