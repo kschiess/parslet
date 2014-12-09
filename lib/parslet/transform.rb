@@ -159,6 +159,23 @@ class Parslet::Transform
   # or a simple parslet. Transformation will proceed down the tree, replacing
   # parts/all of it with new objects. The resulting object will be returned. 
   #
+  # Using the context parameter, you can inject bindings for the transformation.
+  # This can be used to allow access to the outside world from transform blocks,
+  # like so:
+  # 
+  #   document = # some class that you act on
+  #   transform.apply(tree, document: document)
+  #   
+  # The above will make document available to all your action blocks: 
+  #
+  #   # Variant A
+  #   rule(...) { document.foo(bar) }
+  #   # Variant B
+  #   rule(...) { |d| d[:document].foo(d[:bar]) }
+  #
+  # @param obj PORO ast to transform
+  # @param context start context to inject into the bindings. 
+  #
   def apply(obj, context=nil)
     transform_elt(
       case obj
