@@ -134,12 +134,14 @@ class Parslet::Transform
     end
   end
   
-  def initialize(&block) 
+  def initialize(data_module=nil, &block)
     @rules = []
     
     if block
       instance_eval(&block)
     end
+
+    @data_module = data_module || {}
   end
   
   # Defines a rule to be applied whenever apply is called on a tree. A rule
@@ -204,6 +206,8 @@ class Parslet::Transform
   #   t.call_on_match(:a => :b) { |d| d[:a] }
   #
   def call_on_match(bindings, block)
+    bindings.merge! @data_module
+
     if block
       if block.arity == 1
         return block.call(bindings)
