@@ -74,6 +74,10 @@ describe Parslet::Slice do
         subject { slice.size }
         it { should == 6 } 
       end
+      describe "<- #length" do
+        subject { slice.length }
+        it { should == 6 } 
+      end
       describe "<- #+" do
         let(:other) { cslice('baz', 10) }
         subject { slice + other }
