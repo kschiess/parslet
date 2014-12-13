@@ -10,10 +10,11 @@
 #
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
   attr_reader :name, :block
-  def initialize(name, &block)
+  def initialize(name, opts={}, &block)
     super()
     
     @name = name
+    @label = opts[:label]
     @block = block
   end
 
@@ -22,9 +23,11 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
   end
   
   def parslet
-    @parslet ||= @block.call.tap { |p| 
-      raise_not_implemented unless p
-    }
+    return @parslet unless @parslet.nil?
+    @parslet = @block.call
+    raise_not_implemented if @parslet.nil?
+    @parslet.label = @label
+    @parslet
   end
 
   def to_s_inner(prec)

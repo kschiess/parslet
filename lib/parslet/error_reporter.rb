@@ -5,3 +5,4 @@ end
 
 require 'parslet/error_reporter/tree'
 require 'parslet/error_reporter/deepest'
+require 'parslet/error_reporter/contextual'

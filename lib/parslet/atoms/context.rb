@@ -62,7 +62,13 @@ module Parslet::Atoms
       return [false, @reporter.err(*args)] if @reporter
       return [false, nil]
     end
-  
+
+    # Report a successful parse.
+    # @see ErrorReporter::Contextual
+    def succ(*args)
+      @reporter.succ(*args) if @reporter
+    end
+
     # Returns the current captures made on the input (see
     # Parslet::Atoms::Base#capture). Use as follows: 
     # 

@@ -7,7 +7,10 @@ class Parslet::Atoms::Base
   include Parslet::Atoms::Precedence
   include Parslet::Atoms::DSL
   include Parslet::Atoms::CanFlatten
-  
+
+  # Parslet label as provided in grammar
+  attr_accessor :label
+
   # Given a string or an IO object, this will attempt a parse of its contents
   # and return a result. If the parse fails, a Parslet::ParseFailed exception
   # will be thrown. 
@@ -132,10 +135,11 @@ class Parslet::Atoms::Base
   end
   precedence BASE
   def to_s(outer_prec=OUTER)
+    str = @label || to_s_inner(precedence)
     if outer_prec < precedence
-      "("+to_s_inner(precedence)+")"
+      "(#{str})"
     else
-      to_s_inner(precedence)
+      str
     end
   end
   def inspect
