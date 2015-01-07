@@ -109,7 +109,7 @@ module Parslet
           self.instance_eval(&definition)
         }
         
-        @rules[name] = Atoms::Entity.new(name, opts, &definition_closure)
+        @rules[name] = Atoms::Entity.new(name, opts[:label], &definition_closure)
       end
     end
   end

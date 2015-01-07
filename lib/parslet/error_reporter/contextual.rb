@@ -37,17 +37,22 @@ module Parslet
     #
     # The contextual reporter returns the following causes:
     #
-    # 0: Failed to match sequence (identifier '.' method call) at line 1 char 5 when parsing method call arguments.
-    # 1: Failed to match sequence (identifier '(' method call arguments? ')') at line 1 char 22 when parsing method call arguments.
-    # 2: Failed to match [[:alnum:]] at line 1 char 23 when parsing method call arguments.
+    # 0: Failed to match sequence (identifier '.' method call) at line 1 char 5
+    #    when parsing method call arguments.
+    # 1: Failed to match sequence (identifier '(' method call arguments? ')') at
+    #    line 1 char 22 when parsing method call arguments.
+    # 2: Failed to match [[:alnum:]] at line 1 char 23 when parsing method call
+    #    arguments.
     #
     # (where 2 is a child cause of 1 and 1 a child cause of 0)
     #
     # The last piece used by the reporter is the (newly introduced) ability
     # to attach a label to rules that describe a sequence in the grammar. The
     # labels are used in two places:
-    #   - In the "to_s" of Atom::Base so that any error message uses labels to refer to atoms
-    #   - In the cause error messages to give information about which expression failed to parse
+    #   - In the "to_s" of Atom::Base so that any error message uses labels to
+    #     refer to atoms
+    #   - In the cause error messages to give information about which expression
+    #     failed to parse
     #
     class Contextual < Deepest
 
@@ -61,6 +66,7 @@ module Parslet
       # Only reset errors if the position of the source that matched is higher
       # than the position of the source that was last successful (so we keep
       # errors that are the "deepest" but for which no alternative succeeded)
+      #
       def succ(source)
         source_pos = source.pos.bytepos
         return if source_pos < @last_reset_pos
@@ -69,6 +75,7 @@ module Parslet
       end
 
       # Reset deepest error and its position and sequence index
+      #
       def reset
         @deepest_cause = nil
         @label_pos = -1
@@ -100,6 +107,7 @@ module Parslet
       #
       # @param label [String] label to apply if more relevant
       # @param bytepos [Integer] position in source code of matched source
+      #
       def update_label(label, bytepos)
         if bytepos >= @label_pos
           @label_pos = bytepos

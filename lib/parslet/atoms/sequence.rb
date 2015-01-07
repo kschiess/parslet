@@ -29,7 +29,7 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
       success, value = p.apply(source, context, child_consume_all) 
 
       unless success
-        return context.err(self, source, @error_msgs[:failed], [value])
+        return context.err(self, source, @error_msgs[:failed], [value]) 
       end
       context.succ(source)
 

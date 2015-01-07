@@ -65,6 +65,7 @@ module Parslet::Atoms
 
     # Report a successful parse.
     # @see ErrorReporter::Contextual
+    #
     def succ(*args)
       @reporter.succ(*args) if @reporter
     end

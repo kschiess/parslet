@@ -5,16 +5,16 @@
 # * Be able to print things by their name, not by their sometimes
 #   complicated content.
 #
-# You don't normally use this directly, instead you should generated it by
+# You don't normally use this directly, instead you should generate it by
 # using the structuring method Parslet.rule.
 #
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
   attr_reader :name, :block
-  def initialize(name, opts={}, &block)
+  def initialize(name, label=nil, &block)
     super()
     
     @name = name
-    @label = opts[:label]
+    @label = label
     @block = block
   end
 

@@ -49,4 +49,29 @@ describe Parslet::Atoms::Entity do
       cause.ascii_tree
     end
   end
+
+  context "when constructed with a label" do
+    let(:named) { Parslet::Atoms::Entity.new('name', 'label', &proc { Parslet.str('bar') }) }
+
+    it "should parse 'bar' without raising exceptions" do
+      named.parse('bar')
+    end 
+    it "should raise when applied to 'foo'" do
+      lambda {
+        named.parse('foo')
+      }.should raise_error(Parslet::ParseFailed)
+    end 
+
+    describe "#inspect" do
+      it "should return the label of the entity" do
+        named.inspect.should == 'label'
+      end 
+    end
+
+    describe "#parslet" do
+      it "should set the label on the cached parslet" do
+        named.parslet.label.should == 'label'
+      end
+    end
+  end
 end
