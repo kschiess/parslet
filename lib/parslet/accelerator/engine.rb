@@ -10,10 +10,22 @@ module Parslet::Accelerator
     end
 
     def visit_parser(root)
-      false
+      @engine.match(root, @expr)
     end
     def visit_entity(name, block)
-      false
+      p [:visit_entity, name, @expr]
+      # Either we find an actual :entity matcher here, in which case we demand
+      # the bind_conditions to match against name. 
+      match(:entity) do |*bind_conditions|
+        return bind_conditions.all? { |bind_cond| 
+            @engine.try_bind(bind_cond, name) 
+          } && 
+          @engine.match(block.call, @expr)
+      end
+
+      # Or we have another kind of rule here. Render the entity transparent to
+      # the rule by delegation. 
+      @engine.match(block.call, @expr)
     end
     def visit_named(name, atom)
       match(:as) do |key|
@@ -95,6 +107,7 @@ module Parslet::Accelerator
         else
           # This does not look like a variable - let's try matching it against
           # the value: 
+          p [:try_bind, variable, value]
           variable === value
         end    
       end

@@ -81,6 +81,15 @@ module Parslet::Accelerator
         Expression.new(tag, self, other_expr)
       end
     end
+
+    def to_s
+      if args.empty?
+        "(#{type})"
+      else
+        str = "(#{type} #{args.map(&:inspect).join(' ')})"
+      end
+    end
+    alias inspect to_s
   end
 
 module_function 
@@ -106,6 +115,14 @@ module_function
   #
   def any
     Expression.new(:re, ".")
+  end
+
+  # Returns a match expression that will match a rule clause of the given
+  # name. 
+  #
+  # @return [Expression]
+  def entity name, *constraints
+    Expression.new(:entity, name)
   end
 
   # Given a parslet atom and an expression, will determine if the expression

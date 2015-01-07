@@ -70,9 +70,9 @@ And all is fine, right? We don't think so. You've chosen to use parslet, so you 
     quote = str('"')
     parser = quote >> (quote.absent? >> any).repeat >> quote
 
-    A = Accelerator # for making what follows a bit shorter
-    optimized_parser = A.apply(parser,
-      A.rule( (A.str(:x).absent? >> A.any).repeat ) { GobbleUp.new(x) })
+    a = Accelerator
+    optimized_parser = a.apply(parser,
+      a.rule( (a.str(:x).absent? >> a.any).repeat ) { GobbleUp.new(x) })
 
     optimized_parser.parse('"Parsing is now fully optimized! (tm)"')
 
@@ -91,7 +91,7 @@ We'll demonstrate how pattern detection is constructed by showing what the small
 
     include Parslet
 
-The whole optimizer code is inside the `Parslet::Accelerator` module. If you read that, read 'particle accelerator', not 'will make my code fast'. It is very possible to make things worse using `Parslet::Accelerator`.
+The whole optimizer code is inside the `Parslet::Accelerator` module. If you read that, read 'particle accelerator', not 'will make my code fast'. It is very possible to make things worse using `Parslet::Accelerator`. Like accidentally creating a black hole that will swallow everyone you know and then some. 
 
 The simplest parser I can think of would be the one matching a simple string.
 
@@ -101,7 +101,9 @@ The simplest parser I can think of would be the one matching a simple string.
 
     binding[:x].assert == 'foo'
 
-Note that the above was somewhat verbose, with all these variables and all that. We'll write shorter examples from now on.
+Note that the above was somewhat verbose, with all these variables and all that. We'll write shorter examples from now on. For this, let's abbreviate the word `Accelerator` with just `A` in our code. 
+
+    A = Accelerator
 
 Another simple parser is the one that matches against variants of the `match(...)` atom. Multiple forms of this exist, so we'll go through all of them. First comes a simple character range match.
 
@@ -168,6 +170,40 @@ Which we also want to be able to bind.
       str('a').as(:a),
       A.str('a').as(:b)).assert == {:b => :a}
 
+### Parslet::Parser Special Case
+
+Of course you will also want to apply accelerators to parsers written the class syntax of parslet parsers, otherwise what's the point, right? 
+
+    # A much used example parser, only parses simple strings.
+    class StringParser < Parslet::Parser
+      root(:string)
+      rule(:string) { 
+        str('"') >> no_string_start.repeat >> str('"') }
+      rule(:no_string_start) { str('"').absent? >> any }
+    end
+
+Let's assume that we want to change the pattern `(str('"').absent? >> any).repeat` into our previously introdoced atom of `GobbleUp`. This will obviously involve matching rules accross the `rule` boundary. 
+
+    parser = StringParser.new
+    binding = Accelerator.match(
+      parser.no_string_start.repeat, 
+      (A.str(:x).absent? >> A.any).repeat)
+
+    # Binding should have matched str('"') across rule boundaries. 
+    binding[:x].assert == '"'
+
+Here's a catch to the above, let's consider rules that are self-contained. 
+
+    class Catch < Parslet::Parser
+      root(:a)
+      rule(:a) { (str('a') >> a) | str('b') }
+    end
+    Catch.new.parse('aaaab').refute.nil?
+
+    binding = Accelerator.match(Catch.new, 
+      (A.str('a') >> A.recurse) || A.str('b'))
+    binding.refute.nil?
+
 ## Binding to Values
 
 As a side note, our parser should also respect literal value matches in the pattern and only bind to subsequent locations when the values match up.
@@ -228,6 +264,16 @@ The `Accelerator.apply` method should be called with the following schema:
     Accelerator.apply(PARSER, RULE1, RULE2, ...)
 
 This is a more modern syntax than `Parslet::Transform` uses - maybe we'll update that class in a future version.
+
+This also works when applied to full parsers.
+
+    new_parser = Accelerator.apply(StringParser.new, 
+      A.rule((  A.str(:x).absent? >> A.any).repeat) {
+        GobbleUp.new(x) })
+
+    # The new parser is just the root entity (STRING) incorporating GobbleUp. 
+    # It will break in new and interesting ways, but parse faster. 
+    new_parser.parslet.to_s.assert == %Q('"' until('"') '"')
 
 ## Closing Note
 
