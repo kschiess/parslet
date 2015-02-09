@@ -265,7 +265,7 @@ Sometimes a parser needs to match against something that was already matched
 against. Think about Ruby heredocs for example: 
 
 <pre class="sh_ruby"><code>
-  str = <-HERE
+  str = <<-HERE
     This is part of the heredoc.
   HERE
 </code></pre>
