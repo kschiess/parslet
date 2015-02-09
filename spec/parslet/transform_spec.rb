@@ -68,13 +68,34 @@ describe Parslet::Transform do
   end
   describe "class construction" do
     class OptimusPrime < Parslet::Transform 
-      rule(simple(:x)) { A.new(x) }
+      rule(:a => simple(:x)) { A.new(x) }
+      rule(:b => simple(:x)) { B.new(x) }
     end
     let(:transform) { OptimusPrime.new }
     
     it "should evaluate rules" do
-      transform.apply('a').should == A.new('a')
-    end 
+      transform.apply(:a => 'a').should == A.new('a')
+    end
+
+    context "with inheritance" do
+      class OptimusPrimeJunior < OptimusPrime
+        rule(:b => simple(:x)) { B.new(x.upcase) }
+        rule(:c => simple(:x)) { C.new(x) }
+      end
+      let(:transform) { OptimusPrimeJunior.new }
+
+      it "should inherit rules from its parent" do
+        transform.apply(:a => 'a').should == A.new('a')
+      end
+
+      it "should be able to override rules from its parent" do
+        transform.apply(:b => 'b').should == B.new('B')
+      end
+
+      it "should be able to define new rules" do
+        transform.apply(:c => 'c').should == C.new('c')
+      end
+    end
   end
   describe "<- #call_on_match" do
     let(:bindings) { { :foo => 'test' } }
