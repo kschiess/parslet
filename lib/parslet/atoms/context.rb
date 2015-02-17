@@ -67,7 +67,8 @@ module Parslet::Atoms
     # @see ErrorReporter::Contextual
     #
     def succ(*args)
-      @reporter.succ(*args) if @reporter
+      return [true, @reporter.succ(*args)] if @reporter
+      return [true, nil]
     end
 
     # Returns the current captures made on the input (see

@@ -86,6 +86,8 @@ class Parslet::Atoms::Base
     success, value = result = context.try_with_cache(self, source, consume_all)
 
     if success
+      # Notify context
+      context.succ(source)
       # If a consume_all parse was made and doesn't result in the consumption
       # of all the input, that is considered an error. 
       if consume_all && source.chars_left>0
