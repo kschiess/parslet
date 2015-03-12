@@ -30,6 +30,9 @@ get a place in the space below for lifetime.
 
 h2. Thanks for all the fish -- Contributions
 
+* *Raphaël Simon* ("raphael":https://github.com/raphael) for a nice contextual 
+  error reporter!
+
 * *Dan Freeman* ("dfreeman":https://github.com/dfreeman) for allowing rules 
   to be inherited!
 
