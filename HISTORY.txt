@@ -6,6 +6,8 @@
 = 1.7 / ???
 
   ! Small speed gains from improvements on the hot spots. 
+  + Contextual error reporter, a flavor of error reporting that emphasizes 
+    context. 
 
 = 1.6 / 1May2014, 13Okt14
 
