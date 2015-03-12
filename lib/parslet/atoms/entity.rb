@@ -5,15 +5,16 @@
 # * Be able to print things by their name, not by their sometimes
 #   complicated content.
 #
-# You don't normally use this directly, instead you should generated it by
+# You don't normally use this directly, instead you should generate it by
 # using the structuring method Parslet.rule.
 #
 class Parslet::Atoms::Entity < Parslet::Atoms::Base
   attr_reader :name, :block
-  def initialize(name, &block)
+  def initialize(name, label=nil, &block)
     super()
     
     @name = name
+    @label = label
     @block = block
   end
 
@@ -22,9 +23,11 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
   end
   
   def parslet
-    @parslet ||= @block.call.tap { |p| 
-      raise_not_implemented unless p
-    }
+    return @parslet unless @parslet.nil?
+    @parslet = @block.call
+    raise_not_implemented if @parslet.nil?
+    @parslet.label = @label
+    @parslet
   end
 
   def to_s_inner(prec)

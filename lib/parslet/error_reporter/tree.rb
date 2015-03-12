@@ -52,6 +52,12 @@ module Parslet
         position = pos
         Cause.format(source, position, message, children)
       end
+
+      # Notification that an expression successfully parsed
+      # not used, see ErrorReporter::Contextual
+      def succ(source)
+      end
+
     end
   end
 end

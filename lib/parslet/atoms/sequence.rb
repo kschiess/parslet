@@ -31,7 +31,7 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
       unless success
         return context.err(self, source, @error_msgs[:failed], [value]) 
       end
-      
+
       result[idx+1] = value
     end
     

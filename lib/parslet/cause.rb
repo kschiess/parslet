@@ -44,15 +44,22 @@ module Parslet
     def self.format(source, pos, str, children=[])
       self.new(str, source, pos, children)
     end
-    
+
+    # Update error message to include context provided by label
+    # Update all child causes too (the same context applies to all causes)
+    def set_label(l)
+      @context = " when parsing #{l}"
+      children.each { |c| c.set_label(l) }
+    end
+
     def to_s
       line, column = source.line_and_column(pos)
       # Allow message to be a list of objects. Join them here, since we now
-      # really need it. 
-      Array(message).map { |o| 
-        o.respond_to?(:to_slice) ? 
-          o.str.inspect : 
-          o.to_s }.join + " at line #{line} char #{column}."
+      # really need it.
+      Array(message).map { |o|
+        o.respond_to?(:to_slice) ?
+          o.str.inspect :
+          o.to_s }.join + " at line #{line} char #{column}#{@context}."
     end
     
     # Signals to the outside that the parse has failed. Use this in

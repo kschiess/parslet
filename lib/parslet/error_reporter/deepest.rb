@@ -50,6 +50,11 @@ module Parslet
       end
       
       # Returns the cause that is currently deepest. Mainly for specs. 
+
+      # Notification that an expression successfully parsed
+      # not used, see ErrorReporter::Contextual
+      def succ(source)
+      end
       #
       attr_reader :deepest_cause
       

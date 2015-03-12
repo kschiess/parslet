@@ -99,7 +99,7 @@ module Parslet
     #     root :twobar
     #   end
     #
-    def rule(name, &definition)
+    def rule(name, opts={}, &definition)
       define_method(name) do
         @rules ||= {}     # <name, rule> memoization
         return @rules[name] if @rules.has_key?(name)
@@ -109,7 +109,7 @@ module Parslet
           self.instance_eval(&definition)
         }
         
-        @rules[name] = Atoms::Entity.new(name, &definition_closure)
+        @rules[name] = Atoms::Entity.new(name, opts[:label], &definition_closure)
       end
     end
   end

@@ -109,6 +109,8 @@ describe Parslet::Atoms::Base do
         should_receive(:err_at).once
       reporter.
         should_receive(:err => cause).once
+      reporter.
+        should_receive(:succ).once
       
       # The final cause will be sent the #raise method.
       cause.
