@@ -3,7 +3,7 @@
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
 
-= 1.7 / ???
+= 1.7 / 12Mar2015
 
   ! Small speed gains from improvements on the hot spots. 
   + Contextual error reporter, a flavor of error reporting that emphasizes 
