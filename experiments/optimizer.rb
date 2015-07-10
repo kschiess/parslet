@@ -1,23 +1,22 @@
-# Example that demonstrates how a simple erb-like parser could be constructed. 
+# Example that demonstrates how a simple erb-like parser could be constructed.
 
 $:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'parslet'
 require 'parslet/atoms/visitor'
 require 'parslet/convenience'
-require 'blankslate'
 
 class ErbParser < Parslet::Parser
   rule(:ruby) { (str('%>').absent? >> any).repeat.as(:ruby) }
-  
+
   rule(:expression) { (str('=') >> ruby).as(:expression) }
   rule(:comment) { (str('#') >> ruby).as(:comment) }
   rule(:code) { ruby.as(:code) }
   rule(:erb) { expression | comment | code }
-  
+
   rule(:erb_with_tags) { str('<%') >> erb >> str('%>') }
   rule(:text) { (str('<%').absent? >> any).repeat(1) }
-  
+
   rule(:text_with_ruby) { (text.as(:text) | erb_with_tags).repeat.as(:text) }
   root(:text_with_ruby)
 end
@@ -112,7 +111,7 @@ class Parslet::Optimizer
         @positive, @expression = positive, expression
       end
       def visit_lookahead(positive, atom)
-        positive == @positive && 
+        positive == @positive &&
           @expression.match(atom, @bindings)
       end
     end
@@ -154,13 +153,13 @@ class Parslet::Optimizer
   def self.any
     Match::Re.new('.')
   end
-  
+
   class Rule
     def initialize(expression, replacement)
       @expression, @replacement = expression, replacement
     end
 
-    class Context < BlankSlate
+    class Context < BasicObject
       def initialize(bindings)
         @bindings = bindings
       end
@@ -168,7 +167,7 @@ class Parslet::Optimizer
         if args.size == 0 && !block && @bindings.has_key?(sym)
           return @bindings[sym]
         end
-        
+
         super
       end
       def call(callable)
