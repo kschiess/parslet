@@ -30,7 +30,7 @@
 class Parslet::Parser < Parslet::Atoms::Base
   include Parslet
 
-  class <<self # class methods
+  class << self # class methods
     # Define the parsers #root function. This is the place where you start 
     # parsing; if you have a rule for 'file' that describes what should be 
     # in a file, this would be your root declaration: 

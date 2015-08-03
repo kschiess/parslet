@@ -21,7 +21,7 @@ class Parslet::Context < BlankSlate
   include Parslet
   
   def meta_def(name, &body)
-    metaclass = class <<self; self; end
+    metaclass = class << self; self; end
 
     metaclass.send(:define_method, name, &body)
   end
