@@ -14,5 +14,4 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.summary = 'Parser construction library with great error reporting in Ruby.'  
   
-  s.add_dependency 'blankslate', '>= 2.0', '<= 4.0'
 end

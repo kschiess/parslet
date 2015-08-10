@@ -5,7 +5,6 @@ $:.unshift File.dirname(__FILE__) + "/../lib"
 require 'parslet'
 require 'parslet/atoms/visitor'
 require 'parslet/convenience'
-require 'blankslate'
 
 class ErbParser < Parslet::Parser
   rule(:ruby) { (str('%>').absent? >> any).repeat.as(:ruby) }
@@ -160,7 +159,7 @@ class Parslet::Optimizer
       @expression, @replacement = expression, replacement
     end
 
-    class Context < BlankSlate
+    class Context < BasicObject
       def initialize(bindings)
         @bindings = bindings
       end
