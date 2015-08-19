@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors = ['Kaspar Schiess']
   s.email = 'kaspar.schiess@absurd.li'
   s.extra_rdoc_files = ['README']
-  s.files = %w(HISTORY.txt LICENSE Rakefile README) + Dir.glob("{lib,example}/**/*")
+  s.files = %w(HISTORY.txt LICENSE Rakefile README parslet.gemspec) + Dir.glob("{lib,spec,example}/**/*")
   s.homepage = 'http://kschiess.github.io/parslet'
   s.license = 'MIT'
   s.rdoc_options = ['--main', 'README']
