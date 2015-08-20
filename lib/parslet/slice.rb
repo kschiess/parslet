@@ -105,6 +105,6 @@ class Parslet::Slice
   # Prints the slice as <code>"string"@offset</code>.
   def inspect
 
-    str.inspect << "@#{offset}"
+    str.inspect + "@#{offset}"
   end
 end
