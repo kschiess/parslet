@@ -174,7 +174,7 @@ in content. Here's how this looks:
 
 This reads naturally as "'foo' or 'bar'". 
 
-h3. Operator precedence
+h3. Operator precedence of parslet atom methods
 
 The operators we have chosen for parslet atom combination have the operator
 precedence that you would expect. No parenthesis are needed to express
@@ -183,6 +183,17 @@ alternation of sequences:
 <pre class="sh_ruby"><code>
   str('s') >> str('equence') | 
     str('se') >> str('quence')
+</code></pre>
+
+h3. Implementing operator precedence in your parser
+
+If you find yourself parsing an expression with infix operators and want one
+operator to have a higher precedence than another, that might look like this:
+
+<pre class="sh_ruby"><code>
+  infix_expression(match('[0-9]').repeat,
+                   [str('*'), 2],
+                   [str('+'), 1]) # matches both "1+2*3" and "1*2+3"
 </code></pre>
 
 h3. And more
