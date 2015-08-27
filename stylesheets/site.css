@@ -104,3 +104,7 @@ body.code pre {
     border-radius: 0.5em;
     background-color: #f8f8f8;
     padding-bottom: 1.4em; }
+
+/* line 121, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
+#toc li {
+  list-style-type: lower-alpha; }
