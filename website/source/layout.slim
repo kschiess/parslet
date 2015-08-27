@@ -12,11 +12,13 @@ html
     == stylesheet_link_tag 'site'
     == stylesheet_link_tag 'sh_whitengrey'
     
+    == javascript_include_tag 'http://code.jquery.com/jquery-2.1.4.min.js'
+    == javascript_include_tag 'toc.js'
     == javascript_include_tag 'sh_main.min.js'
     == javascript_include_tag 'sh_ruby.min.js'
     
     
-  body.code onload="sh_highlightDocument();"
+  body.code onload="sh_highlightDocument(); $('#toc').toc({selectors: 'h2'});"
     #everything
       .main_menu
         == image_tag 'parsley_logo.png', alt: 'Parslet Logo'
