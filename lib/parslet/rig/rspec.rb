@@ -2,13 +2,6 @@ RSpec::Matchers.define(:parse) do |input, opts|
   as = block = nil
   result = trace = nil
 
-  unless self.respond_to? :failure_message # if RSpec 2.x
-    class << self
-      alias_method :failure_message, :failure_message_for_should
-      alias_method :failure_message_when_negated, :failure_message_for_should_not
-    end
-  end
-
   match do |parser|
     begin
       result = parser.parse(input)
@@ -21,7 +14,7 @@ RSpec::Matchers.define(:parse) do |input, opts|
     end
   end
 
-  failure_message do |is|
+  public_send(respond_to?(:failure_message) ? :failure_message : :failure_message_for_should) do |is|
     if block
       "expected output of parsing #{input.inspect}" <<
       " with #{is.inspect} to meet block conditions, but it didn't"
@@ -37,7 +30,7 @@ RSpec::Matchers.define(:parse) do |input, opts|
     end
   end
 
-  failure_message_when_negated do |is|
+  public_send(respond_to?(:failure_message_when_negated) ? :failure_message_when_negated : :failure_message_for_should_not) do |is|
     if block
       "expected output of parsing #{input.inspect} with #{is.inspect} not to meet block conditions, but it did"
     else
