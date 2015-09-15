@@ -12,7 +12,6 @@ describe Parslet::Context do
   describe 'when a method in BasicObject is inherited from the environment somehow' do
     before(:each) { BasicObject.send(:define_method, :a) { 'c' } }
     after(:each) { BasicObject.send(:undef_method, :a) }
-
     it "masks what is already on blank slate" do
       context(:a => 'b').instance_eval { a }.
         should == 'b'
