@@ -2,6 +2,8 @@
 title: Tricks for common situations
 ---
 
+Here's a topic overview: <div id="toc"></div>
+
 h2. Matching EOF (End Of File)
 
 Ahh Sir, you'll be needin what us parsers call _epsilon_: 
@@ -208,4 +210,18 @@ message:
   puts "Sorry. Can't have #{type} at #{line}:#{col}!"
 </code></pre>
 
+h2. Precedence climber
 
+You might want to implement a parser for simple arithmetic infix expressions
+such as `1 + 2`. The quickest way to do this with parslet is to use the 
+infix expression parser atom: 
+
+<pre class="sh_ruby"><code>
+  infix_expression(
+    match('[0-9]').repeat,
+    [str('*'), 2],
+    [str('+'), 1]) # matches both "1+2*3" and "1*2+3"
+</code></pre>
+
+Please also see the "example":https://github.com/kschiess/parslet/blob/master/example/prec_calc.rb and
+the "inline documentation":https://github.com/kschiess/parslet/blob/master/lib/parslet.rb#L203-L229 for this feature. 

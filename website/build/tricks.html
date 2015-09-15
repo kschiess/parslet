@@ -5,9 +5,9 @@
     <title>parslet -Tricks for common situations</title>
     <meta content="Kaspar Schiess (http://absurd.li)" name="author" />
     <link href="images/favicon3.ico" rel="shortcut icon" />
-    <link href="/parslet/stylesheets/site.css" rel="stylesheet" type="text/css" /><link href="/parslet/stylesheets/sh_whitengrey.css" rel="stylesheet" type="text/css" /><script src="/parslet/javascripts/sh_main.min.js" type="text/javascript"></script><script src="/parslet/javascripts/sh_ruby.min.js" type="text/javascript"></script>
+    <link href="/parslet/stylesheets/site.css" rel="stylesheet" type="text/css" /><link href="/parslet/stylesheets/sh_whitengrey.css" rel="stylesheet" type="text/css" /><script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script><script src="/parslet/javascripts/toc.js" type="text/javascript"></script><script src="/parslet/javascripts/sh_main.min.js" type="text/javascript"></script><script src="/parslet/javascripts/sh_ruby.min.js" type="text/javascript"></script>
   </head>
-  <body class="code" onload="sh_highlightDocument();">
+  <body class="code" onload="sh_highlightDocument(); $('#toc').toc({selectors: 'h2'});">
     <div id="everything">
       <div class="main_menu">
         <img alt="Parslet Logo" src="/parslet/images/parsley_logo.png" />
@@ -35,7 +35,8 @@
       <div class="content">
         <h1>
           Tricks for common situations
-        </h1><h2>Matching <span class="caps">EOF</span> (End Of File)</h2>
+        </h1><p>Here&#8217;s a topic overview: <div id="toc"></div></p>
+<h2>Matching <span class="caps">EOF</span> (End Of File)</h2>
 <p>Ahh Sir, you&#8217;ll be needin what us parsers call <em>epsilon</em>:</p>
 <pre class="sh_ruby"><code>
   rule(:eof) { any.absent? }
@@ -201,6 +202,18 @@ message:</p>
   line, col = type.line_and_column
   puts "Sorry. Can't have #{type} at #{line}:#{col}!"
 </code></pre>
+<h2>Precedence climber</h2>
+<p>You might want to implement a parser for simple arithmetic infix expressions
+such as `1 + 2`. The quickest way to do this with parslet is to use the 
+infix expression parser atom:</p>
+<pre class="sh_ruby"><code>
+  infix_expression(
+    match('[0-9]').repeat,
+    [str('*'), 2],
+    [str('+'), 1]) # matches both "1+2*3" and "1*2+3"
+</code></pre>
+<p>Please also see the <a href="https://github.com/kschiess/parslet/blob/master/example/prec_calc.rb">example</a> and
+the <a href="https://github.com/kschiess/parslet/blob/master/lib/parslet.rb#L203-L229">inline documentation</a> for this feature.</p>
       </div>
       <div class="copyright">
         <p><span class="caps">MIT</span> License, 2010-2014, &#169; <a href="http://absurd.li">Kaspar Schiess</a><br/>
