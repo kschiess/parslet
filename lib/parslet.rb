@@ -231,6 +231,20 @@ module Parslet
     Parslet::Atoms::Infix.new(element, operations)
   end
   module_function :infix_expression
+
+  # Returnes a parslet atom that consumes the remainder of the source and
+  # succeeds.
+  #
+  # Example:
+  #   finished
+  #   # would consume any string
+  #
+  # @see Parslet::Atoms::Finished
+  #
+  def finished
+    Parslet::Atoms::Finished.new
+  end
+  module_function :finished
   
   # A special kind of atom that allows embedding whole treetop expressions
   # into parslet construction. 

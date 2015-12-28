@@ -106,4 +106,14 @@ module Parslet::Atoms::DSL
   def capture(name)
     Parslet::Atoms::Capture.new(self, name)
   end
+
+  # Consumes the remainder of the input and always succeeds. This is useful
+  # when a pattern has been matched and you don't care what the remainder of
+  # the input is. This is the same as `any.repeat` but much faster.
+  # Example:
+  #   # Ignores everything after the expected string
+  #   str("ignore everyting after this line") >> finished
+  def finished
+    Parslet::Atoms::Finished.new
+  end
 end
