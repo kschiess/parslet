@@ -31,5 +31,6 @@ module Parslet::Atoms
   require 'parslet/atoms/dynamic'
   require 'parslet/atoms/scope'
   require 'parslet/atoms/infix'
+  require 'parslet/atoms/finished'
 end
 
