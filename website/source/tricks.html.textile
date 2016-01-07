@@ -69,16 +69,16 @@ I find it very useful in this situation to eliminate 2. from our options:
     rule(:simple_rule) { str('a') }
   end
 
-  describe ComplexParser  do
+  RSpec.describe ComplexParser  do
     let(:parser) { ComplexParser.new }
     context "simple_rule" do
       it "should consume 'a'" do
-        parser.simple_rule.should parse('a')
+        expect(parser.simple_rule).to parse('a')
       end 
     end
   end
   
-  RSpec::Core::Runner.run([])
+  RSpec::Core::Runner.run(['--format', 'documentation'])
 </code></pre>
 
 Output is: 
@@ -88,7 +88,7 @@ Example::ComplexParser
   simple_rule
     should consume 'a'
 
-Finished in 0.00115 seconds
+Finished in 0.00094 seconds (files took 0.29367 seconds to load)
 1 example, 0 failures
 </pre>
 

@@ -93,8 +93,8 @@ some more examples of character ranges:
 
 <pre class="sh_ruby"><code>
   match['[:alnum:]']      # letters and numbers
-  match['\\n']            # newlines
-  match('\\w')            # word characters
+  match['\n']             # newlines
+  match('\w')             # word characters
   match('.')              # any character
 </code></pre>
 
@@ -199,7 +199,7 @@ look at this:
   #   arg >> (spaced(',') >> arg).repeat
   #
   def spaced(character)
-    str(character) >> match["\s"]
+    str(character) >> match['\s']
   end
 </code></pre>
 
@@ -303,7 +303,7 @@ scope of this document) In such a block, you can:
     
     # Or by .. doing other kind of work (consumes 100 chars and then 'a')
     source.consume(100)
-    return str('a')
+    str('a')
   }
 </code></pre>
 
