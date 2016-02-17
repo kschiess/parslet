@@ -306,16 +306,14 @@ class MiniP &lt; Parslet::Parser
   root :expression
 end
 
-class IntLit   &lt; Struct.new(:int)
+IntLit = Struct.new(:int) do
   def eval; int.to_i; end
 end
-class Addition &lt; Struct.new(:left, :right) 
+Addition = Struct.new(:left, :right) do
   def eval; left.eval + right.eval; end
 end
-class FunCall &lt; Struct.new(:name, :args); 
-  def eval
-    p args.map { |s| s.eval }
-  end
+FunCall = Struct.new(:name, :args) do
+  def eval; p args.map { |s| s.eval }; end
 end
 
 class MiniT &lt; Parslet::Transform
