@@ -103,8 +103,8 @@ to write the above <code>#match</code> atom:</p>
 some more examples of character ranges:</p>
 <pre class="sh_ruby"><code>
   match['[:alnum:]']      # letters and numbers
-  match['\\n']            # newlines
-  match('\\w')            # word characters
+  match['\n']             # newlines
+  match('\w')             # word characters
   match('.')              # any character
 </code></pre>
 <h3>The wild wild <code>#any</code></h3>
@@ -180,7 +180,7 @@ look at this:</p>
   #   arg &gt;&gt; (spaced(',') &gt;&gt; arg).repeat
   #
   def spaced(character)
-    str(character) &gt;&gt; match["\s"]
+    str(character) &gt;&gt; match['\s']
   end
 </code></pre>
 <p>or even this:</p>
@@ -266,7 +266,7 @@ scope of this document) In such a block, you can:</p>
     
     # Or by .. doing other kind of work (consumes 100 chars and then 'a')
     source.consume(100)
-    return str('a')
+    str('a')
   }
 </code></pre>
 <h3>Scopes</h3>

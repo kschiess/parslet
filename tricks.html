@@ -89,23 +89,23 @@ problems. Either:</p>
     rule(:simple_rule) { str('a') }
   end
 
-  describe ComplexParser  do
+  RSpec.describe ComplexParser  do
     let(:parser) { ComplexParser.new }
     context "simple_rule" do
       it "should consume 'a'" do
-        parser.simple_rule.should parse('a')
+        expect(parser.simple_rule).to parse('a')
       end 
     end
   end
   
-  RSpec::Core::Runner.run([])
+  RSpec::Core::Runner.run(['--format', 'documentation'])
 </code></pre>
 <p>Output is: 
 <pre class="output"></p>
 <p>Example::ComplexParser
   simple_rule
     should consume &#8216;a&#8217;</p>
-<p>Finished in 0.00115 seconds
+<p>Finished in 0.00094 seconds (files took 0.29367 seconds to load)
 1 example, 0 failures
 </pre></p>
 <p>Parslet parsers have one method per rule. These methods return valid parsers
