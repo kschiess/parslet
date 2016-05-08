@@ -35,6 +35,10 @@ module Parslet::Atoms::DSL
     Parslet::Atoms::Repetition.new(self, 0, 1, :maybe)
   end
 
+  def ignore
+    Parslet::Atoms::Ignored.new(self)
+  end
+
   # Chains two parslet atoms together as a sequence. 
   #
   # Example: 
