@@ -106,4 +106,13 @@ module Parslet::Atoms::DSL
   def capture(name)
     Parslet::Atoms::Capture.new(self, name)
   end
+  
+  # Applies a function to a parse result.
+  # 
+  #   str('foo')                                   # will return 'foo', 
+  #   str('foo').map(lambda { |x| x.to_s.upcase }) # will return 'FOO'
+  # 
+  def map(f)
+    Parslet::Atoms::Mapped.new(self, f)
+  end
 end
