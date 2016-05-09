@@ -120,7 +120,7 @@ module Parslet::Atoms
       return [] if named && list.empty?
 
       # If there are only strings, concatenate them and return that. 
-      foldl(list) { |s,e| s.nil? ? e : e.nil? ? s : s + e }
+      foldl(list.compact) { |s,e| s+e }
     end
 
     # That annoying warning 'Duplicate subtrees while merging result' comes 
