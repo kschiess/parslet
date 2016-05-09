@@ -109,4 +109,13 @@ Don't know what to do with "%" at line 1 char 2.
       end
     end
   end
+  describe "providing a reducer block" do
+    class InfixExpressionReducerParser < Parslet::Parser
+      rule(:top) { infix_expression(str('a'), [str('-'), 1, :right]) { |l,o,r| {:and=>[l,r]} } }
+    end
+    
+    it "applies the reducer" do
+      InfixExpressionReducerParser.new.top.parse("a-a-a").should == {:and=>["a", {:and=>["a", "a"]}]}
+    end
+  end
 end

@@ -217,6 +217,10 @@ module Parslet
   # associativity is chosen, it would be interpreted as '1 + (2 + 3)'. Note 
   # that the hash trees output reflect that choice as well. 
   #
+  # An optional block can be provided in order to manipulate the generated tree.
+  # The block will be called on each operator and passed 3 arguments: the left
+  # operand, the operator, and the right operand.
+  #
   # Example:
   #   infix_expression(integer, [add_op, 1, :left])
   #   # would parse things like '1 + 2'
@@ -227,8 +231,8 @@ module Parslet
   #  
   # @see Parslet::Atoms::Infix
   #
-  def infix_expression(element, *operations)
-    Parslet::Atoms::Infix.new(element, operations)
+  def infix_expression(element, *operations, &reducer)
+    Parslet::Atoms::Infix.new(element, operations, &reducer)
   end
   module_function :infix_expression
   

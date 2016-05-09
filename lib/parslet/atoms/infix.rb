@@ -1,11 +1,12 @@
 class Parslet::Atoms::Infix < Parslet::Atoms::Base
-  attr_reader :element, :operations
+  attr_reader :element, :operations, :reducer
 
-  def initialize(element, operations)
+  def initialize(element, operations, &reducer)
     super()
 
     @element = element
     @operations = operations
+    @reducer = reducer || lambda { |left, op, right| {l: left, o: op, r: right} }
   end
   
   def try(source, context, consume_all)
@@ -31,9 +32,9 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
 
       if right.kind_of? Array
         # Subexpression -> Subhash
-        left = {l: left, o: op, r: produce_tree(right)}
+        left = reducer.call(left, op, produce_tree(right))
       else
-        left = {l: left, o: op, r: right}
+        left = reducer.call(left, op, right)
       end
     end
 
