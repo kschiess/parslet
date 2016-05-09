@@ -1,9 +1,9 @@
-# Names a match to influence tree construction.
+# Ignores the result of a match.
 #
 # Example:
 #
 #   str('foo')            # will return 'foo',
-#   str('foo').as(:foo)   # will return :foo => 'foo'
+#   str('foo').ignore     # will return nil
 #
 class Parslet::Atoms::Ignored < Parslet::Atoms::Base
   attr_reader :parslet

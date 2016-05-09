@@ -35,6 +35,13 @@ module Parslet::Atoms::DSL
     Parslet::Atoms::Repetition.new(self, 0, 1, :maybe)
   end
 
+  # Returns a new parslet atom that will not show up in the output. This
+  # is synonymous to calling #repeat(0,1). Generated tree value will always be 
+  # nil.
+  #
+  # Example: 
+  #   str('foo').ignore
+  #
   def ignore
     Parslet::Atoms::Ignored.new(self)
   end
