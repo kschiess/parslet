@@ -16,9 +16,9 @@ RSpec.configure do |config|
       c.syntax = [:should, :expect]
     end
   rescue NoMethodError
-    # If the feature is missing, ignore it. 
+    # If the feature is missing, ignore it.
   end
-  
+
   # Exclude other ruby versions by giving :ruby => 1.8 or :ruby => 1.9
   #
   config.filter_run_excluding :ruby => lambda { |version|
@@ -31,7 +31,7 @@ def catch_failed_parse
     yield
   rescue Parslet::ParseFailed => exception
   end
-  exception.cause
+  exception.parse_failure_cause
 end
 
 def slet name, &block
