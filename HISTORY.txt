@@ -2,6 +2,12 @@
   
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
+    
+= 1.8 / ???
+
+  + The `ignored` atom that allows to ignore a part of the matched text. 
+    `str('foo').ignore` will match 'foo', but not yield any parse output. 
+    Thanks to chrismwendt (Chris Wendt).
 
 = 1.7 / 12Mar2015
 
