@@ -8,6 +8,8 @@
   + The `ignored` atom that allows to ignore a part of the matched text. 
     `str('foo').ignore` will match 'foo', but not yield any parse output. 
     Thanks to chrismwendt (Chris Wendt).
+  + Infix expression parser (arithmetics, anyone?) now supports custom reducers
+    in block form. Thanks to chrismwendt (Chris Wendt).
 
 = 1.7 / 12Mar2015
 
