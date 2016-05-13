@@ -28,6 +28,7 @@ class Smalltalk < Parslet::Parser
   rule(:smalltalk) { statements }
   rule(:statements) { 
     # insert smalltalk parser here (outside of the scope of this readme)
+    str('smalltalk')
   }
 end
 
