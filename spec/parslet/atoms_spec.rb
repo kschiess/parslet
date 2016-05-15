@@ -225,7 +225,7 @@ describe Parslet do
     
     it "should not loop infinitely" do
       lambda {
-        timeout(1) { parslet.parse('bar') }
+        Timeout.timeout(1) { parslet.parse('bar') }
       }.should raise_error(Parslet::ParseFailed)
     end 
   end

@@ -12,7 +12,5 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.rdoc_options = ['--main', 'README']
   s.require_paths = ['lib']
-  s.summary = 'Parser construction library with great error reporting in Ruby.'  
-  
-  s.add_dependency 'blankslate', '>= 2.0', '<= 4.0'
+  s.summary = 'Parser construction library with great error reporting in Ruby.'
 end
