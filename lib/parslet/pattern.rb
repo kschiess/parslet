@@ -48,11 +48,10 @@ class Parslet::Pattern
   #
   def element_match(tree, exp, bindings) 
     # p [:elm, tree, exp]
-    case [tree, exp].map { |e| e.class }
-      when [Hash,Hash]
-        return element_match_hash(tree, exp, bindings)
-      when [Array,Array]
-        return element_match_ary_single(tree, exp, bindings)
+    if tree.is_a?(Hash) && exp.is_a?(Hash)
+      return element_match_hash(tree, exp, bindings)
+    elsif tree.is_a?(Array) && exp.is_a?(Array)
+      return element_match_ary_single(tree, exp, bindings)
     else
       # If elements match exactly, then that is good enough in all cases
       return true if exp === tree
