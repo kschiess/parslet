@@ -10,6 +10,9 @@
     Thanks to chrismwendt (Chris Wendt).
   + Infix expression parser (arithmetics, anyone?) now supports custom reducers
     in block form. Thanks to chrismwendt (Chris Wendt).
+  ! Small patches to memory footprint (Christophe Bliard).
+  - blankslate dependency removed. You should be good - but if things break, 
+    please let us know (Nikita Shilnikov).
 
 = 1.7 / 12Mar2015
 
