@@ -42,13 +42,13 @@
   # Constructs a parser using a Parser Expression Grammar 
   parser =  str('"') &gt;&gt; 
             (
-              str('\\') &gt;&gt; any |
+              str('\\').ignore &gt;&gt; any |
               str('"').absent? &gt;&gt; any
             ).repeat.as(:string) &gt;&gt; 
             str('"')
 
-  result = parser.parse %Q("this is a valid string") 
-  result # =&gt; {:string=&gt;"this is a valid string"@1}
+  result = parser.parse %Q("this is a valid \\"string\\"")
+  result # =&gt; {:string=&gt;"this is a valid \"string\""@1}
 </code></pre>
 <p>A small Ruby library for constructing parsers in the
 <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar"><span class="caps">PEG</span></a> (Parsing

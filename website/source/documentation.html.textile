@@ -7,6 +7,8 @@ title: Documentation
 Are you brand new to parslet? Well then let's introduce you guys. This is what
 you should read and try out first. 
 
+There's also a "video version":https://www.youtube.com/watch?v=_F-eh66zw90!
+
 "*Examples*":https://github.com/kschiess/parslet/tree/master/example/
 
 Parslet comes with a lot of examples that explain how to use various aspects. 
