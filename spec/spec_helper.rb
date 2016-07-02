@@ -31,7 +31,7 @@ def catch_failed_parse
     yield
   rescue Parslet::ParseFailed => exception
   end
-  exception.cause
+  exception.parse_failure_cause
 end
 
 def slet name, &block

@@ -55,13 +55,13 @@ module Parslet
   
   # Raised when the parse failed to match. It contains the message that should
   # be presented to the user. More details can be extracted from the
-  # exceptions #cause member: It contains an instance of {Parslet::Cause} that
+  # exceptions #parse_failure_cause member: It contains an instance of {Parslet::Cause} that
   # stores all the details of your failed parse in a tree structure. 
   #
   #   begin
   #     parslet.parse(str)
   #   rescue Parslet::ParseFailed => failure
-  #     puts failure.cause.ascii_tree
+  #     puts failure.parse_failure_cause.ascii_tree
   #   end
   #
   # Alternatively, you can just require 'parslet/convenience' and call the
@@ -72,15 +72,15 @@ module Parslet
   #   parslet.parse_with_debug(str)
   #
   class ParseFailed < StandardError
-    def initialize(message, cause=nil)
+    def initialize(message, parse_failure_cause=nil)
       super(message)
-      @cause = cause
+      @parse_failure_cause = parse_failure_cause
     end
     
     # Why the parse failed. 
     #
     # @return [Parslet::Cause]
-    attr_reader :cause 
+    attr_reader :parse_failure_cause
   end
   
   module ClassMethods

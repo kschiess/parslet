@@ -118,7 +118,7 @@ handling code that will help you out:</p>
   begin
     parser.parse('bar')
   rescue Parslet::ParseFailed =&gt; error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 <p>This should print something akin to:</p>
@@ -149,7 +149,7 @@ grammar structure:</p>
   begin
     P.new.parse('barbaz')
   rescue Parslet::ParseFailed =&gt; error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 <p>Outputs:</p>
@@ -174,7 +174,7 @@ with the &#8216;deepest error position&#8217; engine:</p>
   begin
     P.new.parse('barbaz', reporter: Parslet::ErrorReporter::Deepest.new)
   rescue Parslet::ParseFailed =&gt; error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 <p>Outputs:</p>
