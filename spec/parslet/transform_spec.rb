@@ -93,7 +93,7 @@ describe Parslet::Transform do
       it "should raise when no rules are matched" do
         lambda {
           transform.apply(:z => 'z')
-        }.should raise_error(NotImplementedError)
+        }.should raise_error(NotImplementedError, /Failed to match/)
       end
     end
 

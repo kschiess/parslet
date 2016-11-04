@@ -238,7 +238,10 @@ class Parslet::Transform
     
     # No rule matched - element is not transformed
     if @raise_on_unmatch && elt.is_a?(Hash)
-      raise NotImplementedError
+      elt_types = elt.map do |key, value|
+        [ key, value.class ]
+      end.to_h
+      raise NotImplementedError, "Failed to match `#{elt_types.inspect}`"
     else
       return elt
     end
