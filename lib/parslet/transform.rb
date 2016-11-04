@@ -131,7 +131,7 @@ class Parslet::Transform
     # Allows accessing the class' rules
     #
     def rules 
-      @__transform_rules || []
+      @__transform_rules ||= []
     end
 
     def inherited(subclass)

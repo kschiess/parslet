@@ -16,6 +16,7 @@ class Parslet::Atoms::Entity < Parslet::Atoms::Base
     @name = name
     @label = label
     @block = block
+    @parslet = nil
   end
 
   def try(source, context, consume_all)

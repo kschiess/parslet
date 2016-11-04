@@ -10,6 +10,7 @@ class Parslet::Source
       # but probably make a scan to that position neccessary.
       @line_ends = []
       @line_ends.extend RangeSearch
+      @last_line_end = nil
     end
 
     # Returns a <line, column> tuple for the given input position. Input
