@@ -64,7 +64,7 @@ module Parslet
       # current deepest error that was saved as a reference.
       #
       def deepest(cause)
-        rank, leaf = deepest_child(cause)
+        _, leaf = deepest_child(cause)
         
         if !deepest_cause || leaf.pos >= deepest_cause.pos
           # This error reaches deeper into the input, save it as reference.

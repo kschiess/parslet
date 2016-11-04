@@ -25,7 +25,7 @@ class Parslet::Atoms::Lookahead < Parslet::Atoms::Base
     rewind_pos  = source.bytepos
     error_pos   = source.pos
 
-    success, value = bound_parslet.apply(source, context, consume_all)
+    success, _ = bound_parslet.apply(source, context, consume_all)
     
     if positive
       return succ(nil) if success
