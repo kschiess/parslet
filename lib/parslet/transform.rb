@@ -140,7 +140,8 @@ class Parslet::Transform
     end
   end
   
-  def initialize(&block) 
+  def initialize(raise_on_unmatch: false, &block) 
+    @raise_on_unmatch = raise_on_unmatch
     @rules = []
     
     if block
@@ -236,7 +237,11 @@ class Parslet::Transform
     end
     
     # No rule matched - element is not transformed
-    return elt
+    if @raise_on_unmatch && elt.is_a?(Hash)
+      raise NotImplementedError
+    else
+      return elt
+    end
   end
 
   # @api private 
