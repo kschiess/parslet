@@ -20,9 +20,10 @@ This library will be good for the first two stages only. After that, you'll
 be on your own. 
 
 The parsing step has literally been implemented by hundreds (thousands) of
-clever people; No lack of alternatives. Even in Ruby, you'll have the choice 
-among a handful of libraries. There's a distinction to make on this level as
-well: 
+clever people; No lack of
+"alternatives":http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2016/08/timeline2.html.
+Even in Ruby, you'll have the choice  among a handful of libraries. There's a
+distinction to make on this level as well: 
 
 *LRk parsers and related fields* Parsers in this class use a lexical analyzer
 (a _lexer_ ) to transform the input text into tokens (_tokenizing_ ). They
