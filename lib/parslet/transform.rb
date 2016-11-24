@@ -140,7 +140,8 @@ class Parslet::Transform
     end
   end
   
-  def initialize(&block) 
+  def initialize(raise_on_unmatch: false, &block) 
+    @raise_on_unmatch = raise_on_unmatch
     @rules = []
     
     if block
@@ -236,7 +237,14 @@ class Parslet::Transform
     end
     
     # No rule matched - element is not transformed
-    return elt
+    if @raise_on_unmatch && elt.is_a?(Hash)
+      elt_types = elt.map do |key, value|
+        [ key, value.class ]
+      end.to_h
+      raise NotImplementedError, "Failed to match `#{elt_types.inspect}`"
+    else
+      return elt
+    end
   end
 
   # @api private 

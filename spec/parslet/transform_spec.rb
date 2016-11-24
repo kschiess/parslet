@@ -77,6 +77,26 @@ describe Parslet::Transform do
       transform.apply(:a => 'a').should == A.new('a')
     end
 
+    context "optionally raise when no match found" do
+      class BumbleBee < Parslet::Transform
+        def initialize(&block)
+          super(raise_on_unmatch: true, &block)
+        end
+        rule(:a => simple(:x)) { A.new(x) }
+      end
+      let(:transform) { BumbleBee.new }
+
+      it "should evaluate rules" do
+        transform.apply(:a => 'a').should == A.new('a')
+      end
+
+      it "should raise when no rules are matched" do
+        lambda {
+          transform.apply(:z => 'z')
+        }.should raise_error(NotImplementedError, /Failed to match/)
+      end
+    end
+
     context "with inheritance" do
       class OptimusPrimeJunior < OptimusPrime
         rule(:b => simple(:x)) { B.new(x.upcase) }
