@@ -83,14 +83,14 @@ module Parslet
 
       # Produces an error cause that combines the message at the current level
       # with the errors that happened at a level below (children).
-      # Compute and set label used by Cause to produce error message.
+      # Compute and set label used by ParseFailureCause to produce error message.
       #
       # @param atom [Parslet::Atoms::Base] parslet that failed
       # @param source [Source] Source that we're using for this parse. (line
       #   number information...)
       # @param message [String, Array] Error message at this level.
       # @param children [Array] A list of errors from a deeper level (or nil).
-      # @return [Cause] An error tree combining children with message.
+      # @return [ParseFailureCause] An error tree combining children with message.
       #
       def err(atom, source, message, children=nil)
         cause = super(atom, source, message, children)

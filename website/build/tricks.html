@@ -54,24 +54,24 @@ how I would match a string in case insensitive manner:</p>
       reduce(:&gt;&gt;)
   end
 
-  # Constructs a parser using a Parser Expression Grammar 
+  # Constructs a parser using a Parser Expression Grammar
   stri('keyword').parse "kEyWoRd"     # =&gt; "kEyWoRd"@0
 </code></pre>
 <h2>Testing</h2>
 <p>Parslet helps you to create parsers that are in turn created out of many small
-parsers. It is really turtles all the way down. Imagine you have a complex 
+parsers. It is really turtles all the way down. Imagine you have a complex
 parser:</p>
 <pre class="sh_ruby"><code>
   class ComplexParser &lt; Parslet::Parser
     root :lots_of_stuff
-  
+
     rule(:lots_of_stuff) { ... }
-  
-    # and many lines later: 
+
+    # and many lines later:
     rule(:simple_rule) { str('a') }
   end
 </code></pre>
-<p>Also imagine that the parser (as a whole) fails to consume the &#8216;a&#8217; that 
+<p>Also imagine that the parser (as a whole) fails to consume the &#8216;a&#8217; that
 <code>simple_rule</code> is talking about.</p>
 <p>This kind of problem can very often be fixed by bisecting it into two possible
 problems. Either:</p>
@@ -84,7 +84,7 @@ problems. Either:</p>
 <pre class="sh_ruby"><code title="rspec">
   require 'rspec'
   require 'parslet/rig/rspec'
-  
+
   class ComplexParser &lt; Parslet::Parser
     rule(:simple_rule) { str('a') }
   end
@@ -94,13 +94,13 @@ problems. Either:</p>
     context "simple_rule" do
       it "should consume 'a'" do
         expect(parser.simple_rule).to parse('a')
-      end 
+      end
     end
   end
-  
+
   RSpec::Core::Runner.run(['--format', 'documentation'])
 </code></pre>
-<p>Output is: 
+<p>Output is:
 <pre class="output"></p>
 <p>Example::ComplexParser
   simple_rule
@@ -118,11 +118,11 @@ handling code that will help you out:</p>
   begin
     parser.parse('bar')
   rescue Parslet::ParseFailed =&gt; error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 <p>This should print something akin to:</p>
-<pre class="output"> 
+<pre class="output">
 Expected "foo", but got "bar" at line 1 char 1.
 </pre>
 <p>These error reports are probably the fastest way to know exactly where you
@@ -134,7 +134,7 @@ require 'parslet/convenience'
 parser.parse_with_debug(input)
 </code></pre>
 <h3>Reporter engines</h3>
-<p>Note that there is currently not one, but two error reporting engines! The 
+<p>Note that there is currently not one, but two error reporting engines! The
 default engine will report errors in a structure that looks exactly like the
 grammar structure:</p>
 <pre class="sh_ruby"><code title="error reporter 1">
@@ -145,15 +145,15 @@ grammar structure:</p>
     rule(:element) { str('bar') }
     rule(:call) { str('baz') &gt;&gt; str('()') }
   end
-  
+
   begin
     P.new.parse('barbaz')
   rescue Parslet::ParseFailed =&gt; error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 <p>Outputs:</p>
-<pre class="output"> 
+<pre class="output">
 Expected at least 2 of CALL / ELEMENT at line 1 char 1.
 `- Expected one of [CALL, ELEMENT] at line 1 char 4.
    |- Failed to match sequence ('baz' '()') at line 1 char 7.
@@ -170,15 +170,15 @@ with the &#8216;deepest error position&#8217; engine:</p>
     rule(:element) { str('bar') }
     rule(:call) { str('baz') &gt;&gt; str('()') }
   end
-  
+
   begin
     P.new.parse('barbaz', reporter: Parslet::ErrorReporter::Deepest.new)
   rescue Parslet::ParseFailed =&gt; error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 <p>Outputs:</p>
-<pre class="output"> 
+<pre class="output">
 Expected at least 2 of CALL / ELEMENT at line 1 char 1.
 `- Expected one of [CALL, ELEMENT] at line 1 char 4.
    |- Failed to match sequence ('baz' '()') at line 1 char 7.
@@ -204,7 +204,7 @@ message:</p>
 </code></pre>
 <h2>Precedence climber</h2>
 <p>You might want to implement a parser for simple arithmetic infix expressions
-such as `1 + 2`. The quickest way to do this with parslet is to use the 
+such as `1 + 2`. The quickest way to do this with parslet is to use the
 infix expression parser atom:</p>
 <pre class="sh_ruby"><code>
   infix_expression(
@@ -223,7 +223,7 @@ the <a href="https://github.com/kschiess/parslet/blob/master/lib/parslet.rb#L203
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-16365074-2']);
         _gaq.push(['_trackPageview']);
-        
+
         (function() {
           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
