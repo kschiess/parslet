@@ -77,6 +77,7 @@ module Parslet::Accelerator
     def join_or_new tag, other_expr
       if type == tag
         @args << other_expr
+        self
       else
         Expression.new(tag, self, other_expr)
       end
