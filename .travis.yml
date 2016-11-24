@@ -1,10 +1,4 @@
 script: bundle exec rspec
 rvm:
-  - 1.9.3
-  - "2.0"
-  - "2.1"
-matrix:
-  allow_failures:
-    - rvm: ruby-head
-    - rvm: jruby-19mode
-    - rvm: jruby-head
+  - "2.2"
+  - "2.3"
