@@ -5,8 +5,8 @@ module Parslet
   #
   class Cause
     def initialize(message, source, pos, children)
-      @message, @source, @pos, @children = 
-        message, source, pos, children
+      @message, @source, @pos, @children, @context =
+        message, source, pos, children, nil
     end
     
     # @return [String, Array] A string or an array of message pieces that 

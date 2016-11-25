@@ -83,7 +83,7 @@ class Parslet::Atoms::Base
   def apply(source, context, consume_all=false)
     old_pos = source.bytepos
     
-    success, value = result = context.try_with_cache(self, source, consume_all)
+    success, _ = result = context.try_with_cache(self, source, consume_all)
 
     if success
       # Notify context
@@ -137,7 +137,7 @@ class Parslet::Atoms::Base
   end
   precedence BASE
   def to_s(outer_prec=OUTER)
-    str = @label || to_s_inner(precedence)
+    str = label || to_s_inner(precedence)
     if outer_prec < precedence
       "(#{str})"
     else
