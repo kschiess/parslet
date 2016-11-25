@@ -398,7 +398,7 @@ describe Parslet do
   end
 
   describe "combinations thereof (regression)" do
-    success=[
+    [
       [(str('a').repeat >> str('b').repeat), 'aaabbb'] 
     ].each do |(parslet, input)|
       describe "#{parslet.inspect} applied to #{input.inspect}" do
@@ -408,7 +408,7 @@ describe Parslet do
       end 
     end
 
-    inspection=[
+    [
       [str('a'),                              "'a'"                 ], 
       [(str('a') | str('b')).maybe,           "('a' / 'b')?"        ], 
       [(str('a') >> str('b')).maybe,          "('a' 'b')?"          ], 

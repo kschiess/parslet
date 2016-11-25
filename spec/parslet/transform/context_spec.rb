@@ -27,10 +27,10 @@ describe Parslet::Context do
       obj.methods.assert.include?(:a)
     end
     it 'allows inspection' do
-      obj.inspect.assert.match /@a=1/
+      obj.inspect.assert.match(/@a=1/)
     end
     it 'allows conversion to string' do
-      obj.to_s.assert.match /Parslet::Context:0x/
+      obj.to_s.assert.match(/Parslet::Context:0x/)
     end
 
     context 'when the context is enhanced' do

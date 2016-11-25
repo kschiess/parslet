@@ -12,7 +12,7 @@ describe "Regression on" do
       end
       
       it "runs successfully" do
-        stdin, stdout, stderr = Open3.popen3("ruby #{example}")
+        _, stdout, stderr = Open3.popen3("ruby #{example}")
         
         handle_map = {
           stdout => :out, 
@@ -21,7 +21,7 @@ describe "Regression on" do
         expectation_found = handle_map.any? do |io, ext|
           name = product_path(example, ext)
           
-          if File.exists?(name)
+          if File.exist?(name)
             io.read.strip.should == File.read(name).strip
             true
           end

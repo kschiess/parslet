@@ -6,10 +6,6 @@ describe Parslet::Transform do
   include Parslet
   
   let(:transform) { Parslet::Transform.new }
-  attr_reader :transform
-  before(:each) do
-    @transform = Parslet::Transform.new
-  end
   
   class A < Struct.new(:elt); end
   class B < Struct.new(:elt); end
@@ -157,7 +153,9 @@ describe Parslet::Transform do
       it "should execute in its own context" do
         @bar = 'test'
         transform.call_on_match(bindings, proc do
-          @bar.should_not == 'test'
+          if instance_variable_defined?("@bar")
+            instance_variable_get("@bar").should_not == 'test'
+          end
         end)
       end
     end
