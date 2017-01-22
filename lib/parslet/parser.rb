@@ -51,6 +51,7 @@ class Parslet::Parser < Parslet::Atoms::Base
     #   end
     #
     def root(name)
+      undef_method :root if method_defined? :root
       define_method(:root) do
         self.send(name)
       end
