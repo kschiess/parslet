@@ -130,7 +130,7 @@ grammar terminates, since in a way, it is like a normal program.</p>
   
     mini.parse(str)
   rescue Parslet::ParseFailed =&gt; failure
-    puts failure.cause.ascii_tree
+    puts failure.parse_failure_cause.ascii_tree
   end
 
   parse "1 + 2 + 3"  # =&gt; "1 + 2 + 3"@0
@@ -156,7 +156,7 @@ Expected one of [SUM, INTEGER] at line 1 char 1.
 <p>This is what parslet calls an <code>#error_tree</code>. Not only the output of
 your parser, but also its grammar is constructed like a tree. When things go
 wrong, every branch of the tree has its own reasons for not accepting a given
-input. The <code>#cause</code> method returns those reasons.</p>
+input. The <code>#parse_failure_cause</code> method returns those reasons.</p>
 <p>Our grammar has essentially two branches, <code>SUM</code> and
 <code>INTEGER</code>. Can you see why all rules expect a number as the first
 character?</p>
