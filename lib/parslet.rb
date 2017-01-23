@@ -100,6 +100,7 @@ module Parslet
     #   end
     #
     def rule(name, opts={}, &definition)
+      undef_method name if method_defined? name
       define_method(name) do
         @rules ||= {}     # <name, rule> memoization
         return @rules[name] if @rules.has_key?(name)
