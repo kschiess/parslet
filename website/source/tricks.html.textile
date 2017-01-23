@@ -105,7 +105,7 @@ handling code that will help you out:
   begin
     parser.parse('bar')
   rescue Parslet::ParseFailed => error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 
@@ -145,7 +145,7 @@ grammar structure:
   begin
     P.new.parse('barbaz')
   rescue Parslet::ParseFailed => error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 
@@ -174,7 +174,7 @@ with the 'deepest error position' engine:
   begin
     P.new.parse('barbaz', reporter: Parslet::ErrorReporter::Deepest.new)
   rescue Parslet::ParseFailed => error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 </code></pre>
 

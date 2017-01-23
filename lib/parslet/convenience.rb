@@ -5,7 +5,7 @@ class Parslet::Atoms::Base
   #    begin
   #      tree = parser.parse('something')
   #    rescue Parslet::ParseFailed => error
-  #      puts parser.cause.ascii_tree
+  #      puts parser.parse_failure_cause.ascii_tree
   #    end
   #
   # into a convenient method.
@@ -27,7 +27,7 @@ class Parslet::Atoms::Base
   def parse_with_debug str, opts={}
     parse str, opts
   rescue Parslet::ParseFailed => error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
 
 end
