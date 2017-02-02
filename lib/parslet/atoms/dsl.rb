@@ -117,4 +117,15 @@ module Parslet::Atoms::DSL
   def capture(name)
     Parslet::Atoms::Capture.new(self, name)
   end
+
+  # Make a mark, return the match as usual, but doesn't consume its input.
+  #
+  # Example:
+  #
+  #   str('foo').mark # matches when the input contains 'foo', but doesn't
+  #   consume the input, so other atoms have chance to parse the input.
+  #
+  def mark(offset=0)
+    Parslet::Atoms::Mark.new(self, offset)
+  end
 end
