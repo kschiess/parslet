@@ -22,8 +22,8 @@ of parslet. Especially:
 * "Overview":overview.html explains parslet's goals and gives you a bigger
   picture.
 * Using "Parslet::Parser":parser.html to *write parsers*.
-* Using "Parslet::Transform":transform.html to *transmogrify your intermediary
-  trees*.
+* Using "Parslet::Transform":transform.html to *turn your intermediary
+  trees into something useful*.
 * "Tricks":tricks.html for common situations.
 
 *Projects*
