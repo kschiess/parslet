@@ -1,9 +1,10 @@
+
 = 2.0 / ?? (future release changes, like a reminder to self)
   
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
     
-= 1.8 / ???
+= 1.8 / 3Apr2017
 
   + The `ignored` atom that allows to ignore a part of the matched text. 
     `str('foo').ignore` will match 'foo', but not yield any parse output. 
@@ -13,6 +14,8 @@
   ! Small patches to memory footprint (Christophe Bliard).
   - blankslate dependency removed. You should be good - but if things break, 
     please let us know (Nikita Shilnikov).
+  ! Parslet now has `parse_failure_cause`, replaces the earlier `cause`.
+  ! Fixes all these interpreter warnings on modern rubies. 
 
 = 1.7 / 12Mar2015
 
