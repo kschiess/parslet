@@ -38,7 +38,7 @@ Int    = Struct.new(:int) {
     right = other.int 
 
     Int.new(
-      case operation
+      case operation.to_s
         when '+'
           left + right
         when '-'
