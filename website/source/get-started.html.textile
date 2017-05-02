@@ -221,7 +221,7 @@ class MiniP < Parslet::Parser
 
   # Things
   rule(:integer)    { match('[0-9]').repeat(1).as(:int) >> space? }
-  rule(:identifier) { match['a-z'].repeat(1) }
+  rule(:identifier) { match['[a-z]'].repeat(1) }
   rule(:operator)   { match('[+]') >> space? }
   
   # Grammar parts
@@ -307,7 +307,7 @@ class MiniP < Parslet::Parser
 
   # Things
   rule(:integer)    { match('[0-9]').repeat(1).as(:int) >> space? }
-  rule(:identifier) { match['a-z'].repeat(1) }
+  rule(:identifier) { match['[a-z]'].repeat(1) }
   rule(:operator)   { match('[+]') >> space? }
   
   # Grammar parts
