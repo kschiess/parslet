@@ -36,7 +36,11 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
 
       break_on = value
       break unless success
-
+      
+      if !max && source.pos == start_pos        
+        raise "Grammar contains an infinite loop applying '#{self}' at char position #{source.pos.charpos}\n...#{source.pos.context}<-- here"  
+      end
+      
       occ += 1
       accum << value
       
