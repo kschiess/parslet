@@ -61,6 +61,9 @@ to Ruby parsed with parslet.
 
 * "Write You a Parser for Fun and Win":http://viget.com/extend/write-you-a-parser-for-fun-and-win
   a succinct writeup on parsing text formats by David Eisinger.
+
+* "Build a query parser":http://www.recursion.org/query-parser/
+  a step-by-step tutorial showing how to take user input and generate Elasticsearch queries by Luke Francl.
  
 "*YARD Class Documentation*":http://rubydoc.info/gems/parslet/frames
 

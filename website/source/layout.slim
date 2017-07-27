@@ -3,8 +3,8 @@ html
   head
     meta(http-equiv="Content-type" content="text/html;charset=UTF-8")
     title
-      | parslet -
-      = data.page.title || 'parslet - beautiful parsers.'
+      | parslet - 
+      = current_page.data.title || 'parslet - beautiful parsers.'
       
     meta name='author' content="Kaspar Schiess (http://absurd.li)"
 
@@ -31,7 +31,7 @@ html
           li== link_to('projects', 'projects.html')
           
       .content
-        h1= data.page.title || 'parslet - beautiful parsers.'
+        h1= current_page.data.title || 'parslet - beautiful parsers.'
         == yield
     
       .copyright

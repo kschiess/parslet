@@ -1,110 +1,147 @@
-/* line 15, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-body {
-  font-size: 17px;
-  font-family: Helvetica;
-  background-color: white; }
+/*
+Error: Properties are only allowed within rules, directives, mixin includes, or other properties.
+        on line 79 of /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass
 
-/* line 22, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-a {
-  color: black; }
+74:       size: 0.9em 
+75:       family: "Monaco", monospace
+76:   
+77:     // _why's poignant guide theme
+78:     .sh_keyword  // keyword
+79:       color: #761A47
+80: 
+81:     .sh_comment // comment
+82:       color: #686868
+83: 
+84:     .sh_string // string
 
-/* line 25, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-.main_menu {
-  font-size: 1.2em;
-  width: 50em;
-  margin-bottom: 1cm; }
-  /* line 31, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  .main_menu ul {
-    display: inline-block;
-    list-style-type: none;
-    font-size: 1.33em;
-    margin-left: -8em; }
-    /* line 5, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-    .main_menu ul:after {
-      content: ".";
-      display: block;
-      height: 0;
-      clear: both;
-      visibility: hidden; }
-    /* line 12, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-    * html .main_menu ul {
-      height: 1px; }
-  /* line 37, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  .main_menu li {
-    float: left;
-    font-variant: small-caps;
-    padding-left: 1em; }
-  /* line 42, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  .main_menu a, .main_menu:visited {
-    text-decoration: none;
-    color: #7c7c7c; }
-
-/* line 46, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-.content {
-  font-size: 1em;
-  width: 50em;
-  line-height: 1.4em;
-  margin-left: 1cm; }
-  /* line 53, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  .content p {
-    margin: 1em; }
-  /* line 56, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  .content img {
-    margin-left: 3em; }
-
-/* line 59, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-.copyright {
-  font-variant: small-caps;
-  font-size: 0.6em;
-  color: #00ad00;
-  margin-left: 22em;
-  margin-top: 3cm; }
-  /* line 67, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  .copyright a {
-    text-decoration: none;
-    color: #00ad00; }
-
-/* line 72, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-body.code code {
-  font-size: 0.9em;
-  font-family: "Monaco", monospace; }
-  /* line 78, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code code .sh_keyword {
-    color: #761a47; }
-  /* line 81, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code code .sh_comment {
-    color: #686868; }
-  /* line 84, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code code .sh_string {
-    color: #42aa7a;
-    background-color: #edf7f7; }
-  /* line 88, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code code .sh_constant {
-    color: #551e03; }
-  /* line 91, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code code .sh_method {
-    color: #4679a9; }
-  /* line 94, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code code .sh_symbol {
-    color: #551e03; }
-  /* line 97, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code code .sh_number {
-    color: #42aa7a; }
-/* line 101, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-body.code pre {
-  font-size: 1em;
-  font-family: "Monaco", monospace;
-  background-color: #f8f8f8;
-  color: #4679a9;
-  line-height: 1.1em;
-  margin-left: 1em;
-  padding: -1em 0 -1em 0; }
-  /* line 115, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-  body.code pre.sh_sourceCode {
-    border-radius: 0.5em;
-    background-color: #f8f8f8;
-    padding-bottom: 1.4em; }
-
-/* line 121, /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass */
-#toc li {
-  list-style-type: lower-alpha; }
+Backtrace:
+/Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass:79
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:15:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `map'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:51:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:38:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:17:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `map'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:51:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:38:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:17:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `map'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:51:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:38:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:17:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `map'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:51:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:38:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:17:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `map'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:51:in `visit_children'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:36:in `block in visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:59:in `visit_root'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:36:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/check_nesting.rb:17:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/visitors/base.rb:24:in `visit'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/root_node.rb:35:in `css_tree'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/tree/root_node.rb:20:in `render'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/sass-3.4.25/lib/sass/engine.rb:284:in `render'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/renderers/sass.rb:68:in `evaluate'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/tilt-2.0.7/lib/tilt/template.rb:109:in `render'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/file_renderer.rb:79:in `render'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_reference.rb:43:in `send_to'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/call_with.rb:76:in `call_with'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_handler.rb:138:in `block in redefine_method'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/template_renderer.rb:184:in `_render_with_all_renderers'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/template_renderer.rb:147:in `block in render'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/activesupport-5.0.4/lib/active_support/notifications.rb:166:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/util.rb:21:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/template_renderer.rb:146:in `render'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_reference.rb:43:in `send_to'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/call_with.rb:76:in `call_with'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_handler.rb:138:in `block in redefine_method'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/sitemap/resource.rb:154:in `render'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_reference.rb:43:in `send_to'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/call_with.rb:76:in `call_with'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_handler.rb:138:in `block in redefine_method'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/rack.rb:112:in `process_request'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/rack.rb:66:in `block in call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/rack.rb:65:in `catch'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/rack.rb:65:in `call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/urlmap.rb:68:in `block in call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/urlmap.rb:53:in `each'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/urlmap.rb:53:in `call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/head.rb:12:in `call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/lint.rb:49:in `_call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/lint.rb:37:in `call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/builder.rb:153:in `call'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/mock.rb:74:in `request'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/mock.rb:56:in `get'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/builder.rb:232:in `block in output_resource'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/activesupport-5.0.4/lib/active_support/notifications.rb:166:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/util.rb:21:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/builder.rb:225:in `output_resource'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_reference.rb:43:in `send_to'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/call_with.rb:76:in `call_with'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_handler.rb:138:in `block in redefine_method'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:484:in `call_with_index'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:455:in `process_incoming_jobs'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:437:in `block in worker'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:428:in `fork'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:428:in `worker'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:419:in `block in create_workers'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:418:in `each'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:418:in `each_with_index'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:418:in `create_workers'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:358:in `work_in_processes'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/parallel-1.11.2/lib/parallel.rb:264:in `map'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/builder.rb:137:in `output_resources'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_reference.rb:43:in `send_to'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/call_with.rb:76:in `call_with'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_handler.rb:138:in `block in redefine_method'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/builder.rb:97:in `block in prerender_css'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/activesupport-5.0.4/lib/active_support/notifications.rb:166:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/util.rb:21:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/builder.rb:95:in `prerender_css'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_reference.rb:43:in `send_to'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/call_with.rb:76:in `call_with'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_handler.rb:138:in `block in redefine_method'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/builder.rb:65:in `block in run!'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/activesupport-5.0.4/lib/active_support/notifications.rb:166:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/util.rb:21:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/builder.rb:64:in `run!'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_reference.rb:43:in `send_to'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/call_with.rb:76:in `call_with'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/contracts-0.13.0/lib/contracts/method_handler.rb:138:in `block in redefine_method'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-cli-4.2.1/lib/middleman-cli/build.rb:80:in `block in build'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/activesupport-5.0.4/lib/active_support/notifications.rb:166:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-core-4.2.1/lib/middleman-core/util.rb:21:in `instrument'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-cli-4.2.1/lib/middleman-cli/build.rb:79:in `build'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/command.rb:27:in `run'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/invocation.rb:126:in `invoke_command'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/invocation.rb:133:in `block in invoke_all'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/invocation.rb:133:in `each'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/invocation.rb:133:in `map'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/invocation.rb:133:in `invoke_all'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/group.rb:232:in `dispatch'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/invocation.rb:115:in `invoke'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor.rb:40:in `block in register'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/command.rb:27:in `run'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/invocation.rb:126:in `invoke_command'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor.rb:369:in `dispatch'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/thor-0.19.4/lib/thor/base.rb:444:in `start'
+/Users/kschiess/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/middleman-cli-4.2.1/bin/middleman:70:in `<top (required)>'
+/Users/kschiess/.rbenv/versions/2.4.0/bin/middleman:22:in `load'
+/Users/kschiess/.rbenv/versions/2.4.0/bin/middleman:22:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Properties are only allowed within rules, directives, mixin includes, or other properties.\A         on line 79 of /Users/kschiess/git/own/parslet/website/source/stylesheets/site.css.sass\A \A 74:       size: 0.9em \A 75:       family: \"Monaco\", monospace\A 76:   \A 77:     // _why's poignant guide theme\A 78:     .sh_keyword  // keyword\A 79:       color: #761A47\A 80: \A 81:     .sh_comment // comment\A 82:       color: #686868\A 83: \A 84:     .sh_string // string"; }
