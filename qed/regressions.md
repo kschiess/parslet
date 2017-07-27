@@ -27,7 +27,7 @@ Looking back, getting this error was not only probable, but inevitable: Everyone
 This is hard to get right, especially when considering the differences between the 1.8 and 1.9 branches of Ruby. By dropping 1.8 support, we got rid of a special branch of problems, now really the only thing that remains is treating character and byte offsets consistently. Ruby itself doesn't really: 
 
 | method                  | seeks by/returns  |
------------------------------------------------
+|-------------------------|-------------------|
 | `String#[]`             | character         |
 | `StringScanner#pos`     | byte              |
 | `StringScanner#pos=`    | byte              |
