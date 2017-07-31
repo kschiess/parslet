@@ -140,7 +140,7 @@ class Parslet::Transform
     end
   end
   
-  def initialize(raise_on_unmatch: false, &block) 
+  def initialize(raise_on_unmatch=false, &block) 
     @raise_on_unmatch = raise_on_unmatch
     @rules = []
     
