@@ -36,7 +36,7 @@ Thnad is a tiny programming language with so few features that it is not
 useful for anything at all -- except showing how to write a compiler in half
 an hour.
 
-"*Unitwise*":https://github.com/undees/thnad 
+"*Unitwise*":https://github.com/joshwlewis/unitwise
 
 A units of measure library for Ruby. Part of it's magic comes from supporting
 the "Unified Code for Units of Measure", which has a formal grammar, described
