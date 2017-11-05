@@ -36,6 +36,15 @@ Thnad is a tiny programming language with so few features that it is not
 useful for anything at all -- except showing how to write a compiler in half
 an hour.
 
+"*Unitwise*":https://github.com/undees/thnad 
+
+A units of measure library for Ruby. Part of it's magic comes from supporting
+the "Unified Code for Units of Measure", which has a formal grammar, described
+"here":http://unitsofmeasure.org/ucum.html#section-Grammar-of-Units-and-Unit-Terms.
+The grammar is sufficiently complicated that it can't be solved with regular
+expressions (mostly because the grammar is recursive), and was therefore better
+suited for a PEG. (Josh Lewis)
+
 "*Werd.rb*":https://github.com/rk/werd
 
 A variant of Chris Pound's word generator written in Ruby, with some
