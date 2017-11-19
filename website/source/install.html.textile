@@ -2,7 +2,7 @@
 title: Install
 ---
 
-Parslet is at version _1.8.0_. 
+Parslet is at version _1.8.1_. 
 
 *Rubygems*
 
