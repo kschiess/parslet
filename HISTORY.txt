@@ -4,6 +4,10 @@
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
     
+= 1.8.1 / 19Nov2017
+
+  - Minor fixes for language compatibility. 
+    
 = 1.8 / 3Apr2017
 
   + The `ignored` atom that allows to ignore a part of the matched text. 
