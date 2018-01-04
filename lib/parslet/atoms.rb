@@ -3,18 +3,17 @@
 #
 module Parslet::Atoms
   # The precedence module controls parenthesis during the #inspect printing
-  # of parslets. It is not relevant to other aspects of the parsing. 
+  # of parslets. It is not relevant to other aspects of the parsing.
   #
   module Precedence
-    prec = 0
-    BASE       = (prec+=1)    # everything else
-    LOOKAHEAD  = (prec+=1)    # &SOMETHING
-    REPETITION = (prec+=1)    # 'a'+, 'a'?
-    SEQUENCE   = (prec+=1)    # 'a' 'b'
-    ALTERNATE  = (prec+=1)    # 'a' | 'b'
-    OUTER      = (prec+=1)    # printing is done here.
+    BASE       = 1    # everything else
+    LOOKAHEAD  = 2    # &SOMETHING
+    REPETITION = 3    # 'a'+, 'a'?
+    SEQUENCE   = 4    # 'a' 'b'
+    ALTERNATE  = 5    # 'a' | 'b'
+    OUTER      = 6    # printing is done here.
   end
-  
+
   require 'parslet/atoms/can_flatten'
   require 'parslet/atoms/context'
   require 'parslet/atoms/dsl'
@@ -33,4 +32,3 @@ module Parslet::Atoms
   require 'parslet/atoms/scope'
   require 'parslet/atoms/infix'
 end
-
