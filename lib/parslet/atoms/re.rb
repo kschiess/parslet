@@ -14,9 +14,12 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
 
     @match = match.to_s
     @re    = Regexp.new(self.match, Regexp::MULTILINE)
-    @error_msgs = {
-      :premature  => "Premature end of input", 
-      :failed     => "Failed to match #{match.inspect[1..-2]}"
+  end
+
+  def error_msgs
+    @error_msgs ||= {
+      premature: 'Premature end of input',
+      failed: "Failed to match #{match.inspect[1..-2]}"
     }
   end
 
@@ -24,11 +27,11 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     return succ(source.consume(1)) if source.matches?(@re)
     
     # No string could be read
-    return context.err(self, source, @error_msgs[:premature]) \
+    return context.err(self, source, error_msgs[:premature]) \
       if source.chars_left < 1
         
     # No match
-    return context.err(self, source, @error_msgs[:failed])
+    return context.err(self, source, error_msgs[:failed])
   end
 
   def to_s_inner(prec)

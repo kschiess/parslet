@@ -17,11 +17,15 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
 
 
     @parslet = parslet
-    @min, @max = min, max
+    @min = min
+    @max = max
     @tag = tag
-    @error_msgs = {
-      :minrep  => "Expected at least #{min} of #{parslet.inspect}", 
-      :unconsumed => "Extra input after last repetition"
+  end
+
+  def error_msgs
+    @error_msgs ||= {
+      minrep: "Expected at least #{min} of #{parslet.inspect}",
+      unconsumed: 'Extra input after last repetition'
     }
   end
   
@@ -51,7 +55,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     return context.err_at(
       self, 
       source, 
-      @error_msgs[:minrep], 
+      error_msgs[:minrep],
       start_pos, 
       [break_on]) if occ < min
       
@@ -66,7 +70,7 @@ class Parslet::Atoms::Repetition < Parslet::Atoms::Base
     return context.err(
       self, 
       source, 
-      @error_msgs[:unconsumed], 
+      error_msgs[:unconsumed], 
       [break_on]) if consume_all && source.chars_left>0
       
     return succ(accum)

@@ -19,7 +19,6 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     super()
     
     @alternatives = alternatives
-    @error_msg = "Expected one of #{alternatives.inspect}"
   end
 
   #---
@@ -29,7 +28,11 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
   def |(parslet)
     self.class.new(*@alternatives + [parslet])
   end
-  
+
+  def error_msg
+    @error_msg ||= "Expected one of #{alternatives.inspect}"
+  end
+
   def try(source, context, consume_all)
     errors = alternatives.map { |a|
       success, value = result = a.apply(source, context, consume_all)
@@ -40,7 +43,7 @@ class Parslet::Atoms::Alternative < Parslet::Atoms::Base
     }
     
     # If we reach this point, all alternatives have failed. 
-    context.err(self, source, @error_msg, errors)
+    context.err(self, source, error_msg, errors)
   end
 
   precedence ALTERNATE
