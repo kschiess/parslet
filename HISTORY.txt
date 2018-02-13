@@ -4,6 +4,11 @@
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
     
+= 1.8.2 / 13Feb2018
+
+  ! Improvements to performance in cases where atoms are dynamically generated
+    (Kevin Olbrich).
+    
 = 1.8.1 / 19Nov2017
 
   - Minor fixes for language compatibility. 
