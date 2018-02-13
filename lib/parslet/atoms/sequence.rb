@@ -10,8 +10,11 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
     super()
 
     @parslets = parslets
-    @error_msgs = {
-      :failed  => "Failed to match sequence (#{self.inspect})"
+  end
+
+  def error_msgs
+    @error_msgs ||= {
+      failed: "Failed to match sequence (#{inspect})"
     }
   end
   
@@ -29,7 +32,7 @@ class Parslet::Atoms::Sequence < Parslet::Atoms::Base
       success, value = p.apply(source, context, child_consume_all) 
 
       unless success
-        return context.err(self, source, @error_msgs[:failed], [value]) 
+        return context.err(self, source, error_msgs[:failed], [value])
       end
 
       result[idx+1] = value

@@ -12,9 +12,12 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     @str = str.to_s
     @pat = Regexp.new(Regexp.escape(str))
     @len = str.size
-    @error_msgs = {
-      :premature  => "Premature end of input", 
-      :failed     => "Expected #{str.inspect}, but got "
+  end
+
+  def error_msgs
+    @error_msgs ||= {
+      premature: 'Premature end of input',
+      failed: "Expected #{str.inspect}, but got "
     }
   end
   
@@ -22,14 +25,14 @@ class Parslet::Atoms::Str < Parslet::Atoms::Base
     return succ(source.consume(@len)) if source.matches?(@pat)
     
     # Input ending early:
-    return context.err(self, source, @error_msgs[:premature]) \
+    return context.err(self, source, error_msgs[:premature]) \
       if source.chars_left<@len
     
     # Expected something, but got something else instead:  
     error_pos = source.pos  
     return context.err_at(
       self, source, 
-      [@error_msgs[:failed], source.consume(@len)], error_pos) 
+      [error_msgs[:failed], source.consume(@len)], error_pos) 
   end
   
   def to_s_inner(prec)
