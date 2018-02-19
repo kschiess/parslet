@@ -10,7 +10,7 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
   end
   
   def try(source, context, consume_all)
-    return catch_error {
+    return catch(:error) {
       return succ(
         produce_tree(
           precedence_climb(source, context, consume_all)))
@@ -56,7 +56,7 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
     success, value = @element.apply(source, context, false)
     
     unless success
-      abort context.err(self, source, "#{@element.inspect} was expected", [value])
+      throw :error, context.err(self, source, "#{@element.inspect} was expected", [value])
     end
 
     result << flatten(value, true)
@@ -106,13 +106,6 @@ class Parslet::Atoms::Infix < Parslet::Atoms::Base
     end
 
     return nil
-  end
-
-  def abort(error)
-    throw :error, error
-  end
-  def catch_error
-    catch(:error) { yield }
   end
 
   def to_s_inner(prec)
