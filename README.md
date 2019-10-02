@@ -1,9 +1,9 @@
-INTRODUCTION
+# INTRODUCTION
 
 Parslet makes developing complex parsers easy. It does so by
 
-* providing the best error reporting possible
-* not generating reams of code for you to debug
+- providing the best error reporting possible
+- not generating reams of code for you to debug
 
 Parslet takes the long way around to make your job easier. It allows for
 incremental language construction. Often, you start out small, implementing
@@ -13,8 +13,9 @@ possible.
 Eager to try this out? Please see the associated web site:
 http://kschiess.github.io/parslet
 
-SYNOPSIS
+# SYNOPSIS
 
+```ruby
   require 'parslet'
   include Parslet
 
@@ -38,35 +39,36 @@ SYNOPSIS
   simple_string.
     parse('"Simple Simple Simple"') # => "\"Simple Simple Simple\""@0
 
-  # or by making a fuss about it 
+  # or by making a fuss about it
   class Smalltalk < Parslet::Parser
     root :smalltalk
 
     rule(:smalltalk) { statements }
-    rule(:statements) { 
+    rule(:statements) {
       # insert smalltalk parser here (outside of the scope of this readme)
     }
   end
 
   # and then
   Smalltalk.new.parse('smalltalk')
+```
 
-FEATURES
+# FEATURES
 
-  * Tools for every part of the parser chain
-  * Transformers generate Abstract Syntax Trees
-  * Accelerators transform parsers, making them quite a bit faster
-  * Pluggable error reporters
-  * Graphviz export for your parser
-  * Rspec testing support rig
-  * Simply Ruby, composable and hackable
+- Tools for every part of the parser chain
+- Transformers generate Abstract Syntax Trees
+- Accelerators transform parsers, making them quite a bit faster
+- Pluggable error reporters
+- Graphviz export for your parser
+- Rspec testing support rig
+- Simply Ruby, composable and hackable
 
-COMPATIBILITY
+# COMPATIBILITY
 
-This library is intended to work with Ruby variants >= 1.9. I've tested it on 
+This library is intended to work with Ruby variants >= 1.9. I've tested it on
 MRI 1.9, rbx-head, jruby. Please report as a bug if you encounter issues.
 
-STATUS 
+# STATUS
 
 Production worthy.
 
