@@ -26,7 +26,7 @@ GEM
     execjs (2.7.0)
     fast_blank (1.0.0)
     fastimage (2.1.0)
-    ffi (1.9.18)
+    ffi (1.11.1)
     haml (5.0.1)
       temple (>= 0.8.0)
       tilt
