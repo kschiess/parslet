@@ -112,14 +112,7 @@ describe Parslet::Slice do
           s.to_i.should == 1234
         end 
         it "should fail when Integer would fail on a string" do
-           # Ruby 2.6 will call `#to_i` if `#to_int` fails
-           if RUBY_VERSION.gsub(/[^\d]/, '').to_i >= 260
-             Integer(slice).should == 0
-           else
-             lambda do
-               Integer(slice)
-             end.should raise_error(ArgumentError, /invalid value/)
-           end
+          lambda { Integer(slice.to_s) }.should raise_error(ArgumentError, /invalid value/)
         end
         it "should turn into zero when a string would" do
           slice.to_i.should == 0
