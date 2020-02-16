@@ -90,11 +90,8 @@ class Parslet::Slice
   def to_sym
     str.to_sym
   end
-  def to_int
-    Integer(str)
-  end
   def to_i
-    str.to_i
+    self.str.to_i
   end
   def to_f
     str.to_f

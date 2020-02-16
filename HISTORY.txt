@@ -1,8 +1,14 @@
 
-= 2.0 / ?? (future release changes, like a reminder to self)
+= 2.0 / Early 2020
   
   - prsnt? and absnt? are now finally banned into oblivion. Wasting vocals for
     the win. 
+
+  - Because Ruby 2.6 broke Integer() conversion for non-Strings, we've removed
+    to_int for slices; to assert Integer type, you must now 'Integer(slice.to_s)'. 
+    (Broken? How? Integer now (2.6) calls to_int - and when that fails - to_i. 
+    A class that has both will never raise an exception. Incientially, this makes
+    String a unicorn class.)
     
 = 1.8.2 / 13Feb2018
 
