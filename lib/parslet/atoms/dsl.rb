@@ -89,14 +89,6 @@ module Parslet::Atoms::DSL
     Parslet::Atoms::Lookahead.new(self, true)
   end
   
-  # Alias for present? that will disappear in 2.0 (deprecated)
-  #
-  alias prsnt? present?
-
-  # Alias for absent? that will disappear in 2.0 (deprecated)
-  #
-  alias absnt? absent?
-
   # Marks a parslet atom as important for the tree output. This must be used 
   # to achieve meaningful output from the #parse method. 
   #
