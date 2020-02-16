@@ -69,6 +69,7 @@ body.code code {
     color: #551e03; }
   body.code code .sh_number {
     color: #42aa7a; }
+
 body.code pre {
   font-size: 1em;
   font-family: "Monaco", monospace;
