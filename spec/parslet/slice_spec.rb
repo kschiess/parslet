@@ -112,8 +112,8 @@ describe Parslet::Slice do
           s.to_i.should == 1234
         end 
         it "should fail when Integer would fail on a string" do
-          lambda { Integer(slice) }.should raise_error(ArgumentError, /invalid value/)
-        end 
+          lambda { Integer(slice.to_s) }.should raise_error(ArgumentError, /invalid value/)
+        end
         it "should turn into zero when a string would" do
           slice.to_i.should == 0
         end 

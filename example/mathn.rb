@@ -38,7 +38,10 @@ attempt_parse
 puts 'it terminates before we require mathn'
 
 puts "requiring mathn now"
-require 'mathn'
+# mathn was deprecated as of Ruby 2.5
+if RUBY_VERSION.gsub(/[^\d]/, '').to_i < 250
+  require 'mathn'
+end
 puts "and trying again (will hang without the fix)"
 attempt_parse # but it doesn't terminate after requiring mathn
 puts "okay!"
