@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = 'parslet'
-  s.version = '1.8.2'
+  s.version = '2.0.0'
 
   s.authors = ['Kaspar Schiess']
   s.email = 'kaspar.schiess@absurd.li'

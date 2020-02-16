@@ -1,5 +1,5 @@
 
-= 2.0 / Early 2020
+= 2.0 / 16Feb2020
 
   This release is essentially what is called a 'done' release, meaning I consider
   that parslet meets its goals and doesn't need (much) more evolution. 
