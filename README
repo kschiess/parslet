@@ -11,7 +11,7 @@ the atoms of your language first; _parslet_ takes pride in making this
 possible.
 
 Eager to try this out? Please see the associated web site:
-http://kschiess.github.io/parslet
+https://kschiess.github.io/parslet/
 
 SYNOPSIS
 
@@ -70,4 +70,4 @@ STATUS
 
 Production worthy.
 
-(c) 2010-2018 Kaspar Schiess
+(c) 2010-today Kaspar Schiess
