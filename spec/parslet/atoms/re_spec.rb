@@ -9,6 +9,10 @@ describe Parslet::Atoms::Re do
     end 
     it "should allow match[str] form" do
       match['a'].should be_a(Parslet::Atoms::Re)
-    end 
+    end
+
+    it "should allow match(regexp) form" do
+      match(/foobar/).should be_a(Parslet::Atoms::Re)
+    end
   end
 end

@@ -39,14 +39,16 @@ module Parslet
     # input. 
     #
     def consume(n)
-      position = self.pos
-      slice_str = @str.scan(@re_cache[n])
-      slice = Parslet::Slice.new(
-        position, 
-        slice_str,
-        @line_cache)
+      scan(@re_cache[n])
+    end
 
-      return slice
+    # Consumes given pattern from the input, returning matching characters as
+    # a slice of the input.
+    #
+    def scan(pattern)
+      position = self.pos
+      slice_str = @str.scan(pattern)
+      Parslet::Slice.new(position, slice_str, @line_cache) if slice_str
     end
     
     # Returns how many chars remain in the input. 

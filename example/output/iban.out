@@ -1,0 +1,7 @@
+[{:iban=>"NO93 8601 1117 947"@0},
+ {:iban=>"nl91 abna 0417 1643 00"@19},
+ {:iban=>"MT84 MALT 0110 0001 2345 MTLC AST0 01S"@42}]
+Extra input after last repetition at line 2 char 1.
+`- Failed to match sequence (IBAN NEWLINE?) at line 2 char 1.
+   `- Failed to match (?i-mx:[A-Z]{2}\\d\\d( [A-Z\\d]{4}){1,6}( [A-Z\\d]{1,4})) at line 2 char 1.
+nil
