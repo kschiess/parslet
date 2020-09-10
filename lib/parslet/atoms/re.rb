@@ -13,7 +13,11 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
     super()
 
     @match = match.to_s
-    @re    = Regexp.new(self.match, Regexp::MULTILINE)
+    @re = if match.kind_of?(Regexp)
+            match
+          else
+            Regexp.new(self.match, Regexp::MULTILINE)
+          end
   end
 
   def error_msgs
@@ -24,8 +28,10 @@ class Parslet::Atoms::Re < Parslet::Atoms::Base
   end
 
   def try(source, context, consume_all)
-    return succ(source.consume(1)) if source.matches?(@re)
-    
+    slice = source.scan(@re)
+
+    return succ(slice) if slice
+
     # No string could be read
     return context.err(self, source, error_msgs[:premature]) \
       if source.chars_left < 1
