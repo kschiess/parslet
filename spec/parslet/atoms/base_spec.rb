@@ -69,6 +69,18 @@ describe Parslet::Atoms::Base do
     end
   end
   
+  context "when the parse fails, for a partially consumed stream, the exception" do
+    it "should contain a string" do
+      begin
+        source = Parslet::Source.new("foobar")
+        source.consume(3)
+        Parslet.str('foo').parse(source)
+      rescue Parslet::ParseFailed => ex
+        ex.message.should be_kind_of(String)
+      end
+    end 
+  end
+
   context "when the parse fails, the exception" do
     it "should contain a string" do
       begin

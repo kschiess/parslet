@@ -28,6 +28,7 @@ class Parslet::Atoms::Base
       io : 
       Parslet::Source.new(io)
 
+    starting_position = source.bytepos
     # Try to cheat. Assuming that we'll be able to parse the input, don't 
     # run error reporting code. 
     success, value = setup_and_apply(source, nil, !options[:prefix])
@@ -39,7 +40,7 @@ class Parslet::Atoms::Base
       # Cheating has not paid off. Now pay the cost: Rerun the parse,
       # gathering error information in the process.
       reporter = options[:reporter] || Parslet::ErrorReporter::Tree.new
-      source.bytepos = 0
+      source.bytepos = starting_position
       success, value = setup_and_apply(source, reporter, !options[:prefix])
       
       fail "Assertion failed: success was true when parsing with reporter" \
