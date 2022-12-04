@@ -139,8 +139,8 @@ describe Parslet::Source do
     
   end
   
-  describe "reading encoded input" do
-    let(:source) { described_class.new("éö変わる") }
+  describe "consume_until" do
+    let(:source) { described_class.new("") }
 
     def r str
       Regexp.new(Regexp.escape(str))
@@ -163,6 +163,20 @@ describe Parslet::Source do
       source.consume(2)
       source.chars_left.should == 0
       source.chars_left.should == 0
+    end 
+  end
+
+  describe "reading encoded input" do
+    let(:source) { described_class.new("pre b b a") }
+
+    def r str
+      Regexp.new(Regexp.escape(str))
+    end
+  
+    it "should read characters, not bytes" do
+      source.consume_until(/b/).should == "pre b"
+      source.pos.charpos.should == 5
+      source.bytepos.should == 5
     end 
   end
 end

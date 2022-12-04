@@ -49,6 +49,17 @@ module Parslet
       return slice
     end
     
+    def consume_until(pattern)
+      position = self.pos
+      slice_str = @str.scan_until(pattern)
+      slice = Parslet::Slice.new(
+        position, 
+        slice_str,
+        @line_cache)
+
+      return slice
+    end
+    
     # Returns how many chars remain in the input. 
     #
     def chars_left
