@@ -1,4 +1,15 @@
 
+= 2.1 / ???
+
+  We're in maintenance mode! The community is really stepping up here though, sending
+  interesting additions our way. Here's what has been merged this far: 
+
+  + Specification for mixing parslet parsers (Artur Komarov).
+
+  + Update to Github Actions CI/CD. I guess newer is better? (Matt Larraz).
+    Also includes testing on newer Ruby versions. 
+
+
 = 2.0 / 16Feb2020
 
   This release is essentially what is called a 'done' release, meaning I consider
