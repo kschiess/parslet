@@ -4,9 +4,9 @@ require 'parslet'
 
 describe Parslet::Transform do
   include Parslet
-  
+
   let(:transform) { Parslet::Transform.new }
-  
+
   class A < Struct.new(:elt); end
   class B < Struct.new(:elt); end
   class C < Struct.new(:elt); end
@@ -20,9 +20,9 @@ describe Parslet::Transform do
 
       it "should transform 'a' into A.new('a')" do
         transform.apply('a').should == A.new('a')
-      end 
+      end
       it "should transform ['a', 'b'] into [A.new('a'), A.new('b')]" do
-        transform.apply(['a', 'b']).should == 
+        transform.apply(['a', 'b']).should ==
           [A.new('a'), A.new('b')]
       end
     end
@@ -49,26 +49,26 @@ describe Parslet::Transform do
       it "should yield Bi.new('c', 'f')" do
         transform.apply(:a => {:b => 'c'}, :d => {:e => 'f'}).should ==
           Bi.new('c', 'f')
-      end 
+      end
     end
   end
   describe "dsl construction" do
     let(:transform) { Parslet::Transform.new do
         rule(simple(:x)) { A.new(x) }
-      end 
+      end
     }
-    
+
     it "should still evaluate rules correctly" do
       transform.apply('a').should == A.new('a')
-    end 
+    end
   end
   describe "class construction" do
-    class OptimusPrime < Parslet::Transform 
+    class OptimusPrime < Parslet::Transform
       rule(:a => simple(:x)) { A.new(x) }
       rule(:b => simple(:x)) { B.new(x) }
     end
     let(:transform) { OptimusPrime.new }
-    
+
     it "should evaluate rules" do
       transform.apply(:a => 'a').should == A.new('a')
     end
@@ -121,13 +121,16 @@ describe Parslet::Transform do
         transform.call_on_match(bindings, lambda do |dict|
           called = true
         end)
-        
+
         called.should == true
-      end 
+      end
       it "should yield the bindings" do
+        caputed = nil
         transform.call_on_match(bindings, lambda do |dict|
-          dict.should == bindings
+          caputed = dict
         end)
+
+        caputed.should == bindings
       end
       it "should execute in the current context"  do
         foo = 'test'
@@ -135,16 +138,23 @@ describe Parslet::Transform do
           foo.should == 'test'
         end)
       end
+      it "should call transform's methods from the given block" do
+        def transform.baz; :baz; end
+        def transform.qux; :qux; end
+
+        transform.call_on_match(bindings, lambda { |dict| baz }).should == :baz
+        transform.call_on_match(bindings, lambda { |dict| qux }).should == :qux
+      end
     end
     context "when given a block of arity 0" do
       it "should call the block" do
         called = false
-        transform.call_on_match(bindings, proc do 
+        transform.call_on_match(bindings, proc do
           called = true
         end)
-        
+
         called.should == true
-      end 
+      end
       it "should have bindings as local variables" do
         transform.call_on_match(bindings, proc do
           foo.should == 'test'
@@ -158,18 +168,25 @@ describe Parslet::Transform do
           end
         end)
       end
+      it "should call transform's methods from the given block" do
+        def transform.baz; :baz; end
+        def transform.qux; :qux; end
+
+        transform.call_on_match(bindings, proc { baz }).should == :baz
+        transform.call_on_match(bindings, proc { qux }).should == :qux
+      end
     end
   end
-  
+
   context "various transformations (regression)" do
     context "hashes" do
       it "are matched completely" do
         transform.rule(:a => simple(:x)) { fail }
         transform.apply(:a => 'a', :b => 'b')
-      end 
+      end
     end
   end
-  
+
   context "when not using the bindings as hash, but as local variables" do
     it "should access the variables" do
       transform.rule(simple(:x)) { A.new(x) }

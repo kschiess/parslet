@@ -1,13 +1,27 @@
 require 'spec_helper'
 
 describe Parslet::Context do
-  def context(*args)
-    described_class.new(*args)
+  let(:transform) do
+    flexmock('transform')
   end
-  
+
+  def context(bindings)
+    described_class.new(bindings, transform)
+  end
+
   it "binds hash keys as variable like things" do
     context(:a => 'value').instance_eval { a }.
       should == 'value'
+  end
+  it "responds transform's methods" do
+    transform.should_receive(:foo).and_return { :foo }
+    transform.should_receive(:bar).and_return { :bar }
+
+    c = context(:a => 'value')
+    assert c.respond_to?(:foo)
+    c.foo.should == :foo
+    assert c.respond_to?(:bar)
+    c.bar.should == :bar
   end
   it "one contexts variables aren't the next ones" do
     ca = context(:a => 'b')
